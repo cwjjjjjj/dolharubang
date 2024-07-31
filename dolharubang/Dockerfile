@@ -1,5 +1,4 @@
-FROM openjdk:17-jdk-alpine
-WORKDIR /app
-COPY build/libs/your-app-name-0.0.1-SNAPSHOT.jar /app/app.jar
+FROM openjdk:17
+COPY ./build/libs/dolharubang-0.0.1-SNAPSHOT.jar dolharubang.jar
 EXPOSE 8084
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "dolharubang.jar"]
