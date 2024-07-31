@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
 		DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */; };
 		DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */; };
 		DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */; };
@@ -20,10 +21,8 @@
 		DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */; };
 		DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC102C56941800D1F87B /* EntryPointView.swift */; };
 		DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC122C56941A00D1F87B /* Assets.xcassets */; };
-		DAAEFC162C56941A00D1F87B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC152C56941A00D1F87B /* Preview Assets.xcassets */; };
 		DAAEFC182C56941A00D1F87B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC172C56941A00D1F87B /* Persistence.swift */; };
 		DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC192C56941A00D1F87B /* DolHaruBang.xcdatamodeld */; };
-		DAAEFC272C56985F00D1F87B /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC262C56985F00D1F87B /* SplashView.swift */; };
 		DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC292C57425000D1F87B /* Color.swift */; };
 		DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC2D2C5743BA00D1F87B /* Font.swift */; };
 		DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC312C5747F000D1F87B /* NanumSquareRoundOTFB.otf */; };
@@ -33,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.ttf; sourceTree = "<group>"; };
 		DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpringHasCome.mp3; sourceTree = "<group>"; };
 		DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUserInfoView.swift; sourceTree = "<group>"; };
@@ -47,16 +47,14 @@
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
 		DAAEFC122C56941A00D1F87B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DAAEFC152C56941A00D1F87B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DAAEFC172C56941A00D1F87B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		DAAEFC1A2C56941A00D1F87B /* DolHaruBang.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DolHaruBang.xcdatamodel; sourceTree = "<group>"; };
-		DAAEFC262C56985F00D1F87B /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		DAAEFC292C57425000D1F87B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		DAAEFC2D2C5743BA00D1F87B /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		DAAEFC312C5747F000D1F87B /* NanumSquareRoundOTFB.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundOTFB.otf; sourceTree = "<group>"; };
 		DAAEFC322C5747F000D1F87B /* NanumSquareRoundOTFR.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundOTFR.otf; sourceTree = "<group>"; };
 		DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundOTFEB.otf; sourceTree = "<group>"; };
-		DAAEFC372C5755E600D1F87B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DAAEFC372C5755E600D1F87B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAEFC392C575B8900D1F87B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +69,144 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6550AA382C59E5A6000A264E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA3D2C59E72B000A264E /* Resources */,
+				6550AA3C2C59E726000A264E /* Util */,
+				6550AA3B2C59E718000A264E /* Design */,
+				6550AA3A2C59E6F8000A264E /* Modules */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		6550AA392C59E5BF000A264E /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA412C59E779000A264E /* DBTI */,
+				6550AA402C59E75A000A264E /* Main */,
+				6550AA3F2C59E755000A264E /* Login */,
+				6550AA3E2C59E740000A264E /* Splash */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		6550AA3A2C59E6F8000A264E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		6550AA3B2C59E718000A264E /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				DA6E57712C58F67D0088A7A7 /* Buttons */,
+				DA6E57702C58F66F0088A7A7 /* TextField */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		6550AA3C2C59E726000A264E /* Util */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		6550AA3D2C59E72B000A264E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
+				DA6E577C2C59476D0088A7A7 /* View.swift */,
+				DAAEFC292C57425000D1F87B /* Color.swift */,
+				DA6E576B2C58609B0088A7A7 /* BGM */,
+				DAAEFC2C2C57436B00D1F87B /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6550AA3E2C59E740000A264E /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA462C59E8CC000A264E /* Source */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		6550AA3F2C59E755000A264E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA442C59E8B8000A264E /* Source */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		6550AA402C59E75A000A264E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		6550AA412C59E779000A264E /* DBTI */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA422C59E7DC000A264E /* Source */,
+			);
+			path = DBTI;
+			sourceTree = "<group>";
+		};
+		6550AA422C59E7DC000A264E /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA432C59E8AD000A264E /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		6550AA432C59E8AD000A264E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6550AA442C59E8B8000A264E /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA452C59E8BF000A264E /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		6550AA452C59E8BF000A264E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DAAEFC392C575B8900D1F87B /* LoginView.swift */,
+				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6550AA462C59E8CC000A264E /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA472C59E8D3000A264E /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		6550AA472C59E8D3000A264E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DAAEFC102C56941800D1F87B /* EntryPointView.swift */,
+				6550AA482C59EA35000A264E /* SplashView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		DA6E576B2C58609B0088A7A7 /* BGM */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,14 +234,6 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
-		DA6E577E2C594BC10088A7A7 /* DBTI */ = {
-			isa = PBXGroup;
-			children = (
-				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
-			);
-			path = DBTI;
-			sourceTree = "<group>";
-		};
 		DAAEFC022C56941800D1F87B = {
 			isa = PBXGroup;
 			children = (
@@ -125,88 +253,14 @@
 		DAAEFC0D2C56941800D1F87B /* DolHaruBang */ = {
 			isa = PBXGroup;
 			children = (
-				DAAEFC372C5755E600D1F87B /* Info.plist */,
-				DAAEFC252C56980600D1F87B /* Resources */,
-				DAAEFC242C56978000D1F87B /* UI */,
-				DAAEFC232C56977500D1F87B /* Services */,
-				DAAEFC222C56976B00D1F87B /* App */,
-				DAAEFC212C56976400D1F87B /* Modules */,
-				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
+				DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */,
+				6550AA392C59E5BF000A264E /* Pages */,
+				6550AA382C59E5A6000A264E /* Common */,
 				DAAEFC172C56941A00D1F87B /* Persistence.swift */,
+				DAAEFC372C5755E600D1F87B /* Info.plist */,
 				DAAEFC192C56941A00D1F87B /* DolHaruBang.xcdatamodeld */,
-				DAAEFC142C56941A00D1F87B /* Preview Content */,
 			);
 			path = DolHaruBang;
-			sourceTree = "<group>";
-		};
-		DAAEFC142C56941A00D1F87B /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				DAAEFC152C56941A00D1F87B /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		DAAEFC212C56976400D1F87B /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				DA6E577E2C594BC10088A7A7 /* DBTI */,
-				DAAEFC382C575B7400D1F87B /* Login */,
-				DAAEFC282C56991600D1F87B /* Splash */,
-				DAAEFC102C56941800D1F87B /* EntryPointView.swift */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		DAAEFC222C56976B00D1F87B /* App */ = {
-			isa = PBXGroup;
-			children = (
-				DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		DAAEFC232C56977500D1F87B /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		DAAEFC242C56978000D1F87B /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				DA6E57712C58F67D0088A7A7 /* Buttons */,
-				DA6E57702C58F66F0088A7A7 /* TextField */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
-		DAAEFC252C56980600D1F87B /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				DA6E576B2C58609B0088A7A7 /* BGM */,
-				DAAEFC2C2C57436B00D1F87B /* Fonts */,
-				DAAEFC2B2C57427E00D1F87B /* Extensions */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		DAAEFC282C56991600D1F87B /* Splash */ = {
-			isa = PBXGroup;
-			children = (
-				DAAEFC262C56985F00D1F87B /* SplashView.swift */,
-			);
-			path = Splash;
-			sourceTree = "<group>";
-		};
-		DAAEFC2B2C57427E00D1F87B /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				DAAEFC292C57425000D1F87B /* Color.swift */,
-				DA6E577C2C59476D0088A7A7 /* View.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		DAAEFC2C2C57436B00D1F87B /* Fonts */ = {
@@ -219,15 +273,6 @@
 				DAAEFC2D2C5743BA00D1F87B /* Font.swift */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		DAAEFC382C575B7400D1F87B /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				DAAEFC392C575B8900D1F87B /* LoginView.swift */,
-				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,7 +333,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAAEFC162C56941A00D1F87B /* Preview Assets.xcassets in Resources */,
 				DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
@@ -306,11 +350,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAAEFC182C56941A00D1F87B /* Persistence.swift in Sources */,
+				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				DA6E577D2C59476D0088A7A7 /* View.swift in Sources */,
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
-				DAAEFC272C56985F00D1F87B /* SplashView.swift in Sources */,
 				DA6E57732C58F6AA0088A7A7 /* CustomTextField.swift in Sources */,
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
@@ -454,7 +498,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = 438C43K8SQ;
+				DEVELOPMENT_TEAM = X83LNW6267;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
@@ -484,7 +528,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = 438C43K8SQ;
+				DEVELOPMENT_TEAM = X83LNW6267;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
