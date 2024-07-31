@@ -35,7 +35,6 @@ iOSInjectionProject/
 # Xcode specific
 DerivedData/
 build/
-*.pbxproj
 *.xcuserstate
 xcshareddata/
 
