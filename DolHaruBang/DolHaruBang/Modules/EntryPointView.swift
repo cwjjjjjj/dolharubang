@@ -21,12 +21,12 @@ struct EntryPointView: View {
     var body: some View {
         ZStack{
             if showMainView {
-                NavigationStack{
+                NavigationView{
                     LoginView()
                 }
             } else {
                 SplashView().onAppear{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                         withAnimation{
                             showMainView = true
                         }
