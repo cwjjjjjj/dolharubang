@@ -21,7 +21,7 @@ struct CustomMonthButton: UIViewRepresentable {
         }
     }
 
-    @Binding var selectedMonth: Int
+    @Binding var selectedMonth: Int?
     @Binding var isPresented: Bool
     var font: Font
     var textColor: UIColor?
@@ -33,7 +33,7 @@ struct CustomMonthButton: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle("\(selectedMonth)", for: .normal)
+        button.setTitle(selectedMonth != nil ? "\(selectedMonth!)" : "월", for: .normal)
         button.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         button.setTitleColor(textColor ?? UIColor(Color.black), for: .normal)
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonTapped), for: .touchUpInside)
@@ -43,7 +43,7 @@ struct CustomMonthButton: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIButton, context: Context) {
-        uiView.setTitle("\(selectedMonth)", for: .normal)
+        uiView.setTitle(selectedMonth != nil ? "\(selectedMonth!)" : "월", for: .normal)
         uiView.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         uiView.setTitleColor(textColor ?? UIColor(Color.black), for: .normal)
     }

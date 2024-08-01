@@ -49,4 +49,3 @@ extension Font {
         return Font.custom(style.customFont.rawValue, size: style.size)
     }
 }
-
