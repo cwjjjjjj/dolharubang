@@ -8,14 +8,19 @@ struct InputUserInfoView: View {
     @State private var showConfirmation: Bool = false
 
     @State private var isNameConfirmed: Bool = false // 닉네임 중복 확인 여부를 추적하는 상태 변수
+    
+    // 모든 입력이 완료되었는지 확인하는 변수
+    var isFormComplete: Bool {
+        return isNameConfirmed && selectedYear != nil && selectedMonth != nil && selectedDay != nil
+    }
 
-    @State private var selectedYear: Int = 2023
+    @State private var selectedYear: Int?
     @State private var showYearPicker: Bool = false
 
-    @State private var selectedMonth: Int = 1
+    @State private var selectedMonth: Int?
     @State private var showMonthPicker: Bool = false
 
-    @State private var selectedDay: Int = 1
+    @State private var selectedDay: Int?
     @State private var showDayPicker: Bool = false
 
     var currentYear: Int {
@@ -43,49 +48,65 @@ struct InputUserInfoView: View {
 
     var body: some View {
         ZStack {
-            Color.white
+            Color.mainWhite
                 .edgesIgnoringSafeArea(.all)
             
             GeometryReader { geometry in
-                VStack {
-                    Spacer()
+                VStack (alignment: .center, spacing: 0){
+                    Spacer().frame(height: geometry.size.height * 0.2892)
                     
-                    Text("돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.")
-                        .font(.customFont(Font.subtitle2))
-                        .foregroundColor(.mainBlack)
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(8)
-                        .padding(.top, 50)
-                        .padding(.bottom, 50)
+                    HStack {
+                        Spacer()
+                        Text("돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.")
+                            .font(.customFont(Font.subtitle2))
+                            .foregroundColor(.mainBlack)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(8)
+                        Spacer()
+                    }.padding(.bottom, 33)
                     
-                    Spacer()
+                    HStack {
+                        Spacer()
+                        Image(systemName: "chevron.down") // 회색 화살표 추가
+                            .foregroundColor(.coreLightGray)
+                            .font(.system(size: 24))
+                            .padding(.bottom, 72)
+                        Spacer()
+                    }
                     
                     HStack {
                         CustomTextField(
                             text: $name,
+//                            textColor: .coreGreen,
                             placeholder: "닉네임",
+//                            placeholderColor: ,
                             font: .customFont(Font.button1)
                         )
-                        .frame(width: geometry.size.width * 0.6, height: 48)
+                        .frame(width: 210, height: 48)
                         .cornerRadius(24)
+                        
+                        Spacer().frame(width: 10)
                         
                         CustomButton(
                             title: "중복확인",
                             font: .customFont(Font.button1),
-                            textColor: .white,
+                            textColor: .coreWhite,
                             action: {
                                 checkUsername()
                             }
                         )
+                        .frame(width: 100, height: 48)
                         .background(name.isEmpty ? Color.disabled : Color.mainGreen)
-                        .frame(width: geometry.size.width * 0.25, height: 48)
                         .cornerRadius(24)
                         .disabled(name.isEmpty)
                         .onTapGesture {
                             checkUsername()
                         }
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 36)
+                    
+                    Spacer().frame(height: 16)
                     
                     HStack {
                         CustomYearButton(
@@ -94,15 +115,22 @@ struct InputUserInfoView: View {
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showYearPicker = true
                         }
                         .sheet(isPresented: $showYearPicker) {
-                            YearPicker(selectedYear: $selectedYear, isPresented: $showYearPicker, years: Array(1900...currentYear)) {
-                                self.selectedMonth = 1
-                                self.selectedDay = 1
+                            YearPicker(
+                                selectedYear: Binding(
+                                    get: { selectedYear ?? 2024 },
+                                    set: { newValue in selectedYear = newValue }
+                                ),
+                                isPresented: $showYearPicker,
+                                years: Array(1900...currentYear)
+                            ) {
+                                self.selectedMonth = nil
+                                self.selectedDay = nil
                             }
                         }
                         
@@ -112,34 +140,51 @@ struct InputUserInfoView: View {
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showMonthPicker = true
                         }
                         .sheet(isPresented: $showMonthPicker) {
-                            let months = selectedYear == currentYear ? Array(1...currentMonth) : Array(1...12)
-                            MonthPicker(selectedMonth: $selectedMonth, isPresented: $showMonthPicker, months: months) {
-                                self.selectedDay = 1
+                            let months = (selectedYear == currentYear) ? Array(1...currentMonth) : Array(1...12)
+                            MonthPicker(
+                                selectedMonth: Binding(
+                                    get: { selectedMonth ?? 1 },
+                                    set: { newValue in selectedMonth = newValue }
+                                ),
+                                isPresented: $showMonthPicker,
+                                months: months
+                            ) {
+                                self.selectedDay = nil
                             }
                         }
-                        
+
                         CustomDayButton(
                             selectedDay: $selectedDay,
                             isPresented: $showDayPicker,
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showDayPicker = true
                         }
                         .sheet(isPresented: $showDayPicker) {
-                            DayPicker(selectedDay: $selectedDay, isPresented: $showDayPicker, days: days)
+                            DayPicker(
+                                selectedDay: Binding(
+                                    get: { selectedDay ?? 1 },
+                                    set: { newValue in selectedDay = newValue }
+                                ),
+                                isPresented: $showDayPicker,
+                                days: days
+                            )
                         }
+
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 36)
+                    
+                    Spacer().frame(height: 40)
                     
                     HStack {
                         NavigationLink(destination: DBTIGuideView()) {
@@ -153,11 +198,11 @@ struct InputUserInfoView: View {
                                 }
                             }
                         }
-                        .frame(width: min(geometry.size.width * 0.9, 450), height: 48)
-                        .background(isNameConfirmed ? Color.mainGreen : Color.disabled) // 닉네임 중복 확인이 완료되었을 때만 활성화
+                        .frame(width: 320, height: 48)
+                        .background(isFormComplete ? Color.mainGreen : Color.disabled)
                         .cornerRadius(24)
-                        .disabled(!isNameConfirmed) // 닉네임 중복 확인이 완료되었을 때만 활성화
-                    }
+                        .disabled(!isFormComplete)
+                    }.padding(.horizontal, 36)
                     
                     Spacer()
                 }
@@ -185,6 +230,7 @@ struct InputUserInfoView: View {
                 self.hideKeyboard()
             }
         }
+            .edgesIgnoringSafeArea(.all)
     }
 
     func checkUsername() {
