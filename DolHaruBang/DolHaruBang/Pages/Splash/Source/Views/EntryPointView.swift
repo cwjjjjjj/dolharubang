@@ -24,6 +24,7 @@ struct EntryPointView: View {
                 NavigationView{
                     LoginView()
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
             } else {
                 SplashView().onAppear{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1){

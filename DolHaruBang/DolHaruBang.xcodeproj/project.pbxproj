@@ -18,6 +18,7 @@
 		DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */; };
 		DA6E577D2C59476D0088A7A7 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577C2C59476D0088A7A7 /* View.swift */; };
 		DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */; };
+		DA6E57822C5B25170088A7A7 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57812C5B25170088A7A7 /* Text.swift */; };
 		DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */; };
 		DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC102C56941800D1F87B /* EntryPointView.swift */; };
 		DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC122C56941A00D1F87B /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDayButton.swift; sourceTree = "<group>"; };
 		DA6E577C2C59476D0088A7A7 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIGuideView.swift; sourceTree = "<group>"; };
+		DA6E57812C5B25170088A7A7 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolHaruBang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */,
 				DAAEFC322C5747F000D1F87B /* NanumSquareRoundOTFR.otf */,
 				DAAEFC2D2C5743BA00D1F87B /* Font.swift */,
+				DA6E57812C5B25170088A7A7 /* Text.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
 				DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */,
 				DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */,
+				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
@@ -498,7 +502,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = X83LNW6267;
+				DEVELOPMENT_TEAM = 438C43K8SQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
@@ -528,7 +532,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = X83LNW6267;
+				DEVELOPMENT_TEAM = 438C43K8SQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;

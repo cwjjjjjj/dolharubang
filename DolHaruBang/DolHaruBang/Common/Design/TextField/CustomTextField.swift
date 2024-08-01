@@ -42,6 +42,7 @@ struct CustomTextField: UIViewRepresentable {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
+        // placeholder 색상, 폰트, 정렬 변경
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [

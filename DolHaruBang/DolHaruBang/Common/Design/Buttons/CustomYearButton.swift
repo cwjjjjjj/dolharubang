@@ -21,7 +21,7 @@ struct CustomYearButton: UIViewRepresentable {
         }
     }
 
-    @Binding var selectedYear: Int
+    @Binding var selectedYear: Int?
     @Binding var isPresented: Bool
     var font: Font
     var textColor: UIColor?
@@ -33,7 +33,7 @@ struct CustomYearButton: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle("\(selectedYear)", for: .normal)
+        button.setTitle(selectedYear != nil ? "\(selectedYear!)" : "년", for: .normal)
         button.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: defaultTextSize)
         button.setTitleColor(textColor ?? UIColor(Color.mainBlack), for: .normal)
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonTapped), for: .touchUpInside)
@@ -43,7 +43,7 @@ struct CustomYearButton: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIButton, context: Context) {
-        uiView.setTitle("\(selectedYear)", for: .normal)
+        uiView.setTitle(selectedYear != nil ? "\(selectedYear!)" : "년", for: .normal)
         uiView.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: defaultTextSize)
         uiView.setTitleColor(textColor ?? UIColor(Color.mainBlack), for: .normal)
     }
