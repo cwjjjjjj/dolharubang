@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.6"
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 group = "com.dolharubang"
@@ -36,6 +37,13 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "dolharubang-backend")
+        property("sonar.projectName", "dolharubang-backend")
+    }
 }
 
 tasks.withType<Test> {
