@@ -11,11 +11,13 @@ import AVFoundation
 @main
 struct DolHaruBangApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var userManager = UserManager()
 //    let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
             EntryPointView()
+                .environmentObject(userManager)
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
