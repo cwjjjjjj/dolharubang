@@ -1,0 +1,37 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: dolharubang
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    mongodb:
+      uri: dolharubang.store:27017
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: b99fac2a289d50fb435937a2558553f3
+            client-secret: 5eSj5qWDxcfr6GcqrTP6MlicnMvKv7UU
+            redirect-uri: "http://localhost:8080/login/oauth2/code/{registrationId}"
+#            redirect-uri: "https://dolharubang.store/oauth2/code/{registrationId}"
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: account_email, profile_nickname, profile_image
+            client-name: Kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
