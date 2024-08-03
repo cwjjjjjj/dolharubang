@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct InputUserInfoView: View {
+    @EnvironmentObject var userManager: UserManager // 닉네임 전역변수로 기억
+    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
+    
     @State var name: String = ""
     @State private var showAlert: Bool = false
     @State private var alertTitle: String = ""
@@ -57,18 +60,17 @@ struct InputUserInfoView: View {
                     
                     HStack {
                         Spacer()
-                        Text("돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.")
-                            .font(.customFont(Font.subtitle2))
-                            .foregroundColor(.mainBlack)
+                        
+                        CustomText(text: "돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.", font: Font.uiFont(for: Font.subtitle2)!, textColor: .coreBlack)
+                            .frame(width: 187, height: 87)
                             .fixedSize(horizontal: false, vertical: true)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(8)
+                        
                         Spacer()
                     }.padding(.bottom, 33)
                     
                     HStack {
                         Spacer()
-                        Image(systemName: "chevron.down") // 회색 화살표 추가
+                        Image(systemName: "chevron.down")
                             .foregroundColor(.coreLightGray)
                             .font(.system(size: 24))
                             .padding(.bottom, 72)
@@ -81,7 +83,10 @@ struct InputUserInfoView: View {
 //                            textColor: .coreGreen,
                             placeholder: "닉네임",
 //                            placeholderColor: ,
-                            font: .customFont(Font.button1)
+                            font: .customFont(Font.button1), maxLength: 12, 
+                            alertTitle: "글자 수 오류",
+                            alertMessage: "닉네임은 1~6자로 입력해주세요.",
+                            onSubmit: {checkUsername()}
                         )
                         .frame(width: 210, height: 48)
                         .cornerRadius(24)
@@ -104,7 +109,6 @@ struct InputUserInfoView: View {
                             checkUsername()
                         }
                     }
-                    .padding(.horizontal, 36)
                     
                     Spacer().frame(height: 16)
                     
@@ -182,7 +186,6 @@ struct InputUserInfoView: View {
                         }
 
                     }
-                    .padding(.horizontal, 36)
                     
                     Spacer().frame(height: 40)
                     
@@ -202,7 +205,13 @@ struct InputUserInfoView: View {
                         .background(isFormComplete ? Color.mainGreen : Color.disabled)
                         .cornerRadius(24)
                         .disabled(!isFormComplete)
-                    }.padding(.horizontal, 36)
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if isFormComplete {
+                                userManager.nickname = name
+//                                print(userManager.nickname ?? "닉네임 세팅 안 됨")
+                            }
+                        })
+                    }
                     
                     Spacer()
                 }
@@ -214,6 +223,7 @@ struct InputUserInfoView: View {
                         message: Text(alertMessage),
                         primaryButton: .default(Text("Confirm"), action: {
                             isNameConfirmed = true // 닉네임 중복 확인 완료
+                            self.hideKeyboard()
                         }),
                         secondaryButton: .cancel()
                     )
@@ -225,18 +235,39 @@ struct InputUserInfoView: View {
                     )
                 }
             }
-            .contentShape(Rectangle()) // Make the entire view tappable
+            .contentShape(Rectangle())
             .onTapGesture {
                 self.hideKeyboard()
             }
         }
-            .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("로그아웃")
+                            .font(.customFont(Font.body3Regular))
+                            .foregroundColor(.mainBlue)
+                    }
+                }
+                .offset(x: 8, y: 8)
+            }
+        }
     }
 
     func checkUsername() {
         let existingUsernames = ["상준", "희태", "우진", "성재", "영규", "해인"]
         
-        if existingUsernames.contains(name) {
+        if (name == "") {
+            alertTitle = "글자 수 오류"
+            alertMessage = "닉네임은 1~12자로 입력해주세요."
+            showConfirmation = false
+            isNameConfirmed = false
+        }
+        else if existingUsernames.contains(name) {
             alertTitle = "닉네임 중복"
             alertMessage = "이 닉네임은 이미 사용 중입니다. 다른 닉네임을 선택해주세요."
             showConfirmation = false
@@ -248,11 +279,5 @@ struct InputUserInfoView: View {
         }
         
         showAlert = true
-    }
-}
-
-struct InputUserInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        InputUserInfoView()
     }
 }

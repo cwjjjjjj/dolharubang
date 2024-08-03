@@ -19,6 +19,11 @@
 		DA6E577D2C59476D0088A7A7 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577C2C59476D0088A7A7 /* View.swift */; };
 		DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */; };
 		DA6E57822C5B25170088A7A7 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57812C5B25170088A7A7 /* Text.swift */; };
+		DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */; };
+		DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */; };
+		DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */; };
+		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
+		DA6E578F2C5E70990088A7A7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578E2C5E70990088A7A7 /* HomeView.swift */; };
 		DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */; };
 		DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC102C56941800D1F87B /* EntryPointView.swift */; };
 		DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC122C56941A00D1F87B /* Assets.xcassets */; };
@@ -45,6 +50,11 @@
 		DA6E577C2C59476D0088A7A7 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIGuideView.swift; sourceTree = "<group>"; };
 		DA6E57812C5B25170088A7A7 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestion1View.swift; sourceTree = "<group>"; };
+		DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIResultView.swift; sourceTree = "<group>"; };
+		DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardGuardian.swift; path = DolHaruBang/Pages/DBTI/Source/Views/KeyboardGuardian.swift; sourceTree = SOURCE_ROOT; };
+		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		DA6E578E2C5E70990088A7A7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolHaruBang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
@@ -96,6 +106,7 @@
 		6550AA3A2C59E6F8000A264E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				DA6E57892C5E4A930088A7A7 /* UserInfo */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -112,6 +123,7 @@
 		6550AA3C2C59E726000A264E /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -147,6 +159,7 @@
 		6550AA402C59E75A000A264E /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DA6E578C2C5E707C0088A7A7 /* Source */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -171,6 +184,8 @@
 			isa = PBXGroup;
 			children = (
 				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
+				DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */,
+				DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,6 +249,30 @@
 				DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		DA6E57892C5E4A930088A7A7 /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		DA6E578C2C5E707C0088A7A7 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				DA6E578D2C5E70830088A7A7 /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		DA6E578D2C5E70830088A7A7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DA6E578E2C5E70990088A7A7 /* HomeView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		DAAEFC022C56941800D1F87B = {
@@ -353,19 +392,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAAEFC182C56941A00D1F87B /* Persistence.swift in Sources */,
+				DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */,
 				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				DA6E577D2C59476D0088A7A7 /* View.swift in Sources */,
+				DA6E578F2C5E70990088A7A7 /* HomeView.swift in Sources */,
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
 				DA6E57732C58F6AA0088A7A7 /* CustomTextField.swift in Sources */,
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
+				DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */,
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
 				DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */,
+				DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */,
 				DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */,
 				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
+				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
 				DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */,
 				DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */,
