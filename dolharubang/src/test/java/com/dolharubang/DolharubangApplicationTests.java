@@ -1,4 +1,4 @@
-package com.dolharubang.dolharubang;
+package com.dolharubang;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

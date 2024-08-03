@@ -1,6 +1,6 @@
-package com.dolharubang.dolharubang.domain.dto.response;
+package com.dolharubang.domain.dto.response;
 
-import com.dolharubang.dolharubang.domain.entity.Schedules;
+import com.dolharubang.domain.entity.Schedules;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;

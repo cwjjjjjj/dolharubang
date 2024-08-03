@@ -1,11 +1,11 @@
-package com.dolharubang.dolharubang.service;
+package com.dolharubang.service;
 
-import com.dolharubang.dolharubang.domain.dto.request.SchedulesReqDto;
-import com.dolharubang.dolharubang.domain.dto.response.SchedulesResDto;
-import com.dolharubang.dolharubang.domain.entity.Schedules;
-import com.dolharubang.dolharubang.exception.CustomException;
-import com.dolharubang.dolharubang.exception.ErrorCode;
-import com.dolharubang.dolharubang.repository.SchedulesRepository;
+import com.dolharubang.domain.dto.request.SchedulesReqDto;
+import com.dolharubang.domain.dto.response.SchedulesResDto;
+import com.dolharubang.domain.entity.Schedules;
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.SchedulesRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;

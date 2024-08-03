@@ -1,4 +1,4 @@
-package com.dolharubang.dolharubang.exception;
+package com.dolharubang.exception;
 
 import lombok.Getter;
 

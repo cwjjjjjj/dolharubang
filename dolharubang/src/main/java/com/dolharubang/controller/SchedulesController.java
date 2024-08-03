@@ -1,8 +1,8 @@
-package com.dolharubang.dolharubang.controller;
+package com.dolharubang.controller;
 
-import com.dolharubang.dolharubang.domain.dto.request.SchedulesReqDto;
-import com.dolharubang.dolharubang.domain.dto.response.SchedulesResDto;
-import com.dolharubang.dolharubang.service.SchedulesService;
+import com.dolharubang.domain.dto.request.SchedulesReqDto;
+import com.dolharubang.domain.dto.response.SchedulesResDto;
+import com.dolharubang.service.SchedulesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

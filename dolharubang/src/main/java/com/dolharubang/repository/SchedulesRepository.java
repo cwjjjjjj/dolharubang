@@ -1,6 +1,6 @@
-package com.dolharubang.dolharubang.repository;
+package com.dolharubang.repository;
 
-import com.dolharubang.dolharubang.domain.entity.Schedules;
+import com.dolharubang.domain.entity.Schedules;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
