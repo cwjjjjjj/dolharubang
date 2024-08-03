@@ -1,4 +1,4 @@
-package com.dolharubang.dolharubang.domain.entity;
+package com.dolharubang.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
