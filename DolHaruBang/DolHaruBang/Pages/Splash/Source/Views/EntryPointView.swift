@@ -22,6 +22,7 @@ struct EntryPointView: View {
         ZStack{
             if showMainView {
                 NavigationView{
+//                    DBTIGuideView()
                     LoginView()
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
