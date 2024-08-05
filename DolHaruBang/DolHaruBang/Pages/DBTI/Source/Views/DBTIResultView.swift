@@ -6,6 +6,7 @@ struct DBTIResultView: View {
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @State private var isEditingName = false
+
     @State private var isEditingRoomName = false
     @State private var stoneName = "소심이"
     @State private var originalStoneName = "소심이"
@@ -103,7 +104,7 @@ struct DBTIResultView: View {
                                     .padding(.horizontal, 10)
                                     .offset(y: 6)
                                 CustomText(text: "성격",
-                                           font: Font.uiFont(for: Font.body1Bold)!,
+                                           font: Font.uiFont(for: Font.subtitle1)!,
                                            textColor: .coreBlack,
                                            letterSpacingPercentage: -2.5,
                                            lineSpacingPercentage: 160,
