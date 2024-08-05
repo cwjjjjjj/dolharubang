@@ -1,4 +1,5 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct DBTIResultView: View {
     @EnvironmentObject var userManager: UserManager // 유저 닉네임 불러오기 위함
@@ -177,7 +178,10 @@ struct DBTIResultView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    NavigationLink(destination: HomeView(), tag: 1, selection: $tag) {
+                    NavigationLink(destination: HomeView(store: Store(initialState: HomeFeature.State()) {
+                        HomeFeature()
+                            ._printChanges()
+                      }), tag: 1, selection: $tag) {
                         EmptyView()
                     }
                     
