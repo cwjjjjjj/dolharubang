@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		652ECFA92C5F097B00399279 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFA82C5F097B00399279 /* hideKeyboard.swift */; };
+		652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
+		6550AA502C5A809B000A264E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA4F2C5A809B000A264E /* HomeView.swift */; };
+		655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42102C5EB368008ADB5A /* HomeEnviroment.swift */; };
+		655E42142C5EB64A008ADB5A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 655E42132C5EB64A008ADB5A /* ComposableArchitecture */; };
+		655E42162C5ECB50008ADB5A /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42152C5ECB50008ADB5A /* example.swift */; };
+		65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */; };
 		DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */; };
 		DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */; };
 		DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */; };
@@ -32,7 +39,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		652ECFA82C5F097B00399279 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
+		652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = respnseKeyboard.swift; sourceTree = "<group>"; };
 		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		6550AA4F2C5A809B000A264E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		655E42102C5EB368008ADB5A /* HomeEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEnviroment.swift; sourceTree = "<group>"; };
+		655E42152C5ECB50008ADB5A /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
+		65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.ttf; sourceTree = "<group>"; };
 		DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpringHasCome.mp3; sourceTree = "<group>"; };
 		DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUserInfoView.swift; sourceTree = "<group>"; };
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655E42142C5EB64A008ADB5A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,10 +97,10 @@
 		6550AA392C59E5BF000A264E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				6550AA412C59E779000A264E /* DBTI */,
-				6550AA402C59E75A000A264E /* Main */,
-				6550AA3F2C59E755000A264E /* Login */,
 				6550AA3E2C59E740000A264E /* Splash */,
+				6550AA3F2C59E755000A264E /* Login */,
+				6550AA412C59E779000A264E /* DBTI */,
+				6550AA402C59E75A000A264E /* Home */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -110,6 +124,8 @@
 		6550AA3C2C59E726000A264E /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				652ECFA82C5F097B00399279 /* hideKeyboard.swift */,
+				652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -142,11 +158,13 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		6550AA402C59E75A000A264E /* Main */ = {
+		6550AA402C59E75A000A264E /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				6550AA4B2C5A70CA000A264E /* Source */,
+				6550AA4E2C5A70DB000A264E /* Modules */,
 			);
-			path = Main;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		6550AA412C59E779000A264E /* DBTI */ = {
@@ -193,6 +211,7 @@
 		6550AA462C59E8CC000A264E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				6550AA4A2C5A7088000A264E /* Core */,
 				6550AA472C59E8D3000A264E /* Views */,
 			);
 			path = Source;
@@ -205,6 +224,47 @@
 				6550AA482C59EA35000A264E /* SplashView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6550AA4A2C5A7088000A264E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		6550AA4B2C5A70CA000A264E /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA4C2C5A70CF000A264E /* View */,
+				6550AA4D2C5A70D4000A264E /* Core */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		6550AA4C2C5A70CF000A264E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6550AA4F2C5A809B000A264E /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6550AA4D2C5A70D4000A264E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */,
+				655E42102C5EB368008ADB5A /* HomeEnviroment.swift */,
+				655E42152C5ECB50008ADB5A /* example.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		6550AA4E2C5A70DB000A264E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		DA6E576B2C58609B0088A7A7 /* BGM */ = {
@@ -254,8 +314,8 @@
 			isa = PBXGroup;
 			children = (
 				DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */,
-				6550AA392C59E5BF000A264E /* Pages */,
 				6550AA382C59E5A6000A264E /* Common */,
+				6550AA392C59E5BF000A264E /* Pages */,
 				DAAEFC172C56941A00D1F87B /* Persistence.swift */,
 				DAAEFC372C5755E600D1F87B /* Info.plist */,
 				DAAEFC192C56941A00D1F87B /* DolHaruBang.xcdatamodeld */,
@@ -291,6 +351,9 @@
 			dependencies = (
 			);
 			name = DolHaruBang;
+			packageProductDependencies = (
+				655E42132C5EB64A008ADB5A /* ComposableArchitecture */,
+			);
 			productName = DolHaruBang;
 			productReference = DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */;
 			productType = "com.apple.product-type.application";
@@ -319,6 +382,9 @@
 				Base,
 			);
 			mainGroup = DAAEFC022C56941800D1F87B;
+			packageReferences = (
+				655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = DAAEFC0C2C56941800D1F87B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -350,20 +416,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAAEFC182C56941A00D1F87B /* Persistence.swift in Sources */,
+				652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */,
 				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				DA6E577D2C59476D0088A7A7 /* View.swift in Sources */,
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
+				6550AA502C5A809B000A264E /* HomeView.swift in Sources */,
+				65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */,
+				655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
 				DA6E57732C58F6AA0088A7A7 /* CustomTextField.swift in Sources */,
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
+				655E42162C5ECB50008ADB5A /* example.swift in Sources */,
 				DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */,
 				DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
 				DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */,
+				652ECFA92C5F097B00399279 /* hideKeyboard.swift in Sources */,
 				DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,6 +644,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.12.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		655E42132C5EB64A008ADB5A /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		DAAEFC192C56941A00D1F87B /* DolHaruBang.xcdatamodeld */ = {
