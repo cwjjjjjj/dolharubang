@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import ComposableArchitecture
 
 // 메인 ContentView 구조체 정의
 struct EntryPointView: View {
@@ -18,12 +19,19 @@ struct EntryPointView: View {
     
     @State private var showMainView = false // 메인 뷰를 표시할지를 결정하는 상태 변수
     
+    static let store =  Store(initialState: HomeFeature.State()) {
+        HomeFeature()
+            ._printChanges()
+      }
+    
     var body: some View {
         ZStack{
             if showMainView {
                 NavigationView{
-                    LoginView()
+                    // LoginView()
+                    HomeView(store:EntryPointView.store)
                 }
+                             
             } else {
                 SplashView().onAppear{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1){
