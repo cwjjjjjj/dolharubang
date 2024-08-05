@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		652175022C60F72900128734 /* examplee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652175012C60F72900128734 /* examplee.swift */; };
+		652175052C60F77900128734 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 652175042C60F77900128734 /* ComposableArchitecture */; };
 		652ECFA92C5F097B00399279 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFA82C5F097B00399279 /* hideKeyboard.swift */; };
 		652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */; };
+		653F10842C610E0700C053CF /* cupid.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 653F10812C60FAC300C053CF /* cupid.usdz */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
 		6550AA502C5A809B000A264E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA4F2C5A809B000A264E /* HomeView.swift */; };
 		655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42102C5EB368008ADB5A /* HomeEnviroment.swift */; };
-		655E42142C5EB64A008ADB5A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 655E42132C5EB64A008ADB5A /* ComposableArchitecture */; };
 		655E42162C5ECB50008ADB5A /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42152C5ECB50008ADB5A /* example.swift */; };
 		65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */; };
 		DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */; };
@@ -44,8 +46,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		652175012C60F72900128734 /* examplee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = examplee.swift; sourceTree = "<group>"; };
 		652ECFA82C5F097B00399279 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = respnseKeyboard.swift; sourceTree = "<group>"; };
+		653F10812C60FAC300C053CF /* cupid.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = cupid.usdz; sourceTree = "<group>"; };
 		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6550AA4F2C5A809B000A264E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		655E42102C5EB368008ADB5A /* HomeEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEnviroment.swift; sourceTree = "<group>"; };
@@ -86,13 +90,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				655E42142C5EB64A008ADB5A /* ComposableArchitecture in Frameworks */,
+				652175052C60F77900128734 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6521757C2C60FA7100128734 /* art.scnassets */ = {
+			isa = PBXGroup;
+			children = (
+				653F10812C60FAC300C053CF /* cupid.usdz */,
+			);
+			path = art.scnassets;
+			sourceTree = "<group>";
+		};
 		6550AA382C59E5A6000A264E /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +157,7 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6521757C2C60FA7100128734 /* art.scnassets */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
 				DA6E577C2C59476D0088A7A7 /* View.swift */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
@@ -260,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				6550AA4F2C5A809B000A264E /* HomeView.swift */,
+				652175012C60F72900128734 /* examplee.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -375,7 +389,7 @@
 			);
 			name = DolHaruBang;
 			packageProductDependencies = (
-				655E42132C5EB64A008ADB5A /* ComposableArchitecture */,
+				652175042C60F77900128734 /* ComposableArchitecture */,
 			);
 			productName = DolHaruBang;
 			productReference = DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */;
@@ -406,7 +420,7 @@
 			);
 			mainGroup = DAAEFC022C56941800D1F87B;
 			packageReferences = (
-				655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = DAAEFC0C2C56941800D1F87B /* Products */;
 			projectDirPath = "";
@@ -422,6 +436,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				653F10842C610E0700C053CF /* cupid.usdz in Resources */,
 				DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
@@ -460,6 +475,7 @@
 				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
+				652175022C60F72900128734 /* examplee.swift in Sources */,
 				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
 				DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */,
@@ -607,6 +623,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -637,6 +654,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -674,7 +692,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
@@ -685,9 +703,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		655E42132C5EB64A008ADB5A /* ComposableArchitecture */ = {
+		652175042C60F77900128734 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 655E42122C5EB64A008ADB5A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = 652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
