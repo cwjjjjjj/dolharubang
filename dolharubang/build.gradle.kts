@@ -40,6 +40,9 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
+
+    //S3 저장 관련 의존성
+    compileOnly("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 }
 
 sonarqube {
