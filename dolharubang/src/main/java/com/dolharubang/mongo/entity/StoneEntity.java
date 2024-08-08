@@ -1,7 +1,6 @@
 package com.dolharubang.mongo.entity;
 
 import jakarta.persistence.Id;
-import java.util.Dictionary;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class StoneEntity {
 
     @Id
-    private ObjectId stone_id;
+    private ObjectId stoneId;
 
     private String memberEmail;
 
@@ -33,9 +32,9 @@ public class StoneEntity {
 
     private long closeness;
 
-    private Map<String, Boolean> ability_able;
+    private Map<String, Boolean> abilityAble;
 
-    private String sign_text;
+    private String signText;
 
     private CustomDataEntity custom;
 
@@ -48,7 +47,7 @@ public class StoneEntity {
         private Map<String, Map<String, CustomItem>> background;
 
         //배경 소품
-        private Map<String, Map<String, CustomItem>> back_prop;
+        private Map<String, Map<String, CustomItem>> backProp;
 
         //돌받침
         private Map<String, Map<String, CustomItem>> support;
