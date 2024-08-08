@@ -42,7 +42,8 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus")
 
     //S3 저장 관련 의존성
-    compileOnly("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.524")
+//    compileOnly("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 }
 
 sonarqube {
