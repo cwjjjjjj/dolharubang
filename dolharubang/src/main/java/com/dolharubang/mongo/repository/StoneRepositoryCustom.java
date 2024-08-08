@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StoneRepositoryCustom {
     private final MongoTemplate mongoTemplate;
-
-//    public List<StoneEntity>
+    //TODO StoneRepositoryCustom 작성
 }

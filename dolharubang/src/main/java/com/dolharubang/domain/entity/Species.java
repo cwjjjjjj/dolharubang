@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class Species {
 
     private String speciesName;
 
-    private String character;
+    private String characteristic;
 
     private String appearanceUrl;
 
@@ -33,7 +32,7 @@ public class Species {
         String base_ability) {
         this.id = id;
         this.speciesName = speciesName;
-        this.character = character;
+        this.characteristic = character;
         this.appearanceUrl = appearanceUrl;
         this.base_ability = base_ability;
     }
