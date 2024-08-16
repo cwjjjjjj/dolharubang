@@ -45,6 +45,7 @@ struct HomeFeature {
                 return .none
             case .clickMessage:
                 state.sendMessage.toggle()
+                state.message = ""
                 return .none
             case .clickDecoration:
                 state.decoration.toggle()
