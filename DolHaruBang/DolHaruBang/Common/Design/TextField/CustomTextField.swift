@@ -1,7 +1,45 @@
 import SwiftUI
 import UIKit
 
+enum Align {
+    case leading
+    case trailing
+    case center
+    
+    var uiTextAlignment: NSTextAlignment {
+        switch self {
+        case .leading:
+            return .left
+        case .trailing:
+            return .right
+        case .center:
+            return .center
+        }
+    }
+}
+
 struct CustomTextField: UIViewRepresentable {
+    
+    
+    @Binding var text: String
+    var placeholder: String
+    var placeholderColor: UIColor?
+    var font: Font?
+    var textColor: UIColor?
+    var minLength: Int = 1  // 최소 글자 수 기본값 1
+    var maxLength: Int  // 최대 글자 수는 반드시 입력받음
+    var alertTitle: String?
+    var alertMessage: String?
+    var dismissButtonTitle: String?
+    var onSubmit: (() -> Void)?
+    var onEndEditing: (() -> Void)?
+    // 홈에서도 쓰려고 추가함
+    var useDidEndEditing : Bool = true
+    // 폰트 스타일를 위해
+    var customFontStyle : Font.FontStyle?
+    var alignment : Align = .center
+    var leftPadding : CGFloat = 0
+    
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: CustomTextField
 
@@ -22,32 +60,23 @@ struct CustomTextField: UIViewRepresentable {
             return true
         }
         
+        // 닉네임 확인 메서드
         func textFieldDidEndEditing(_ textField: UITextField) {
-            // 최소 글자 수 확인
-            if parent.text.count < parent.minLength {
-                parent.showAlert(
-                    title: parent.alertTitle ?? "경고",
-                    message: parent.alertMessage ?? "올바르지 않은 입력입니다.",
-                    dismissButtonTitle: parent.dismissButtonTitle ?? "확인"
-                )
-            } else {
-                parent.onEndEditing?()  // 텍스트 편집 종료 시 동작
+            if parent.useDidEndEditing {
+                // 최소 글자 수 확인
+                if parent.text.count < parent.minLength {
+                    parent.showAlert(
+                        title: parent.alertTitle ?? "경고",
+                        message: parent.alertMessage ?? "올바르지 않은 입력입니다.",
+                        dismissButtonTitle: parent.dismissButtonTitle ?? "확인"
+                    )
+                } else {
+                    parent.onEndEditing?()  // 텍스트 편집 종료 시 동작
+                }
             }
         }
     }
-
-    @Binding var text: String
-    var placeholder: String
-    var placeholderColor: UIColor?
-    var font: Font
-    var textColor: UIColor?
-    var minLength: Int = 1  // 최소 글자 수 기본값 1
-    var maxLength: Int  // 최대 글자 수는 반드시 입력받음
-    var alertTitle: String?
-    var alertMessage: String?
-    var dismissButtonTitle: String?
-    var onSubmit: (() -> Void)?
-    var onEndEditing: (() -> Void)?
+    
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -56,16 +85,23 @@ struct CustomTextField: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField()
         textField.delegate = context.coordinator
-
-        let customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
+        
+        let customFont : UIFont
+        if let style = customFontStyle {
+            customFont = Font.uiFont(for: style) ?? UIFont.systemFont(ofSize: style.size)
+        }else{
+            customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
+        }
+       
         textField.font = customFont
         textField.textColor = textColor ?? UIColor(Color.mainBlack)
         textField.borderStyle = .roundedRect
         textField.backgroundColor = UIColor(Color.mainGray)
-        textField.textAlignment = .center
+        textField.textAlignment = alignment.uiTextAlignment
+        textField.addPadding(left: leftPadding)
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+        paragraphStyle.alignment = alignment.uiTextAlignment
 
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
@@ -82,13 +118,18 @@ struct CustomTextField: UIViewRepresentable {
     func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
 
-        let customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
+        let customFont : UIFont
+        if let style = customFontStyle {
+            customFont = Font.uiFont(for: style) ?? UIFont.systemFont(ofSize: style.size)
+        }else{
+            customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
+        }
         uiView.font = customFont
         uiView.textColor = textColor ?? UIColor(Color.mainBlack)
-        uiView.textAlignment = .center
+        uiView.textAlignment = alignment.uiTextAlignment
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+        paragraphStyle.alignment = alignment.uiTextAlignment
 
         uiView.attributedPlaceholder = NSAttributedString(
             string: placeholder,

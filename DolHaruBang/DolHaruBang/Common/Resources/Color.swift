@@ -21,4 +21,10 @@ extension Color {
     static let disabled = Color("coreDisabled")
     
     static let pointColor = Color("PointColor")
+    static let placeHolder = Color(hex:"C8BEB2")
+    
+    static let ability1 = Color(hex:"FFFA80")
+    static let ability2 = Color(hex:"FF9900")
+    
+    static let mainTop = Color(hex :"D2FAFF")
 }
