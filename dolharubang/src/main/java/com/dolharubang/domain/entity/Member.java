@@ -4,16 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Members {
+@Entity
+@Builder
+@Table(name = "members")
+@Data
+@Getter
+public class Member {
 
     @Id
     private String memberEmail;
@@ -41,7 +46,7 @@ public class Members {
     private String spaceName;
 
     @Builder
-    public Members(String memberEmail, String nickname, String birthday, String refreshToken,
+    public Member(String memberEmail, String nickname, String birthday, String refreshToken,
         String provider, Long sands, LocalDateTime createdAt, LocalDateTime lastLoginAt,
         LocalDateTime modifiedAt, Long totalLoginDays, String profilePicture, String spaceName) {
         this.memberEmail = memberEmail;

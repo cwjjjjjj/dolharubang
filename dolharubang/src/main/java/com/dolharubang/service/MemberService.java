@@ -1,23 +1,27 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.MembersReqDto;
-import com.dolharubang.domain.dto.response.MembersResDto;
-import com.dolharubang.domain.entity.Members;
+import com.dolharubang.domain.dto.request.MemberReqDto;
+import com.dolharubang.domain.dto.response.MemberResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.repository.MembersRepository;
-import jakarta.transaction.Transactional;
+import com.dolharubang.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
+@Service
 public class MemberService {
-    private final MembersRepository membersRepository;
+    private final MemberRepository memberRepository;
 
-    public MemberService(MembersRepository membersRepository) {
-        this.membersRepository = membersRepository;
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public MembersResDto createMember(MembersReqDto requestDto) {
-        Members member = Members.builder()
+    public MemberResDto createMember(MemberReqDto requestDto) {
+        Member member = Member.builder()
             .memberEmail(requestDto.getMemberEmail())
             .nickname(requestDto.getNickname())
             .birthday(requestDto.getBirthday())
@@ -26,14 +30,18 @@ public class MemberService {
             .spaceName(requestDto.getSpaceName())
             .build();
 
-        Members savedMember = membersRepository.save(member);
-        return MembersResDto.fromEntity(savedMember);
+        if(member.getMemberEmail() != null){
+            Member savedMember = memberRepository.save(member);
+            return MemberResDto.fromEntity(savedMember);
+        } else {
+            System.out.println("멤버 이메일이 없심.");
+            return MemberResDto.fromEntity(Member.builder().build());
+        }
     }
 
     @Transactional
-    public MembersResDto updateMember(String memberEmail, MembersReqDto requestDto) {
-        Members member = membersRepository.findByEmail(memberEmail);
-//            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    public MemberResDto updateMember(String memberEmail, MemberReqDto requestDto) {
+        Member member = memberRepository.findByEmail(memberEmail);
 
         if (member == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
@@ -46,6 +54,13 @@ public class MemberService {
             requestDto.getSpaceName()
         );
 
-        return MembersResDto.fromEntity(member);
+        return MemberResDto.fromEntity(member);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResDto getMember(String memberEmail){
+        Member member = memberRepository.findByEmail(memberEmail);
+
+        return MemberResDto.fromEntity(member);
     }
 }
