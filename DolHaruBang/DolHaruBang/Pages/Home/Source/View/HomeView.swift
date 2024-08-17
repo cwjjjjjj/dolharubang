@@ -111,10 +111,9 @@ struct HomeView : View {
                         
                         Spacer()
                         
-                            Image("doldol")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 200,height: 200)
+                        DolView(objName: "cupid", objExtension: "obj")
+                            .frame(height: geometry.size.height * 0.4)
+                            .padding()
                         
                        
                         
