@@ -28,11 +28,11 @@ public class Species {
     private String base_ability;
 
     @Builder
-    public Species(Long id, String speciesName, String character, String appearanceUrl,
+    public Species(Long id, String speciesName, String characteristic, String appearanceUrl,
         String base_ability) {
         this.id = id;
         this.speciesName = speciesName;
-        this.characteristic = character;
+        this.characteristic = characteristic;
         this.appearanceUrl = appearanceUrl;
         this.base_ability = base_ability;
     }
