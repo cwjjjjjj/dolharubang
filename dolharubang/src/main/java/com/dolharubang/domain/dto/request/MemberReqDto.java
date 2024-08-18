@@ -1,7 +1,6 @@
 package com.dolharubang.domain.dto.request;
 
-import com.dolharubang.domain.entity.Members;
-import lombok.Builder;
+import com.dolharubang.domain.entity.Member;
 import lombok.Getter;
 
 /*
@@ -13,7 +12,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class MembersReqDto {
+public class MemberReqDto {
     private String MemberEmail;
     private String nickname;
     private String birthday;
@@ -25,8 +24,8 @@ public class MembersReqDto {
     private String profilePicture;
     private String spaceName;
 
-    public static Members toEntity(MembersReqDto dto) {
-        return Members.builder()
+    public static Member toEntity(MemberReqDto dto) {
+        return Member.builder()
             .memberEmail(dto.getMemberEmail())
             .nickname(dto.getNickname())
             .birthday(dto.getBirthday())
