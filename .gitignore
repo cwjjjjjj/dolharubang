@@ -1,6 +1,10 @@
 ## User settings
 xcuserdata/
 
+## 3DModel
+*.scn
+
+
 ## Obj-C/Swift specific
 *.hmap
 

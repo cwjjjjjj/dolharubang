@@ -111,11 +111,16 @@ struct HomeView : View {
                         
                         Spacer()
                         
-                        DolView(objName: "cupid", objExtension: "obj")
-                            .frame(height: geometry.size.height * 0.4)
-                            .padding()
-                        
-                       
+                        DolView(selectedFace: $store.selectedFace)
+                        HStack {
+                                                   ForEach(Face.allCases, id: \.self) { face in
+                                                       Button(action: {
+                                                           store.send(.selectFace(face))
+                                                       }) {
+                                                           Text("\(face.rawValue.capitalized)")
+                                                       }
+                                                   }
+                                               }
                         
                         Spacer()
                         VStack{
@@ -198,7 +203,7 @@ struct HomeView : View {
                       
                         // 하단 버튼들
                         HStack{
-                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(ContentVieww()))
+                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
                             BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
                             BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
                             BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
