@@ -12,6 +12,7 @@ struct HomeFeature {
     
     @ObservableState
     struct State: Equatable {
+        var selectedFace : Face = .sparkle
         var message: String = ""
         var sendMessage : Bool = false
         var ability: Bool = false
@@ -24,6 +25,7 @@ struct HomeFeature {
         case clickAbility
         case clickMessage
         case clickDecoration
+        case selectFace(Face)
         case clickProfile
         case updateToDol(String)
         case binding( BindingAction < State >)
@@ -38,8 +40,14 @@ struct HomeFeature {
                // 여기서 사용자 이름 관찰
                print ( "toDolMessage" , state.message)
                return .none
+            case .binding(\.selectedFace) :
+                print("changed Face : ", state.selectedFace)
+                return .none
             case .binding( _ ):
                return .none
+            case let .selectFace(selectedFace) :
+                state.selectedFace = selectedFace
+                return .none
             case .clickAbility:
                 state.ability.toggle()
                 return .none
