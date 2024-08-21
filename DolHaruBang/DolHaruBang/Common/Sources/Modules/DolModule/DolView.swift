@@ -35,30 +35,38 @@ struct DolView : UIViewRepresentable {
             return
         }
         
+     
         // showChic이 false일 때 chic 노드만 보이게 설정
-        if let chicNode = scene.rootNode.childNode(withName: "\(selectedFace)", recursively: true) {
+        if let parentNode = scene.rootNode.childNode(withName: "\(selectedFaceShape) reference", recursively: true) {
+            moveNodeToPosition(node: parentNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
             showAllNodes(rootNode: scene.rootNode)
-            hideAllNodesExcept(node: chicNode, rootNode: scene.rootNode) // 선택 노드만 보이게 설정
-        } else {
-                print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
+            hideAllNodesExcept(node: parentNode, rootNode: scene.rootNode)
+            if let chicNode = parentNode.childNode(withName: "\(selectedFace)", recursively: true) {
+                showAllNodes(rootNode: parentNode)
+                hideAllNodesExcept(node: chicNode, rootNode: parentNode) // 선택 노드만 보이게 설정
+            } else {
+                    print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
+            }
         }
+        
+       
     }  
     
 }
 
 
 func loadScene(faceShape : FaceShape) -> SCNScene {
-    let scene = SCNScene(named: "Dols.scnassets/\(faceShape).scn") ?? SCNScene()
+    let scene = SCNScene(named: "Dols.scnassets/DolGroup.scn") ?? SCNScene()
     
 //        // 너무 커서 그랬다..
         for node in scene.rootNode.childNodes {
-              node.scale = SCNVector3(x: 4, y: 4, z: 4) // 스케일 값을 조정하여 모델의 크기를 조절
+              node.scale = SCNVector3(x: 2, y: 2, z: 2) // 스케일 값을 조정하여 모델의 크기를 조절
           }
     
     printNodeDetails(node: scene.rootNode)
     
     // shading 값 설정
-//    updateMaterialsToPhysicallyBased(for: scene)
+    updateMaterialsToPhysicallyBased(for: scene)
     
     let cameraNode = makeCamera()
     scene.rootNode.addChildNode(cameraNode)
@@ -165,4 +173,8 @@ func printNodeDetails(node: SCNNode, depth: Int = 0) {
     for childNode in node.childNodes {
         printNodeDetails(node: childNode, depth: depth + 1)
     }
+}
+
+func moveNodeToPosition(node: SCNNode, x: Float, y: Float, z: Float) {
+    node.position = SCNVector3(x, y, z)
 }
