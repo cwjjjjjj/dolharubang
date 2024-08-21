@@ -4,81 +4,71 @@
 //
 //  Created by 양희태 on 8/20/24.
 //
-
 import SwiftUI
 import ComposableArchitecture
 
-struct DecorationView : View {
-    enum Tab { // Tag에서 사용할 Tab 열겨형
-            case background, shape, face
-        }
-    @State private var selected: Tab = .background
+struct DecorationView: View {
+    enum Tab {
+        case background, shape, face
+    }
     
+    @State private var selected: Tab = .background
     let store: StoreOf<HomeFeature>
     
     var body: some View {
-        VStack(spacing: 0) {
-            
-            HStack(spacing: 8) {
-                
-                TabButton(
-                    title: "배경",
-                    isSelected: selected == .background,
-                    action: { selected = .background }
-                            )
-                
-                
-                
-                TabButton(
-                    title: "얼굴형",
-                    isSelected: selected == .shape,
-                    action: { selected = .shape }
-                            )
-                
-                TabButton(
-                    title: "얼굴",
-                    isSelected: selected == .face,
-                    action: { selected = .face }
-                          )
-           
-                Spacer()
-            }
-            .padding(10)
-            .padding(.horizontal, 10)
-            .frame(height: 58)
-            
-            
-            TabView(selection: $selected) {
-                                Group {
-                                    // 배경
-                                    NavigationStack {
-                                        CustomizeView<Background>(store: store)
-                                  
-                                    }
-                                    .tag(Tab.background)
-                                    
-                                    // 얼굴형
-                                    NavigationStack {
-                                        CustomizeView<FaceShape>(store: store)
-                                    }
-                                    .tag(Tab.shape)
-    //
-                                    // 표정
-                                    NavigationStack {
-                                        CustomizeView<Face>(store: store)
-                                    }
-                                    .tag(Tab.face)
-                                }
-                                .toolbar(.hidden, for: .tabBar)
+        GeometryReader { geometry in
+            VStack() {
+                HStack(spacing: 8) {
+                    TabButton(
+                        title: "배경",
+                        isSelected: selected == .background,
+                        action: { selected = .background }
+                    )
+                    
+                    TabButton(
+                        title: "얼굴형",
+                        isSelected: selected == .shape,
+                        action: { selected = .shape }
+                    )
+                    
+                    TabButton(
+                        title: "얼굴",
+                        isSelected: selected == .face,
+                        action: { selected = .face }
+                    )
+                    
+                    Spacer()
                 }
-                .frame(maxHeight: .infinity) // TabView의 높이를 화면 전체로 설정
+                .padding(10)
+                .padding(.top, 65)
+                .background(Color.white) // 버튼 영역의 배경색
+                
+                TabView(selection: $selected) {
+                    Group {
+                        NavigationStack {
+                            CustomizeView<Background>(store: store)
+                        }
+                        .tag(Tab.background)
+                        
+                        NavigationStack {
+                            CustomizeView<FaceShape>(store: store)
+                        }
+                        .tag(Tab.shape)
+                        
+                        NavigationStack {
+                            CustomizeView<Face>(store: store)
+                        }
+                        .tag(Tab.face)
+                    }
+                }
+                .background(Color.white) // TabView의 배경색
+                .frame(width: geometry.size.width, height: geometry.size.height) // TabView의 크기를 GeometryReader를 사용하여 조정
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)// 전체 레이아웃 크기 설정
+            .background(Color.white)
         }
-        .background(Color.red) // 반투명한 배경
-        .edgesIgnoringSafeArea(.all) // 안전 영역을 무시하여 전체 화면을 차지하도록 설정
     }
 }
-
-
 
 struct TabButton: View {
     let title: String
@@ -92,7 +82,7 @@ struct TabButton: View {
                     .font(Font.customFont(Font.body2Regular))
                     .foregroundColor(isSelected ? Color.white : Color.decoSheetTabbar)
             }
-            .padding(10) // 텍스트와 테두리 사이의 간격을 설정합니다.
+            .padding(10) // 텍스트와 테두리 사이의 간격
             .background(
                 RoundedRectangle(cornerRadius: 15) // 모서리 둥글기 설정
                     .fill(isSelected ? Color.decoSheetTabbarBack : Color.clear) // 배경색 설정

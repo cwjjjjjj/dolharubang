@@ -218,6 +218,7 @@ struct HomeView : View {
                     DecorationView(store: store)
                         .presentationDetents([.fraction(0.45)])
                         .presentationCompactAdaptation(.none)
+                        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 }
             }
     }
