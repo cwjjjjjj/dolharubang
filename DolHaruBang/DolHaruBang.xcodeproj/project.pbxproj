@@ -15,6 +15,7 @@
 		656592B12C76561800B06D97 /* CustomizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B02C76561800B06D97 /* CustomizeView.swift */; };
 		656592B32C7656F200B06D97 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B22C7656F200B06D97 /* Shape.swift */; };
 		656592B52C7657DF00B06D97 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B42C7657DF00B06D97 /* Background.swift */; };
+		656953522C76891D007B4DA1 /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 656953512C76891D007B4DA1 /* Background.xcassets */; };
 		657E5F8C2C744ECB002FFA69 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 657E5F8B2C744ECB002FFA69 /* Dols.scnassets */; };
 		657E5F922C745059002FFA69 /* DolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F912C745059002FFA69 /* DolView.swift */; };
 		657E5F942C745071002FFA69 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F932C745071002FFA69 /* Face.swift */; };
@@ -60,6 +61,7 @@
 		656592B02C76561800B06D97 /* CustomizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeView.swift; sourceTree = "<group>"; };
 		656592B22C7656F200B06D97 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		656592B42C7657DF00B06D97 /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		656953512C76891D007B4DA1 /* Background.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Background.xcassets; sourceTree = "<group>"; };
 		657E5F8B2C744ECB002FFA69 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
 		657E5F912C745059002FFA69 /* DolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolView.swift; sourceTree = "<group>"; };
 		657E5F932C745071002FFA69 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 		656592AA2C76550300B06D97 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				656953512C76891D007B4DA1 /* Background.xcassets */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
+				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				657E5F8C2C744ECB002FFA69 /* Dols.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,

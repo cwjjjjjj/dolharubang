@@ -18,7 +18,8 @@ struct HomeView : View {
                 ZStack {
                     // 배경이미지 설정
                     // 추후 통신을 통해 받아오면 됨
-                    Image("background")
+                    
+                    Image(Background(rawValue: store.selectedBackground.rawValue)!.fileName)
                         .resizable()
                         .scaledToFill()
                         .edgesIgnoringSafeArea(.all)
@@ -108,16 +109,13 @@ struct HomeView : View {
                         .padding(.top , geometry.size.height * 0.07)
                         
                         
-                        Spacer()
+                        Spacer().background(Color.red)
                         DolView(
                             selectedFace: $store.selectedFace,
                             selectedFaceShape: $store.selectedFaceShape
                         )
                         
-                        Text("\(store.selectedFaceShape)")
-                        
-                        
-                        Spacer()
+                        Spacer().background(Color.red)
                         VStack{
                             
                             if store.ability{
@@ -218,7 +216,7 @@ struct HomeView : View {
                 .sheet(isPresented: $store.decoration) {
                     // 이 뷰가 모달로 표시됩니다.
                     DecorationView(store: store)
-                        .presentationDetents([.medium])
+                        .presentationDetents([.fraction(0.45)])
                         .presentationCompactAdaptation(.none)
                 }
             }

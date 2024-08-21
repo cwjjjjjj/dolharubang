@@ -8,13 +8,23 @@ import ComposableArchitecture
 
 // 배경
 enum Background : String,Customizable {
+    
     func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
         store.send(.selectBackground(self))
     }
     
     case July = "7월의 푸른 잔디"
     case April = "4월의 분홍빛 노을"
-    case Jan = "1월의 하얀 눈빛"
+//    case Jan = "1월의 하얀 눈빛"
+    
+    var fileName: String {
+        switch self {
+        case .July:
+            return "background"
+        case .April:
+            return "bg_lawn_iphone"
+        }
+    }
     
     var description: String {
             return self.rawValue
