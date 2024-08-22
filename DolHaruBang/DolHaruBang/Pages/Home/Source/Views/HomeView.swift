@@ -12,14 +12,14 @@ import ComposableArchitecture
 
 struct HomeView : View {
     @State var store: StoreOf<HomeFeature>
-    @FocusState private var emailFieldIsFocused: Bool
     
     var body : some View {
             GeometryReader { geometry in
                 ZStack {
                     // 배경이미지 설정
                     // 추후 통신을 통해 받아오면 됨
-                    Image("background")
+                    
+                    Image(Background(rawValue: store.selectedBackground.rawValue)!.fileName)
                         .resizable()
                         .scaledToFill()
                         .edgesIgnoringSafeArea(.all)
@@ -64,7 +64,7 @@ struct HomeView : View {
                             // 공유, 꾸미기
                             HStack(spacing: 10){
                                 Button(action: {
-                                    store.send(.clickDecoration)
+                                    store.send(.openDecoration)
                                 }) {
                                     VStack {
                                         Image("Share")
@@ -78,7 +78,7 @@ struct HomeView : View {
                                 }
                                 
                                 Button(action: {
-                                    store.send(.clickDecoration)
+                                    store.send(.openDecoration)
                                 }) {
                                     VStack {
                                         Image("Brush")
@@ -109,20 +109,13 @@ struct HomeView : View {
                         .padding(.top , geometry.size.height * 0.07)
                         
                         
-                        Spacer()
+                        Spacer().background(Color.red)
+                        DolView(
+                            selectedFace: $store.selectedFace,
+                            selectedFaceShape: $store.selectedFaceShape
+                        )
                         
-                        DolView(selectedFace: $store.selectedFace)
-                        HStack {
-                                                   ForEach(Face.allCases, id: \.self) { face in
-                                                       Button(action: {
-                                                           store.send(.selectFace(face))
-                                                       }) {
-                                                           Text("\(face.rawValue.capitalized)")
-                                                       }
-                                                   }
-                                               }
-                        
-                        Spacer()
+                        Spacer().background(Color.red)
                         VStack{
                             
                             if store.ability{
@@ -215,19 +208,22 @@ struct HomeView : View {
                     }
                     
                 }
-//                .navigationBarHidden(true)
-//                .ignoresSafeArea(.all)
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
                 .frame(height: geometry.size.height)
                 .keyboardResponder(isKeyboardVisible: $store.isKeyboardVisible)
                 .onAppear (perform : UIApplication.shared.hideKeyboard)
-            
+                .sheet(isPresented: $store.decoration) {
+                    // 이 뷰가 모달로 표시됩니다.
+                    DecorationView(store: store)
+                        .presentationDetents([.fraction(0.45)])
+                        .presentationCompactAdaptation(.none)
+                        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                }
             }
-        
-        
-        
     }
+    
+    
 }
 
 
@@ -268,15 +264,6 @@ struct BottomButtonView: View {
 }
 
 
-
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView(store: Store(initialState: HomeFeature.State()) {
-//            HomeFeature()
-//                ._printChanges()
-//          })
-//    }
-//}
 
 struct CommonTextFieldStyle: TextFieldStyle {
     var placeholderColor: Color
