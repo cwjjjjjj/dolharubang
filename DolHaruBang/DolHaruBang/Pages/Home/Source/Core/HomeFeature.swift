@@ -13,6 +13,8 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         var selectedFace : Face = .sparkle
+        var selectedFaceShape : FaceShape = .meong
+        var selectedBackground : Background = .April
         var message: String = ""
         var sendMessage : Bool = false
         var ability: Bool = false
@@ -24,8 +26,11 @@ struct HomeFeature {
     enum Action: BindableAction {
         case clickAbility
         case clickMessage
-        case clickDecoration
+        case openDecoration
+        case closeDecoration
         case selectFace(Face)
+        case selectFaceShape(FaceShape)
+        case selectBackground(Background)
         case clickProfile
         case updateToDol(String)
         case binding( BindingAction < State >)
@@ -43,10 +48,19 @@ struct HomeFeature {
             case .binding(\.selectedFace) :
                 print("changed Face : ", state.selectedFace)
                 return .none
+            case .binding(\.decoration) :
+                print("click deco : ", state.decoration)
+                return .none
             case .binding( _ ):
                return .none
             case let .selectFace(selectedFace) :
                 state.selectedFace = selectedFace
+                return .none
+            case let .selectFaceShape(selectedFaceShape) :
+                state.selectedFaceShape = selectedFaceShape
+                return .none
+            case let .selectBackground(selectedBackground) :
+                state.selectedBackground = selectedBackground
                 return .none
             case .clickAbility:
                 state.ability.toggle()
@@ -55,8 +69,11 @@ struct HomeFeature {
                 state.sendMessage.toggle()
                 state.message = ""
                 return .none
-            case .clickDecoration:
-                state.decoration.toggle()
+            case .openDecoration:
+                state.decoration = true
+                return .none
+            case .closeDecoration:
+                state.decoration = false
                 return .none
             case .clickProfile:
                 state.profile.toggle()

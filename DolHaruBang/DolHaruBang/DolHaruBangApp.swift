@@ -14,6 +14,7 @@ struct DolHaruBangApp: App {
     @StateObject private var userManager = UserManager()
 //    let persistenceController = PersistenceController.shared
 
+
     var body: some Scene {
         WindowGroup {
             EntryPointView()
