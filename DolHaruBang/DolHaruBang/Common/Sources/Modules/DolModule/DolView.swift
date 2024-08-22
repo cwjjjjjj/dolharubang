@@ -36,14 +36,14 @@ struct DolView : UIViewRepresentable {
         }
         
      
-        // showChic이 false일 때 chic 노드만 보이게 설정
+        // showChild이 false일 때 child 노드만 보이게 설정
         if let parentNode = scene.rootNode.childNode(withName: "\(selectedFaceShape) reference", recursively: true) {
             moveNodeToPosition(node: parentNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
             showAllNodes(rootNode: scene.rootNode)
             hideAllNodesExcept(node: parentNode, rootNode: scene.rootNode)
-            if let chicNode = parentNode.childNode(withName: "\(selectedFace)", recursively: true) {
+            if let childNode = parentNode.childNode(withName: "\(selectedFace)", recursively: true) {
                 showAllNodes(rootNode: parentNode)
-                hideAllNodesExcept(node: chicNode, rootNode: parentNode) // 선택 노드만 보이게 설정
+                hideAllNodesExcept(node: childNode, rootNode: parentNode) // 선택 노드만 보이게 설정
             } else {
                     print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
             }
