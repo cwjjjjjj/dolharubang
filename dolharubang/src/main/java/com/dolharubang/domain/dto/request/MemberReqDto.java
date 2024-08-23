@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberReqDto {
-    private Long id;
+    private Long memberId;
     private String MemberEmail;
     private String nickname;
     private String birthday;
@@ -28,7 +28,7 @@ public class MemberReqDto {
 
     public static Member toEntity(MemberReqDto dto) {
         return Member.builder()
-            .id(dto.getId())
+            .memberId(dto.getMemberId())
             .memberEmail(dto.getMemberEmail())
             .nickname(dto.getNickname())
             .birthday(dto.getBirthday())

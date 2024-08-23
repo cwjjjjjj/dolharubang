@@ -1,6 +1,5 @@
 package com.dolharubang.domain.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,22 +11,18 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "members")
 @Data
-@Getter
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
-    private Long id;
+    private Long memberId;
 
     private String memberEmail;
 
@@ -56,10 +51,10 @@ public class Member {
     private String spaceName;
 
     @Builder
-    public Member(Long id, String memberEmail, String nickname, String birthday, String refreshToken,
+    public Member(Long memberId, String memberEmail, String nickname, String birthday, String refreshToken,
         String provider, Long sands, LocalDateTime createdAt, LocalDateTime lastLoginAt,
         LocalDateTime modifiedAt, Long totalLoginDays, String profilePicture, String spaceName) {
-        this.id = id;
+        this.memberId = memberId;
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.birthday = birthday;

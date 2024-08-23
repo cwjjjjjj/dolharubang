@@ -5,7 +5,7 @@ public enum ItemType {
     BACKGROUND,
 
     //배경 소품
-    BACK_PROP,
+    BACKPROP,
 
     //돌받침
     SUPPORT,
@@ -14,11 +14,11 @@ public enum ItemType {
     ACCS,
 
     //이목구비
-    FACIAL_FEATURES,
+    FACIALFEATURES,
 
     //팻말
     SIGN,
 
     //특수아이템
-    SPECIAL_ITEM
+    SPECIALITEM
 }
