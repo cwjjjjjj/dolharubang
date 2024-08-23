@@ -1,34 +1,30 @@
 package com.dolharubang.mongo.entity;
 
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-//유저가 가지고 있는 반려돌에 대한 정보를 불러오거나 갱신하기 위한 Entity
 @Document
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Data
-public class StoneEntity {
+public class Stone {
 
     @Id
     private ObjectId stoneId;
 
-    private String memberEmail;
+    private String memberId;
 
     private long speciesId;
 
     private String stoneName;
 
-    private String createAt;
+    private LocalDateTime createdAt;
 
     private long closeness;
 
@@ -65,6 +61,7 @@ public class StoneEntity {
         private Map<String, Map<String, CustomItem>> specialItem;
     }
 
+    //TODO x, y 좌표 정보는 필요없음
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
