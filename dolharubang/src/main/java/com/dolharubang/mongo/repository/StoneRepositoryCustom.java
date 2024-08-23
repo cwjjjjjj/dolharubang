@@ -1,6 +1,5 @@
 package com.dolharubang.mongo.repository;
 
-import com.dolharubang.mongo.entity.StoneEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;

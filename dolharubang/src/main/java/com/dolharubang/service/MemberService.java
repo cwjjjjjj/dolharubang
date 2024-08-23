@@ -26,17 +26,16 @@ public class MemberService {
             .nickname(requestDto.getNickname())
             .birthday(requestDto.getBirthday())
             .sands(requestDto.getSands())
+            .totalLoginDays(requestDto.getTotalLoginDays())
             .profilePicture((requestDto.getProfilePicture()))
             .spaceName(requestDto.getSpaceName())
             .build();
+        System.out.println(member.getMemberEmail());
 
-        if(member.getMemberEmail() != null){
+        //여기까지 email이 안 넘어옴
             Member savedMember = memberRepository.save(member);
+        System.out.println(member.getMemberEmail());
             return MemberResDto.fromEntity(savedMember);
-        } else {
-            System.out.println("멤버 이메일이 없심.");
-            return MemberResDto.fromEntity(Member.builder().build());
-        }
     }
 
     @Transactional
