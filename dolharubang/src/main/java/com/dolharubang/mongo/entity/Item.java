@@ -21,10 +21,10 @@ public class Item {
 
     private String url;
 
-    private String price;
+    private Long price;
 
     private String description;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
 }

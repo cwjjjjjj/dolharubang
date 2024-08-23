@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class MemberResDto {
 
-    private Long id;
+    private Long memberId;
     private String memberEmail;
     private String nickname;
     private String birthday;
@@ -29,7 +29,7 @@ public class MemberResDto {
 
     public static MemberResDto fromEntity(Member member) {
         return MemberResDto.builder()
-            .id(member.getId())
+            .memberId(member.getMemberId())
             .memberEmail(member.getMemberEmail())
             .nickname(member.getNickname())
             .birthday(member.getBirthday())
