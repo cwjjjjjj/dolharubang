@@ -39,8 +39,8 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResDto updateMember(String memberEmail, MemberReqDto requestDto) {
-        Member member = memberRepository.findByEmail(memberEmail);
+    public MemberResDto updateMember(Long memberId, MemberReqDto requestDto) {
+        Member member = memberRepository.findByMemberId(memberId);
 
         if (member == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
@@ -57,8 +57,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResDto getMember(String memberEmail){
-        Member member = memberRepository.findByEmail(memberEmail);
+    public MemberResDto getMember(Long memberId){
+        Member member = memberRepository.findByMemberId(memberId);
 
         return MemberResDto.fromEntity(member);
     }
