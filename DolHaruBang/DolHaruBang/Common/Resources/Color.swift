@@ -28,6 +28,6 @@ extension Color {
     
     static let mainTop = Color(hex :"D2FAFF")
     static let decoSheetTabbar = Color(hex: "837C74")
-    static let decoSheetTabbarBack = Color(hex: "618501")
+    static let decoSheetGreen = Color(hex: "618501")
     static let decoSheetTextColor = Color(hex: "372A1A")
 }
