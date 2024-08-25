@@ -17,8 +17,8 @@ struct DecorationView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack() {
-                HStack(spacing: 8) {
+            VStack(spacing : 0) {
+                HStack(spacing : 8) {
                     TabButton(
                         title: "배경",
                         isSelected: selected == .background,
@@ -45,8 +45,10 @@ struct DecorationView: View {
                     
                     Spacer()
                 }
-                .padding(10)
-                .padding(.top, 65)
+                .padding(.top, 60)
+                .padding(.top, 26)
+                .padding(.leading, 20)
+                .padding(.bottom, 12)
                 .background(Color.white) // 버튼 영역의 배경색
                 
                 TabView(selection: $selected) {
@@ -97,7 +99,7 @@ struct TabButton: View {
             .padding(10) // 텍스트와 테두리 사이의 간격
             .background(
                 RoundedRectangle(cornerRadius: 15) // 모서리 둥글기 설정
-                    .fill(isSelected ? Color.decoSheetTabbarBack : Color.clear) // 배경색 설정
+                    .fill(isSelected ? Color.decoSheetGreen : Color.clear) // 배경색 설정
             )
         }
     }
