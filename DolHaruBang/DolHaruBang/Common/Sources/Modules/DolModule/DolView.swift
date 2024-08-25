@@ -15,6 +15,7 @@ struct DolView : UIViewRepresentable {
 //    @Binding var selectedFaceShape : FaceShape
     @Binding var selectedFace : Face
     @Binding var selectedFaceShape : FaceShape
+    @Binding var selectedAccessory : Accessory
     
     // UI가 만들어질때 생성
     func makeUIView(context: Context) -> SCNView {
@@ -34,36 +35,64 @@ struct DolView : UIViewRepresentable {
             print("씬이 없습니다.")
             return
         }
+            
+      
+        // 모든 노드 보이게 설정
+        showAllNodes(rootNode: scene.rootNode)
         
-     
         // showChild이 false일 때 child 노드만 보이게 설정
         if let parentNode = scene.rootNode.childNode(withName: "\(selectedFaceShape) reference", recursively: true) {
             moveNodeToPosition(node: parentNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
-            showAllNodes(rootNode: scene.rootNode)
+            // 선택한 얼굴형만 보이게
             hideAllNodesExcept(node: parentNode, rootNode: scene.rootNode)
             if let childNode = parentNode.childNode(withName: "\(selectedFace)", recursively: true) {
                 showAllNodes(rootNode: parentNode)
+                // 선택한 얼굴형중 선택한 표정만
                 hideAllNodesExcept(node: childNode, rootNode: parentNode) // 선택 노드만 보이게 설정
             } else {
                     print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
             }
         }
         
+        
+        if let accessoryNode = scene.rootNode.childNode(withName: "Face" , recursively: true){
+            if let childAccessoryNode = accessoryNode.childNode(withName: "\(selectedAccessory) reference", recursively: true) {
+                // 선택한 얼굴형중 선택한 표정만black_glasses reference
+                print("출력 \(selectedAccessory) reference")
+                showAllNodes(rootNode: accessoryNode)
+                hideAllNodesExcept(node: childAccessoryNode, rootNode: accessoryNode) // 선택 노드만 보이게 설정
+                moveNodeToPosition(node: childAccessoryNode, x: 0.0, y: 0.0, z: 0.25) // x, y, z 값은 원하는 위치로 설정
+            } else {
+                    print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
+            }
+        }
+        
        
-    }  
+
+        print("어떤것이 Hidden인지")
+        printNodeDetails(node: scene.rootNode)
+        print("씬의 노드 출력 끝")
+        
+       
+        
+        
+    }
     
 }
 
 
 func loadScene(faceShape : FaceShape) -> SCNScene {
     let scene = SCNScene(named: "Dols.scnassets/DolGroup.scn") ?? SCNScene()
+
+//    printNodeDetails(node: scene.rootNode)
+
+    let accessoryNode = addAccessory()
+    scene.rootNode.addChildNode(accessoryNode)
     
-//        // 너무 커서 그랬다..
-        for node in scene.rootNode.childNodes {
-              node.scale = SCNVector3(x: 2, y: 2, z: 2) // 스케일 값을 조정하여 모델의 크기를 조절
-          }
-    
-    printNodeDetails(node: scene.rootNode)
+
+    for node in scene.rootNode.childNodes {
+          node.scale = SCNVector3(x: 2, y: 2, z: 2) // 스케일 값을 조정하여 모델의 크기를 조절
+      }
     
     // shading 값 설정
     updateMaterialsToPhysicallyBased(for: scene)
@@ -74,6 +103,7 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     // 환경 조명 추가
     let ambientLightNode = makeAmbientLight()
     scene.rootNode.addChildNode(ambientLightNode)
+    
       
       // 방향성 조명 추가 1
     let forwardDirectionalLightNode = makeDirectionalLight(X: -0.01, Y: -0.01, Z: 10, intensity: 1000, name: "forwardDirectionalLightNode")
@@ -86,13 +116,14 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     // 방향성 조명 추가 3
     let rightDirectionalLightNode = makeDirectionalLight(X: 6, Y: -3, Z: -3, intensity: 200, name: "rightDirectionalLightNode")
     scene.rootNode.addChildNode(rightDirectionalLightNode)
-    
+  
     return scene
 }
 
 func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
+    
     for childNode in rootNode.childNodes {
-        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "leftDirectionalLightNode" && childNode.name != "fowardDirectionalLightNode" && childNode.name != "rightDirectionalLightNode" {
+        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "leftDirectionalLightNode" && childNode.name != "forwardDirectionalLightNode" && childNode.name != "rightDirectionalLightNode" && childNode.name != "accessory" {
             childNode.isHidden = true
         }
     }
@@ -115,6 +146,14 @@ func makeCamera() -> SCNNode {
        cameraNode.camera?.automaticallyAdjustsZRange = false
         cameraNode.name = "camera"
         return cameraNode
+}
+
+
+func addAccessory() -> SCNNode {
+    let scene = SCNScene(named: "Accessorys.scnassets/AccessoryGroup.scn") ?? SCNScene()
+    scene.rootNode.name = "accessory"
+    moveNodeToPosition(node: scene.rootNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+    return scene.rootNode
 }
 
 func makeAmbientLight() -> SCNNode{
@@ -158,13 +197,13 @@ func printNodeDetails(node: SCNNode, depth: Int = 0) {
     // 현재 노드의 이름과 깊이를 출력합니다.
     let indentation = String(repeating: "  ", count: depth)
     print("\(indentation)Node name: \(node.name ?? "Unnamed")")
-    
+    print("\(indentation)  IsHidden: \(node.isHidden)")
     // 노드의 지오메트리가 있으면 지오메트리의 정보를 출력합니다.
     if let geometry = node.geometry {
         print("\(indentation)  Geometry: \(geometry.name ?? "Unnamed")")
         for material in geometry.materials {
             if let color = material.diffuse.contents as? UIColor {
-                print("\(indentation)    Material color: \(color)")
+//                print("\(indentation)    Material color: \(color)")
             }
         }
     }
