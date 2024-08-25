@@ -112,7 +112,8 @@ struct HomeView : View {
                         Spacer().background(Color.red)
                         DolView(
                             selectedFace: $store.selectedFace,
-                            selectedFaceShape: $store.selectedFaceShape
+                            selectedFaceShape: $store.selectedFaceShape,
+                            selectedAccessory: $store.selectedAccessory
                         )
                         
                         Spacer().background(Color.red)
