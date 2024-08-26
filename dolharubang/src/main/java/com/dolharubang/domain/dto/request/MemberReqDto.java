@@ -13,6 +13,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberReqDto {
+    private Long memberId;
     private String MemberEmail;
     private String nickname;
     private String birthday;
@@ -21,16 +22,19 @@ public class MemberReqDto {
     //넣어야되나.......?
 
     private Long sands;
+    private Long totalLoginDays;
     private String profilePicture;
     private String spaceName;
 
     public static Member toEntity(MemberReqDto dto) {
         return Member.builder()
+            .memberId(dto.getMemberId())
             .memberEmail(dto.getMemberEmail())
             .nickname(dto.getNickname())
             .birthday(dto.getBirthday())
             .sands(dto.getSands())
             .profilePicture(dto.getProfilePicture())
+            .totalLoginDays(dto.getTotalLoginDays())
             .spaceName(dto.getSpaceName())
             .build();
     }
