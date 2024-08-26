@@ -1,41 +1,37 @@
 package com.dolharubang.domain.entity;
 
-import jakarta.persistence.Column;
+import com.dolharubang.mongo.entity.AbilityType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Getter
-@NoArgsConstructor
+@Table(name = "species")
+@Data
 public class Species {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "species_id")
-    private Long id;
+    private Long speciesId;
 
     private String speciesName;
 
     private String characteristic;
 
-    private String appearanceUrl;
-
-    private String base_ability;
+    private AbilityType baseAbility;
 
     @Builder
-    public Species(Long id, String speciesName, String characteristic, String appearanceUrl,
-        String base_ability) {
-        this.id = id;
+    public Species(Long speciesId, String speciesName, String characteristic, String baseAbility) {
+        this.speciesId = speciesId;
         this.speciesName = speciesName;
         this.characteristic = characteristic;
-        this.appearanceUrl = appearanceUrl;
-        this.base_ability = base_ability;
+        this.baseAbility = AbilityType.valueOf(baseAbility);
     }
-
-    //새로 추가되거나 수정될 예정이 없음
 }

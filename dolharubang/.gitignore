@@ -21,6 +21,8 @@ bin/
 application.properties
 application.yml
 application-aws.yml
+logback.xml
+log4jdbc.log4j2.properties
 
 .idea
 *.iws
