@@ -13,8 +13,9 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         var selectedFace : Face = .sparkle
-        var selectedFaceShape : FaceShape = .meong
-        var selectedBackground : Background = .April
+        var selectedFaceShape : FaceShape = .sosim
+        var selectedBackground : Background = .December
+        var selectedAccessory : Accessory = .black_glasses
         var message: String = ""
         var sendMessage : Bool = false
         var ability: Bool = false
@@ -31,6 +32,7 @@ struct HomeFeature {
         case selectFace(Face)
         case selectFaceShape(FaceShape)
         case selectBackground(Background)
+        case selectAccessory(Accessory)
         case clickProfile
         case updateToDol(String)
         case binding( BindingAction < State >)
@@ -43,11 +45,14 @@ struct HomeFeature {
             switch action {
             case .binding(\.message):
                // 여기서 사용자 이름 관찰
-               print ( "toDolMessage" , state.message)
+               print ("toDolMessage" , state.message)
                return .none
             case .binding(\.selectedFace) :
                 print("changed Face : ", state.selectedFace)
                 return .none
+             case .binding(\.selectedAccessory) :
+                 print("changed Accessory : ", state.selectedAccessory)
+                 return .none
             case .binding(\.decoration) :
                 print("click deco : ", state.decoration)
                 return .none
@@ -61,6 +66,9 @@ struct HomeFeature {
                 return .none
             case let .selectBackground(selectedBackground) :
                 state.selectedBackground = selectedBackground
+                return .none
+            case let .selectAccessory(selectedAccessory) :
+                state.selectedAccessory = selectedAccessory
                 return .none
             case .clickAbility:
                 state.ability.toggle()
