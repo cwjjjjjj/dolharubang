@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		652175052C60F77900128734 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 652175042C60F77900128734 /* ComposableArchitecture */; };
 		652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */; };
+		654402122C7B1DC400039510 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 654402112C7B1DC400039510 /* Accessorys.scnassets */; };
+		654402142C7B8B3E00039510 /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654402132C7B8B3E00039510 /* Accessory.swift */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
 		6550AA502C5A809B000A264E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA4F2C5A809B000A264E /* HomeView.swift */; };
 		655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42102C5EB368008ADB5A /* HomeEnviroment.swift */; };
@@ -55,6 +57,8 @@
 
 /* Begin PBXFileReference section */
 		652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = respnseKeyboard.swift; sourceTree = "<group>"; };
+		654402112C7B1DC400039510 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		654402132C7B8B3E00039510 /* Accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
 		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6550AA4F2C5A809B000A264E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		655E42102C5EB368008ADB5A /* HomeEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEnviroment.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
+				654402112C7B1DC400039510 /* Accessorys.scnassets */,
 				657E5F8B2C744ECB002FFA69 /* Dols.scnassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
@@ -320,6 +325,7 @@
 				657E5F932C745071002FFA69 /* Face.swift */,
 				656592B22C7656F200B06D97 /* Shape.swift */,
 				656592B42C7657DF00B06D97 /* Background.swift */,
+				654402132C7B8B3E00039510 /* Accessory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -532,6 +538,7 @@
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				657E5F8C2C744ECB002FFA69 /* Dols.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
+				654402122C7B1DC400039510 /* Accessorys.scnassets in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,6 +572,7 @@
 				65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */,
 				DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */,
 				656592B52C7657DF00B06D97 /* Background.swift in Sources */,
+				654402142C7B8B3E00039510 /* Accessory.swift in Sources */,
 				65A59DDB2C745D3100B20524 /* UITextFieldPadding.swift in Sources */,
 				657E5F942C745071002FFA69 /* Face.swift in Sources */,
 				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
