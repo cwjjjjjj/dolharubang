@@ -13,6 +13,7 @@ enum Background : String,Customizable {
         store.send(.selectBackground(self))
     }
     
+    // 여름
     case July = "7월의 푸른 잔디"
     case April = "4월의 분홍빛 노을"
     case December = "12월의 하얀 잔디"
