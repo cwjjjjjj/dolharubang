@@ -30,21 +30,16 @@ public class MemberService {
             .profilePicture((requestDto.getProfilePicture()))
             .spaceName(requestDto.getSpaceName())
             .build();
-        System.out.println(member.getMemberEmail());
 
         //여기까지 email이 안 넘어옴
             Member savedMember = memberRepository.save(member);
-        System.out.println(member.getMemberEmail());
             return MemberResDto.fromEntity(savedMember);
     }
 
     @Transactional
     public MemberResDto updateMember(Long memberId, MemberReqDto requestDto) {
-        Member member = memberRepository.findByMemberId(memberId);
-
-        if (member == null) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
-        }
+        Member member = memberRepository.findByMemberId(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         member.update(
             requestDto.getNickname(),
@@ -57,8 +52,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResDto getMember(Long memberId){
-        Member member = memberRepository.findByMemberId(memberId);
+    public MemberResDto getMember(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         return MemberResDto.fromEntity(member);
     }

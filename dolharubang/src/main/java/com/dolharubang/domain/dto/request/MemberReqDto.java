@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 public class MemberReqDto {
     private Long memberId;
-    private String MemberEmail;
+    private String memberEmail;
     private String nickname;
     private String birthday;
 
