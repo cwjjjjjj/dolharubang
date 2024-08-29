@@ -22,6 +22,7 @@ struct HomeFeature {
         var decoration: Bool = false
         var profile: Bool = false
         var isKeyboardVisible: Bool = false
+        var info : User.Info = User.Info()
     }
     
     enum Action: BindableAction {
@@ -37,6 +38,8 @@ struct HomeFeature {
         case updateToDol(String)
         case binding( BindingAction < State >)
     }
+    
+    @Dependency(\.tmpClient) var tmpClient
     
     var body : some ReducerOf <Self> {
         BindingReducer ()
@@ -74,9 +77,12 @@ struct HomeFeature {
                 state.ability.toggle()
                 return .none
             case .clickMessage:
-                state.sendMessage.toggle()
-                state.message = ""
-                return .none
+//                state.sendMessage.toggle()
+//                state.message = ""
+//                return .none
+                return .run { [userInfo = state.info ] send in
+                    try await self.tmpClient.regist(userInfo)
+                }
             case .openDecoration:
                 state.decoration = true
                 return .none
