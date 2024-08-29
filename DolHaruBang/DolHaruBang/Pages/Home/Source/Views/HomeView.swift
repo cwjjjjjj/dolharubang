@@ -298,4 +298,3 @@ struct CommonTextFieldStyle: TextFieldStyle {
         .padding(.horizontal, 8) // Add horizontal padding for the whole ZStack
     }
 }
-
