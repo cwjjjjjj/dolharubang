@@ -21,6 +21,9 @@
 		657E5F942C745071002FFA69 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F932C745071002FFA69 /* Face.swift */; };
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
 		657E5F982C745356002FFA69 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F972C745356002FFA69 /* View.swift */; };
+		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
+		659DD10D2C8087C8008ABC5C /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 659DD10C2C8087C8008ABC5C /* je_gray_02_4k.hdr */; };
+		659DD10F2C808856008ABC5C /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */; };
 		65A59DDB2C745D3100B20524 /* UITextFieldPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */; };
 		65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDC2C74683600B20524 /* DecorationView.swift */; };
 		65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */; };
@@ -70,6 +73,8 @@
 		657E5F932C745071002FFA69 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		657E5F972C745356002FFA69 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		659DD10C2C8087C8008ABC5C /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = ../../../../../../Downloads/je_gray_02_4k.hdr; sourceTree = "<group>"; };
+		659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = ../../../../../../Downloads/lythwood_field_4k.hdr; sourceTree = "<group>"; };
 		65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITextFieldPadding.swift; path = DolHaruBang/Common/Sources/Util/UITextFieldPadding.swift; sourceTree = SOURCE_ROOT; };
 		65A59DDC2C74683600B20524 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
@@ -113,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				652175052C60F77900128734 /* ComposableArchitecture in Frameworks */,
+				659469752C7DC022004D487C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +182,8 @@
 				DAA029042C80971800750D5D /* Accessorys.scnassets */,
 				DAA029062C80971800750D5D /* Dols.scnassets */,
 				DAA029052C80971800750D5D /* lythwood_field_4k.hdr */,
+				659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */,
+				659DD10C2C8087C8008ABC5C /* je_gray_02_4k.hdr */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
@@ -487,6 +495,7 @@
 			name = DolHaruBang;
 			packageProductDependencies = (
 				652175042C60F77900128734 /* ComposableArchitecture */,
+				659469742C7DC022004D487C /* Alamofire */,
 			);
 			productName = DolHaruBang;
 			productReference = DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */;
@@ -518,6 +527,7 @@
 			mainGroup = DAAEFC022C56941800D1F87B;
 			packageReferences = (
 				652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				659469732C7DC022004D487C /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = DAAEFC0C2C56941800D1F87B /* Products */;
 			projectDirPath = "";
@@ -536,12 +546,15 @@
 				DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */,
 				65E1C5082C6F3C8700A2E419 /* HomeIcon.xcassets in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
+				659DD10F2C808856008ABC5C /* lythwood_field_4k.hdr in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				DAA029082C80971800750D5D /* lythwood_field_4k.hdr in Resources */,
 				DAA029092C80971800750D5D /* Dols.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
+				659DD10D2C8087C8008ABC5C /* je_gray_02_4k.hdr in Resources */,
+				654402122C7B1DC400039510 /* Accessorys.scnassets in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
 				DAA029072C80971800750D5D /* Accessorys.scnassets in Resources */,
 			);
@@ -808,6 +821,15 @@
 				minimumVersion = 1.12.1;
 			};
 		};
+		659469732C7DC022004D487C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 5.3.0;
+				minimumVersion = 5.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -815,6 +837,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		659469742C7DC022004D487C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 659469732C7DC022004D487C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 
