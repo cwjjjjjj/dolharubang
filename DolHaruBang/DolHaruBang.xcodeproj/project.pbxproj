@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		652175052C60F77900128734 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 652175042C60F77900128734 /* ComposableArchitecture */; };
 		652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */; };
-		654402122C7B1DC400039510 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 654402112C7B1DC400039510 /* Accessorys.scnassets */; };
 		654402142C7B8B3E00039510 /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654402132C7B8B3E00039510 /* Accessory.swift */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
 		6550AA502C5A809B000A264E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA4F2C5A809B000A264E /* HomeView.swift */; };
@@ -18,7 +17,6 @@
 		656592B32C7656F200B06D97 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B22C7656F200B06D97 /* Shape.swift */; };
 		656592B52C7657DF00B06D97 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B42C7657DF00B06D97 /* Background.swift */; };
 		656953522C76891D007B4DA1 /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 656953512C76891D007B4DA1 /* Background.xcassets */; };
-		657E5F8C2C744ECB002FFA69 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 657E5F8B2C744ECB002FFA69 /* Dols.scnassets */; };
 		657E5F922C745059002FFA69 /* DolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F912C745059002FFA69 /* DolView.swift */; };
 		657E5F942C745071002FFA69 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F932C745071002FFA69 /* Face.swift */; };
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
@@ -42,6 +40,9 @@
 		DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */; };
 		DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */; };
 		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
+		DAA029072C80971800750D5D /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAA029042C80971800750D5D /* Accessorys.scnassets */; };
+		DAA029082C80971800750D5D /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = DAA029052C80971800750D5D /* lythwood_field_4k.hdr */; };
+		DAA029092C80971800750D5D /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAA029062C80971800750D5D /* Dols.scnassets */; };
 		DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */; };
 		DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC102C56941800D1F87B /* EntryPointView.swift */; };
 		DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC122C56941A00D1F87B /* Assets.xcassets */; };
@@ -57,7 +58,6 @@
 
 /* Begin PBXFileReference section */
 		652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = respnseKeyboard.swift; sourceTree = "<group>"; };
-		654402112C7B1DC400039510 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
 		654402132C7B8B3E00039510 /* Accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
 		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6550AA4F2C5A809B000A264E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -66,7 +66,6 @@
 		656592B22C7656F200B06D97 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		656592B42C7657DF00B06D97 /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		656953512C76891D007B4DA1 /* Background.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Background.xcassets; sourceTree = "<group>"; };
-		657E5F8B2C744ECB002FFA69 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
 		657E5F912C745059002FFA69 /* DolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolView.swift; sourceTree = "<group>"; };
 		657E5F932C745071002FFA69 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
@@ -90,6 +89,9 @@
 		DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIResultView.swift; sourceTree = "<group>"; };
 		DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardGuardian.swift; path = DolHaruBang/Pages/DBTI/Source/Views/KeyboardGuardian.swift; sourceTree = SOURCE_ROOT; };
 		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		DAA029042C80971800750D5D /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		DAA029052C80971800750D5D /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = lythwood_field_4k.hdr; sourceTree = "<group>"; };
+		DAA029062C80971800750D5D /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
 		DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolHaruBang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
@@ -171,9 +173,10 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DAA029042C80971800750D5D /* Accessorys.scnassets */,
+				DAA029062C80971800750D5D /* Dols.scnassets */,
+				DAA029052C80971800750D5D /* lythwood_field_4k.hdr */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
-				654402112C7B1DC400039510 /* Accessorys.scnassets */,
-				657E5F8B2C744ECB002FFA69 /* Dols.scnassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
 				DAAEFC2C2C57436B00D1F87B /* Fonts */,
@@ -536,10 +539,11 @@
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
-				657E5F8C2C744ECB002FFA69 /* Dols.scnassets in Resources */,
+				DAA029082C80971800750D5D /* lythwood_field_4k.hdr in Resources */,
+				DAA029092C80971800750D5D /* Dols.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
-				654402122C7B1DC400039510 /* Accessorys.scnassets in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
+				DAA029072C80971800750D5D /* Accessorys.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
