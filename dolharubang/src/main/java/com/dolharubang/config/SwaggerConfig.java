@@ -18,6 +18,6 @@ public class SwaggerConfig {
                 .description("API documentation for the Schedule Management System")
                 .contact(new Contact()
                     .name("돌하루방")
-                    .url("https://www.dolharubang.com")));
+                    .url("https://www.dolharubang.store")));
     }
 }
