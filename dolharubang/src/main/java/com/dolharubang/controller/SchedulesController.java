@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Schedules", description = "APIs for managing schedules")
 @RestController
-@RequestMapping("/v1/schedules")
+@RequestMapping("/api/v1/schedules")
 public class SchedulesController {
 
     private final SchedulesService schedulesService;
