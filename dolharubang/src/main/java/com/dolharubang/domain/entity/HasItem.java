@@ -19,16 +19,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "has_items")
 @Data
-public class HasItem {
+public class HasItem extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hasItemsId;
+    private Long hasItemId;
 
     private Long memberId;
 
     //TODO Item 클래스와 매칭되도록 좀 더 고민해볼 것
-    private String itemName;
+    private String itemId;
 
     private LocalDateTime receivedAt;
 
@@ -36,9 +36,9 @@ public class HasItem {
     private ItemType itemType;
 
     @Builder
-    public HasItem(Long memberId, String itemName, LocalDateTime receivedAt, ItemType itemType) {
+    public HasItem(Long memberId, String itemId, LocalDateTime receivedAt, ItemType itemType) {
         this.memberId = memberId;
-        this.itemName = itemName;
+        this.itemId = itemId;
         this.receivedAt = receivedAt;
         this.itemType = itemType;
     }

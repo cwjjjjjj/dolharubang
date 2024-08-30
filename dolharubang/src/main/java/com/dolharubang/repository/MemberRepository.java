@@ -2,6 +2,7 @@ package com.dolharubang.repository;
 
 import com.dolharubang.domain.entity.Member;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -14,10 +15,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     /*
     아이디로 유저 조회
      */
-    Member findByMemberId(Long memberId);
+    Optional<Member> findByMemberId(Long memberId);
 
     /*
     닉네임으로 유저 조회
      */
-    Member findByNickname(String nickname);
+    Optional<Member> findByNickname(String nickname);
 }
