@@ -11,12 +11,9 @@ import ComposableArchitecture
 
 
 struct HomeView : View {
-   @State var store: StoreOf<HomeFeature>
-    @Bindable var nav: StoreOf<NavigationFeature>
+    @State var store: StoreOf<HomeFeature>
     
     var body : some View {
-        
-        NavigationStack(path: $nav.scope(state: \.path, action: \.path)){
             GeometryReader { geometry in
                 ZStack {
                     // 배경이미지 설정
@@ -104,9 +101,9 @@ struct HomeView : View {
                                 .frame(width: geometry.size.width * 0.15, height: geometry.size.width * 0.15)
                             }
                             .frame(width: geometry.size.width * 0.25, height: geometry.size.width * 0.25)
+                         
                             
-                            
-                            
+                        
                         }
                         .frame(height : geometry.size.height * 0.1)
                         .padding(.top , geometry.size.height * 0.07)
@@ -152,8 +149,8 @@ struct HomeView : View {
                                 }) {
                                     VStack(spacing : 0) {
                                         Image(store.ability ? "Star2" : "Star")
-                                            .resizable()
-                                            .scaledToFit()
+                                                    .resizable()
+                                                    .scaledToFit()
                                         
                                         Text("능력")
                                             .font(Font.customFont(Font.caption1))
@@ -163,7 +160,7 @@ struct HomeView : View {
                                     .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
                                     .background(store.ability ? Color.ability2 : Color.ability1)
                                     .clipShape(Circle())
-                                    
+                                   
                                     
                                 }
                                 
@@ -197,88 +194,91 @@ struct HomeView : View {
                         .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.15 : 0)
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
-                        
-                        // 하단 버튼들
-                        HStack{
-                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
-                            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
-                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
-                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
-                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
-                            
-                        }
-                        .padding(.bottom , geometry.size.height * 0.035)
+                      
+//                        // 하단 버튼들
+//                        HStack{
+//                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
+//                            
+//                        }
+//                        .padding(.bottom , geometry.size.height * 0.035)
                         
                     }
+                    .safeAreaInset(edge: .bottom) {
+                                FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()})
+                              }
                     
-                }
+                } // ZStack
+                
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
                 .frame(height: geometry.size.height)
                 .keyboardResponder(isKeyboardVisible: $store.isKeyboardVisible)
                 .onAppear (perform : UIApplication.shared.hideKeyboard)
                 .sheet(isPresented: $store.decoration) {
+                    // 이 뷰가 모달로 표시됩니다.
                     DecorationView(store: store)
                         .presentationDetents([.fraction(0.45)])
                         .presentationCompactAdaptation(.none)
                         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                }
-            }}
-        destination : { nav in
-            switch nav.case {
-           
-            case let .harubang(store):
-                HaruBangView(store: store)
-            case let .mypage(store):
-                MyPageView(store : store)
-            case let .park(store):
-                ParkView(store : store)
-                
-            case .floatButton(_):
-                EmptyView()
-            }
-        }
-    }
+                    }// sheet
+            } // geometry
+    } // some
     
     
-}
+} // View
 
+struct FloatingMenuView : View {
+
+    let store : StoreOf<FloatButtonFeature>
+
+    var body : some View {
+        HStack{
+            BottomButtonView(imageName: "Calander", buttonText: "달력", destinationState: .harubang(HaruBangFeature.State()))
+            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destinationState: .harubang(HaruBangFeature.State()))
+            BottomButtonView(imageName: "Home", destinationState: .home(HomeFeature.State()))
+            BottomButtonView(imageName: "Park", buttonText: "공원", destinationState: .park(ParkFeature.State()))
+            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destinationState: .mypage(MyPageFeature.State()))
+            }
+    }
+}
 
 
 struct BottomButtonView: View {
     var imageName: String
     var buttonText: String?
-    var destination: AnyView
+    var destinationState : NavigationFeature.Path.State
 
     var body: some View {
-            HStack {
-                NavigationLink(destination: destination) {
-                    ZStack {
-                        VStack(spacing: 0){
-                            HStack {
-                                Spacer()
-                                Image(imageName)
-                                Spacer()
-                            }
-                            if let buttonText = buttonText {
-                                HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
-                                    Text(buttonText)
-                                        .font(Font.customFont(Font.caption1))
-                                        .foregroundColor(.white)
-                                        .padding(.bottom,2)
-                                }
-                            }
+        NavigationLink(state : destinationState) {
+            ZStack {
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Image(imageName)
+                        Spacer()
+                    }
+                    if let buttonText = buttonText {
+                        HStack(alignment: .center) {
+                            Text(buttonText)
+                                .font(Font.customFont(Font.caption1))
+                                .foregroundColor(.white)
+                                .padding(.bottom, 2)
                         }
                     }
-                    .frame(width: 64, height: 64)
-                    .background(Color.mainBrown)
-                    .cornerRadius(15)
-                    .padding(.bottom, 23)
                 }
             }
-        
+            .frame(width: 64, height: 64)
+            .background(Color.mainBrown)
+            .cornerRadius(15)
+            .padding(.bottom, 23)
+        }
     }
 }
+
 
 
 

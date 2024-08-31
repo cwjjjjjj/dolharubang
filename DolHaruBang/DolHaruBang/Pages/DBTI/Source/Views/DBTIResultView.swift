@@ -2,6 +2,9 @@ import SwiftUI
 import ComposableArchitecture
 
 struct DBTIResultView: View {
+    
+    let store : StoreOf<FloatButtonFeature>
+    
     @EnvironmentObject var userManager: UserManager // 유저 닉네임 불러오기 위함
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
@@ -179,37 +182,30 @@ struct DBTIResultView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    NavigationLink("홈", destination: 
-                                    Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
-                        HomeView(
-                            store: Store(initialState: HomeFeature.State()) {
-                            HomeFeature()
-                                ._printChanges()
-                        }, 
-                                 nav: nav)
-                        }
+                    Button(action: {
+                        store.send(.homeButtonTapped)
+                        tag = 1
+                        print("tabbed3")
+                    }) {
+                        CustomButton(
+                            title: "함께 시작하기!",
+                            font: .customFont(Font.button1),
+                            textColor: .coreWhite,
+                            pressedBackgroundColor: .coreDarkGreen,
+                            isDisabled: Binding(
+                                get: {
+                                    stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName
+                                },
+                                set: { _ in }
+                            ),
+                            action: { }
                         )
-                                    
+                        .frame(width: 320, height: 48)
+                        .cornerRadius(24)
+                    }
+
                                   
                     
-                        CustomButton(
-                        title: "함께 시작하기!",
-                        font: .customFont(Font.button1),
-                        textColor: .coreWhite,
-                        pressedBackgroundColor:.coreDarkGreen,
-                        isDisabled: Binding(
-                            get: {
-                                stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName
-                            },
-                            set: { _ in }
-                        ),
-                        action: {
-                            tag = 1
-                            print("tabbed3")
-                        }
-                    )
-                    .frame(width: 320, height: 48)
-                    .cornerRadius(24)
                     
                     Spacer().frame(height: geometry.size.height * 0.29)
                 }
