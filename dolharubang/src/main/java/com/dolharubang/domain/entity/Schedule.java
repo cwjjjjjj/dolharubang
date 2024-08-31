@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,14 +16,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedule {
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Long id;
 
-    private String memberEmail;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private boolean isAlarm;
 
@@ -33,41 +35,23 @@ public class Schedule {
 
     private LocalDateTime scheduleDate;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
-
     @Builder
-    public Schedule(Long id, String memberEmail, boolean isAlarm, String contents,
-        LocalDateTime alarmTime, LocalDateTime scheduleDate,
-        LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Schedule(Long id, Member member, boolean isAlarm, String contents,
+        LocalDateTime alarmTime, LocalDateTime scheduleDate) {
         this.id = id;
-        this.memberEmail = memberEmail;
+        this.member = member;
         this.isAlarm = isAlarm;
         this.contents = contents;
         this.alarmTime = alarmTime;
         this.scheduleDate = scheduleDate;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 
-    public void update(String memberEmail, String contents, LocalDateTime scheduleDate,
+    public void update(Member member, String contents, LocalDateTime scheduleDate,
         Boolean isAlarm, LocalDateTime alarmTime) {
-        this.memberEmail = memberEmail;
+        this.member = member;
         this.contents = contents;
         this.scheduleDate = scheduleDate;
         this.isAlarm = isAlarm;
         this.alarmTime = alarmTime;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.modifiedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.modifiedAt = LocalDateTime.now();
     }
 }
