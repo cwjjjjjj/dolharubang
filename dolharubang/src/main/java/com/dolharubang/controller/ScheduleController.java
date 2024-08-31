@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Schedules", description = "APIs for managing schedules")
 @RestController
 @RequestMapping("/api/v1/schedules")
-public class SchedulesController {
+public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    public SchedulesController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
 
@@ -51,16 +51,16 @@ public class SchedulesController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "스케줄 전체 조회", description = "스케줄 전체 조회를 진행한다.")
+    @Operation(summary = "스케줄 조회", description = "연도, 월, 일 및 member_id로 스케줄 조회를 진행한다.")
     @GetMapping
     public ResponseEntity<List<ScheduleResDto>> getSchedules(
         @RequestParam(required = false) Integer year,
         @RequestParam(required = false) Integer month,
         @RequestParam(required = false) Integer day,
-        @RequestParam(required = false) String email) {
+        @RequestParam(required = false) Long memberId) {  // email 대신 memberId 사용
 
         List<ScheduleResDto> response = scheduleService.getSchedulesByCriteria(year, month, day,
-            email);
+            memberId);
         return ResponseEntity.ok(response);
     }
 

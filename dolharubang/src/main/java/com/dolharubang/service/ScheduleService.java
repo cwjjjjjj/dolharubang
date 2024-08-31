@@ -2,9 +2,11 @@ package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.ScheduleReqDto;
 import com.dolharubang.domain.dto.response.ScheduleResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Schedule;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.ScheduleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,15 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final MemberRepository memberRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository,
+        MemberRepository memberRepository) {
         this.scheduleRepository = scheduleRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
     public ScheduleResDto createSchedule(ScheduleReqDto requestDto) {
+        Member member = memberRepository.findById(requestDto.getMemberId())
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         Schedule schedule = Schedule.builder()
-            .memberEmail(requestDto.getMemberEmail())
+            .member(member)
             .contents(requestDto.getContents())
             .scheduleDate(requestDto.getScheduleDate())
             .isAlarm(requestDto.getIsAlarm())
@@ -39,8 +47,11 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
 
+        Member member = memberRepository.findById(requestDto.getMemberId())
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         schedule.update(
-            requestDto.getMemberEmail(),
+            member,
             requestDto.getContents(),
             requestDto.getScheduleDate(),
             requestDto.getIsAlarm(),
@@ -60,21 +71,24 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     public List<ScheduleResDto> getSchedulesByCriteria(Integer year, Integer month, Integer day,
-        String email) {
+        Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         List<Schedule> schedules;
 
         if (year != null && month != null && day != null) {
             // 일별 조회
-            schedules = scheduleRepository.findByYearMonthDayAndEmail(year, month, day, email);
+            schedules = scheduleRepository.findByYearMonthDayAndMember(year, month, day, member);
         } else if (year != null && month != null) {
             // 월별 조회
-            schedules = scheduleRepository.findByYearMonthAndEmail(year, month, email);
+            schedules = scheduleRepository.findByYearMonthAndMember(year, month, member);
         } else if (year != null) {
             // 연도별 조회
-            schedules = scheduleRepository.findByYearAndEmail(year, email);
+            schedules = scheduleRepository.findByYearAndMember(year, member);
         } else {
             // 전체 조회
-            schedules = scheduleRepository.findAllByEmail(email);
+            schedules = scheduleRepository.findAllByMember(member);
         }
 
         if (schedules.isEmpty()) {
