@@ -1,11 +1,11 @@
 package com.dolharubang.domain.dto.request;
 
-import com.dolharubang.domain.entity.Schedules;
+import com.dolharubang.domain.entity.Schedule;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class SchedulesReqDto {
+public class ScheduleReqDto {
 
     private Long id;
     private String memberEmail;
@@ -14,8 +14,8 @@ public class SchedulesReqDto {
     private Boolean isAlarm;
     private LocalDateTime alarmTime;
 
-    public static Schedules toEntity(SchedulesReqDto dto) {
-        return Schedules.builder()
+    public static Schedule toEntity(ScheduleReqDto dto) {
+        return Schedule.builder()
             .id(dto.getId())
             .memberEmail(dto.getMemberEmail())
             .contents(dto.getContents())
