@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedules {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class Schedules {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public Schedules(Long id, String memberEmail, boolean isAlarm, String contents,
+    public Schedule(Long id, String memberEmail, boolean isAlarm, String contents,
         LocalDateTime alarmTime, LocalDateTime scheduleDate,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;

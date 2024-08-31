@@ -1,28 +1,28 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.SchedulesReqDto;
-import com.dolharubang.domain.dto.response.SchedulesResDto;
-import com.dolharubang.domain.entity.Schedules;
+import com.dolharubang.domain.dto.request.ScheduleReqDto;
+import com.dolharubang.domain.dto.response.ScheduleResDto;
+import com.dolharubang.domain.entity.Schedule;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.repository.SchedulesRepository;
+import com.dolharubang.repository.ScheduleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class SchedulesService {
+public class ScheduleService {
 
-    private final SchedulesRepository schedulesRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    public SchedulesService(SchedulesRepository schedulesRepository) {
-        this.schedulesRepository = schedulesRepository;
+    public ScheduleService(ScheduleRepository scheduleRepository) {
+        this.scheduleRepository = scheduleRepository;
     }
 
     @Transactional
-    public SchedulesResDto createSchedule(SchedulesReqDto requestDto) {
-        Schedules schedule = Schedules.builder()
+    public ScheduleResDto createSchedule(ScheduleReqDto requestDto) {
+        Schedule schedule = Schedule.builder()
             .memberEmail(requestDto.getMemberEmail())
             .contents(requestDto.getContents())
             .scheduleDate(requestDto.getScheduleDate())
@@ -30,13 +30,13 @@ public class SchedulesService {
             .alarmTime(requestDto.getAlarmTime())
             .build();
 
-        Schedules savedSchedule = schedulesRepository.save(schedule);
-        return SchedulesResDto.fromEntity(savedSchedule);
+        Schedule savedSchedule = scheduleRepository.save(schedule);
+        return ScheduleResDto.fromEntity(savedSchedule);
     }
 
     @Transactional
-    public SchedulesResDto updateSchedule(Long id, SchedulesReqDto requestDto) {
-        Schedules schedule = schedulesRepository.findById(id)
+    public ScheduleResDto updateSchedule(Long id, ScheduleReqDto requestDto) {
+        Schedule schedule = scheduleRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
 
         schedule.update(
@@ -47,34 +47,34 @@ public class SchedulesService {
             requestDto.getAlarmTime()
         );
 
-        return SchedulesResDto.fromEntity(schedule);
+        return ScheduleResDto.fromEntity(schedule);
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResDto getSchedule(Long id) {
-        Schedules schedule = schedulesRepository.findById(id)
+    public ScheduleResDto getSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
 
-        return SchedulesResDto.fromEntity(schedule);
+        return ScheduleResDto.fromEntity(schedule);
     }
 
     @Transactional(readOnly = true)
-    public List<SchedulesResDto> getSchedulesByCriteria(Integer year, Integer month, Integer day,
+    public List<ScheduleResDto> getSchedulesByCriteria(Integer year, Integer month, Integer day,
         String email) {
-        List<Schedules> schedules;
+        List<Schedule> schedules;
 
         if (year != null && month != null && day != null) {
             // 일별 조회
-            schedules = schedulesRepository.findByYearMonthDayAndEmail(year, month, day, email);
+            schedules = scheduleRepository.findByYearMonthDayAndEmail(year, month, day, email);
         } else if (year != null && month != null) {
             // 월별 조회
-            schedules = schedulesRepository.findByYearMonthAndEmail(year, month, email);
+            schedules = scheduleRepository.findByYearMonthAndEmail(year, month, email);
         } else if (year != null) {
             // 연도별 조회
-            schedules = schedulesRepository.findByYearAndEmail(year, email);
+            schedules = scheduleRepository.findByYearAndEmail(year, email);
         } else {
             // 전체 조회
-            schedules = schedulesRepository.findAllByEmail(email);
+            schedules = scheduleRepository.findAllByEmail(email);
         }
 
         if (schedules.isEmpty()) {
@@ -82,15 +82,15 @@ public class SchedulesService {
         }
 
         return schedules.stream()
-            .map(SchedulesResDto::fromEntity)
+            .map(ScheduleResDto::fromEntity)
             .collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteSchedule(Long id) {
-        Schedules schedule = schedulesRepository.findById(id)
+        Schedule schedule = scheduleRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
 
-        schedulesRepository.delete(schedule);
+        scheduleRepository.delete(schedule);
     }
 }
