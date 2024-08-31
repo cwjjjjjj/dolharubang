@@ -11,9 +11,12 @@ import ComposableArchitecture
 
 
 struct HomeView : View {
-    @State var store: StoreOf<HomeFeature>
+   @State var store: StoreOf<HomeFeature>
+    @Bindable var nav: StoreOf<NavigationFeature>
     
     var body : some View {
+        
+        NavigationStack(path: $nav.scope(state: \.path, action: \.path)){
             GeometryReader { geometry in
                 ZStack {
                     // 배경이미지 설정
@@ -101,9 +104,9 @@ struct HomeView : View {
                                 .frame(width: geometry.size.width * 0.15, height: geometry.size.width * 0.15)
                             }
                             .frame(width: geometry.size.width * 0.25, height: geometry.size.width * 0.25)
-                         
                             
-                        
+                            
+                            
                         }
                         .frame(height : geometry.size.height * 0.1)
                         .padding(.top , geometry.size.height * 0.07)
@@ -149,8 +152,8 @@ struct HomeView : View {
                                 }) {
                                     VStack(spacing : 0) {
                                         Image(store.ability ? "Star2" : "Star")
-                                                    .resizable()
-                                                    .scaledToFit()
+                                            .resizable()
+                                            .scaledToFit()
                                         
                                         Text("능력")
                                             .font(Font.customFont(Font.caption1))
@@ -160,7 +163,7 @@ struct HomeView : View {
                                     .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
                                     .background(store.ability ? Color.ability2 : Color.ability1)
                                     .clipShape(Circle())
-                                   
+                                    
                                     
                                 }
                                 
@@ -194,7 +197,7 @@ struct HomeView : View {
                         .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.15 : 0)
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
-                      
+                        
                         // 하단 버튼들
                         HStack{
                             BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
@@ -215,13 +218,26 @@ struct HomeView : View {
                 .keyboardResponder(isKeyboardVisible: $store.isKeyboardVisible)
                 .onAppear (perform : UIApplication.shared.hideKeyboard)
                 .sheet(isPresented: $store.decoration) {
-                    // 이 뷰가 모달로 표시됩니다.
                     DecorationView(store: store)
                         .presentationDetents([.fraction(0.45)])
                         .presentationCompactAdaptation(.none)
                         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 }
+            }}
+        destination : { nav in
+            switch nav.case {
+           
+            case let .harubang(store):
+                HaruBangView(store: store)
+            case let .mypage(store):
+                MyPageView(store : store)
+            case let .park(store):
+                ParkView(store : store)
+                
+            case .floatButton(_):
+                EmptyView()
             }
+        }
     }
     
     

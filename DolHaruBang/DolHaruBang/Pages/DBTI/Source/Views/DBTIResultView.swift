@@ -179,14 +179,20 @@ struct DBTIResultView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    NavigationLink(destination: HomeView(store: Store(initialState: HomeFeature.State()) {
-                        HomeFeature()
-                            ._printChanges()
-                      }), tag: 1, selection: $tag) {
-                        EmptyView()
-                    }
+                    NavigationLink("홈", destination: 
+                                    Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
+                        HomeView(
+                            store: Store(initialState: HomeFeature.State()) {
+                            HomeFeature()
+                                ._printChanges()
+                        }, 
+                                 nav: nav)
+                        }
+                        )
+                                    
+                                  
                     
-                    CustomButton(
+                        CustomButton(
                         title: "함께 시작하기!",
                         font: .customFont(Font.button1),
                         textColor: .coreWhite,
@@ -312,4 +318,21 @@ struct DBTIResultView: View {
             }
         }
     }
+}
+
+struct Demo<State, Action, Content: View>: View {
+  @SwiftUI.State var store: Store<State, Action>
+  let content: (Store<State, Action>) -> Content
+
+  init(
+    store: Store<State, Action>,
+    @ViewBuilder content: @escaping (Store<State, Action>) -> Content
+  ) {
+    self.store = store
+    self.content = content
+  }
+
+  var body: some View {
+    content(store)
+  }
 }
