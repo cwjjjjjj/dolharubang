@@ -14,7 +14,6 @@ import lombok.ToString;
 public class ScheduleResDto {
 
     private Long id;
-    private String memberEmail;
     private String contents;
     private LocalDateTime scheduleDate;
     private Boolean isAlarm;
@@ -25,7 +24,6 @@ public class ScheduleResDto {
     public static ScheduleResDto fromEntity(Schedule schedule) {
         return ScheduleResDto.builder()
             .id(schedule.getId())
-            .memberEmail(schedule.getMemberEmail())
             .contents(schedule.getContents())
             .scheduleDate(schedule.getScheduleDate())
             .isAlarm(schedule.isAlarm())
