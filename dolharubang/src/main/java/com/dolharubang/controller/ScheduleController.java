@@ -1,8 +1,8 @@
 package com.dolharubang.controller;
 
-import com.dolharubang.domain.dto.request.SchedulesReqDto;
-import com.dolharubang.domain.dto.response.SchedulesResDto;
-import com.dolharubang.service.SchedulesService;
+import com.dolharubang.domain.dto.request.ScheduleReqDto;
+import com.dolharubang.domain.dto.response.ScheduleResDto;
+import com.dolharubang.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -20,54 +20,54 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Schedules", description = "APIs for managing schedules")
 @RestController
 @RequestMapping("/api/v1/schedules")
-public class SchedulesController {
+public class ScheduleController {
 
-    private final SchedulesService schedulesService;
+    private final ScheduleService scheduleService;
 
-    public SchedulesController(SchedulesService schedulesService) {
-        this.schedulesService = schedulesService;
+    public ScheduleController(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
     }
 
     @Operation(summary = "스케줄 생성하기", description = "스케줄을 생성한다.")
     @PostMapping
-    public ResponseEntity<SchedulesResDto> createSchedule(@RequestBody SchedulesReqDto requestDto) {
-        SchedulesResDto response = schedulesService.createSchedule(requestDto);
+    public ResponseEntity<ScheduleResDto> createSchedule(@RequestBody ScheduleReqDto requestDto) {
+        ScheduleResDto response = scheduleService.createSchedule(requestDto);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스케줄 수정하기", description = "schedule_id를 사용하여 스케줄을 수정한다.")
     @PatchMapping("/{id}")
-    public ResponseEntity<SchedulesResDto> updateSchedule(
+    public ResponseEntity<ScheduleResDto> updateSchedule(
         @PathVariable Long id,
-        @RequestBody SchedulesReqDto requestDto) {
-        SchedulesResDto response = schedulesService.updateSchedule(id, requestDto);
+        @RequestBody ScheduleReqDto requestDto) {
+        ScheduleResDto response = scheduleService.updateSchedule(id, requestDto);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스케줄 단건 조회", description = "schedule_id를 통해 해당 스케줄의 단건 조회를 진행한다.")
     @GetMapping("/{id}")
-    public ResponseEntity<SchedulesResDto> getSchedule(@PathVariable Long id) {
-        SchedulesResDto response = schedulesService.getSchedule(id);
+    public ResponseEntity<ScheduleResDto> getSchedule(@PathVariable Long id) {
+        ScheduleResDto response = scheduleService.getSchedule(id);
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "스케줄 전체 조회", description = "스케줄 전체 조회를 진행한다.")
+    @Operation(summary = "스케줄 조회", description = "연도, 월, 일 및 member_id로 스케줄 조회를 진행한다.")
     @GetMapping
-    public ResponseEntity<List<SchedulesResDto>> getSchedules(
+    public ResponseEntity<List<ScheduleResDto>> getSchedules(
         @RequestParam(required = false) Integer year,
         @RequestParam(required = false) Integer month,
         @RequestParam(required = false) Integer day,
-        @RequestParam(required = false) String email) {
+        @RequestParam(required = false) Long memberId) {  // email 대신 memberId 사용
 
-        List<SchedulesResDto> response = schedulesService.getSchedulesByCriteria(year, month, day,
-            email);
+        List<ScheduleResDto> response = scheduleService.getSchedulesByCriteria(year, month, day,
+            memberId);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스케줄 삭제", description = "해당 schedule_id를 삭제한다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
-        schedulesService.deleteSchedule(id);
+        scheduleService.deleteSchedule(id);
         return ResponseEntity.noContent().build();
     }
 }
