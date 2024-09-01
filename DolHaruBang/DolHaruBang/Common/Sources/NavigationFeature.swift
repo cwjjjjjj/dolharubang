@@ -16,10 +16,11 @@ struct NavigationFeature {
     case harubang(HaruBangFeature)
     case park(ParkFeature)
     case mypage(MyPageFeature)
-    case floatButton(FloatButtonFeature)
-      
+    case home(HomeFeature)
+    case DBTIQuestion1View
+    case DBTIResultView(FloatButtonFeature)
   }
-
+    
   @ObservableState
   struct State: Equatable {
     var path = StackState<Path.State>()
@@ -50,21 +51,11 @@ struct NavigationFeature {
 //              state.path.append(.harubang(HaruBangFeature.State()))
 //              return .none
               
-          case .element(id:_, action: .floatButton(.harubangButtonTapped)):
-              state.path.append(.harubang(HaruBangFeature.State()))
-              return .none
-              
-//          case .element(id: _, action: FloatButtonFeature.Action.homeButtonTapped):
-//              state.path.append(.harubang(HaruBangFeature.State()))
-//              return .none
-              
-          case .element(id:_, action: .floatButton(.parkButtonTapped)):
-              state.path.append(.park(ParkFeature.State()))
-              return .none
-              
-          case .element(id:_, action: .floatButton(.mypageButtonTapped)):
-              state.path.append(.mypage(MyPageFeature.State()))
-              return .none
+          case .element(id: _, action: .DBTIResultView(.homeButtonTapped)):
+//            print("결과 -> 홈 이동")
+//            state.path = StackState<Path.State>()
+            state.path.append(.home(HomeFeature.State()))
+            return .none
               
           default:
             return .none
@@ -85,7 +76,7 @@ struct FloatButtonFeature {
   enum Action {
 //    case calendarButtonTapped
     case harubangButtonTapped
-//    case homeButtonTapped
+    case homeButtonTapped
     case parkButtonTapped
     case mypageButtonTapped
   }
@@ -97,8 +88,9 @@ struct FloatButtonFeature {
 //        return .none
       case .harubangButtonTapped:
         return .none
-//      case .homeButtonTapped:
-//        return .none
+      case .homeButtonTapped:
+          print("플롯 홈")
+        return .none
       case .parkButtonTapped:
         return .none
       case .mypageButtonTapped:

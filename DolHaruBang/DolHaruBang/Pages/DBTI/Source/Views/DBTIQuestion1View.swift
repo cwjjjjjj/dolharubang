@@ -63,39 +63,43 @@ struct DBTIQuestion1View: View {
                     Spacer().frame(height: geometry.size.height * 0.15)
                     
                     VStack(alignment: .center, spacing: 16) {
-                        NavigationLink(destination: DBTIResultView(), tag: 1, selection: $tag) {
-                            EmptyView()
-                        }
+//                        NavigationLink(destination: DBTIResultView(), tag: 1, selection: $tag) {
+//                            EmptyView()
+//                        }
                         
-                        CustomButton(
-                            title: "속 괜찮아?",
-                            font: .customFont(Font.button1),
-                            textColor: .coreWhite,
-                            isSelected: selectedButton == 1,
-                            selectedTextColor: .coreWhite,
-                            selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                            action: {
-                                selectedButton = 1
-                                tag = 1
+                        NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(FloatButtonFeature.State())){
+                            VStack{
+                                CustomButton(
+                                    title: "속 괜찮아?",
+                                    font: .customFont(Font.button1),
+                                    textColor: .coreWhite,
+                                    isSelected: selectedButton == 1,
+                                    selectedTextColor: .coreWhite,
+                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
+                                    action: {
+                                        selectedButton = 1
+                                        tag = 1
+                                    }
+                                )
+                                .frame(width: 320, height: 48)
+                                .cornerRadius(24)
+                                
+                                CustomButton(
+                                    title: "상한 거 같은데 왜 먹어봤어?",
+                                    font: .customFont(Font.button1),
+                                    textColor: .coreWhite,
+                                    isSelected: selectedButton == 2,
+                                    selectedTextColor: .coreWhite,
+                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
+                                    action: {
+                                        selectedButton = 2
+                                        tag = 1
+                                    }
+                                )
+                                .frame(width: 320, height: 48)
+                                .cornerRadius(24)
                             }
-                        )
-                        .frame(width: 320, height: 48)
-                        .cornerRadius(24)
-                        
-                        CustomButton(
-                            title: "상한 거 같은데 왜 먹어봤어?",
-                            font: .customFont(Font.button1),
-                            textColor: .coreWhite,
-                            isSelected: selectedButton == 2,
-                            selectedTextColor: .coreWhite,
-                            selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                            action: {
-                                selectedButton = 2
-                                tag = 1
                             }
-                        )
-                        .frame(width: 320, height: 48)
-                        .cornerRadius(24)
                     }
                     
                     Spacer().frame(height: geometry.size.height * 0.2892)
