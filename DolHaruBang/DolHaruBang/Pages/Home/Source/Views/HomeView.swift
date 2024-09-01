@@ -305,7 +305,13 @@ struct FloatingMenuView : View {
        var closure : () -> Void
        
        var body: some View {
-           Button(action : closure ) {
+           Button(action: {
+               // 비동기 작업을 실행하는 Task를 버튼 액션에 추가
+               Task {
+                   try? await Task.sleep(for: .seconds(0.1))  // 예: 2초 대기
+                   closure()  // 비동기 작업 후 클로저 실행
+               }
+           }) {
 
             ZStack {
                 VStack(spacing: 0) {
