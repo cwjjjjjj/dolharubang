@@ -17,7 +17,6 @@ struct NavigationFeature {
     case park(ParkFeature)
     case mypage(MyPageFeature)
     case home(HomeFeature)
-    case floatButton(FloatButtonFeature)
     case DBTIQuestion1View
     case DBTIResultView(FloatButtonFeature)
   }
@@ -51,24 +50,6 @@ struct NavigationFeature {
 //          case .element(id: _, action: FloatButtonFeature.Action.calendarButtonTapped):
 //              state.path.append(.harubang(HaruBangFeature.State()))
 //              return .none
-              
-          case .element(id:_, action: .floatButton(.harubangButtonTapped)):
-              state.path.append(.harubang(HaruBangFeature.State()))
-              return .none
-              
-          case .element(id: _, action: .floatButton(.homeButtonTapped)):
-              print("홈 이동")
-              state.path.removeAll()
-              state.path.append(.home(HomeFeature.State()))
-              return .none
-              
-          case .element(id:_, action: .floatButton(.parkButtonTapped)):
-              state.path.append(.park(ParkFeature.State()))
-              return .none
-              
-          case .element(id:_, action: .floatButton(.mypageButtonTapped)):
-              state.path.append(.mypage(MyPageFeature.State()))
-              return .none
               
           case .element(id: _, action: .DBTIResultView(.homeButtonTapped)):
 //            print("결과 -> 홈 이동")
