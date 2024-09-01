@@ -229,8 +229,6 @@ struct HomeView : View {
 } // View
 
 struct FloatingMenuView : View {
-
-    var store : StoreOf<FloatButtonFeature>
     var nav: StoreOf<NavigationFeature>
     
     struct ViewState: Equatable {
@@ -277,19 +275,19 @@ struct FloatingMenuView : View {
         let viewState = ViewState(state: nav.state)
         if viewState.currentStack.count > 0{
                HStack{
-                   BottomButtonView(imageName: "Calander", buttonText: "달력"){
+                   BottomButtonView(store : nav ,imageName: "Calander", buttonText: "달력"){
                        nav.send(.goToScreen(.harubang(HaruBangFeature())))
                    }
-                   BottomButtonView(imageName: "Harubang", buttonText: "하루방"){
+                   BottomButtonView(store : nav ,imageName: "Harubang", buttonText: "하루방"){
                        nav.send(.goToScreen(.harubang(HaruBangFeature())))
                    }
-                   BottomButtonView(imageName: "Home"){
+                   BottomButtonView(store : nav , imageName: "Home"){
                        nav.send(.goToScreen(.home(HomeFeature())))
                    }
-                   BottomButtonView(imageName: "Park", buttonText: "공원"){
+                   BottomButtonView(store : nav ,imageName: "Park", buttonText: "공원"){
                        nav.send(.goToScreen(.park(ParkFeature())))
                    }
-                   BottomButtonView(imageName: "Mypage", buttonText: "마이페이지") {
+                   BottomButtonView(store : nav , imageName: "Mypage", buttonText: "마이페이지") {
                        nav.send(.goToScreen(.mypage(MyPageFeature())))
                    }
                    
@@ -300,20 +298,27 @@ struct FloatingMenuView : View {
 
 
    struct BottomButtonView: View {
+       @State var store : StoreOf<NavigationFeature>
        var imageName: String
        var buttonText: String?
        var closure : () -> Void
        
        var body: some View {
            Button(action: {
-               // 비동기 작업을 실행하는 Task를 버튼 액션에 추가
-               Task {
-                   try? await Task.sleep(for: .seconds(0.1))  // 예: 2초 대기
-                   closure()  // 비동기 작업 후 클로저 실행
+               print("현재 click 상태 \(store.enableClick)")
+               if store.enableClick {
+                   
+                   closure()
+                  print("true라서 실행돼요")
+               }else{
+                   print("false라서 실행 놉")
                }
+                   
+                  
            }) {
 
             ZStack {
+                Text("\(store.enableClick)")
                 VStack(spacing: 0) {
                     HStack {
                         Spacer()
