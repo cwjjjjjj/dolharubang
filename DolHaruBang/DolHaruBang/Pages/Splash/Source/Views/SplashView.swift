@@ -24,25 +24,27 @@ struct SplashView: View {
                 Text("돌과 함께 하루를 보내는 방")
                     .font(.customFont(Font.body1Bold))
                     .foregroundColor(.mainWhite)
-                    .padding(.top, 4)
+                    .padding(.top, 8)
+                
+//                Spacer().frame(height: 28)
 
                 Text("돌하루방")
                     .font(.customFont(Font.h2))
                     .foregroundColor(.mainWhite)
-                    .padding(.top, 4)
+//                    .padding(.top, 4)
 
                 Spacer()
                 
-                HStack {
-                    Spacer() // 왼쪽에 Spacer 추가
-                    Text("♬ HYP - Spring Has Come\n\n♬ BGM provided by HYP MUSIC\n\n♬ https://youtu.be/fhSzUbsd5cY")
-                        .font(.customFont(Font.caption2))
-                        .foregroundColor(.gray)
-                        .opacity(0.7)
-                        .multilineTextAlignment(.trailing)
-                }
-                .padding(.bottom, 20)
-                .padding(.trailing, 20)
+//                HStack {
+//                    Spacer() // 왼쪽에 Spacer 추가
+//                    Text("♬ HYP - Spring Has Come\n\n♬ BGM provided by HYP MUSIC\n\n♬ https://youtu.be/fhSzUbsd5cY")
+//                        .font(.customFont(Font.caption2))
+//                        .foregroundColor(.gray)
+//                        .opacity(0.7)
+//                        .multilineTextAlignment(.trailing)
+//                }
+//                .padding(.bottom, 20)
+//                .padding(.trailing, 20)
             }
         }
     }

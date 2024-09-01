@@ -1,6 +1,10 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct InputUserInfoView: View {
+    @EnvironmentObject var userManager: UserManager // 닉네임 전역변수로 기억
+    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
+    
     @State var name: String = ""
     @State private var showAlert: Bool = false
     @State private var alertTitle: String = ""
@@ -8,14 +12,19 @@ struct InputUserInfoView: View {
     @State private var showConfirmation: Bool = false
 
     @State private var isNameConfirmed: Bool = false // 닉네임 중복 확인 여부를 추적하는 상태 변수
+    
+    // 모든 입력이 완료되었는지 확인하는 변수
+    var isFormComplete: Bool {
+        return isNameConfirmed && selectedYear != nil && selectedMonth != nil && selectedDay != nil
+    }
 
-    @State private var selectedYear: Int = 2023
+    @State private var selectedYear: Int?
     @State private var showYearPicker: Bool = false
 
-    @State private var selectedMonth: Int = 1
+    @State private var selectedMonth: Int?
     @State private var showMonthPicker: Bool = false
 
-    @State private var selectedDay: Int = 1
+    @State private var selectedDay: Int?
     @State private var showDayPicker: Bool = false
 
     var currentYear: Int {
@@ -43,49 +52,66 @@ struct InputUserInfoView: View {
 
     var body: some View {
         ZStack {
-            Color.white
+            Color.mainWhite
                 .edgesIgnoringSafeArea(.all)
             
             GeometryReader { geometry in
-                VStack {
-                    Spacer()
+                VStack (alignment: .center, spacing: 0){
+                    Spacer().frame(height: geometry.size.height * 0.2892)
                     
-                    Text("돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.")
-                        .font(.customFont(Font.subtitle2))
-                        .foregroundColor(.mainBlack)
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(8)
-                        .padding(.top, 50)
-                        .padding(.bottom, 50)
+                    HStack {
+                        Spacer()
+                        
+                        CustomText(text: "돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.", font: Font.uiFont(for: Font.subtitle2)!, textColor: .coreBlack)
+                            .frame(width: 187, height: 87)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        Spacer()
+                    }.padding(.bottom, 33)
                     
-                    Spacer()
+                    HStack {
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(.coreLightGray)
+                            .font(.system(size: 24))
+                            .padding(.bottom, 72)
+                        Spacer()
+                    }
                     
                     HStack {
                         CustomTextField(
                             text: $name,
+//                            textColor: .coreGreen,
                             placeholder: "닉네임",
-                            font: .customFont(Font.button1)
+//                            placeholderColor: ,
+                            font: .customFont(Font.button1), maxLength: 12, 
+                            alertTitle: "글자 수 오류",
+                            alertMessage: "닉네임은 1~6자로 입력해주세요.",
+                            onSubmit: {checkUsername()}
                         )
-                        .frame(width: geometry.size.width * 0.6, height: 48)
+                        .frame(width: 210, height: 48)
                         .cornerRadius(24)
+                        
+                        Spacer().frame(width: 10)
                         
                         CustomButton(
                             title: "중복확인",
                             font: .customFont(Font.button1),
-                            textColor: .white,
+                            textColor: .coreWhite,
                             action: {
                                 checkUsername()
                             }
                         )
+                        .frame(width: 100, height: 48)
                         .background(name.isEmpty ? Color.disabled : Color.mainGreen)
-                        .frame(width: geometry.size.width * 0.25, height: 48)
                         .cornerRadius(24)
                         .disabled(name.isEmpty)
                         .onTapGesture {
                             checkUsername()
                         }
                     }
-                    .padding(.horizontal, 20)
+                    
+                    Spacer().frame(height: 16)
                     
                     HStack {
                         CustomYearButton(
@@ -94,15 +120,22 @@ struct InputUserInfoView: View {
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showYearPicker = true
                         }
                         .sheet(isPresented: $showYearPicker) {
-                            YearPicker(selectedYear: $selectedYear, isPresented: $showYearPicker, years: Array(1900...currentYear)) {
-                                self.selectedMonth = 1
-                                self.selectedDay = 1
+                            YearPicker(
+                                selectedYear: Binding(
+                                    get: { selectedYear ?? 2024 },
+                                    set: { newValue in selectedYear = newValue }
+                                ),
+                                isPresented: $showYearPicker,
+                                years: Array(1900...currentYear)
+                            ) {
+                                self.selectedMonth = nil
+                                self.selectedDay = nil
                             }
                         }
                         
@@ -112,37 +145,55 @@ struct InputUserInfoView: View {
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showMonthPicker = true
                         }
                         .sheet(isPresented: $showMonthPicker) {
-                            let months = selectedYear == currentYear ? Array(1...currentMonth) : Array(1...12)
-                            MonthPicker(selectedMonth: $selectedMonth, isPresented: $showMonthPicker, months: months) {
-                                self.selectedDay = 1
+                            let months = (selectedYear == currentYear) ? Array(1...currentMonth) : Array(1...12)
+                            MonthPicker(
+                                selectedMonth: Binding(
+                                    get: { selectedMonth ?? 1 },
+                                    set: { newValue in selectedMonth = newValue }
+                                ),
+                                isPresented: $showMonthPicker,
+                                months: months
+                            ) {
+                                self.selectedDay = nil
                             }
                         }
-                        
+
                         CustomDayButton(
                             selectedDay: $selectedDay,
                             isPresented: $showDayPicker,
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
-                        .frame(width: geometry.size.width * 0.27, height: 48)
+                        .frame(width: 100, height: 48)
                         .cornerRadius(24)
                         .onTapGesture {
                             self.showDayPicker = true
                         }
                         .sheet(isPresented: $showDayPicker) {
-                            DayPicker(selectedDay: $selectedDay, isPresented: $showDayPicker, days: days)
+                            DayPicker(
+                                selectedDay: Binding(
+                                    get: { selectedDay ?? 1 },
+                                    set: { newValue in selectedDay = newValue }
+                                ),
+                                isPresented: $showDayPicker,
+                                days: days
+                            )
                         }
+
                     }
-                    .padding(.horizontal, 20)
+                    
+                    Spacer().frame(height: 40)
                     
                     HStack {
-                        NavigationLink(destination: DBTIGuideView()) {
+                        NavigationLink(destination: Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
+                            DBTIGuideView( nav: nav)
+                        }) {
                             ZStack {
                                 HStack {
                                     Spacer()
@@ -153,10 +204,16 @@ struct InputUserInfoView: View {
                                 }
                             }
                         }
-                        .frame(width: min(geometry.size.width * 0.9, 450), height: 48)
-                        .background(isNameConfirmed ? Color.mainGreen : Color.disabled) // 닉네임 중복 확인이 완료되었을 때만 활성화
+                        .frame(width: 320, height: 48)
+                        .background(isFormComplete ? Color.mainGreen : Color.disabled)
                         .cornerRadius(24)
-                        .disabled(!isNameConfirmed) // 닉네임 중복 확인이 완료되었을 때만 활성화
+                        .disabled(!isFormComplete)
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if isFormComplete {
+                                userManager.nickname = name
+//                                print(userManager.nickname ?? "닉네임 세팅 안 됨")
+                            }
+                        })
                     }
                     
                     Spacer()
@@ -169,6 +226,7 @@ struct InputUserInfoView: View {
                         message: Text(alertMessage),
                         primaryButton: .default(Text("Confirm"), action: {
                             isNameConfirmed = true // 닉네임 중복 확인 완료
+                            self.hideKeyboard()
                         }),
                         secondaryButton: .cancel()
                     )
@@ -180,9 +238,25 @@ struct InputUserInfoView: View {
                     )
                 }
             }
-            .contentShape(Rectangle()) // Make the entire view tappable
+            .contentShape(Rectangle())
             .onTapGesture {
                 self.hideKeyboard()
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("로그아웃")
+                            .font(.customFont(Font.body3Regular))
+                            .foregroundColor(.mainBlue)
+                    }
+                }
+                .offset(x: 8, y: 8)
             }
         }
     }
@@ -190,7 +264,13 @@ struct InputUserInfoView: View {
     func checkUsername() {
         let existingUsernames = ["상준", "희태", "우진", "성재", "영규", "해인"]
         
-        if existingUsernames.contains(name) {
+        if (name == "") {
+            alertTitle = "글자 수 오류"
+            alertMessage = "닉네임은 1~12자로 입력해주세요."
+            showConfirmation = false
+            isNameConfirmed = false
+        }
+        else if existingUsernames.contains(name) {
             alertTitle = "닉네임 중복"
             alertMessage = "이 닉네임은 이미 사용 중입니다. 다른 닉네임을 선택해주세요."
             showConfirmation = false
@@ -202,11 +282,5 @@ struct InputUserInfoView: View {
         }
         
         showAlert = true
-    }
-}
-
-struct InputUserInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        InputUserInfoView()
     }
 }

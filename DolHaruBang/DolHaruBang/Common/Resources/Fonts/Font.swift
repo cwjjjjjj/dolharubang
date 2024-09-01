@@ -3,6 +3,8 @@ import UIKit
 
 let defaultTextSize : CGFloat = 50
 
+
+
 extension Font {
     enum CustomFont: String {
         case cafe24SsurroundBold = "Cafe24Ssurround"
@@ -30,6 +32,7 @@ extension Font {
     static var body1Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 16) }
     static var body2Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var body3Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 12) }
+   
     static var body1Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 16) }
     static var body2Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 14) }
     static var body3Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 12) }
@@ -49,4 +52,3 @@ extension Font {
         return Font.custom(style.customFont.rawValue, size: style.size)
     }
 }
-
