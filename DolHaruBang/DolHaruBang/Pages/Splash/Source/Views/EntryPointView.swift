@@ -28,8 +28,12 @@ struct EntryPointView: View {
         ZStack{
             if showMainView {
                 NavigationView{
-                    DBTIGuideView()
-                    LoginView()
+                    HomeView(store: Store(initialState: HomeFeature.State()) {
+                        HomeFeature()
+                            ._printChanges()
+                      })
+//                    DBTIGuideView()
+//                    LoginView()
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
                     // LoginView()
