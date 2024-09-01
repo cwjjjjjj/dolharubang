@@ -22,8 +22,8 @@ struct NavigationFeature {
     case park(ParkFeature)
     case mypage(MyPageFeature)
     case home(HomeFeature)
-    case DBTIQuestion1View
-    case DBTIResultView(FloatButtonFeature)
+    case DBTIQuestion1View(DBTIFeature)
+    case DBTIResultView(DBTIFeature)
   }
     
   // path - NavigationStack 에서 사용하는 Stack
@@ -113,12 +113,14 @@ struct NavigationFeature {
                   return createAsyncEnableClickEffect()
                   
               case .DBTIQuestion1View:
-                  state.path.append(.DBTIQuestion1View)
+                  state.path.append(.DBTIQuestion1View(DBTIFeature.State()))
+                  return .none
               case .DBTIResultView(_):
-                  state.path.append(.DBTIResultView(FloatButtonFeature.State()))
+                  state.path.append(.DBTIResultView(DBTIFeature.State()))
+                  return .none
               }
-          return .none
           
+      // 이렇게 사용하면 NavigationFeature를 불러오지 않고 기존에 사용하는 Reducer만 불러와도 사용 가능
       case let .path(action):
           switch action {
               
@@ -126,50 +128,23 @@ struct NavigationFeature {
             state.path.append(.home(HomeFeature.State()))
             return .none
               
+          case .element(id: _, action: .DBTIResultView(.goBack)), .element(id: _, action: .DBTIQuestion1View(.goBack)):
+              state.path.removeLast()
+              return .none
+              
           default:
             return .none
           }
+          
+        
+     
+     
+     
       }
     }
     // Navigation 선언부 destination 패턴매칭
     .forEach(\.path, action: \.path)
   }
     
-}
-
-
-
-@Reducer
-struct FloatButtonFeature {
-  @ObservableState
-  struct State: Equatable {
-      
-  }
-
-  enum Action {
-//    case calendarButtonTapped
-    case harubangButtonTapped
-    case homeButtonTapped
-    case parkButtonTapped
-    case mypageButtonTapped
-  }
-
-  var body: some Reducer<State, Action> {
-    Reduce { state, action in
-      switch action {
-//      case .calendarButtonTapped:
-//        return .none
-      case .harubangButtonTapped:
-          return .none
-      case .homeButtonTapped:
-        return .none
-      case .parkButtonTapped:
-        return .none
-      case .mypageButtonTapped:
-          return .none
-        
-      }
-    }
-  }
 }
 

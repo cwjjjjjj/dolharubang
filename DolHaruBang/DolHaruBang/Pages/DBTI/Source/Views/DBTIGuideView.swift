@@ -72,7 +72,7 @@ struct DBTIGuideView: View {
                         Spacer().frame(height: 30)
                         
                         HStack {
-                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View) {
+                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View(DBTIFeature.State())){
                                 HStack {
                                     Spacer()
                                     Text("테스트 시작")
@@ -103,8 +103,8 @@ struct DBTIGuideView: View {
                 ParkView(store : store)
             case let .home(store):
                 HomeView(store : store)
-            case .DBTIQuestion1View:
-                DBTIQuestion1View()
+            case let .DBTIQuestion1View(store):
+                DBTIQuestion1View(store : store)
             case let .DBTIResultView(store):
                 DBTIResultView(store : store)
             }
