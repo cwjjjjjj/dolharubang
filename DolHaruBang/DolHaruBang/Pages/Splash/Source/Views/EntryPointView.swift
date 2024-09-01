@@ -19,19 +19,16 @@ struct EntryPointView: View {
     
     @State private var showMainView = false // 메인 뷰를 표시할지를 결정하는 상태 변수
     
-//    static let store =  Store(initialState: HomeFeature.State()) {
-//        HomeFeature()
-//            ._printChanges()
-//      }
     
     var body: some View {
         ZStack{
             if showMainView {
-                NavigationView{
-                    DBTIGuideView()
-                    LoginView()
-                }
-                .navigationViewStyle(StackNavigationViewStyle())
+                    Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
+                        DBTIGuideView( nav: nav)
+                    }
+                    
+//                    DBTIGuideView()
+//                    LoginView( )
                     // LoginView()
 //                    HomeView(store:EntryPointView.store)
 //                }
