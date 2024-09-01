@@ -32,6 +32,7 @@ struct NavigationFeature {
     case popToRoot
     case goToScreen(Path)
   }
+    
 
   var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -87,16 +88,14 @@ struct NavigationFeature {
                   }
                   state.path.append(.mypage(MyPageFeature.State()))
               case .home(_):
-                  // Keep removing the last element until `.home` is the last element
                   while let last = state.path.last {
                       if case .home = last {
-                          // Last element is `.home`, break the loop
                           break
                       } else {
-                          // Remove the last element from `state.path`
                           state.path.removeLast()
                       }
                   }
+                  
 //                  state.path.append(.home(HomeFeature.State()))
               case .DBTIQuestion1View:
                   state.path.append(.DBTIQuestion1View)
@@ -160,3 +159,4 @@ struct FloatButtonFeature {
     }
   }
 }
+
