@@ -4,7 +4,6 @@ import ComposableArchitecture
 struct DBTIQuestion1View: View {
     
     @State var store : StoreOf<DBTIFeature>
-//    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @State private var selectedButton: Int? = nil
     @State private var tag: Int? = nil
