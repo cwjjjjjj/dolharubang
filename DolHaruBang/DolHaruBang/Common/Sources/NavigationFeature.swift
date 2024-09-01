@@ -24,6 +24,7 @@ struct NavigationFeature {
   @ObservableState
   struct State: Equatable {
     var path = StackState<Path.State>()
+    var enableClick : Bool = true
   }
 
   enum Action {
@@ -31,6 +32,7 @@ struct NavigationFeature {
     case path(StackActionOf<Path>)
     case popToRoot
     case goToScreen(Path)
+    case clickButtonEnable
   }
     
 
@@ -49,6 +51,11 @@ struct NavigationFeature {
           
           
 
+         
+      case .clickButtonEnable:
+          state.enableClick = true
+          return .none
+          
           
       case let .goToScreen(action):
           
@@ -64,7 +71,20 @@ struct NavigationFeature {
                           state.path.removeLast()
                       }
                   }
+                  state.enableClick = false
                   state.path.append(.harubang(HaruBangFeature.State()))
+                  return .run { send in
+                      do {
+                          // 비동기 작업 (예: 1초 대기)
+                          try await Task.sleep(nanoseconds: 1_000_000_000)
+                          
+                          // 비동기 작업 완료 후 버튼을 다시 활성화
+                          await send(.clickButtonEnable)
+                      } catch {
+                          // 오류 처리
+                          print("Error during sleep: \(error)")
+                      }
+                  }
               case .park(_):
                   while let last = state.path.last {
                       if case .home = last {
@@ -75,7 +95,20 @@ struct NavigationFeature {
                           state.path.removeLast()
                       }
                   }
+                  state.enableClick = false
                   state.path.append(.park(ParkFeature.State()))
+                  return .run { send in
+                      do {
+                          // 비동기 작업 (예: 1초 대기)
+                          try await Task.sleep(nanoseconds: 1_000_000_000)
+                          
+                          // 비동기 작업 완료 후 버튼을 다시 활성화
+                          await send(.clickButtonEnable)
+                      } catch {
+                          // 오류 처리
+                          print("Error during sleep: \(error)")
+                      }
+                  }
               case .mypage(_):
                   while let last = state.path.last {
                       if case .home = last {
@@ -86,13 +119,40 @@ struct NavigationFeature {
                           state.path.removeLast()
                       }
                   }
+                  state.enableClick = false
                   state.path.append(.mypage(MyPageFeature.State()))
+                  return .run { send in
+                      do {
+                          // 비동기 작업 (예: 1초 대기)
+                          try await Task.sleep(nanoseconds: 1_000_000_000)
+                          
+                          // 비동기 작업 완료 후 버튼을 다시 활성화
+                          await send(.clickButtonEnable)
+                      } catch {
+                          // 오류 처리
+                          print("Error during sleep: \(error)")
+                      }
+                  }
+                  
               case .home(_):
                   while let last = state.path.last {
                       if case .home = last {
                           break
                       } else {
                           state.path.removeLast()
+                      }
+                  }
+                  state.enableClick = false
+                  return .run { send in
+                      do {
+                          // 비동기 작업 (예: 1초 대기)
+                          try await Task.sleep(nanoseconds: 1_000_000_000)
+                          
+                          // 비동기 작업 완료 후 버튼을 다시 활성화
+                          await send(.clickButtonEnable)
+                      } catch {
+                          // 오류 처리
+                          print("Error during sleep: \(error)")
                       }
                   }
                   
@@ -131,7 +191,9 @@ struct NavigationFeature {
 @Reducer
 struct FloatButtonFeature {
   @ObservableState
-  struct State: Equatable {}
+  struct State: Equatable {
+      
+  }
 
   enum Action {
 //    case calendarButtonTapped
@@ -147,14 +209,14 @@ struct FloatButtonFeature {
 //      case .calendarButtonTapped:
 //        return .none
       case .harubangButtonTapped:
-        return .none
+          return .none
       case .homeButtonTapped:
-          print("플롯 홈")
         return .none
       case .parkButtonTapped:
         return .none
       case .mypageButtonTapped:
-        return .none
+          return .none
+        
       }
     }
   }

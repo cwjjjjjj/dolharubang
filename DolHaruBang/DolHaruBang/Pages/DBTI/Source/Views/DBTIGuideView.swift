@@ -103,7 +103,7 @@ struct DBTIGuideView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()} , nav: nav)
+            FloatingMenuView(nav: nav)
           }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
