@@ -207,9 +207,9 @@ struct HomeView : View {
 //                        .padding(.bottom , geometry.size.height * 0.035)
                         
                     }
-                    .safeAreaInset(edge: .bottom) {
-                                FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()})
-                              }
+//                    .safeAreaInset(edge: .bottom) {
+//                                FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()})
+//                              }
                     
                 } // ZStack
                 
@@ -233,16 +233,58 @@ struct HomeView : View {
 
 struct FloatingMenuView : View {
 
-    let store : StoreOf<FloatButtonFeature>
+    var store : StoreOf<FloatButtonFeature>
+    var nav: StoreOf<NavigationFeature>
+    
+    struct ViewState: Equatable {
+      struct Screen: Equatable, Identifiable {
+        let id: StackElementID
+        let name: String
+      }
+
+      var currentStack: [Screen]
+      var total: Int
+      init(state: NavigationFeature.State) {
+        self.total = 0
+        self.currentStack = []
+        for (id, element) in zip(state.path.ids, state.path) {
+          switch element {
+          case let .harubang(HaruBangFeature):
+              print("하루방")
+              self.currentStack.insert(Screen(id: id, name: "Screen A"), at: 0)
+          case let .park(ParkFeature):
+              print("공원")
+              self.currentStack.insert(Screen(id: id, name: "Screen B"), at: 0)
+          case let .mypage(MyPageFeature):
+              print("마이페이지")
+              self.currentStack.insert(Screen(id: id, name: "Screen C"), at: 0)
+          case let .home(HomeFeature):
+              print("홈")
+              self.currentStack.insert(Screen(id: id, name: "Screen D"), at: 0)
+          case .DBTIQuestion1View:
+              print("질문")
+              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
+          case let .DBTIResultView(FloatButtonFeature):
+              print("결과")
+              self.currentStack.insert(Screen(id: id, name: "Screen F"), at: 0)
+          }
+        }
+          self.total = self.currentStack.count
+          print("total : ", total)
+      }
+    }
 
     var body : some View {
-        HStack{
-            BottomButtonView(imageName: "Calander", buttonText: "달력", destinationState: .harubang(HaruBangFeature.State()))
-            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destinationState: .harubang(HaruBangFeature.State()))
-            BottomButtonView(imageName: "Home", destinationState: .home(HomeFeature.State()))
-            BottomButtonView(imageName: "Park", buttonText: "공원", destinationState: .park(ParkFeature.State()))
-            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destinationState: .mypage(MyPageFeature.State()))
+        let viewState = ViewState(state: nav.state)
+        if viewState.currentStack.count > 0{
+            HStack{
+                BottomButtonView(imageName: "Calander", buttonText: "달력", destinationState: .harubang(HaruBangFeature.State()))
+                BottomButtonView(imageName: "Harubang", buttonText: "하루방", destinationState: .harubang(HaruBangFeature.State()))
+                BottomButtonView(imageName: "Home", destinationState: .home(HomeFeature.State()))
+                BottomButtonView(imageName: "Park", buttonText: "공원", destinationState: .park(ParkFeature.State()))
+                BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destinationState: .mypage(MyPageFeature.State()))
             }
+        }
     }
 }
 
@@ -251,9 +293,10 @@ struct BottomButtonView: View {
     var imageName: String
     var buttonText: String?
     var destinationState : NavigationFeature.Path.State
-
+//    var nav : StoreOf<NavigationFeature>
+    
     var body: some View {
-        NavigationLink(state : destinationState) {
+        Button(action : {print("버튼")}) {
             ZStack {
                 VStack(spacing: 0) {
                     HStack {

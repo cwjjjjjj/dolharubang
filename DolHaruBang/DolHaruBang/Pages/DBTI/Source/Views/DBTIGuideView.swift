@@ -96,14 +96,15 @@ struct DBTIGuideView: View {
                 ParkView(store : store)
             case let .home(store):
                 HomeView(store : store)
-            case let .floatButton(store):
-                FloatingMenuView(store : store)
             case .DBTIQuestion1View:
                 DBTIQuestion1View()
             case let .DBTIResultView(store):
                 DBTIResultView(store : store)
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()} , nav: nav)
+          }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
         .toolbar {
