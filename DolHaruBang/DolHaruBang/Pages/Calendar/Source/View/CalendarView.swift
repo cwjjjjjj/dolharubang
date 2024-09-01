@@ -370,6 +370,10 @@ struct RecordPopupView: View {
     @State private var editingRecordIndex: Int? = nil // 현재 편집 중인 일정의 인덱스
     @State private var recordCount: Int = 0 // 일정 갯수
 
+    // Picker 상태 관리
+    @State private var showStartPicker: Bool = false // 시작 시간 선택기 표시 여부
+    @State private var showEndPicker: Bool = false // 종료 시간 선택기 표시 여부
+
     var formattedDate: String {
         let year = dateFormatterYear.string(from: date)
         let month = dateFormatterMonth.string(from: date)
@@ -377,6 +381,12 @@ struct RecordPopupView: View {
         let weekday = dateFormatterWeekday.string(from: date)
 
         return "\(year) \(month) \(day)일 \(weekday)"
+    }
+    
+    private func isValidTimeRange() -> Bool {
+        let startTimeInMinutes = (startHour % 12) * 60 + startMinute + (startPeriod == "오후" ? 720 : 0)
+        let endTimeInMinutes = (endHour % 12) * 60 + endMinute + (endPeriod == "오후" ? 720 : 0)
+        return endTimeInMinutes > startTimeInMinutes
     }
 
     var body: some View {
@@ -432,6 +442,42 @@ struct RecordPopupView: View {
         .onChange(of: records) { _ in
             recordCount = records[date]?.count ?? 0
         }
+        .sheet(isPresented: $showStartPicker) {
+            TimePickerSheetView(
+                hour: $startHour,
+                minute: $startMinute,
+                period: $startPeriod,
+                title: "시작 시간",
+                onConfirm: {
+                    showStartPicker = false
+                    // 종료 시간이 시작 시간보다 이전인지 확인
+                    if !isValidTimeRange() {
+                        endHour = startHour
+                        endMinute = startMinute
+                        endPeriod = startPeriod
+                    }
+                }
+            )
+            .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showEndPicker) {
+            TimePickerSheetView(
+                hour: $endHour,
+                minute: $endMinute,
+                period: $endPeriod,
+                title: "종료 시간",
+                // 시작 시간이 종료 시간보다 이후인지 확인
+                onConfirm: {
+                    showEndPicker = false
+                    if !isValidTimeRange() {
+                        endHour = startHour
+                        endMinute = startMinute
+                        endPeriod = startPeriod
+                    }
+                }
+            )
+            .presentationDetents([.medium])
+        }
     }
     
     // 일정 추가용 뷰
@@ -455,6 +501,7 @@ struct RecordPopupView: View {
                     }
                 )
                 .focused($isTextFieldFocused)
+
                 
                 if isTextFieldFocused {
                     Button(action: {
@@ -530,7 +577,7 @@ struct RecordPopupView: View {
                         let recordComponents = records[date]![recordIndex].split(separator: "-").map { String($0).trimmingCharacters(in: .whitespaces) }
                         
                         if recordComponents.count == 3 {
-                            HStack (alignment: .top) {
+                            HStack(alignment: .top) {
                                 Circle()
                                     .fill(circleColors[recordIndex % circleColors.count])
                                     .frame(width: 20, height: 20)
@@ -574,130 +621,59 @@ struct RecordPopupView: View {
     private func timePickerView() -> some View {
         VStack(alignment: .leading) {
             Divider()
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 54)
                 .padding(.bottom, 4)
             
-            // 시작 시간 Picker 커스텀
-            HStack {
+            // 시작 시간 설정 버튼
+            HStack(spacing: 0) {
                 Text("시작")
                     .font(Font.customFont(Font.body2Bold))
                     .foregroundColor(.decoSheetTabbar)
+                    .onTapGesture {
+                        showStartPicker = true
+                    }
+                
+                Spacer().frame(width: 8)
                 
                 Button(action: {
-                    startPeriod = startPeriod == "오전" ? "오후" : "오전"
+                    showStartPicker = true
                 }) {
-                    Text(startPeriod)
+                    Text("\(startPeriod) \(startHour) : \(String(format: "%02d", startMinute)) ")
                         .font(Font.customFont(Font.body2Bold))
                         .foregroundColor(.calendarCover)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
-                
-                Menu {
-                    ForEach(1..<13) { hour in
-                        Button(action: {
-                            startHour = hour
-                        }) {
-                            Text("\(hour) 시")
-                                .font(Font.customFont(Font.body2Bold))
-                                .foregroundColor(.calendarCover)
-                        }
-                    }
-                } label: {
-                    Text("\(startHour) 시")
-                        .font(Font.customFont(Font.body2Bold))
-                        .foregroundColor(.calendarCover)
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
-
-                Menu {
-                    ForEach(0..<60) { minute in
-                        Button(action: {
-                            startMinute = minute
-                        }) {
-                            Text(String(format: "%02d 분", minute))
-                                .font(Font.customFont(Font.body2Bold))
-                                .foregroundColor(.calendarCover)
-                        }
-                    }
-                } label: {
-                    Text(String(format: "%02d 분", startMinute))
-                        .font(Font.customFont(Font.body2Bold))
-                        .foregroundColor(.calendarCover)
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
             }
-            .padding(.leading, 56)
+            .padding(.leading, 52)
             
             Divider()
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 54)
                 .padding(.bottom, 4)
             
-            HStack {
+            // 종료 시간 설정 버튼
+            HStack(spacing: 0) {
                 Text("종료")
                     .font(Font.customFont(Font.body2Bold))
                     .foregroundColor(.decoSheetTabbar)
+                    .onTapGesture {
+                        showEndPicker = true
+                    }
+                
+                Spacer().frame(width: 8)
                 
                 Button(action: {
-                    endPeriod = endPeriod == "오전" ? "오후" : "오전"
+                    showEndPicker = true
                 }) {
-                    Text(endPeriod)
+                    Text("\(endPeriod) \(endHour) : \(String(format: "%02d", endMinute))")
                         .font(Font.customFont(Font.body2Bold))
                         .foregroundColor(.calendarCover)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
-                
-                Menu {
-                    ForEach(1..<13) { hour in
-                        Button(action: {
-                            endHour = hour
-                        }) {
-                            Text("\(hour) 시")
-                                .font(Font.customFont(Font.body2Bold))
-                                .foregroundColor(.calendarCover)
-                        }
-                    }
-                } label: {
-                    Text("\(endHour) 시")
-                        .font(Font.customFont(Font.body2Bold))
-                        .foregroundColor(.calendarCover)
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
-
-                Menu {
-                    ForEach(0..<60) { minute in
-                        Button(action: {
-                            endMinute = minute
-                        }) {
-                            Text(String(format: "%02d 분", minute))
-                                .font(Font.customFont(Font.body2Bold))
-                                .foregroundColor(.calendarCover)
-                        }
-                    }
-                } label: {
-                    Text(String(format: "%02d 분", endMinute))
-                        .font(Font.customFont(Font.body2Bold))
-                        .foregroundColor(.calendarCover)
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    isTextFieldFocused = true
-                })
             }
-            .padding(.leading, 56)
+            .padding(.leading, 52)
             
             Divider()
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 56)
                 .padding(.bottom, 4)
         }
     }
@@ -766,7 +742,56 @@ struct RecordPopupView: View {
     }
 }
 
+struct TimePickerSheetView: View {
+    @Binding var hour: Int
+    @Binding var minute: Int
+    @Binding var period: String
+    var title: String
+    var onConfirm: () -> Void
 
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.headline)
+                .padding()
+
+            HStack {
+                Picker("", selection: $period) {
+                    Text("오전").tag("오전")
+                    Text("오후").tag("오후")
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 80)
+                .clipped()
+
+                Picker("", selection: $hour) {
+                    ForEach(1..<13) { hour in
+                        Text("\(hour) 시").tag(hour)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 80)
+                .clipped()
+
+                Picker("", selection: $minute) {
+                    ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { minute in
+                        Text(String(format: "%02d 분", minute)).tag(minute)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 80)
+                .clipped()
+            }
+            .frame(height: 150)
+            
+            Button("확인") {
+                onConfirm()
+            }
+            .padding()
+        }
+        .padding()
+    }
+}
 
 
 
