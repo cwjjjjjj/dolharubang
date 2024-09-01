@@ -194,6 +194,7 @@ struct HomeView : View {
                         .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.15 : 0)
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
+                        Spacer().frame(height: geometry.size.height * 0.12)
                       
 //                        // 하단 버튼들
 //                        HStack{
@@ -207,12 +208,8 @@ struct HomeView : View {
 //                        .padding(.bottom , geometry.size.height * 0.035)
                         
                     }
-//                    .safeAreaInset(edge: .bottom) {
-//                                FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()})
-//                              }
                     
                 } // ZStack
-                
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
                 .frame(height: geometry.size.height)
@@ -249,24 +246,26 @@ struct FloatingMenuView : View {
         self.currentStack = []
         for (id, element) in zip(state.path.ids, state.path) {
           switch element {
-          case let .harubang(HaruBangFeature):
+          case .harubang(_):
               print("하루방")
               self.currentStack.insert(Screen(id: id, name: "Screen A"), at: 0)
-          case let .park(ParkFeature):
+          case .park(_):
               print("공원")
               self.currentStack.insert(Screen(id: id, name: "Screen B"), at: 0)
-          case let .mypage(MyPageFeature):
+          case .mypage(_):
               print("마이페이지")
               self.currentStack.insert(Screen(id: id, name: "Screen C"), at: 0)
-          case let .home(HomeFeature):
+          case .home(_):
               print("홈")
               self.currentStack.insert(Screen(id: id, name: "Screen D"), at: 0)
-          case .DBTIQuestion1View:
-              print("질문")
-              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
-          case let .DBTIResultView(FloatButtonFeature):
-              print("결과")
-              self.currentStack.insert(Screen(id: id, name: "Screen F"), at: 0)
+//          case .DBTIQuestion1View:
+//              print("질문")
+//              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
+//          case let .DBTIResultView(FloatButtonFeature):
+//              print("결과")
+//              self.currentStack.insert(Screen(id: id, name: "Screen F"), at: 0)
+          default :
+              self.currentStack.removeAll()
           }
         }
           self.total = self.currentStack.count
@@ -277,26 +276,37 @@ struct FloatingMenuView : View {
     var body : some View {
         let viewState = ViewState(state: nav.state)
         if viewState.currentStack.count > 0{
-            HStack{
-                BottomButtonView(imageName: "Calander", buttonText: "달력", destinationState: .harubang(HaruBangFeature.State()))
-                BottomButtonView(imageName: "Harubang", buttonText: "하루방", destinationState: .harubang(HaruBangFeature.State()))
-                BottomButtonView(imageName: "Home", destinationState: .home(HomeFeature.State()))
-                BottomButtonView(imageName: "Park", buttonText: "공원", destinationState: .park(ParkFeature.State()))
-                BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destinationState: .mypage(MyPageFeature.State()))
-            }
-        }
-    }
-}
+               HStack{
+                   BottomButtonView(imageName: "Calander", buttonText: "달력"){
+                       nav.send(.goToScreen(.harubang(HaruBangFeature())))
+                   }
+                   BottomButtonView(imageName: "Harubang", buttonText: "하루방"){
+                       nav.send(.goToScreen(.harubang(HaruBangFeature())))
+                   }
+                   BottomButtonView(imageName: "Home"){
+                       nav.send(.goToScreen(.home(HomeFeature())))
+                   }
+                   BottomButtonView(imageName: "Park", buttonText: "공원"){
+                       nav.send(.goToScreen(.park(ParkFeature())))
+                   }
+                   BottomButtonView(imageName: "Mypage", buttonText: "마이페이지") {
+                       nav.send(.goToScreen(.mypage(MyPageFeature())))
+                   }
+                   
+               }
+           }
+       }
+   }
 
 
-struct BottomButtonView: View {
-    var imageName: String
-    var buttonText: String?
-    var destinationState : NavigationFeature.Path.State
-//    var nav : StoreOf<NavigationFeature>
-    
-    var body: some View {
-        Button(action : {print("버튼")}) {
+   struct BottomButtonView: View {
+       var imageName: String
+       var buttonText: String?
+       var closure : () -> Void
+       
+       var body: some View {
+           Button(action : closure ) {
+
             ZStack {
                 VStack(spacing: 0) {
                     HStack {

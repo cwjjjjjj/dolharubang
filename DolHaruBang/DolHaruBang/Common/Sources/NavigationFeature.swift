@@ -30,6 +30,7 @@ struct NavigationFeature {
     case goBackToScreen(id: StackElementID)
     case path(StackActionOf<Path>)
     case popToRoot
+    case goToScreen(Path)
   }
 
   var body: some Reducer<State, Action> {
@@ -44,6 +45,65 @@ struct NavigationFeature {
       case .popToRoot:
         state.path.removeAll()
         return .none
+          
+          
+
+          
+      case let .goToScreen(action):
+          
+              switch action {
+              case .harubang(_):
+                  
+                  while let last = state.path.last {
+                      if case .home = last {
+                          // Last element is `.home`, break the loop
+                          break
+                      } else {
+                          // Remove the last element from `state.path`
+                          state.path.removeLast()
+                      }
+                  }
+                  state.path.append(.harubang(HaruBangFeature.State()))
+              case .park(_):
+                  while let last = state.path.last {
+                      if case .home = last {
+                          // Last element is `.home`, break the loop
+                          break
+                      } else {
+                          // Remove the last element from `state.path`
+                          state.path.removeLast()
+                      }
+                  }
+                  state.path.append(.park(ParkFeature.State()))
+              case .mypage(_):
+                  while let last = state.path.last {
+                      if case .home = last {
+                          // Last element is `.home`, break the loop
+                          break
+                      } else {
+                          // Remove the last element from `state.path`
+                          state.path.removeLast()
+                      }
+                  }
+                  state.path.append(.mypage(MyPageFeature.State()))
+              case .home(_):
+                  // Keep removing the last element until `.home` is the last element
+                  while let last = state.path.last {
+                      if case .home = last {
+                          // Last element is `.home`, break the loop
+                          break
+                      } else {
+                          // Remove the last element from `state.path`
+                          state.path.removeLast()
+                      }
+                  }
+//                  state.path.append(.home(HomeFeature.State()))
+              case .DBTIQuestion1View:
+                  state.path.append(.DBTIQuestion1View)
+              case .DBTIResultView(_):
+                  state.path.append(.DBTIResultView(FloatButtonFeature.State()))
+              }
+          return .none
           
       case let .path(action):
           switch action {
@@ -64,6 +124,7 @@ struct NavigationFeature {
     }
     .forEach(\.path, action: \.path)
   }
+    
 }
 
 
