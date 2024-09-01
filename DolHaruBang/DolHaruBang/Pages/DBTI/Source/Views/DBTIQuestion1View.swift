@@ -1,7 +1,10 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct DBTIQuestion1View: View {
-    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
+    
+    @State var store : StoreOf<DBTIFeature>
+//    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @State private var selectedButton: Int? = nil
     @State private var tag: Int? = nil
@@ -67,7 +70,7 @@ struct DBTIQuestion1View: View {
 //                            EmptyView()
 //                        }
                         
-                        NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(FloatButtonFeature.State())){
+                        NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(DBTIFeature.State())){
                             VStack{
                                 CustomButton(
                                     title: "속 괜찮아?",
@@ -112,7 +115,7 @@ struct DBTIQuestion1View: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        store.send(.goBack)
                     }) {
                         Image("backIcon")
                             .resizable()
