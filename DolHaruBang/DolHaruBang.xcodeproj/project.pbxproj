@@ -33,6 +33,10 @@
 		658962822C856D3600F27FB4 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962812C856D3600F27FB4 /* Demo.swift */; };
 		6589628E2C85884F00F27FB4 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628D2C85884F00F27FB4 /* Sign.swift */; };
 		658962902C858E6300F27FB4 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628F2C858E6300F27FB4 /* Mail.swift */; };
+		658962922C85D42200F27FB4 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658962912C85D42200F27FB4 /* Accessorys.scnassets */; };
+		658962942C85D42A00F27FB4 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658962932C85D42A00F27FB4 /* Dols.scnassets */; };
+		658962972C85D43300F27FB4 /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962952C85D43300F27FB4 /* lythwood_field_4k.hdr */; };
+		658962982C85D43300F27FB4 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962962C85D43300F27FB4 /* je_gray_02_4k.hdr */; };
 		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
 		65A59DDB2C745D3100B20524 /* UITextFieldPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */; };
 		65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDC2C74683600B20524 /* DecorationView.swift */; };
@@ -73,12 +77,8 @@
 		DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC322C5747F000D1F87B /* NanumSquareRoundOTFR.otf */; };
 		DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */; };
 		DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC392C575B8900D1F87B /* LoginView.swift */; };
-		DAB2EA832C85CF1A007626F8 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA7D2C85CF1A007626F8 /* je_gray_02_4k.hdr */; };
 		DAB2EA842C85CF1A007626F8 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA7E2C85CF1A007626F8 /* Mails.scnassets */; };
-		DAB2EA852C85CF1A007626F8 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA7F2C85CF1A007626F8 /* Dols.scnassets */; };
-		DAB2EA862C85CF1A007626F8 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA802C85CF1A007626F8 /* Accessorys.scnassets */; };
 		DAB2EA872C85CF1A007626F8 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA812C85CF1A007626F8 /* Signs.scnassets */; };
-		DAB2EA882C85CF1A007626F8 /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = DAB2EA822C85CF1A007626F8 /* lythwood_field_4k.hdr */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +107,10 @@
 		658962812C856D3600F27FB4 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		6589628D2C85884F00F27FB4 /* Sign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
 		6589628F2C858E6300F27FB4 /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
+		658962912C85D42200F27FB4 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		658962932C85D42A00F27FB4 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
+		658962952C85D43300F27FB4 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = ../../../../../../Downloads/lythwood_field_4k.hdr; sourceTree = "<group>"; };
+		658962962C85D43300F27FB4 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = ../../../../../../Downloads/je_gray_02_4k.hdr; sourceTree = "<group>"; };
 		65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITextFieldPadding.swift; path = DolHaruBang/Common/Sources/Util/UITextFieldPadding.swift; sourceTree = SOURCE_ROOT; };
 		65A59DDC2C74683600B20524 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
@@ -148,12 +152,8 @@
 		DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundOTFEB.otf; sourceTree = "<group>"; };
 		DAAEFC372C5755E600D1F87B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAEFC392C575B8900D1F87B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		DAB2EA7D2C85CF1A007626F8 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = "../../../../../assets/Resource아래에넣기/je_gray_02_4k.hdr"; sourceTree = "<group>"; };
 		DAB2EA7E2C85CF1A007626F8 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
-		DAB2EA7F2C85CF1A007626F8 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; name = Dols.scnassets; path = "../../../../../assets/Resource아래에넣기/Dols.scnassets"; sourceTree = "<group>"; };
-		DAB2EA802C85CF1A007626F8 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; name = Accessorys.scnassets; path = "../../../../../assets/Resource아래에넣기/Accessorys.scnassets"; sourceTree = "<group>"; };
 		DAB2EA812C85CF1A007626F8 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
-		DAB2EA822C85CF1A007626F8 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = "../../../../../assets/Resource아래에넣기/lythwood_field_4k.hdr"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,10 +231,10 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DAB2EA802C85CF1A007626F8 /* Accessorys.scnassets */,
-				DAB2EA7F2C85CF1A007626F8 /* Dols.scnassets */,
-				DAB2EA7D2C85CF1A007626F8 /* je_gray_02_4k.hdr */,
-				DAB2EA822C85CF1A007626F8 /* lythwood_field_4k.hdr */,
+				658962962C85D43300F27FB4 /* je_gray_02_4k.hdr */,
+				658962952C85D43300F27FB4 /* lythwood_field_4k.hdr */,
+				658962932C85D42A00F27FB4 /* Dols.scnassets */,
+				658962912C85D42200F27FB4 /* Accessorys.scnassets */,
 				DAB2EA7E2C85CF1A007626F8 /* Mails.scnassets */,
 				DAB2EA812C85CF1A007626F8 /* Signs.scnassets */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
@@ -618,7 +618,6 @@
 			children = (
 				DAAEFC0D2C56941800D1F87B /* DolHaruBang */,
 				DAAEFC0C2C56941800D1F87B /* Products */,
-				DAB2EA702C85CD85007626F8 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -654,13 +653,6 @@
 				DA6E57812C5B25170088A7A7 /* Text.swift */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		DAB2EA702C85CD85007626F8 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -730,19 +722,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */,
-				DAB2EA862C85CF1A007626F8 /* Accessorys.scnassets in Resources */,
+				658962982C85D43300F27FB4 /* je_gray_02_4k.hdr in Resources */,
 				65E1C5082C6F3C8700A2E419 /* HomeIcon.xcassets in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
+				658962972C85D43300F27FB4 /* lythwood_field_4k.hdr in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
-				DAB2EA852C85CF1A007626F8 /* Dols.scnassets in Resources */,
 				DAB2EA872C85CF1A007626F8 /* Signs.scnassets in Resources */,
+				658962942C85D42A00F27FB4 /* Dols.scnassets in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				DAB2EA842C85CF1A007626F8 /* Mails.scnassets in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
-				DAB2EA832C85CF1A007626F8 /* je_gray_02_4k.hdr in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
-				DAB2EA882C85CF1A007626F8 /* lythwood_field_4k.hdr in Resources */,
+				658962922C85D42200F27FB4 /* Accessorys.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
