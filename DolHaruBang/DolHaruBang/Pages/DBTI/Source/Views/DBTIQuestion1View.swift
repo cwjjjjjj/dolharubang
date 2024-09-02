@@ -95,7 +95,7 @@ struct DBTIQuestion1View: View {
                                     selectedBackgroundColor: UIColor(Color.mainDarkGreen),
                                     action: {
                                         selectedButton = 2
-                                        tag = 1
+                                        tag = 2
                                     }
                                 )
                                 .frame(width: 320, height: 48)

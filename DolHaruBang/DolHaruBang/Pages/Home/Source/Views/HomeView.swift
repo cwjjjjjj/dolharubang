@@ -166,6 +166,12 @@ struct HomeView : View {
                                     .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
                                     .background(store.ability ? Color.ability2 : Color.ability1)
                                     .clipShape(Circle())
+                                    .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
+                                    .overlay(
+                                      Ellipse()
+                                        .inset(by: 0.25)
+                                        .stroke(.white, lineWidth: 0.25)
+                                    )
                                    
                                     
                                 }
@@ -173,7 +179,8 @@ struct HomeView : View {
                                 CustomTextField(
                                     text: $store.message,
                                     placeholder: "돌에게 말을 걸어보세요",
-                                    placeholderColor: UIColor(Color.placeHolder),
+                                    placeholderColor: Color(hex:"C8BEB2").toUIColor(),
+                                    backgroundColor: .coreWhite,
                                     maxLength: 40,
                                     useDidEndEditing: false,
                                     customFontStyle: Font.body3Bold,
@@ -182,6 +189,8 @@ struct HomeView : View {
                                 )
                                 .frame(width: geometry.size.width * 0.65, height: geometry.size.width * 0.1)
                                 .cornerRadius(25)
+                                .shadow(color: Color(hex:"B4B8BF"), radius: 5, x:0, y:1)
+
                                 
                                 Button(action: {
                                     store.send(.clickMessage)
