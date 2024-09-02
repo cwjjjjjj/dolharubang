@@ -1,9 +1,3 @@
-//
-//  ColorHex.swift
-//  DolHaruBang
-//
-//  Created by 양희태 on 8/16/24.
-//
 import SwiftUI
 
 extension Color {
@@ -19,4 +13,13 @@ extension Color {
     let b = Double((rgb >>  0) & 0xFF) / 255.0
     self.init(red: r, green: g, blue: b)
   }
+    
+    // Color -> UIColor
+    func toUIColor() -> UIColor {
+        if let components = self.cgColor?.components {
+            return UIColor(displayP3Red: components[0], green: components[1], blue: components[2], alpha: components[3])
+        } else {
+            return UIColor(displayP3Red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        }
+    }
 }
