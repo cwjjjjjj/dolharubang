@@ -10,14 +10,14 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "members")
-@Data
+@Getter
 public class Member {
 
     @Id

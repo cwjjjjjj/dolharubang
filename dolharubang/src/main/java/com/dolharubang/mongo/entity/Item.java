@@ -1,5 +1,6 @@
 package com.dolharubang.mongo.entity;
 
+import com.dolharubang.mongo.enumTypes.ItemType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -26,5 +27,7 @@ public class Item {
     private String description;
 
     private LocalDateTime createdAt;
+
+    private LocalDateTime modifiedAt;
 
 }
