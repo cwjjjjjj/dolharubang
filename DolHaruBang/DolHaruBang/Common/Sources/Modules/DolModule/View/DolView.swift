@@ -20,6 +20,7 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedSign : Sign
     @Binding var selectedMail : Mail
     @Binding var signText : String
+    @Binding var sign : Bool
     
     class Coordinator: NSObject {
         var parent: DolView
@@ -43,9 +44,7 @@ struct DolView : UIViewRepresentable {
                     print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
                     // 필요한 액션을 수행합니다.
                     // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
-                    let moveAction = SCNAction.moveBy(x: 0, y: 1, z: 0, duration: 1)
-                    parentNode.runAction(moveAction)
-                    
+                    parent.sign = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
