@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoneRepository extends MongoRepository<Stone, String> {
 
-    Optional<Stone> findByStoneId(@Param("stoneId") ObjectId stoneId);
+    Optional<Stone> findByStoneId(ObjectId stoneId);
 
-    Optional<Stone> findByMemberId(@Param("memberId") long memberId);
+    Optional<Stone> findByMemberId(Long memberId);
+
+
 }

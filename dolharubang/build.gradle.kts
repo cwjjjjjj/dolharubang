@@ -47,6 +47,10 @@ dependencies {
 //    compileOnly("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 }
 
+configurations.all {
+    exclude(group = "commons-logging")
+}
+
 sonarqube {
     properties {
         property("sonar.projectKey", "dolharubang-backend")
