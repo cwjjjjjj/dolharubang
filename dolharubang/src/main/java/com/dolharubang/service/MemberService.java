@@ -31,9 +31,8 @@ public class MemberService {
             .spaceName(requestDto.getSpaceName())
             .build();
 
-        //여기까지 email이 안 넘어옴
-            Member savedMember = memberRepository.save(member);
-            return MemberResDto.fromEntity(savedMember);
+        Member savedMember = memberRepository.save(member);
+        return MemberResDto.fromEntity(savedMember);
     }
 
     @Transactional
