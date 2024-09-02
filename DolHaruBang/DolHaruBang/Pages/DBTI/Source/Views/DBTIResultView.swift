@@ -3,10 +3,9 @@ import ComposableArchitecture
 
 struct DBTIResultView: View {
     
-    let store : StoreOf<FloatButtonFeature>
+    let store : StoreOf<DBTIFeature>
     
     @EnvironmentObject var userManager: UserManager // 유저 닉네임 불러오기 위함
-    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @State private var isEditingName = false
 
@@ -303,7 +302,7 @@ struct DBTIResultView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        store.send(.goBack)
                     }) {
                         Image("backIcon")
                             .resizable()

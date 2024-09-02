@@ -110,6 +110,8 @@ struct HomeView : View {
                         
                         
                         Spacer().background(Color.red)
+                        
+                        // MARK: 3D 돌 뷰
                         DolView(
                             selectedFace: $store.selectedFace,
                             selectedFaceShape: $store.selectedFaceShape,
@@ -191,7 +193,8 @@ struct HomeView : View {
                             }
                             .padding(.bottom , geometry.size.height * 0.02)
                         }
-                        .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.15 : 0)
+                        // 키보드 focus시 오프셋 변경
+                        .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.22 : 0)
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
                         Spacer().frame(height: geometry.size.height * 0.12)
@@ -228,111 +231,6 @@ struct HomeView : View {
     
 } // View
 
-struct FloatingMenuView : View {
-
-    var store : StoreOf<FloatButtonFeature>
-    var nav: StoreOf<NavigationFeature>
-    
-    struct ViewState: Equatable {
-      struct Screen: Equatable, Identifiable {
-        let id: StackElementID
-        let name: String
-      }
-
-      var currentStack: [Screen]
-      var total: Int
-      init(state: NavigationFeature.State) {
-        self.total = 0
-        self.currentStack = []
-        for (id, element) in zip(state.path.ids, state.path) {
-          switch element {
-          case .harubang(_):
-              print("하루방")
-              self.currentStack.insert(Screen(id: id, name: "Screen A"), at: 0)
-          case .park(_):
-              print("공원")
-              self.currentStack.insert(Screen(id: id, name: "Screen B"), at: 0)
-          case .mypage(_):
-              print("마이페이지")
-              self.currentStack.insert(Screen(id: id, name: "Screen C"), at: 0)
-          case .home(_):
-              print("홈")
-              self.currentStack.insert(Screen(id: id, name: "Screen D"), at: 0)
-//          case .DBTIQuestion1View:
-//              print("질문")
-//              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
-//          case let .DBTIResultView(FloatButtonFeature):
-//              print("결과")
-//              self.currentStack.insert(Screen(id: id, name: "Screen F"), at: 0)
-          default :
-              self.currentStack.removeAll()
-          }
-        }
-          self.total = self.currentStack.count
-          print("total : ", total)
-      }
-    }
-
-    var body : some View {
-        let viewState = ViewState(state: nav.state)
-        if viewState.currentStack.count > 0{
-               HStack{
-                   BottomButtonView(imageName: "Calander", buttonText: "달력"){
-                       nav.send(.goToScreen(.harubang(HaruBangFeature())))
-                   }
-                   BottomButtonView(imageName: "Harubang", buttonText: "하루방"){
-                       nav.send(.goToScreen(.harubang(HaruBangFeature())))
-                   }
-                   BottomButtonView(imageName: "Home"){
-                       nav.send(.goToScreen(.home(HomeFeature())))
-                   }
-                   BottomButtonView(imageName: "Park", buttonText: "공원"){
-                       nav.send(.goToScreen(.park(ParkFeature())))
-                   }
-                   BottomButtonView(imageName: "Mypage", buttonText: "마이페이지") {
-                       nav.send(.goToScreen(.mypage(MyPageFeature())))
-                   }
-                   
-               }
-           }
-       }
-   }
-
-
-   struct BottomButtonView: View {
-       var imageName: String
-       var buttonText: String?
-       var closure : () -> Void
-       
-       var body: some View {
-           Button(action : closure ) {
-
-            ZStack {
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Image(imageName)
-                        Spacer()
-                    }
-                    if let buttonText = buttonText {
-                        HStack(alignment: .center) {
-                            Text(buttonText)
-                                .font(Font.customFont(Font.caption1))
-                                .foregroundColor(.white)
-                                .padding(.bottom, 2)
-                        }
-                    }
-                }
-            }
-            .frame(width: 64, height: 64)
-            .background(Color.mainBrown)
-            .cornerRadius(15)
-            .padding(.bottom, 23)
-        }
-    }
-}
-
-
 
 
 struct CommonTextFieldStyle: TextFieldStyle {
@@ -358,7 +256,7 @@ struct CommonTextFieldStyle: TextFieldStyle {
                 )
             
           
-            // TextField
+            // TextField.
             configuration
                 .font(.body)
                 .foregroundColor(textColor)
