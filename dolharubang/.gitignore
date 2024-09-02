@@ -20,6 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 application.properties
 application.yml
+application-prod.yml
 application-aws.yml
 logback.xml
 log4jdbc.log4j2.properties
