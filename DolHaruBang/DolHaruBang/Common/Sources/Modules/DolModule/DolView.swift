@@ -19,6 +19,7 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedAccessory : Accessory
     @Binding var selectedSign : Sign
     @Binding var selectedMail : Mail
+    @Binding var signText : String
     
     class Coordinator: NSObject {
           var parent: DolView
@@ -36,7 +37,7 @@ struct DolView : UIViewRepresentable {
                    let touchedNode = hitResult.node
                    
                    print("touchNode ", touchedNode)
-                    print("touchNode parent" , touchedNode.parent)
+                    
                    // 노드의 이름을 기반으로 터치된 노드를 확인합니다.
                     if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedSign) reference" {
                         print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
@@ -44,6 +45,7 @@ struct DolView : UIViewRepresentable {
                         // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
                         let moveAction = SCNAction.moveBy(x: 0, y: 1, z: 0, duration: 1)
                         parentNode.runAction(moveAction)
+                      
                     }
                     
                     if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
@@ -84,6 +86,11 @@ struct DolView : UIViewRepresentable {
                     
                }
            }
+        
+        
+        
+       
+        
        }
     
       func makeCoordinator() -> Coordinator {
@@ -160,6 +167,15 @@ struct DolView : UIViewRepresentable {
             }
         }
         
+        if let textNode = scene.rootNode.childNode(withName: "text" , recursively: true){
+                
+                // 선택한 얼굴형중 선택한 표정만black_glasses reference
+                print("textnode", textNode)
+                moveNodeToPosition(node: textNode, x: -1.4, y: 1.0, z: 1) // x, y, z 값은 원하는 위치로 설정
+          
+        }
+        
+        
         // Mail Node Hide On Off
         if let mailNode = scene.rootNode.childNode(withName: "Mail" , recursively: true){
             if let childMailNode = mailNode.childNode(withName: "\(selectedMail) reference", recursively: true) {
@@ -202,9 +218,14 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     let signNode = addSign()
     scene.rootNode.addChildNode(signNode)
     
+    
     let mailNode = addMail()
     scene.rootNode.addChildNode(mailNode)
-
+    
+    let textNode = addTextNode()
+    scene.rootNode.addChildNode(textNode)
+    
+    
     for node in scene.rootNode.childNodes {
         // MARK: 모델 크기 조절
         node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
@@ -257,7 +278,7 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
 func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
     
     for childNode in rootNode.childNodes {
-        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "leftDirectionalLightNode" && childNode.name != "forwardDirectionalLightNode" && childNode.name != "rightDirectionalLightNode" && childNode.name != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" {
+        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "leftDirectionalLightNode" && childNode.name != "forwardDirectionalLightNode" && childNode.name != "rightDirectionalLightNode" && childNode.name != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text"{
             childNode.isHidden = true
         }
     }
@@ -294,6 +315,8 @@ func addAccessory() -> SCNNode {
 // MARK: Sign Node Add
 func addSign() -> SCNNode {
     let scene = SCNScene(named: "Signs.scnassets/SignGroup.scn") ?? SCNScene()
+    
+    
     scene.rootNode.name = "sign"
     
     // 임시 : 모델 크기 조절 안되어있음
@@ -419,3 +442,34 @@ func printNodeDetails(node: SCNNode, depth: Int = 0) {
 func moveNodeToPosition(node: SCNNode, x: Float, y: Float, z: Float) {
     node.position = SCNVector3(x, y, z)
 }
+
+// MARK: 텍스트 노드 추가
+func addTextNode() -> SCNNode{
+    // CATextLayer 생성
+        let textLayer = CATextLayer()
+        textLayer.string = "페퍼로니"
+        textLayer.font = Font.uiFont(for: Font.signtext)
+        textLayer.foregroundColor = UIColor.black.cgColor
+        textLayer.alignmentMode = .left
+        textLayer.isWrapped = true
+        
+        // 텍스트 레이어의 크기 설정
+        let maxWidth: CGFloat = 200
+        let maxHeight: CGFloat = 150
+        textLayer.frame = CGRect(x: 0, y: 0, width: maxWidth, height: maxHeight)
+        
+        // SCNPlane 생성
+        let plane = SCNPlane(width: maxWidth / 100, height: maxHeight / 100)
+        
+        // SCNMaterial 생성 및 CATextLayer를 적용
+        let material = SCNMaterial()
+        material.diffuse.contents = textLayer
+        plane.firstMaterial = material
+        
+        // 텍스트 노드 생성
+        let textNode = SCNNode(geometry: plane)
+        
+        textNode.name = "text"
+    
+        return textNode
+       }

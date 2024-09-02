@@ -117,7 +117,8 @@ struct HomeView : View {
                             selectedFaceShape: $store.selectedFaceShape,
                             selectedAccessory: $store.selectedAccessory,
                             selectedSign: $store.selectedSign,
-                            selectedMail: $store.selectedMail
+                            selectedMail: $store.selectedMail,
+                            signText: $store.message
                         )
                         
                         Spacer().background(Color.red)
