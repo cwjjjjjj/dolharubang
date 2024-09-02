@@ -31,6 +31,6 @@ enum Face : String, Customizable {
     case chic = "시크"
     
     var description: String {
-            return self.rawValue
-        }
+        return self.rawValue
+    }
 }

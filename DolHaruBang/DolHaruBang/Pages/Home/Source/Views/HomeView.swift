@@ -206,7 +206,7 @@ struct HomeView : View {
 //                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
 //                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
 //                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
-//                            
+//
 //                        }
 //                        .padding(.bottom , geometry.size.height * 0.035)
                         
@@ -230,8 +230,6 @@ struct HomeView : View {
     
     
 } // View
-
-
 
 struct CommonTextFieldStyle: TextFieldStyle {
     var placeholderColor: Color
