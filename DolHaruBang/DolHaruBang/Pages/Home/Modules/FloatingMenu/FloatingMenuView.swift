@@ -101,6 +101,8 @@ struct FloatingMenuView : View {
                     HStack {
                         Spacer()
                         Image(imageName)
+                            .resizable()
+                           .frame(width: 48, height: 48)
                         Spacer()
                     }
                     if let buttonText = buttonText {
