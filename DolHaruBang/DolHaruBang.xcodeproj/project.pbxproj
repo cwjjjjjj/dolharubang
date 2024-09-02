@@ -31,6 +31,10 @@
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
 		657E5F982C745356002FFA69 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F972C745356002FFA69 /* View.swift */; };
 		658962822C856D3600F27FB4 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962812C856D3600F27FB4 /* Demo.swift */; };
+		6589628A2C8585EF00F27FB4 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658962892C8585EF00F27FB4 /* Signs.scnassets */; };
+		6589628C2C85863A00F27FB4 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 6589628B2C85863A00F27FB4 /* Mails.scnassets */; };
+		6589628E2C85884F00F27FB4 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628D2C85884F00F27FB4 /* Sign.swift */; };
+		658962902C858E6300F27FB4 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628F2C858E6300F27FB4 /* Mail.swift */; };
 		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
 		659DD10D2C8087C8008ABC5C /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 659DD10C2C8087C8008ABC5C /* je_gray_02_4k.hdr */; };
 		659DD10F2C808856008ABC5C /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */; };
@@ -92,6 +96,10 @@
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		657E5F972C745356002FFA69 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		658962812C856D3600F27FB4 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
+		658962892C8585EF00F27FB4 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
+		6589628B2C85863A00F27FB4 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
+		6589628D2C85884F00F27FB4 /* Sign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
+		6589628F2C858E6300F27FB4 /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
 		659DD10C2C8087C8008ABC5C /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = ../../../../../../Downloads/je_gray_02_4k.hdr; sourceTree = "<group>"; };
 		659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = ../../../../../../Downloads/lythwood_field_4k.hdr; sourceTree = "<group>"; };
 		65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITextFieldPadding.swift; path = DolHaruBang/Common/Sources/Util/UITextFieldPadding.swift; sourceTree = SOURCE_ROOT; };
@@ -199,6 +207,8 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6589628B2C85863A00F27FB4 /* Mails.scnassets */,
+				658962892C8585EF00F27FB4 /* Signs.scnassets */,
 				DAA029042C80971800750D5D /* Accessorys.scnassets */,
 				DAA029062C80971800750D5D /* Dols.scnassets */,
 				659DD10E2C808856008ABC5C /* lythwood_field_4k.hdr */,
@@ -359,6 +369,8 @@
 				656592B22C7656F200B06D97 /* Shape.swift */,
 				656592B42C7657DF00B06D97 /* Background.swift */,
 				654402132C7B8B3E00039510 /* Accessory.swift */,
+				6589628D2C85884F00F27FB4 /* Sign.swift */,
+				6589628F2C858E6300F27FB4 /* Mail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -634,9 +646,11 @@
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				DAA029092C80971800750D5D /* Dols.scnassets in Resources */,
+				6589628C2C85863A00F27FB4 /* Mails.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
 				659DD10D2C8087C8008ABC5C /* je_gray_02_4k.hdr in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
+				6589628A2C8585EF00F27FB4 /* Signs.scnassets in Resources */,
 				DAA029072C80971800750D5D /* Accessorys.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -664,8 +678,10 @@
 				657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
 				DA6E57732C58F6AA0088A7A7 /* CustomTextField.swift in Sources */,
+				658962902C858E6300F27FB4 /* Mail.swift in Sources */,
 				656592B12C76561800B06D97 /* CustomizeView.swift in Sources */,
 				657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */,
+				6589628E2C85884F00F27FB4 /* Sign.swift in Sources */,
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
 				657780E62C8349EA00DC08C2 /* HaruBangView.swift in Sources */,
 				DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */,
