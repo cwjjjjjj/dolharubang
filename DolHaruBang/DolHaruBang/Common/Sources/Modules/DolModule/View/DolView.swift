@@ -22,8 +22,12 @@ struct DolView : UIViewRepresentable {
     @Binding var signText : String
     @Binding var sign : Bool
     
+    // 돌 굴러가는 도중에 꾸미기 누르면 버그 발생해서 막기위함
+    @Binding var enable : Bool
+    
     class Coordinator: NSObject {
         var parent: DolView
+        private var lastPanTranslation: CGPoint = .zero
         
         init(parent: DolView) {
             self.parent = parent
@@ -42,54 +46,95 @@ struct DolView : UIViewRepresentable {
                 // 노드의 이름을 기반으로 터치된 노드를 확인합니다.
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedSign) reference" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
-                    // 필요한 액션을 수행합니다.
-                    // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
                     parent.sign = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
-                    // 필요한 액션을 수행합니다.
-                    // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
                     let moveAction = SCNAction.moveBy(x: 0, y: 0, z: 3, duration: 1)
                     parentNode.runAction(moveAction)
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
-                    // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
                     
-                    // 오른쪽 구르기
-                    let rotateAction1 = SCNAction.rotate(by: -2 * .pi , around: SCNVector3(0, 0, 1), duration: 3)
+                    parent.enable = false
+                    // 돌 굴러가유
+                    // 노드가 회전할 때의 회전과 이동 애니메이션 정의
+                    let rotateAction1 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(0, 0, 1), duration: 3)
                     let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
-                    
-                    //                        let reversedAction1 = rotateAction1.reversed()
-                    //                        let reversedAction2 = moveAction1.reversed()
-                    
-                    // 여러 액션을 담아서 runAction 시킬 수 있다
                     let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
                     let actionGroup2 = actionGroup1.reversed()
-                    
-                    //                        let reverseActionGroup = SCNAction.group([reversedAction1, reversedAction2])
-                    
                     let reverseMoveSequence = SCNAction.sequence([actionGroup1, actionGroup2])
                     
-                    parentNode.runAction(reverseMoveSequence)
+                    // 수평으로 맞추기 위한 회전 액션 정의
+                    let rotateToHorizontal = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 0.5)
                     
+                    // 전체 액션 시퀀스 정의
+                    let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
                     
-                    if let AceesoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
-                        AceesoryNode.runAction(reverseMoveSequence)
+                    // 액션이 완료된 후 실행할 작업 정의
+                    let completionAction = SCNAction.run { node in
+                        print("액션이 완료되었습니다.")
+                        self.parent.enable = true
+                        // 액션이 끝나면 꾸미기 버튼 가능하게
+                       }
+                    
+                    let finalSequence = SCNAction.sequence([completeSequence, completionAction])
+                        
+                    
+                    // parentNode와 accessoryNode 모두에 액션 적용
+                    parentNode.runAction(finalSequence)
+                    
+                    if let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                        accessoryNode.runAction(completeSequence)
                     }
-                    
                 }
-                
             }
         }
         
-        
-        
-        
-        
+        // 팬 제스처 핸들러 추가
+        @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+            let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
+            let scnView = gestureRecognizer.view as! SCNView
+            
+            if gestureRecognizer.state == .began {
+                lastPanTranslation = translation
+            }
+            
+            if gestureRecognizer.state == .changed {
+                let deltaX = Float(translation.x - lastPanTranslation.x)
+                let deltaY = Float(translation.y - lastPanTranslation.y)
+                
+                // X, Y축 회전 적용
+                let rotationY = SCNAction.rotateBy(x: 0, y: CGFloat(deltaX * .pi / 180), z: 0, duration: 0.1)
+                let rotationX = SCNAction.rotateBy(x: CGFloat(deltaY * .pi / 180), y: 0, z: 0, duration: 0.1)
+                
+                if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFaceShape) reference", recursively: true) {
+                    faceNode.runAction(rotationY)
+                    faceNode.runAction(rotationX)
+                }
+                
+                if let accNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                    accNode.runAction(rotationY)
+                    accNode.runAction(rotationX)
+                }
+                
+                lastPanTranslation = translation
+            } else if gestureRecognizer.state == .ended {
+                // 제스처가 끝났을 때 노드를 수평으로 맞추는 액션 정의
+                let resetRotation = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 1)
+                
+                if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFaceShape) reference", recursively: true) {
+                    faceNode.runAction(resetRotation)
+                }
+                
+                if let accNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                    accNode.runAction(resetRotation)
+                }
+            }
+        }
+
     }
     
     func makeCoordinator() -> Coordinator {
@@ -102,13 +147,17 @@ struct DolView : UIViewRepresentable {
         let scnView = SCNView()
         scnView.scene = loadScene(faceShape: selectedFaceShape)
         scnView.backgroundColor = UIColor.clear // SCNView의 배경을 투명하게 설정
-        scnView.allowsCameraControl = true
+        scnView.allowsCameraControl = false
         scnView.autoenablesDefaultLighting = false // 기본 조명 자동 활성화 비활성화
         scnView.defaultCameraController.interactionMode = .orbitTurntable
         
         // 탭 제스처 인식기 추가
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
         scnView.addGestureRecognizer(tapGesture)
+        
+        // 팬 제스처 인식기 추가
+               let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
+               scnView.addGestureRecognizer(panGesture)
         
         return scnView
     }
@@ -243,7 +292,6 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     }
     
     scene.lightingEnvironment.contents = hdrURL
-    
     
     return scene
 }

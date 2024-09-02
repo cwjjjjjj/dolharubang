@@ -33,17 +33,14 @@
 		658962822C856D3600F27FB4 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962812C856D3600F27FB4 /* Demo.swift */; };
 		6589628E2C85884F00F27FB4 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628D2C85884F00F27FB4 /* Sign.swift */; };
 		658962902C858E6300F27FB4 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6589628F2C858E6300F27FB4 /* Mail.swift */; };
-
-		658962922C85D42200F27FB4 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658962912C85D42200F27FB4 /* Accessorys.scnassets */; };
-		658962942C85D42A00F27FB4 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658962932C85D42A00F27FB4 /* Dols.scnassets */; };
-		658962972C85D43300F27FB4 /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962952C85D43300F27FB4 /* lythwood_field_4k.hdr */; };
-		658962982C85D43300F27FB4 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962962C85D43300F27FB4 /* je_gray_02_4k.hdr */; };
 		658962A12C8600A600F27FB4 /* MakeLightUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A02C8600A600F27FB4 /* MakeLightUtil.swift */; };
 		658962A32C8600E700F27FB4 /* LoadNodeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A22C8600E700F27FB4 /* LoadNodeUtil.swift */; };
 		658962A52C86015E00F27FB4 /* MakeCameraUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A42C86015E00F27FB4 /* MakeCameraUtil.swift */; };
 		658962A72C8601AE00F27FB4 /* 3DBaseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A62C8601AE00F27FB4 /* 3DBaseUtil.swift */; };
 		658962AA2C86131A00F27FB4 /* SignPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A92C86131A00F27FB4 /* SignPopUpView.swift */; };
-
+		658962AD2C8624C300F27FB4 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962AB2C8624C200F27FB4 /* je_gray_02_4k.hdr */; };
+		658962AE2C8624C300F27FB4 /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 658962AC2C8624C200F27FB4 /* lythwood_field_4k.hdr */; };
+		658962B12C864DCB00F27FB4 /* apiFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962B02C864DCB00F27FB4 /* apiFetch.swift */; };
 		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
 		65A59DDB2C745D3100B20524 /* UITextFieldPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */; };
 		65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDC2C74683600B20524 /* DecorationView.swift */; };
@@ -116,17 +113,14 @@
 		658962812C856D3600F27FB4 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		6589628D2C85884F00F27FB4 /* Sign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
 		6589628F2C858E6300F27FB4 /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
-
-		658962912C85D42200F27FB4 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
-		658962932C85D42A00F27FB4 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
-		658962952C85D43300F27FB4 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = ../../../../../../Downloads/lythwood_field_4k.hdr; sourceTree = "<group>"; };
-		658962962C85D43300F27FB4 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = ../../../../../../Downloads/je_gray_02_4k.hdr; sourceTree = "<group>"; };
 		658962A02C8600A600F27FB4 /* MakeLightUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MakeLightUtil.swift; path = ../../../../../../../../MakeLightUtil.swift; sourceTree = "<group>"; };
 		658962A22C8600E700F27FB4 /* LoadNodeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadNodeUtil.swift; sourceTree = "<group>"; };
 		658962A42C86015E00F27FB4 /* MakeCameraUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCameraUtil.swift; sourceTree = "<group>"; };
 		658962A62C8601AE00F27FB4 /* 3DBaseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DBaseUtil.swift; sourceTree = "<group>"; };
 		658962A92C86131A00F27FB4 /* SignPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignPopUpView.swift; sourceTree = "<group>"; };
-
+		658962AB2C8624C200F27FB4 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = je_gray_02_4k.hdr; path = ../../../../../../Downloads/je_gray_02_4k.hdr; sourceTree = "<group>"; };
+		658962AC2C8624C200F27FB4 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = lythwood_field_4k.hdr; path = ../../../../../../Downloads/lythwood_field_4k.hdr; sourceTree = "<group>"; };
+		658962B02C864DCB00F27FB4 /* apiFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiFetch.swift; sourceTree = "<group>"; };
 		65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITextFieldPadding.swift; path = DolHaruBang/Common/Sources/Util/UITextFieldPadding.swift; sourceTree = SOURCE_ROOT; };
 		65A59DDC2C74683600B20524 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
@@ -236,6 +230,7 @@
 		6550AA3C2C59E726000A264E /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				658962AF2C864DB000F27FB4 /* AF */,
 				DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */,
 				652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */,
 				65E1C5092C6F7DE700A2E419 /* ColorHex.swift */,
@@ -249,8 +244,8 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6589629A2C85FC6800F27FB4 /* je_gray_02_4k.hdr */,
-				6589629B2C85FC6800F27FB4 /* lythwood_field_4k.hdr */,
+				658962AB2C8624C200F27FB4 /* je_gray_02_4k.hdr */,
+				658962AC2C8624C200F27FB4 /* lythwood_field_4k.hdr */,
 				DAB2EA8B2C85FA1A007626F8 /* Accessorys.scnassets */,
 				DAB2EA892C85FA19007626F8 /* Dols.scnassets */,
 				DAB2EA8D2C85FA1A007626F8 /* Mails.scnassets */,
@@ -558,6 +553,14 @@
 			path = Popup;
 			sourceTree = "<group>";
 		};
+		658962AF2C864DB000F27FB4 /* AF */ = {
+			isa = PBXGroup;
+			children = (
+				658962B02C864DCB00F27FB4 /* apiFetch.swift */,
+			);
+			path = AF;
+			sourceTree = "<group>";
+		};
 		65E1C4F52C6F350300A2E419 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,14 +776,14 @@
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
-				6589629C2C85FC6800F27FB4 /* je_gray_02_4k.hdr in Resources */,
+				658962AD2C8624C300F27FB4 /* je_gray_02_4k.hdr in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				DAB2EA932C85FA1A007626F8 /* Mails.scnassets in Resources */,
 				DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */,
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
 				DAB2EA8F2C85FA1A007626F8 /* Dols.scnassets in Resources */,
 				DAB2EA942C85FA1A007626F8 /* Signs.scnassets in Resources */,
-				6589629D2C85FC6800F27FB4 /* lythwood_field_4k.hdr in Resources */,
+				658962AE2C8624C300F27FB4 /* lythwood_field_4k.hdr in Resources */,
 				DAB2EA912C85FA1A007626F8 /* Accessorys.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -797,6 +800,7 @@
 				DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */,
 				658962A32C8600E700F27FB4 /* LoadNodeUtil.swift in Sources */,
 				DA461F7D2C840C7200270CDE /* HaruBangView.swift in Sources */,
+				658962B12C864DCB00F27FB4 /* apiFetch.swift in Sources */,
 				DA461F7F2C840C8900270CDE /* HaruBangFeature.swift in Sources */,
 				652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */,
 				658962A72C8601AE00F27FB4 /* 3DBaseUtil.swift in Sources */,
