@@ -78,7 +78,9 @@ struct HomeView : View {
                                 }
                                 
                                 Button(action: {
-                                    store.send(.openDecoration)
+                                    if store.enable {
+                                        store.send(.openDecoration)
+                                    }
                                 }) {
                                     VStack {
                                         Image("Brush")
@@ -119,7 +121,8 @@ struct HomeView : View {
                             selectedSign: $store.selectedSign,
                             selectedMail: $store.selectedMail,
                             signText: $store.message,
-                            sign : $store.sign
+                            sign : $store.sign,
+                            enable: $store.enable
                         )
                         
                         Spacer().background(Color.red)
