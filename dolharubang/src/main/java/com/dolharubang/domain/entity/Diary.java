@@ -4,26 +4,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "diaries")
-@Data
-public class Diary {
+@Getter
+public class Diary extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
 
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String contents;
 
@@ -31,39 +33,22 @@ public class Diary {
 
     private String image;
 
-    private String response;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
+    private String reply;
 
     @Builder
-    public Diary(Long memberId, String contents, String emoji, String image, String response,
+    public Diary(Member member, String contents, String emoji, String image, String reply,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.memberId = memberId;
+        this.member = member;
         this.contents = contents;
         this.emoji = emoji;
         this.image = image;
-        this.response = response;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+        this.reply = reply;
     }
 
     public void update(String contents, String emoji, String image, String response) {
         this.contents = contents;
         this.emoji = emoji;
         this.image = image;
-        this.response = response;
-    }
-
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.modifiedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        this.modifiedAt = LocalDateTime.now();
+        this.reply = response;
     }
 }
