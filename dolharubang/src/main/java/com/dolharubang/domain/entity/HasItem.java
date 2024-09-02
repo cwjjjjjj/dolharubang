@@ -1,6 +1,6 @@
 package com.dolharubang.domain.entity;
 
-import com.dolharubang.mongo.entity.ItemType;
+import com.dolharubang.mongo.enumTypes.ItemType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,16 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "has_items")
-@Data
+@Getter
 public class HasItem extends BaseEntity{
 
     @Id

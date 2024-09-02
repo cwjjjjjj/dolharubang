@@ -1,5 +1,7 @@
 package com.dolharubang.mongo.entity;
 
+import com.dolharubang.mongo.enumTypes.AbilityType;
+import com.dolharubang.mongo.enumTypes.ItemType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -23,6 +25,8 @@ public class Stone {
     private String stoneName;
 
     private LocalDateTime createdAt;
+
+    private LocalDateTime modifiedAt;
 
     private Long closeness;
 

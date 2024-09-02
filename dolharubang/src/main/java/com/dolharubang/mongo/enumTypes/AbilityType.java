@@ -1,4 +1,4 @@
-package com.dolharubang.mongo.entity;
+package com.dolharubang.mongo.enumTypes;
 
 public enum AbilityType {
     //오늘의 명언
