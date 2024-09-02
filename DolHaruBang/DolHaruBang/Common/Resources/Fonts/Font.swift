@@ -45,7 +45,7 @@ extension Font {
     static var overline: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }
     
     
-    static var signtext: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 6) }
+    static var signtext: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 8) }
     
     static func uiFont(for style: FontStyle) -> UIFont? {
         return UIFont(name: style.customFont.rawValue, size: style.size)
