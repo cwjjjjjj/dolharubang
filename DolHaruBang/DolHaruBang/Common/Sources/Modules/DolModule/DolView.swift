@@ -19,6 +19,77 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedAccessory : Accessory
     @Binding var selectedSign : Sign
     @Binding var selectedMail : Mail
+    
+    class Coordinator: NSObject {
+          var parent: DolView
+          
+          init(parent: DolView) {
+              self.parent = parent
+          }
+
+        @objc func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+               let scnView = gestureRecognizer.view as! SCNView
+               let location = gestureRecognizer.location(in: scnView)
+               let hitResults = scnView.hitTest(location, options: nil)
+               
+                if let hitResult = hitResults.first {
+                   let touchedNode = hitResult.node
+                   
+                   print("touchNode ", touchedNode)
+                    print("touchNode parent" , touchedNode.parent)
+                   // 노드의 이름을 기반으로 터치된 노드를 확인합니다.
+                    if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedSign) reference" {
+                        print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
+                        // 필요한 액션을 수행합니다.
+                        // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
+                        let moveAction = SCNAction.moveBy(x: 0, y: 1, z: 0, duration: 1)
+                        parentNode.runAction(moveAction)
+                    }
+                    
+                    if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
+                        print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
+                        // 필요한 액션을 수행합니다.
+                        // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
+                        let moveAction = SCNAction.moveBy(x: 0, y: 0, z: 3, duration: 1)
+                        parentNode.runAction(moveAction)
+                    }
+                    
+                    if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
+                        print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
+                        // 예: 부모 노드의 애니메이션 실행 또는 색상 변경 등
+                        
+                        // 오른쪽 구르기
+                        let rotateAction1 = SCNAction.rotate(by: -2 * .pi , around: SCNVector3(0, 0, 1), duration: 3)
+                        let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
+                        
+//                        let reversedAction1 = rotateAction1.reversed()
+//                        let reversedAction2 = moveAction1.reversed()
+                        
+                        // 여러 액션을 담아서 runAction 시킬 수 있다
+                        let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
+                        let actionGroup2 = actionGroup1.reversed()
+                        
+//                        let reverseActionGroup = SCNAction.group([reversedAction1, reversedAction2])
+                        
+                        let reverseMoveSequence = SCNAction.sequence([actionGroup1, actionGroup2])
+                        
+                        parentNode.runAction(reverseMoveSequence)
+                        
+                        
+                        if let AceesoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                            AceesoryNode.runAction(reverseMoveSequence)
+                        }
+                        
+                    }
+                    
+               }
+           }
+       }
+    
+      func makeCoordinator() -> Coordinator {
+          Coordinator(parent: self)
+      }
+
 
     // UI가 만들어질때 생성
     func makeUIView(context: Context) -> SCNView {
@@ -28,6 +99,10 @@ struct DolView : UIViewRepresentable {
         scnView.allowsCameraControl = true
         scnView.autoenablesDefaultLighting = false // 기본 조명 자동 활성화 비활성화
         scnView.defaultCameraController.interactionMode = .orbitTurntable
+        
+        // 탭 제스처 인식기 추가
+                let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
+                scnView.addGestureRecognizer(tapGesture)
         
         return scnView
     }
@@ -108,6 +183,8 @@ struct DolView : UIViewRepresentable {
         
         
     }
+    
+    
     
 }
 
