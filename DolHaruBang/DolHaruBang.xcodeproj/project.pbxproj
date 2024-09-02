@@ -41,6 +41,7 @@
 		658962A32C8600E700F27FB4 /* LoadNodeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A22C8600E700F27FB4 /* LoadNodeUtil.swift */; };
 		658962A52C86015E00F27FB4 /* MakeCameraUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A42C86015E00F27FB4 /* MakeCameraUtil.swift */; };
 		658962A72C8601AE00F27FB4 /* 3DBaseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A62C8601AE00F27FB4 /* 3DBaseUtil.swift */; };
+		658962AA2C86131A00F27FB4 /* SignPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962A92C86131A00F27FB4 /* SignPopUpView.swift */; };
 		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
 		65A59DDB2C745D3100B20524 /* UITextFieldPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */; };
 		65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A59DDC2C74683600B20524 /* DecorationView.swift */; };
@@ -119,6 +120,7 @@
 		658962A22C8600E700F27FB4 /* LoadNodeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadNodeUtil.swift; sourceTree = "<group>"; };
 		658962A42C86015E00F27FB4 /* MakeCameraUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCameraUtil.swift; sourceTree = "<group>"; };
 		658962A62C8601AE00F27FB4 /* 3DBaseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DBaseUtil.swift; sourceTree = "<group>"; };
+		658962A92C86131A00F27FB4 /* SignPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignPopUpView.swift; sourceTree = "<group>"; };
 		65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITextFieldPadding.swift; path = DolHaruBang/Common/Sources/Util/UITextFieldPadding.swift; sourceTree = SOURCE_ROOT; };
 		65A59DDC2C74683600B20524 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		65BA1E032C5EAB03001BC8AC /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 		6550AA4E2C5A70DB000A264E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				658962A82C8612FF00F27FB4 /* Popup */,
 				657780F12C84A5E500DC08C2 /* FloatingMenu */,
 				656592AD2C76555F00B06D97 /* Decoration */,
 				65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */,
@@ -537,6 +540,14 @@
 				658962A62C8601AE00F27FB4 /* 3DBaseUtil.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		658962A82C8612FF00F27FB4 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				658962A92C86131A00F27FB4 /* SignPopUpView.swift */,
+			);
+			path = Popup;
 			sourceTree = "<group>";
 		};
 		65E1C4F52C6F350300A2E419 /* Resource */ = {
@@ -790,6 +801,7 @@
 				65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */,
 				658962822C856D3600F27FB4 /* Demo.swift in Sources */,
 				655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */,
+				658962AA2C86131A00F27FB4 /* SignPopUpView.swift in Sources */,
 				657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
 				658962A12C8600A600F27FB4 /* MakeLightUtil.swift in Sources */,
