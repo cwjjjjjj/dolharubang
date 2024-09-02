@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/members")
 public class MemberController {
+
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
@@ -26,7 +27,7 @@ public class MemberController {
     @Operation(summary = "회원 가입하기 (소셜로그인 아닌, 임시 방식)", description = "회원을 생성한다.")
     @PostMapping
     public ResponseEntity<MemberResDto> createMember(@RequestBody MemberReqDto memberReqDto) {
-            MemberResDto response = memberService.createMember(memberReqDto);
-            return ResponseEntity.ok(response);
+        MemberResDto response = memberService.createMember(memberReqDto);
+        return ResponseEntity.ok(response);
     }
 }
