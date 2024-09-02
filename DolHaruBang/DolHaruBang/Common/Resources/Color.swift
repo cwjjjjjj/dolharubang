@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// 일정 표시용 색상 배열
+let circleColors: [Color] = [.coreBlue, .coreGreen, Color(hex:"F8BA99")] // 일정 표시용 색상들
+
 extension Color {
     static let mainGreen = Color("coreGreen")
     static let mainDarkGreen = Color("coreDarkGreen")
@@ -26,8 +29,12 @@ extension Color {
     static let ability1 = Color(hex:"FFFA80")
     static let ability2 = Color(hex:"FF9900")
     
-    static let mainTop = Color(hex :"D2FAFF")
+    static let mainTop = Color(hex: "D2FAFF")
     static let decoSheetTabbar = Color(hex: "837C74")
     static let decoSheetGreen = Color(hex: "618501")
     static let decoSheetTextColor = Color(hex: "372A1A")
+    
+    static let calendarCover = Color(hex: "C68F4E")
+    static let calendarHanger = Color(hex: "D7D7D7")
+    static let calendarHangerRing = Color(hex: "7F501A")
 }

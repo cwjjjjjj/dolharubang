@@ -35,14 +35,16 @@ struct FloatingMenuView : View {
         self.currentStack = []
         for (id, element) in zip(state.path.ids, state.path) {
           switch element {
-          case .harubang(_):
+          case .calendar:
               self.currentStack.insert(Screen(id: id, name: "Screen A"), at: 0)
-          case .park(_):
+          case .harubang(_):
               self.currentStack.insert(Screen(id: id, name: "Screen B"), at: 0)
-          case .mypage(_):
+          case .park(_):
               self.currentStack.insert(Screen(id: id, name: "Screen C"), at: 0)
-          case .home(_):
+          case .mypage(_):
               self.currentStack.insert(Screen(id: id, name: "Screen D"), at: 0)
+          case .home(_):
+              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
           default :
               self.currentStack.removeAll()
           }
@@ -54,10 +56,10 @@ struct FloatingMenuView : View {
         let viewState = ViewState(state: nav.state)
         
         // 홈 이후부터 표시되게
-        if viewState.currentStack.count > 0{
+        if viewState.currentStack.count > 0 {
                HStack{
                    BottomButtonView(store : nav ,imageName: "Calander", buttonText: "달력"){
-                       nav.send(.goToScreen(.harubang(HaruBangFeature())))
+                       nav.send(.goToScreen(.calendar))
                    }
                    BottomButtonView(store : nav ,imageName: "Harubang", buttonText: "하루방"){
                        nav.send(.goToScreen(.harubang(HaruBangFeature())))
