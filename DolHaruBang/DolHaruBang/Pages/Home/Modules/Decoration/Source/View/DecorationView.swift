@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 struct DecorationView: View {
     enum Tab {
-        case background, shape, face, accessory
+        case background, shape, face, accessory, mail, sign
     }
     
     @State private var selected: Tab = .background
@@ -43,6 +43,18 @@ struct DecorationView: View {
                         action: { selected = .accessory }
                     )
                     
+                    TabButton(
+                        title: "펫말",
+                        isSelected: selected == .sign,
+                        action: { selected = .sign }
+                    )
+                    
+                    TabButton(
+                        title: "우체통",
+                        isSelected: selected == .mail,
+                        action: { selected = .mail }
+                    )
+                    
                     Spacer()
                 }
                 .padding(.top, 60)
@@ -72,6 +84,16 @@ struct DecorationView: View {
                             CustomizeView<Accessory>(store: store)
                         }
                         .tag(Tab.accessory)
+                        
+                        NavigationStack {
+                            CustomizeView<Sign>(store: store)
+                        }
+                        .tag(Tab.sign)
+                        
+                        NavigationStack {
+                            CustomizeView<Mail>(store: store)
+                        }
+                        .tag(Tab.mail)
                         
                     }
                 }

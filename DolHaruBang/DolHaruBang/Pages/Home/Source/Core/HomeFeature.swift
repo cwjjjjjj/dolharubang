@@ -16,6 +16,8 @@ struct HomeFeature {
         var selectedFaceShape : FaceShape = .sosim
         var selectedBackground : Background = .December
         var selectedAccessory : Accessory = .black_glasses
+        var selectedSign : Sign = .woodensign
+        var selectedMail : Mail = .mailbox
         var message: String = ""
         var sendMessage : Bool = false
         var ability: Bool = false
@@ -34,6 +36,8 @@ struct HomeFeature {
         case selectFaceShape(FaceShape)
         case selectBackground(Background)
         case selectAccessory(Accessory)
+        case selectSign(Sign)
+        case selectMail(Mail)
         case clickProfile
         case updateToDol(String)
         case binding( BindingAction < State >)
@@ -72,6 +76,12 @@ struct HomeFeature {
                 return .none
             case let .selectAccessory(selectedAccessory) :
                 state.selectedAccessory = selectedAccessory
+                return .none
+            case let .selectSign(selectedSign) :
+                state.selectedSign = selectedSign
+                return .none
+            case let .selectMail(selectedMail) :
+                state.selectedMail = selectedMail
                 return .none
             case .clickAbility:
                 state.ability.toggle()
