@@ -256,7 +256,7 @@ struct CommonTextFieldStyle: TextFieldStyle {
                 )
             
           
-            // TextField
+            // TextField.
             configuration
                 .font(.body)
                 .foregroundColor(textColor)
