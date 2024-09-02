@@ -67,6 +67,7 @@ func addTextNode() -> SCNNode{
              // flatness : 텍스트의 부드러움을 결정함
 //             scnText.flatness = CGFloat(1)
 //            scnText.alignmentMode = CATextLayerAlignmentMode.natural.rawValue
+    
              // SCNNode 생성
              let textNode = SCNNode(geometry: scnText)
     

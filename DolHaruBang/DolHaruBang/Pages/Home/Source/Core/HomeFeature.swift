@@ -18,14 +18,15 @@ struct HomeFeature {
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
-        var message: String = ""
-        var sendMessage : Bool = false
-        var ability: Bool = false
-        var decoration: Bool = false
-        var profile: Bool = false
-        var sign : Bool = false
+        var message: String = "" // 텍스트필드 메시지
+        var ability: Bool = false // 잠재능력 버튼 온 오프
+        var decoration: Bool = false // 꾸미기 탭 온 오프
+        var enable : Bool = true // 버그 방지 Bool값
+        var profile: Bool = false // 돌 프로필 온 오프
+        var sign : Bool = false // 펫말 온 오프
         var isKeyboardVisible: Bool = false
-        var info : User.Info = User.Info()
+        
+       
     }
     
     enum Action: BindableAction {
@@ -42,6 +43,7 @@ struct HomeFeature {
         case clickProfile
         case updateToDol(String)
         case binding( BindingAction < State >)
+        case tmpResponse(Result<Peperoni, Error>)
     }
     
     @Dependency(\.tmpClient) var tmpClient
@@ -88,11 +90,10 @@ struct HomeFeature {
                 state.ability.toggle()
                 return .none
             case .clickMessage:
-//                state.sendMessage.toggle()
 //                state.message = ""
 //                return .none
-                return .run { [userInfo = state.info ] send in
-                    try await self.tmpClient.regist(userInfo)
+                return .run { send in
+                    await send(.tmpResponse(Result{ try await self.tmpClient.regist() }))
                 }
             case .openDecoration:
                 state.decoration = true
@@ -106,6 +107,14 @@ struct HomeFeature {
             case let .updateToDol(message):
                 state.message = message
                 return .none
+            case .tmpResponse(.failure):
+                print("틀림너는")
+                return .none
+            case let .tmpResponse(.success(response)):
+                state.message = response.message
+                return .none
+                
+                
             }
         }
     }
