@@ -9,8 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document
+@Document(collation = "stones")
 @Builder
 @Data
 public class Stone {
@@ -24,8 +25,10 @@ public class Stone {
 
     private String stoneName;
 
+    @Field
     private LocalDateTime createdAt;
 
+    @Field
     private LocalDateTime modifiedAt;
 
     private Long closeness;
