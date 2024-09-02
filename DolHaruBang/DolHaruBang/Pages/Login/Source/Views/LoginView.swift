@@ -1,14 +1,20 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct LoginView: View {
+    
+    
+    
     var body: some View {
-        ZStack {
+      
+            
+            ZStack {
             Color.mainGreen
                 .edgesIgnoringSafeArea(.all)
-
+            
             VStack(alignment: .leading) {
-//                Spacer().frame(height: UIScreen.main.bounds.height * 0.09154)
-//                Spacer().frame(height: 78).fixedSize()
+                //                Spacer().frame(height: UIScreen.main.bounds.height * 0.09154)
+                //                Spacer().frame(height: 78).fixedSize()
                 
                 HStack {
                     Spacer()
@@ -21,17 +27,17 @@ struct LoginView: View {
                 }.position(x: UIScreen.main.bounds.width / 2, y: 110)
                 
                 Spacer().frame(height: UIScreen.main.bounds.height * 0.333)
-
+                
                 LazyVStack(alignment: .leading, spacing: 0) {
                     CustomText(text: "반가워요!", font: Font.uiFont(for: Font.h4)!, textColor: .coreWhite, textAlign: .left)
                     
-//                    Spacer().frame(height: 30).fixedSize()
+                    //                    Spacer().frame(height: 30).fixedSize()
                     
                     CustomText(text: "나만의 돌과 함께 하루를 보낼\n방문을 열어볼까요?!", font: Font.uiFont(for: Font.subtitle2)!, textColor: .coreWhite, textAlign: .left                )
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.horizontal, 36)
-
+                
                 Spacer().frame(height: UIScreen.main.bounds.height * 0.2877)
                 
                 LazyVStack {
@@ -69,6 +75,7 @@ struct LoginView: View {
                 .padding(.bottom, UIScreen.main.bounds.height * 0.28)
             }
         }
+        
         .edgesIgnoringSafeArea(.all)
     }
 }

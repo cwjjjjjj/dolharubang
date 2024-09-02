@@ -1,7 +1,9 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct DBTIQuestion1View: View {
-    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
+    
+    @State var store : StoreOf<DBTIFeature>
     
     @State private var selectedButton: Int? = nil
     @State private var tag: Int? = nil
@@ -63,39 +65,43 @@ struct DBTIQuestion1View: View {
                     Spacer().frame(height: geometry.size.height * 0.15)
                     
                     VStack(alignment: .center, spacing: 16) {
-                        NavigationLink(destination: DBTIResultView(), tag: 1, selection: $tag) {
-                            EmptyView()
-                        }
+//                        NavigationLink(destination: DBTIResultView(), tag: 1, selection: $tag) {
+//                            EmptyView()
+//                        }
                         
-                        CustomButton(
-                            title: "속 괜찮아?",
-                            font: .customFont(Font.button1),
-                            textColor: .coreWhite,
-                            isSelected: selectedButton == 1,
-                            selectedTextColor: .coreWhite,
-                            selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                            action: {
-                                selectedButton = 1
-                                tag = 1
+                        NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(DBTIFeature.State())){
+                            VStack{
+                                CustomButton(
+                                    title: "속 괜찮아?",
+                                    font: .customFont(Font.button1),
+                                    textColor: .coreWhite,
+                                    isSelected: selectedButton == 1,
+                                    selectedTextColor: .coreWhite,
+                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
+                                    action: {
+                                        selectedButton = 1
+                                        tag = 1
+                                    }
+                                )
+                                .frame(width: 320, height: 48)
+                                .cornerRadius(24)
+                                
+                                CustomButton(
+                                    title: "상한 거 같은데 왜 먹어봤어?",
+                                    font: .customFont(Font.button1),
+                                    textColor: .coreWhite,
+                                    isSelected: selectedButton == 2,
+                                    selectedTextColor: .coreWhite,
+                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
+                                    action: {
+                                        selectedButton = 2
+                                        tag = 1
+                                    }
+                                )
+                                .frame(width: 320, height: 48)
+                                .cornerRadius(24)
                             }
-                        )
-                        .frame(width: 320, height: 48)
-                        .cornerRadius(24)
-                        
-                        CustomButton(
-                            title: "상한 거 같은데 왜 먹어봤어?",
-                            font: .customFont(Font.button1),
-                            textColor: .coreWhite,
-                            isSelected: selectedButton == 2,
-                            selectedTextColor: .coreWhite,
-                            selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                            action: {
-                                selectedButton = 2
-                                tag = 1
                             }
-                        )
-                        .frame(width: 320, height: 48)
-                        .cornerRadius(24)
                     }
                     
                     Spacer().frame(height: geometry.size.height * 0.2892)
@@ -108,7 +114,7 @@ struct DBTIQuestion1View: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        store.send(.goBack)
                     }) {
                         Image("backIcon")
                             .resizable()

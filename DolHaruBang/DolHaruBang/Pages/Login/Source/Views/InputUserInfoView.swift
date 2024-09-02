@@ -1,4 +1,5 @@
 import SwiftUI
+import ComposableArchitecture
 
 struct InputUserInfoView: View {
     @EnvironmentObject var userManager: UserManager // 닉네임 전역변수로 기억
@@ -190,7 +191,9 @@ struct InputUserInfoView: View {
                     Spacer().frame(height: 40)
                     
                     HStack {
-                        NavigationLink(destination: DBTIGuideView()) {
+                        NavigationLink(destination: Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
+                            DBTIGuideView( nav: nav)
+                        }) {
                             ZStack {
                                 HStack {
                                     Spacer()

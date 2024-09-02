@@ -97,7 +97,8 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     
 
     for node in scene.rootNode.childNodes {
-          node.scale = SCNVector3(x: 1, y: 1, z: 1) // 스케일 값을 조정하여 모델의 크기를 조절
+        // MARK: 모델 크기 조절
+        node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
 
       }
     
