@@ -7,12 +7,17 @@
 
 import SwiftUI
 import ComposableArchitecture
+
+// MARK: NavigationStack Start (임시 위치 추후에는 로그인 화면)
 struct DBTIGuideView: View {
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @Bindable var nav: StoreOf<NavigationFeature>
    
     var body: some View {
+        
+        // path : 이동하는 경로들을 전부 선언해줌
+        // $nav.scope : NavigationFeature의 forEach에 접근
         NavigationStack(path: $nav.scope(state: \.path, action: \.path)) {
             ZStack {
                 // 배경
@@ -67,7 +72,7 @@ struct DBTIGuideView: View {
                         Spacer().frame(height: 30)
                         
                         HStack {
-                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View) {
+                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View(DBTIFeature.State())){
                                 HStack {
                                     Spacer()
                                     Text("테스트 시작")
@@ -86,6 +91,8 @@ struct DBTIGuideView: View {
                 }
             }
         }
+        // MARK: NavigationStack에서 관리하는 경로&리듀서 선언
+        // 해당 값을 가지고 NavigationStack이 패턴매칭을 함
         destination : { nav in
             switch nav.case {
             case let .harubang(store):
@@ -96,14 +103,15 @@ struct DBTIGuideView: View {
                 ParkView(store : store)
             case let .home(store):
                 HomeView(store : store)
-            case .DBTIQuestion1View:
-                DBTIQuestion1View()
+            case let .DBTIQuestion1View(store):
+                DBTIQuestion1View(store : store)
             case let .DBTIResultView(store):
                 DBTIResultView(store : store)
             }
         }
+        // MARK: FloatingMenuView Start
         .safeAreaInset(edge: .bottom) {
-            FloatingMenuView(store: Store(initialState: FloatButtonFeature.State()){FloatButtonFeature()} , nav: nav)
+            FloatingMenuView(nav: nav)
           }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기

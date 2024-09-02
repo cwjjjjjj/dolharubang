@@ -24,6 +24,8 @@
 		657780EC2C834AE100DC08C2 /* ParkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780EB2C834AE100DC08C2 /* ParkFeature.swift */; };
 		657780EE2C834B0600DC08C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780ED2C834B0600DC08C2 /* MyPageView.swift */; };
 		657780F02C834B3300DC08C2 /* MyPageFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780EF2C834B3300DC08C2 /* MyPageFeature.swift */; };
+		657780F32C84A60100DC08C2 /* FloatingMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780F22C84A60100DC08C2 /* FloatingMenuView.swift */; };
+		657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780F72C84AFC400DC08C2 /* DBTIFeature.swift */; };
 		657E5F922C745059002FFA69 /* DolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F912C745059002FFA69 /* DolView.swift */; };
 		657E5F942C745071002FFA69 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F932C745071002FFA69 /* Face.swift */; };
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
@@ -82,6 +84,8 @@
 		657780EB2C834AE100DC08C2 /* ParkFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkFeature.swift; sourceTree = "<group>"; };
 		657780ED2C834B0600DC08C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		657780EF2C834B3300DC08C2 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeature.swift; sourceTree = "<group>"; };
+		657780F22C84A60100DC08C2 /* FloatingMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMenuView.swift; sourceTree = "<group>"; };
+		657780F72C84AFC400DC08C2 /* DBTIFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIFeature.swift; sourceTree = "<group>"; };
 		657E5F912C745059002FFA69 /* DolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolView.swift; sourceTree = "<group>"; };
 		657E5F932C745071002FFA69 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
@@ -242,6 +246,7 @@
 		6550AA422C59E7DC000A264E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				657780F62C84AFB000DC08C2 /* Core */,
 				6550AA432C59E8AD000A264E /* Views */,
 			);
 			path = Source;
@@ -328,6 +333,7 @@
 		6550AA4E2C5A70DB000A264E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				657780F12C84A5E500DC08C2 /* FloatingMenu */,
 				656592AD2C76555F00B06D97 /* Decoration */,
 				65A59DDA2C745D3100B20524 /* UITextFieldPadding.swift */,
 			);
@@ -415,13 +421,45 @@
 			path = HaruBang;
 			sourceTree = "<group>";
 		};
+		657780F12C84A5E500DC08C2 /* FloatingMenu */ = {
+			isa = PBXGroup;
+			children = (
+				657780F22C84A60100DC08C2 /* FloatingMenuView.swift */,
+			);
+			path = FloatingMenu;
+			sourceTree = "<group>";
+		};
+		657780F42C84A8F600DC08C2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				657780F52C84A8FF00DC08C2 /* Naviagion */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		657780F52C84A8FF00DC08C2 /* Naviagion */ = {
+			isa = PBXGroup;
+			children = (
+				657780E02C83427000DC08C2 /* NavigationFeature.swift */,
+			);
+			path = Naviagion;
+			sourceTree = "<group>";
+		};
+		657780F62C84AFB000DC08C2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				657780F72C84AFC400DC08C2 /* DBTIFeature.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		657E5F8E2C74500C002FFA69 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				657780F42C84A8F600DC08C2 /* Core */,
 				6550AA3A2C59E6F8000A264E /* Modules */,
 				6550AA3B2C59E718000A264E /* Design */,
 				6550AA3C2C59E726000A264E /* Util */,
-				657780E02C83427000DC08C2 /* NavigationFeature.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -614,6 +652,7 @@
 				657780EA2C834ABC00DC08C2 /* ParkView.swift in Sources */,
 				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
+				657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */,
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
 				6550AA502C5A809B000A264E /* HomeView.swift in Sources */,
 				65BA1E042C5EAB03001BC8AC /* HomeFeature.swift in Sources */,
@@ -629,6 +668,7 @@
 				657780E82C834A5500DC08C2 /* HaruBangFeature.swift in Sources */,
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
 				DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */,
+				657780F32C84A60100DC08C2 /* FloatingMenuView.swift in Sources */,
 				657780EC2C834AE100DC08C2 /* ParkFeature.swift in Sources */,
 				DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */,
 				65A59DDD2C74683600B20524 /* DecorationView.swift in Sources */,
