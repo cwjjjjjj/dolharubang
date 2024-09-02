@@ -2,8 +2,10 @@ import SwiftUI
 import ComposableArchitecture
 
 struct DBTIResultView: View {
+    
+    let store : StoreOf<DBTIFeature>
+    
     @EnvironmentObject var userManager: UserManager // 유저 닉네임 불러오기 위함
-    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @State private var isEditingName = false
 
@@ -179,31 +181,30 @@ struct DBTIResultView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    NavigationLink(destination: HomeView(store: Store(initialState: HomeFeature.State()) {
-                        HomeFeature()
-                            ._printChanges()
-                      }), tag: 1, selection: $tag) {
-                        EmptyView()
+                    Button(action: {
+                        store.send(.homeButtonTapped)
+                        tag = 1
+                        print("tabbed3")
+                    }) {
+                        CustomButton(
+                            title: "함께 시작하기!",
+                            font: .customFont(Font.button1),
+                            textColor: .coreWhite,
+                            pressedBackgroundColor: .coreDarkGreen,
+                            isDisabled: Binding(
+                                get: {
+                                    stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName
+                                },
+                                set: { _ in }
+                            ),
+                            action: { }
+                        )
+                        .frame(width: 320, height: 48)
+                        .cornerRadius(24)
                     }
+
+                                  
                     
-                    CustomButton(
-                        title: "함께 시작하기!",
-                        font: .customFont(Font.button1),
-                        textColor: .coreWhite,
-                        pressedBackgroundColor:.coreDarkGreen,
-                        isDisabled: Binding(
-                            get: {
-                                stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName
-                            },
-                            set: { _ in }
-                        ),
-                        action: {
-                            tag = 1
-                            print("tabbed3")
-                        }
-                    )
-                    .frame(width: 320, height: 48)
-                    .cornerRadius(24)
                     
                     Spacer().frame(height: geometry.size.height * 0.29)
                 }
@@ -301,7 +302,7 @@ struct DBTIResultView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        store.send(.goBack)
                     }) {
                         Image("backIcon")
                             .resizable()
@@ -312,4 +313,21 @@ struct DBTIResultView: View {
             }
         }
     }
+}
+
+struct Demo<State, Action, Content: View>: View {
+  @SwiftUI.State var store: Store<State, Action>
+  let content: (Store<State, Action>) -> Content
+
+  init(
+    store: Store<State, Action>,
+    @ViewBuilder content: @escaping (Store<State, Action>) -> Content
+  ) {
+    self.store = store
+    self.content = content
+  }
+
+  var body: some View {
+    content(store)
+  }
 }
