@@ -19,13 +19,12 @@ enum Align {
 }
 
 struct CustomTextField: UIViewRepresentable {
-    
-    
     @Binding var text: String
     var placeholder: String
     var placeholderColor: UIColor?
     var font: Font?
     var textColor: UIColor?
+    var backgroundColor: UIColor? = .coreGray // backgroundColor 추가, 기본값 설정
     var minLength: Int = 1  // 최소 글자 수 기본값 1
     var maxLength: Int  // 최대 글자 수는 반드시 입력받음
     var alertTitle: String?
@@ -33,12 +32,10 @@ struct CustomTextField: UIViewRepresentable {
     var dismissButtonTitle: String?
     var onSubmit: (() -> Void)?
     var onEndEditing: (() -> Void)?
-    // 홈에서도 쓰려고 추가함
-    var useDidEndEditing : Bool = true
-    // 폰트 스타일를 위해
-    var customFontStyle : Font.FontStyle?
-    var alignment : Align = .center
-    var leftPadding : CGFloat = 0
+    var useDidEndEditing: Bool = true
+    var customFontStyle: Font.FontStyle?
+    var alignment: Align = .center
+    var leftPadding: CGFloat = 0
     
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: CustomTextField
@@ -59,11 +56,9 @@ struct CustomTextField: UIViewRepresentable {
             parent.onSubmit?()  // 엔터 키를 눌렀을 때의 동작
             return true
         }
-        
-        // 닉네임 확인 메서드
+
         func textFieldDidEndEditing(_ textField: UITextField) {
             if parent.useDidEndEditing {
-                // 최소 글자 수 확인
                 if parent.text.count < parent.minLength {
                     parent.showAlert(
                         title: parent.alertTitle ?? "경고",
@@ -76,7 +71,6 @@ struct CustomTextField: UIViewRepresentable {
             }
         }
     }
-    
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -86,17 +80,17 @@ struct CustomTextField: UIViewRepresentable {
         let textField = UITextField()
         textField.delegate = context.coordinator
         
-        let customFont : UIFont
+        let customFont: UIFont
         if let style = customFontStyle {
             customFont = Font.uiFont(for: style) ?? UIFont.systemFont(ofSize: style.size)
-        }else{
+        } else {
             customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         }
-       
+
         textField.font = customFont
-        textField.textColor = textColor ?? UIColor(Color.mainBlack)
+        textField.textColor = textColor ?? .coreBlack
         textField.borderStyle = .roundedRect
-        textField.backgroundColor = UIColor(Color.mainGray)
+        textField.backgroundColor = backgroundColor ?? .coreGray // backgroundColor 설정
         textField.textAlignment = alignment.uiTextAlignment
         textField.addPadding(left: leftPadding)
 
@@ -106,7 +100,7 @@ struct CustomTextField: UIViewRepresentable {
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [
-                .foregroundColor: placeholderColor ?? UIColor(Color.mainBlack),
+                .foregroundColor: placeholderColor ?? .coreBlack,
                 .font: customFont,
                 .paragraphStyle: paragraphStyle
             ]
@@ -118,14 +112,15 @@ struct CustomTextField: UIViewRepresentable {
     func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
 
-        let customFont : UIFont
+        let customFont: UIFont
         if let style = customFontStyle {
             customFont = Font.uiFont(for: style) ?? UIFont.systemFont(ofSize: style.size)
-        } else{
+        } else {
             customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         }
         uiView.font = customFont
-        uiView.textColor = textColor ?? UIColor(Color.mainBlack)
+        uiView.textColor = textColor ?? .coreBlack
+        uiView.backgroundColor = backgroundColor ?? .coreGray // backgroundColor 설정
         uiView.textAlignment = alignment.uiTextAlignment
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -134,7 +129,7 @@ struct CustomTextField: UIViewRepresentable {
         uiView.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [
-                .foregroundColor: placeholderColor ?? UIColor(Color.mainBlack),
+                .foregroundColor: placeholderColor ?? .coreBlack,
                 .font: customFont,
                 .paragraphStyle: paragraphStyle
             ]
@@ -153,6 +148,7 @@ struct CustomTextField: UIViewRepresentable {
         rootViewController.present(alert, animated: true, completion: nil)
     }
 }
+
 
 struct SimpleCustomTextField: UIViewRepresentable {
     @Binding var text: String
@@ -197,7 +193,6 @@ struct SimpleCustomTextField: UIViewRepresentable {
         textField.placeholder = placeholder
         textField.textColor = textColor ?? .black
         textField.font = font ?? UIFont.systemFont(ofSize: 14)
-//        textField.backgroundColor = .clear
         textField.borderStyle = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.setContentHuggingPriority(.required, for: .vertical)

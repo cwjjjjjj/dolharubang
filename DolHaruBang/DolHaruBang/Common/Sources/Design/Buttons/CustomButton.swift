@@ -22,8 +22,8 @@ struct CustomButton: UIViewRepresentable {
         @objc func buttonPressedDown(_ sender: UIButton) {
             if !parent.isDisabled {
                 // 눌렸을 때 배경색과 텍스트 색상 변경
-                sender.setTitleColor(parent.pressedTextColor ?? parent.textColor ?? UIColor(Color.mainBlack), for: .normal)
-                sender.backgroundColor = parent.pressedBackgroundColor ?? parent.backgroundColor ?? UIColor(Color.mainGreen)
+                sender.setTitleColor(parent.pressedTextColor ?? parent.textColor ?? .coreBlack, for: .normal)
+                sender.backgroundColor = parent.pressedBackgroundColor ?? parent.backgroundColor ?? .coreGreen
             }
         }
 
@@ -31,11 +31,11 @@ struct CustomButton: UIViewRepresentable {
             if !parent.isDisabled {
                 // 눌린 상태에서 손을 뗐을 때 선택 여부에 따라 색상 복원
                 if parent.isSelected {
-                    sender.setTitleColor(parent.selectedTextColor ?? parent.textColor ?? UIColor(Color.mainWhite), for: .normal)
-                    sender.backgroundColor = parent.selectedBackgroundColor ?? parent.backgroundColor ?? UIColor(Color.mainDarkGreen)
+                    sender.setTitleColor(parent.selectedTextColor ?? parent.textColor ?? .coreWhite, for: .normal)
+                    sender.backgroundColor = parent.selectedBackgroundColor ?? parent.backgroundColor ?? .coreDarkGreen
                 } else {
-                    sender.setTitleColor(parent.textColor ?? UIColor(Color.mainBlack), for: .normal)
-                    sender.backgroundColor = parent.backgroundColor ?? UIColor(Color.mainGreen)
+                    sender.setTitleColor(parent.textColor ?? .coreBlack, for: .normal)
+                    sender.backgroundColor = parent.backgroundColor ?? .coreGreen
                 }
             }
         }
@@ -44,7 +44,7 @@ struct CustomButton: UIViewRepresentable {
     var title: String
     var font: Font
     var textColor: UIColor? = UIColor(Color.mainWhite) // 기본 텍스트 색상
-    var backgroundColor: UIColor? = UIColor(Color.mainGreen) // 기본 배경 색상
+    var backgroundColor: UIColor? = UIColor(Color.red) // 기본 배경 색상
     var pressedTextColor: UIColor? // 눌렸을 때의 텍스트 색상
     var pressedBackgroundColor: UIColor? // 눌렸을 때의 배경색상
     var isSelected: Bool = false // 선택여부
@@ -58,16 +58,16 @@ struct CustomButton: UIViewRepresentable {
     init(
         title: String,
         font: Font,
-        textColor: UIColor? = UIColor(Color.mainWhite),
-        backgroundColor: UIColor? = UIColor(Color.mainGreen),
+        textColor: UIColor? = UIColor.coreWhite,
+        backgroundColor: UIColor? = UIColor.coreGreen,
         pressedTextColor: UIColor? = nil,
         pressedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
         selectedTextColor: UIColor? = nil,
         selectedBackgroundColor: UIColor? = nil,
         isDisabled: Binding<Bool> = .constant(false), // 기본값 추가
-        disabledTextColor: UIColor? = UIColor(Color.mainBlack),
-        disabledBackgroundColor: UIColor? = UIColor(Color.disabled),
+        disabledTextColor: UIColor? = .coreBlack,
+        disabledBackgroundColor: UIColor? = .coreDisabled,
         action: @escaping () -> Void
     ) {
         self.title = title
@@ -97,6 +97,11 @@ struct CustomButton: UIViewRepresentable {
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonTapped), for: .touchUpInside)
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonPressedDown(_:)), for: [.touchDown, .touchDragEnter])
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonReleased(_:)), for: [.touchUpInside, .touchCancel, .touchDragExit])
+        
+        // 텍스트 색상과 배경 색상을 초기화 시점에 설정
+        button.setTitleColor(textColor ?? .coreWhite, for: .normal)
+        button.backgroundColor = backgroundColor ?? .coreGreen
+
 
         return button
     }
@@ -104,17 +109,18 @@ struct CustomButton: UIViewRepresentable {
     func updateUIView(_ uiView: UIButton, context: Context) {
         uiView.setTitle(title, for: .normal)
         uiView.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
+        uiView.backgroundColor = backgroundColor ?? .coreGreen
 
-        if isDisabled {
-            uiView.setTitleColor(disabledTextColor, for: .normal)
-            uiView.backgroundColor = disabledBackgroundColor
-        } else if isSelected {
-            uiView.setTitleColor(selectedTextColor ?? textColor ?? UIColor(Color.mainWhite), for: .normal)
-            uiView.backgroundColor = selectedBackgroundColor ?? backgroundColor ?? UIColor(Color.mainDarkGreen)
-        } else {
-            uiView.setTitleColor(textColor ?? UIColor(Color.mainBlack), for: .normal)
-            uiView.backgroundColor = backgroundColor ?? UIColor(Color.mainGreen)
-        }
+//        if isDisabled {
+//            uiView.setTitleColor(disabledTextColor, for: .normal)
+//            uiView.backgroundColor = disabledBackgroundColor
+//        } else if isSelected {
+//            uiView.setTitleColor(selectedTextColor ?? textColor ?? UIColor(Color.mainWhite), for: .normal)
+//            uiView.backgroundColor = selectedBackgroundColor ?? backgroundColor ?? UIColor(Color.mainDarkGreen)
+//        } else {
+//            uiView.setTitleColor(textColor ?? UIColor(Color.mainBlack), for: .normal)
+//            uiView.backgroundColor = backgroundColor ?? UIColor(Color.mainGreen)
+//        }
 
         uiView.isEnabled = !isDisabled
     }
