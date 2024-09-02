@@ -121,7 +121,7 @@ struct CustomTextField: UIViewRepresentable {
         let customFont : UIFont
         if let style = customFontStyle {
             customFont = Font.uiFont(for: style) ?? UIFont.systemFont(ofSize: style.size)
-        }else{
+        } else{
             customFont = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         }
         uiView.font = customFont
@@ -153,3 +153,78 @@ struct CustomTextField: UIViewRepresentable {
         rootViewController.present(alert, animated: true, completion: nil)
     }
 }
+
+struct SimpleCustomTextField: UIViewRepresentable {
+    @Binding var text: String
+    var placeholder: String
+    var placeholderColor: UIColor?
+    var textColor: UIColor?
+    var font: UIFont?
+    var maxLength: Int
+    var onEditingChanged: ((Bool) -> Void)?
+
+    class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: SimpleCustomTextField
+
+        init(parent: SimpleCustomTextField) {
+            self.parent = parent
+        }
+
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            if let text = textField.text, text.count > parent.maxLength {
+                textField.text = String(text.prefix(parent.maxLength))
+            }
+            parent.text = textField.text ?? ""
+        }
+
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            parent.onEditingChanged?(true)
+        }
+
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            parent.onEditingChanged?(false)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField()
+        textField.delegate = context.coordinator
+        textField.text = text
+        textField.placeholder = placeholder
+        textField.textColor = textColor ?? .black
+        textField.font = font ?? UIFont.systemFont(ofSize: 14)
+//        textField.backgroundColor = .clear
+        textField.borderStyle = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.setContentHuggingPriority(.required, for: .vertical)
+        textField.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        if let placeholderColor = placeholderColor {
+            textField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: placeholderColor]
+            )
+        }
+
+        return textField
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        uiView.text = text
+        uiView.font = font ?? UIFont.systemFont(ofSize: 14)
+        uiView.textColor = textColor ?? .black
+
+        if let placeholderColor = placeholderColor {
+            uiView.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: placeholderColor]
+            )
+        }
+    }
+}
+
+
