@@ -23,6 +23,7 @@ struct HomeFeature {
         var ability: Bool = false
         var decoration: Bool = false
         var profile: Bool = false
+        var sign : Bool = false
         var isKeyboardVisible: Bool = false
         var info : User.Info = User.Info()
     }

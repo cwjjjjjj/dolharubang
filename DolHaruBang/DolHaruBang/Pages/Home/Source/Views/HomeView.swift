@@ -117,7 +117,9 @@ struct HomeView : View {
                             selectedFaceShape: $store.selectedFaceShape,
                             selectedAccessory: $store.selectedAccessory,
                             selectedSign: $store.selectedSign,
-                            selectedMail: $store.selectedMail
+                            selectedMail: $store.selectedMail,
+                            signText: $store.message,
+                            sign : $store.sign
                         )
                         
                         Spacer().background(Color.red)
@@ -222,6 +224,9 @@ struct HomeView : View {
 //                        .padding(.bottom , geometry.size.height * 0.035)
                         
                     }
+                    
+                    // 팝업뷰
+                    MyTextFieldAlert(isShown: $store.sign , text: $store.message)
                     
                 } // ZStack
                 .edgesIgnoringSafeArea(.all)
