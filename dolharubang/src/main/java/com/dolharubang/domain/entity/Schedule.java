@@ -33,24 +33,28 @@ public class Schedule extends BaseEntity {
 
     private LocalDateTime alarmTime;
 
-    private LocalDateTime scheduleDate;
+    private LocalDateTime startScheduleDate;
+
+    private LocalDateTime endScheduleDate;
 
     @Builder
     public Schedule(Long id, Member member, boolean isAlarm, String contents,
-        LocalDateTime alarmTime, LocalDateTime scheduleDate) {
+        LocalDateTime alarmTime, LocalDateTime startScheduleDate, LocalDateTime endScheduleDate) {
         this.id = id;
         this.member = member;
         this.isAlarm = isAlarm;
         this.contents = contents;
         this.alarmTime = alarmTime;
-        this.scheduleDate = scheduleDate;
+        this.startScheduleDate = startScheduleDate;
+        this.endScheduleDate = endScheduleDate;
     }
 
-    public void update(Member member, String contents, LocalDateTime scheduleDate,
-        Boolean isAlarm, LocalDateTime alarmTime) {
+    public void update(Member member, String contents, LocalDateTime startScheduleDate,
+        LocalDateTime endScheduleDate, Boolean isAlarm, LocalDateTime alarmTime) {
         this.member = member;
         this.contents = contents;
-        this.scheduleDate = scheduleDate;
+        this.startScheduleDate = startScheduleDate;
+        this.endScheduleDate = endScheduleDate;
         this.isAlarm = isAlarm;
         this.alarmTime = alarmTime;
     }

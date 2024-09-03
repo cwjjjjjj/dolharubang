@@ -15,7 +15,8 @@ public class ScheduleResDto {
 
     private Long id;
     private String contents;
-    private LocalDateTime scheduleDate;
+    private LocalDateTime startScheduleDate;
+    private LocalDateTime endScheduleDate;
     private Boolean isAlarm;
     private LocalDateTime alarmTime;
     private LocalDateTime createdAt;
@@ -25,7 +26,8 @@ public class ScheduleResDto {
         return ScheduleResDto.builder()
             .id(schedule.getId())
             .contents(schedule.getContents())
-            .scheduleDate(schedule.getScheduleDate())
+            .startScheduleDate(schedule.getStartScheduleDate())
+            .endScheduleDate(schedule.getEndScheduleDate())
             .isAlarm(schedule.isAlarm())
             .alarmTime(schedule.getAlarmTime())
             .createdAt(schedule.getCreatedAt())
