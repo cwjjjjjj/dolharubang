@@ -8,6 +8,9 @@ import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.ScheduleRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,8 @@ public class ScheduleService {
         Schedule schedule = Schedule.builder()
             .member(member)
             .contents(requestDto.getContents())
-            .scheduleDate(requestDto.getScheduleDate())
+            .startScheduleDate(requestDto.getStartScheduleDate())
+            .endScheduleDate(requestDto.getEndScheduleDate())
             .isAlarm(requestDto.getIsAlarm())
             .alarmTime(requestDto.getAlarmTime())
             .build();
@@ -53,7 +57,8 @@ public class ScheduleService {
         schedule.update(
             member,
             requestDto.getContents(),
-            requestDto.getScheduleDate(),
+            requestDto.getStartScheduleDate(),
+            requestDto.getEndScheduleDate(),
             requestDto.getIsAlarm(),
             requestDto.getAlarmTime()
         );
@@ -78,16 +83,19 @@ public class ScheduleService {
         List<Schedule> schedules;
 
         if (year != null && month != null && day != null) {
-            // 일별 조회
-            schedules = scheduleRepository.findByYearMonthDayAndMember(year, month, day, member);
+            LocalDateTime startOfDay = LocalDate.of(year, month, day).atStartOfDay();
+            LocalDateTime endOfDay = LocalDate.of(year, month, day).atTime(LocalTime.MAX);
+            schedules = scheduleRepository.findByDayRangeAndMember(startOfDay, endOfDay, member);
         } else if (year != null && month != null) {
-            // 월별 조회
-            schedules = scheduleRepository.findByYearMonthAndMember(year, month, member);
+            LocalDateTime startOfMonth = LocalDate.of(year, month, 1).atStartOfDay();
+            LocalDateTime endOfMonth = LocalDate.of(year, month, 1).plusMonths(1).minusDays(1)
+                .atTime(LocalTime.MAX);
+            schedules = scheduleRepository.findByMonthAndMember(startOfMonth, endOfMonth, member);
         } else if (year != null) {
-            // 연도별 조회
-            schedules = scheduleRepository.findByYearAndMember(year, member);
+            LocalDateTime startOfYear = LocalDate.of(year, 1, 1).atStartOfDay();
+            LocalDateTime endOfYear = LocalDate.of(year, 12, 31).atTime(LocalTime.MAX);
+            schedules = scheduleRepository.findByYearAndMember(startOfYear, endOfYear, member);
         } else {
-            // 전체 조회
             schedules = scheduleRepository.findAllByMember(member);
         }
 

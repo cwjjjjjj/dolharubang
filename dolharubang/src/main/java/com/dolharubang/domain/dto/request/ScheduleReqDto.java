@@ -11,7 +11,8 @@ public class ScheduleReqDto {
     private Long id;
     private Long memberId;
     private String contents;
-    private LocalDateTime scheduleDate;
+    private LocalDateTime startScheduleDate;
+    private LocalDateTime endScheduleDate;
     private Boolean isAlarm;
     private LocalDateTime alarmTime;
 
@@ -20,7 +21,8 @@ public class ScheduleReqDto {
             .id(dto.getId())
             .member(member)
             .contents(dto.getContents())
-            .scheduleDate(dto.getScheduleDate())
+            .startScheduleDate(dto.getStartScheduleDate())
+            .startScheduleDate(dto.getEndScheduleDate())
             .isAlarm(dto.getIsAlarm())
             .alarmTime(dto.getAlarmTime())
             .build();
