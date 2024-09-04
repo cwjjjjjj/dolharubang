@@ -44,6 +44,14 @@ public class MemberMissionController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "특정 회원 미션 모두 조회", description = "특정 회원의 모든 미션을 조회합니다.")
+    @GetMapping("/{memberId}/missions")
+    public ResponseEntity<List<MemberMissionResDto>> getMemberMissions(
+        @PathVariable Long memberId) {
+        List<MemberMissionResDto> missions = memberMissionService.getMemberMissions(memberId);
+        return ResponseEntity.ok(missions);
+    }
+
     @Operation(summary = "회원 미션 상세 조회", description = "회원 미션 ID를 통해 특정 회원 미션을 조회합니다.")
     @GetMapping("/{id}")
     public ResponseEntity<MemberMissionResDto> getMemberMission(@PathVariable Long id) {

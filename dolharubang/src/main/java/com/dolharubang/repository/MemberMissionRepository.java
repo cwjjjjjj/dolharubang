@@ -13,4 +13,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
 
     @Query("SELECT mm FROM MemberMission mm WHERE mm.mission.isDaily = true")
     List<MemberMission> findDailyMissions();
+
+    List<MemberMission> findByMember(Member member);
 }
