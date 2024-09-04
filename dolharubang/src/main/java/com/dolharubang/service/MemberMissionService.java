@@ -75,6 +75,17 @@ public class MemberMissionService {
         return MemberMissionResDto.fromEntity(memberMission);
     }
 
+    @Transactional(readOnly = true)
+    public List<MemberMissionResDto> getMemberMissions(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        List<MemberMission> memberMissions = memberMissionRepository.findByMember(member);
+
+        return memberMissions.stream()
+            .map(MemberMissionResDto::fromEntity)
+            .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public MemberMissionResDto getMemberMission(Long id) {
