@@ -30,7 +30,20 @@ public enum ErrorCode {
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 오류가 발생했습니다."),
 
     // 인증 관련 오류
-    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패하였습니다.");
+    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패하였습니다."),
+
+    // 미션 관련 오류
+    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다."),
+    DUPLICATE_MISSION(HttpStatus.CONFLICT, "중복된 미션이 존재합니다."),
+    INVALID_MISSION_STATUS(HttpStatus.BAD_REQUEST, "유효하지 않은 미션 상태입니다."),
+
+    // 멤버 미션 관련 오류
+    DUPLICATE_MEMBER_MISSION(HttpStatus.CONFLICT, "해당 유저는 이미 해당 미션을 진행중이거나 완료했습니다."),
+    MEMBER_MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저에게서 이 미션을 찾을 수 없습니다."),
+
+    // Json 변환 에러
+    JSON_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 변환 과정에서 오류가 발생했습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String detail;
@@ -39,5 +52,5 @@ public enum ErrorCode {
         this.httpStatus = httpStatus;
         this.detail = detail;
     }
-    
+
 }
