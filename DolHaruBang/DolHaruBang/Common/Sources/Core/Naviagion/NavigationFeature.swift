@@ -17,7 +17,8 @@ struct NavigationFeature {
   // 이동하는 네비게이션에서 Reducer를 사용한다면 Reducer도 같이 정의
   @Reducer(state: .equatable)
   enum Path {
-    case calendar(CalendarFeature)
+//    case calendar(CalendarFeature)
+    case calendar
     case harubang(HaruBangFeature)
     case park(ParkFeature)
     case mypage(MyPageFeature)
@@ -92,7 +93,7 @@ struct NavigationFeature {
               case .calendar:
                   clearPathToHomeIfNeeded()
                   state.enableClick = false
-                  state.path.append(.calendar(CalendarFeature.State()))
+                  state.path.append(.calendar)
                   return createAsyncEnableClickEffect()
                       
               case .harubang(_):
