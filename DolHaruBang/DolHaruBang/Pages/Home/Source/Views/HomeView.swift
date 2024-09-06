@@ -78,7 +78,9 @@ struct HomeView : View {
                                 }
                                 
                                 Button(action: {
-                                    store.send(.openDecoration)
+                                    if store.enable {
+                                        store.send(.openDecoration)
+                                    }
                                 }) {
                                     VStack {
                                         Image("Brush")
@@ -117,7 +119,10 @@ struct HomeView : View {
                             selectedFaceShape: $store.selectedFaceShape,
                             selectedAccessory: $store.selectedAccessory,
                             selectedSign: $store.selectedSign,
-                            selectedMail: $store.selectedMail
+                            selectedMail: $store.selectedMail,
+                            signText: $store.message,
+                            sign : $store.sign,
+                            enable: $store.enable
                         )
                         
                         Spacer().background(Color.red)
@@ -210,6 +215,9 @@ struct HomeView : View {
                         
                         Spacer().frame(height: geometry.size.height * 0.12)
                     }
+                    
+                    // 팝업뷰
+                    MyTextFieldAlert(isShown: $store.sign , text: $store.message)
                     
                 } // ZStack
                 .edgesIgnoringSafeArea(.all)
