@@ -59,7 +59,7 @@ struct FloatingMenuView : View {
         if viewState.currentStack.count > 0 {
                HStack{
                    BottomButtonView(store : nav ,imageName: "Calander", buttonText: "달력"){
-                       nav.send(.goToScreen(.calendar))
+                       nav.send(.goToScreen(.calendar(CalendarFeature())))
                    }
                    BottomButtonView(store : nav ,imageName: "Harubang", buttonText: "하루방"){
                        nav.send(.goToScreen(.harubang(HaruBangFeature())))
@@ -118,7 +118,7 @@ struct FloatingMenuView : View {
             .frame(width: 64, height: 64)
             .background(Color.mainBrown)
             .cornerRadius(15)
-            .padding(.bottom, 23)
+            .padding(.bottom, 29)
         }
     }
 }
