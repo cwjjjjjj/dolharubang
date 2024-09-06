@@ -95,8 +95,8 @@ struct DBTIGuideView: View {
         // 해당 값을 가지고 NavigationStack이 패턴매칭을 함
         destination : { nav in
             switch nav.case {
-            case .calendar:
-                CalendarView()
+            case let .calendar(store):
+                CalendarView(store: store)
             case let .harubang(store):
                 HaruBangView(store: store)
             case let .mypage(store):
