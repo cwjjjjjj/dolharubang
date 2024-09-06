@@ -214,18 +214,6 @@ struct HomeView : View {
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
                         Spacer().frame(height: geometry.size.height * 0.12)
-                      
-//                        // 하단 버튼들
-//                        HStack{
-//                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
-//
-//                        }
-//                        .padding(.bottom , geometry.size.height * 0.035)
-                        
                     }
                     
                     // 팝업뷰
