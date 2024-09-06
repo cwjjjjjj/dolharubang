@@ -78,7 +78,9 @@ struct HomeView : View {
                                 }
                                 
                                 Button(action: {
-                                    store.send(.openDecoration)
+                                    if store.enable {
+                                        store.send(.openDecoration)
+                                    }
                                 }) {
                                     VStack {
                                         Image("Brush")
@@ -117,7 +119,10 @@ struct HomeView : View {
                             selectedFaceShape: $store.selectedFaceShape,
                             selectedAccessory: $store.selectedAccessory,
                             selectedSign: $store.selectedSign,
-                            selectedMail: $store.selectedMail
+                            selectedMail: $store.selectedMail,
+                            signText: $store.message,
+                            sign : $store.sign,
+                            enable: $store.enable
                         )
                         
                         Spacer().background(Color.red)
@@ -209,7 +214,22 @@ struct HomeView : View {
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
                         Spacer().frame(height: geometry.size.height * 0.12)
+                      
+//                        // 하단 버튼들
+//                        HStack{
+//                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
+//                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
+//
+//                        }
+//                        .padding(.bottom , geometry.size.height * 0.035)
+                        
                     }
+                    
+                    // 팝업뷰
+                    MyTextFieldAlert(isShown: $store.sign , text: $store.message)
                     
                 } // ZStack
                 .edgesIgnoringSafeArea(.all)
