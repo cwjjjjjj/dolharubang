@@ -227,7 +227,6 @@
 				65E1C5092C6F7DE700A2E419 /* ColorHex.swift */,
 				657E5F952C7452B7002FFA69 /* hideKeyboard.swift */,
 				657E5F972C745356002FFA69 /* View.swift */,
-				DA461F732C81E45C00270CDE /* CalendarUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -534,6 +533,7 @@
 		DA461F6C2C81608D00270CDE /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				DA7FE58C2C8B65A400843462 /* Util */,
 				DA461F6E2C81609900270CDE /* Core */,
 				DA461F6D2C81609300270CDE /* View */,
 			);
@@ -617,6 +617,14 @@
 				DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */,
 			);
 			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		DA7FE58C2C8B65A400843462 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				DA461F732C81E45C00270CDE /* CalendarUtil.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		DAAEFC022C56941800D1F87B = {
