@@ -7,7 +7,7 @@
 
 import SceneKit
 
-// MARK: 조명관련 함수들
+// MARK: 조명관련 함수들ㅇ
 func makeAmbientLight() -> SCNNode{
     let ambientLightNode = SCNNode()
     let ambientLight = SCNLight()
