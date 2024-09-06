@@ -4,53 +4,68 @@
 //
 //  Created by 양희태 on 8/4/24.
 //
+
 import Foundation
 import ComposableArchitecture
 import Alamofire
-
-struct Peperoni: Decodable, Equatable, Sendable {
-  var message : String
-}
+    
+struct User : Decodable, Equatable, Sendable {
+    var user : Info
+    
+    struct Info : Decodable, Equatable, Sendable{
+        var memberID : Int? = 0
+        var nickname : String = "d"
+        var birthday : String = "1998-09-10"
+        var sands : Int = 0
+        var totalLoginDays : Int = 5
+        var profilePicture : String = "ds"
+        var spaceName : String = "g"
+        var memberEmail : String = "naver"
+    }
+ }
 
 @DependencyClient
-struct TmpClient {
-    var regist: @Sendable () async throws -> Peperoni
+struct TmpClient
+{
+    var regist : @Sendable (_ regist : User.Info) async throws -> Void
 }
 
 // 실제 통신 전 테스트
 extension TmpClient: TestDependencyKey {
-    // 여기서의 Self는 TmpClient
-    static let previewValue = Self()
+    // 여기서의 Self는 WeatherClient
+  static let previewValue = Self()
 
-    static let testValue = Self()
+  static let testValue = Self()
 }
 
-extension DependencyValues {
-    var tmpClient: TmpClient {
+extension DependencyValues{
+    var tmpClient : TmpClient {
         get { self[TmpClient.self] }
-        set { self[TmpClient.self] = newValue }
+        set { self[TmpClient.self] = newValue}
     }
 }
 
+
+
 extension TmpClient: DependencyKey {
-    static let liveValue = TmpClient(
-        regist: {
-            
-               let url = "http://211.49.26.51:8080/api/v1/pepperoni"
-//            let queryParameters: [String: String] = ["param1": "value1"] // 필요에 따라 설정
-//            let headers: HTTPHeaders = ["Authorization": "Bearer token"] // 필요에 따라 설정
-//            return try await fetch(url, model: Peperoni.self, queryParameters: queryParameters, headers: headers)
-               return try await fetch(url: url, model: Peperoni.self, method: .get)
-                 
-            
+  static let liveValue = TmpClient(
+    regist: { userInfo in
+        let url = "http://dolharubang.store/api/api/v1/schedules"
+        let parameters: [String: Any] = [
+            "year": "1",
+            "month": "2",
+            "day": "1998",
+            "email": "sma",
+        ]
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default)
+                .response {
+                    response in
+                    print("프린트 \(response)")
+                }
         }
-    )
+
+    }
+  )
 }
-
-
-private let jsonDecoder: JSONDecoder = {
-  let decoder = JSONDecoder()
-  let formatter = DateFormatter()
-  decoder.dateDecodingStrategy = .formatted(formatter)
-  return decoder
-}()
