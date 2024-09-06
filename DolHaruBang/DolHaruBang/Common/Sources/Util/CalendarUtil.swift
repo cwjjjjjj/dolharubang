@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import ComposableArchitecture
 
 let dateFormatterYear: DateFormatter = {
     let formatter = DateFormatter()
@@ -33,3 +35,34 @@ let dateFormatterWeekday: DateFormatter = {
 }()
 
 let days = ["일", "월", "화", "수", "목", "금", "토"]
+
+// 현재 월의 날짜 배열을 반환
+func daysInMonth(calendar: Calendar, store: StoreOf<CalendarFeature>) -> [Date?] {
+    // 특정 날짜(currentDate)를 기준으로 해당 달의 일(day) 수의 범위를 반환
+    guard let range = calendar.range(of: .day, in: .month, for: store.currentDate) else { return [] } // 1 ~ 29,30,31
+    let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: store.currentDate))! // 해당 월의 시작 날짜 // day를 비워두면 1일로 자동 설정
+    let firstWeekday = calendar.component(.weekday, from: startOfMonth) - 1 // 월의 첫번째 요일 // 1 - 일요일 // 7 - 토요일// 따라서 배열 인덱스로 쓰려면 1 빼주기!
+
+    var days: [Date?] = Array(repeating: nil, count: firstWeekday) // 첫번째 요일 값 만큼의 빈 공간 설정으로 초기화
+    for day in range {
+        let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth)!
+        days.append(date)
+    }
+
+    let additionalDays = (7 - days.count % 7) % 7 // 달력의 마지막줄 남은 부분 nil로 채우기 위함
+    days += Array(repeating: nil, count: additionalDays)
+    
+    return days
+}
+
+// 이전 월 텍스트 반환
+func previousMonthText(calendar: Calendar, store: StoreOf<CalendarFeature>) -> String {
+    let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: store.currentDate)!
+    return dateFormatterMonth.string(from: previousMonthDate)
+}
+
+// 다음 월 텍스트 반환
+func nextMonthText(calendar: Calendar, store: StoreOf<CalendarFeature>) -> String {
+    let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: store.currentDate)!
+    return dateFormatterMonth.string(from: nextMonthDate)
+}
