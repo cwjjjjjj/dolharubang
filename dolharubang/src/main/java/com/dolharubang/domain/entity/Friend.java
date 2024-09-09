@@ -46,4 +46,13 @@ public class Friend extends BaseEntity {
 
     private LocalDateTime acceptedAt;
 
+    public void accept() {
+        this.status = FriendStatusType.ACCEPTED;
+        this.acceptedAt = LocalDateTime.now();
+    }
+
+    public void decline() {
+        this.status = FriendStatusType.DECLINED;
+    }
+
 }
