@@ -10,8 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @MappedSuperclass
-@EntityListeners(value = {AuditingEntityListener.class})
-public class BaseEntity {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntity {
 
     @CreatedDate
     protected LocalDateTime createdAt;
@@ -19,4 +19,17 @@ public class BaseEntity {
     @LastModifiedDate
     protected LocalDateTime modifiedAt;
 
+    protected LocalDateTime deletedAt;
+
+    public boolean isDeleted() {
+        return deletedAt != null;
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void restore() {
+        this.deletedAt = null;
+    }
 }
