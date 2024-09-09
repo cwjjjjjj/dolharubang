@@ -16,12 +16,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE friend SET deleted_at = NOW() WHERE friend_id = ?")
+@Where(clause = "deleted_at IS NULL")
 public class Friend extends BaseEntity {
 
     @Id
