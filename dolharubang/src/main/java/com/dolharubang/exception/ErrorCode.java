@@ -42,8 +42,15 @@ public enum ErrorCode {
     MEMBER_MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저에게서 이 미션을 찾을 수 없습니다."),
 
     // Json 변환 에러
-    JSON_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 변환 과정에서 오류가 발생했습니다.");
+    JSON_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 변환 과정에서 오류가 발생했습니다."),
 
+    // 친구 관련 오류
+    FRIEND_REQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 친구 요청을 보냈습니다."),
+    FRIEND_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 친구 요청을 찾을 수 없습니다."),
+    FRIEND_CANNOT_BE_DELETED(HttpStatus.BAD_REQUEST, "친구를 삭제할 수 없습니다."),
+    FRIEND_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 수락했습니다."),
+    FRIEND_ALREADY_PENDING(HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
+    FRIEND_ALREADY_DECLINED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 거절했습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;
