@@ -12,12 +12,13 @@ struct HomeFeature {
     
     @ObservableState
     struct State: Equatable {
-        var selectedFace : Face = .sparkle
-        var selectedFaceShape : FaceShape = .sosim
-        var selectedBackground : Background = .December
+        var selectedFace : Face = .saechim
+        var selectedFaceShape : FaceShape = .saechim
+        var selectedBackground : Background = .April
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
+        var selectedNest : Nest = .nest
         var message: String = "" // 텍스트필드 메시지
         var ability: Bool = false // 잠재능력 버튼 온 오프
         var decoration: Bool = false // 꾸미기 탭 온 오프
@@ -38,6 +39,7 @@ struct HomeFeature {
         case selectFaceShape(FaceShape)
         case selectBackground(Background)
         case selectAccessory(Accessory)
+        case selectNest(Nest)
         case selectSign(Sign)
         case selectMail(Mail)
         case clickProfile
@@ -85,6 +87,9 @@ struct HomeFeature {
                 return .none
             case let .selectMail(selectedMail) :
                 state.selectedMail = selectedMail
+                return .none
+            case let .selectNest(selectedNest) :
+                state.selectedNest = selectedNest
                 return .none
             case .clickAbility:
                 state.ability.toggle()

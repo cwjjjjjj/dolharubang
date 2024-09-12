@@ -12,7 +12,7 @@ import SceneKit
 func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
     
     for childNode in rootNode.childNodes {
-        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "leftDirectionalLightNode" && childNode.name != "forwardDirectionalLightNode" && childNode.name != "rightDirectionalLightNode" && childNode.name != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text"{
+        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "areaLight" && childNode.name != "omniLight" && childNode.name != "directionLight" && childNode.name != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text" && childNode.name != "nest"{
             childNode.isHidden = true
         }
     }
@@ -59,5 +59,14 @@ func updateTextNode(_ textNode: SCNNode, newText: String) {
         scnText.string = newText
     } else {
         print("텍스트 노드의 geometry가 SCNText가 아닙니다.")
+    }
+}
+
+func applyMaterial(to node: SCNNode, with material: SCNMaterial) {
+    if let geometry = node.geometry {
+        geometry.materials = [material]
+    }
+    for child in node.childNodes {
+        applyMaterial(to: child, with: material)
     }
 }
