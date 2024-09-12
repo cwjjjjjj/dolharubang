@@ -36,9 +36,8 @@ public class Diary extends BaseEntity{
     private String reply;
 
     @Builder
-    public Diary(Long diaryId,Member member, String contents, String emoji, String image, String reply,
+    public Diary(Member member, String contents, String emoji, String image, String reply,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.diaryId = diaryId;
         this.member = member;
         this.contents = contents;
         this.emoji = emoji;
