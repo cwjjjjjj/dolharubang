@@ -21,17 +21,17 @@ func addAccessory() -> SCNNode {
 func addSign() -> SCNNode {
     let scene = SCNScene(named: "Signs.scnassets/SignGroup.scn") ?? SCNScene()
     
-    
     scene.rootNode.name = "sign"
     
-    // 임시 : 모델 크기 조절 안되어있음
-    for node in scene.rootNode.childNodes {
-        // MARK: 모델 크기 조절
-        node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
-
-      }
-    
     moveNodeToPosition(node: scene.rootNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+    
+    
+    let angleInRadians = CGFloat(20 * (Float.pi / 180))
+     // 15도를 라디안으로 변환
+    let rotationAxis = SCNVector3(0, 1, 0) // Y축을 기준으로 회전
+    scene.rootNode.rotate(by: SCNQuaternion(0, sin(angleInRadians / 2), 0, cos(angleInRadians / 2)), aroundTarget: rotationAxis)
+
+    
     return scene.rootNode
 }
 
@@ -43,9 +43,25 @@ func addMail() -> SCNNode {
     // 임시 : 모델 크기 조절 안되어있음
     for node in scene.rootNode.childNodes {
         // MARK: 모델 크기 조절
-        node.scale = SCNVector3(x: 0.2, y: 0.2 , z: 0.2)
+        node.scale = SCNVector3(x: 0.3, y: 0.3 , z: 0.3)
 
       }
+    
+    moveNodeToPosition(node: scene.rootNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+    return scene.rootNode
+}
+
+// MARK: Nest Node Add
+func addNest() -> SCNNode {
+    let scene = SCNScene(named: "Nests.scnassets/NestGroup.scn") ?? SCNScene()
+    scene.rootNode.name = "nest"
+    
+    // 임시 : 모델 크기 조절 안되어있음
+//    for node in scene.rootNode.childNodes {
+//        // MARK: 모델 크기 조절
+//        node.scale = SCNVector3(x: 0.2, y: 0.2 , z: 0.2)
+//
+//      }
     
     moveNodeToPosition(node: scene.rootNode, x: 0.0, y: 0.0, z: 0.0) // x, y, z 값은 원하는 위치로 설정
     return scene.rootNode
@@ -56,16 +72,20 @@ func addTextNode() -> SCNNode{
     
     // extrusionDepth : Z축 방향으로 돌출된 텍스트 범위
             let scnText = SCNText()
+            // 기존 적용 폰트
             scnText.font = Font.uiFont(for: Font.signtext)
-//            scnText.font = UIFont(name: "Helvetica Neue", size: 8)!
+            // Helvetica Neue , Arial, Times New Roman, Couier, Menlo, Verdana, Georgia
+//            scnText.font = UIFont(name: "Arial Rounded MT Bold", size: 8)!
     
-            scnText.firstMaterial?.diffuse.contents = UIColor.black
+            scnText.firstMaterial?.diffuse.contents = UIColor.white
             scnText.containerFrame = CGRect(origin: .zero, size: CGSize(width: 70, height: 60))
             scnText.string = ""
             scnText.isWrapped = true
             scnText.extrusionDepth = 1.2
+            scnText.chamferRadius = 0.3 // 적절한 값으로 설정
+
              // flatness : 텍스트의 부드러움을 결정함
-//             scnText.flatness = CGFloat(1)
+            scnText.flatness = 0.1
 //            scnText.alignmentMode = CATextLayerAlignmentMode.natural.rawValue
     
              // SCNNode 생성
@@ -77,6 +97,13 @@ func addTextNode() -> SCNNode{
              textNode.scale = SCNVector3Make(0.01, 0.01, 0.01)
              textNode.name = "text"
              
+    
+            let angleInRadians = CGFloat(20 * (Float.pi / 180))
+            // 30도를 라디안으로 변환
+            let rotationAxis = SCNVector3(0, 1, 0) // Y축을 기준으로 회전
+            textNode.rotate(by: SCNQuaternion(0, sin(angleInRadians / 2), 0, cos(angleInRadians / 2)), aroundTarget: rotationAxis)
+
+    
              return textNode
 }
 
@@ -90,6 +117,21 @@ func updateMaterialsToPhysicallyBased(for scene: SCNScene) {
     scene.rootNode.enumerateChildNodes { (node, _) in
         for material in node.geometry?.materials ?? [] {
             material.lightingModel = .physicallyBased
+            // Roughness 값을 높여서 표면을 더 거칠게 함
+            material.roughness.contents = 0.9
+                        
+            // Metalness 값을 조정하여 금속성 효과 조정
+            material.metalness.contents = 0.1
+//            
+//            material.diffuse.contents = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.3)
+                        
+            
+//            // Emission 값을 추가하여 밝기를 증가
+            material.emission.contents = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+//
+//                      // Ambient 속성을 약간 더 밝게 설정하여 부드러운 효과 추가
+            material.ambient.contents = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                
         }
     }
 }

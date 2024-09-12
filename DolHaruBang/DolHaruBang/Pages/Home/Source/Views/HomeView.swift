@@ -120,6 +120,7 @@ struct HomeView : View {
                             selectedAccessory: $store.selectedAccessory,
                             selectedSign: $store.selectedSign,
                             selectedMail: $store.selectedMail,
+                            selectedNest: $store.selectedNest,
                             signText: $store.message,
                             sign : $store.sign,
                             enable: $store.enable

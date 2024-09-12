@@ -10,6 +10,17 @@
 		652175052C60F77900128734 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 652175042C60F77900128734 /* ComposableArchitecture */; };
 		652ECFAB2C5F0D1400399279 /* respnseKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
+
+		6550AA502C5A809B000A264E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA4F2C5A809B000A264E /* HomeView.swift */; };
+		655E42112C5EB368008ADB5A /* HomeEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655E42102C5EB368008ADB5A /* HomeEnviroment.swift */; };
+		656592B12C76561800B06D97 /* CustomizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B02C76561800B06D97 /* CustomizeView.swift */; };
+		656592B32C7656F200B06D97 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B22C7656F200B06D97 /* Shape.swift */; };
+		656592B52C7657DF00B06D97 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656592B42C7657DF00B06D97 /* Background.swift */; };
+		65666CD12C91E3BD00B13AF1 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 65666CD02C91E3BD00B13AF1 /* Nests.scnassets */; };
+		65666CD32C91E46900B13AF1 /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65666CD22C91E46900B13AF1 /* Nest.swift */; };
+		656769A72C92054D00EEEB2C /* straw_rolls_field_01_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 656769A62C92054D00EEEB2C /* straw_rolls_field_01_4k.hdr */; };
+		656953522C76891D007B4DA1 /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 656953512C76891D007B4DA1 /* Background.xcassets */; };
+
 		657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780E02C83427000DC08C2 /* NavigationFeature.swift */; };
 		657780E62C8349EA00DC08C2 /* HaruBangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780E52C8349EA00DC08C2 /* HaruBangView.swift */; };
 		657780E82C834A5500DC08C2 /* HaruBangFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780E72C834A5500DC08C2 /* HaruBangFeature.swift */; };
@@ -92,6 +103,18 @@
 /* Begin PBXFileReference section */
 		652ECFAA2C5F0D1400399279 /* respnseKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = respnseKeyboard.swift; sourceTree = "<group>"; };
 		6550AA482C59EA35000A264E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+
+		6550AA4F2C5A809B000A264E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		655E42102C5EB368008ADB5A /* HomeEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEnviroment.swift; sourceTree = "<group>"; };
+		656592B02C76561800B06D97 /* CustomizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeView.swift; sourceTree = "<group>"; };
+		656592B22C7656F200B06D97 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		656592B42C7657DF00B06D97 /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		65666CD02C91E3BD00B13AF1 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
+		65666CD22C91E46900B13AF1 /* Nest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
+		656769A62C92054D00EEEB2C /* straw_rolls_field_01_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; name = straw_rolls_field_01_4k.hdr; path = ../../../../../../Downloads/straw_rolls_field_01_4k.hdr; sourceTree = "<group>"; };
+		656953512C76891D007B4DA1 /* Background.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Background.xcassets; sourceTree = "<group>"; };
+
+
 		657780E02C83427000DC08C2 /* NavigationFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationFeature.swift; sourceTree = "<group>"; };
 		657780E52C8349EA00DC08C2 /* HaruBangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruBangView.swift; sourceTree = "<group>"; };
 		657780E72C834A5500DC08C2 /* HaruBangFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruBangFeature.swift; sourceTree = "<group>"; };
@@ -248,8 +271,12 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DAB2EA972C85FD9F007626F8 /* je_gray_02_4k.hdr */,
-				DAB2EA982C85FD9F007626F8 /* lythwood_field_4k.hdr */,
+
+				656769A62C92054D00EEEB2C /* straw_rolls_field_01_4k.hdr */,
+				658962AB2C8624C200F27FB4 /* je_gray_02_4k.hdr */,
+				658962AC2C8624C200F27FB4 /* lythwood_field_4k.hdr */,
+				65666CD02C91E3BD00B13AF1 /* Nests.scnassets */,
+
 				DAB2EA8B2C85FA1A007626F8 /* Accessorys.scnassets */,
 				DAB2EA892C85FA19007626F8 /* Dols.scnassets */,
 				DAB2EA8D2C85FA1A007626F8 /* Mails.scnassets */,
@@ -404,7 +431,17 @@
 		657780F62C84AFB000DC08C2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+
+				657E5F932C745071002FFA69 /* Face.swift */,
+				656592B22C7656F200B06D97 /* Shape.swift */,
+				656592B42C7657DF00B06D97 /* Background.swift */,
+				654402132C7B8B3E00039510 /* Accessory.swift */,
+				6589628D2C85884F00F27FB4 /* Sign.swift */,
+				6589628F2C858E6300F27FB4 /* Mail.swift */,
+				65666CD22C91E46900B13AF1 /* Nest.swift */,
+
 				657780F72C84AFC400DC08C2 /* DBTIFeature.swift */,
+
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -781,6 +818,7 @@
 				DAA4C9FD2C8B7C6900409D4B /* Background.xcassets in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
+				656769A72C92054D00EEEB2C /* straw_rolls_field_01_4k.hdr in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				DAB2EA992C85FD9F007626F8 /* je_gray_02_4k.hdr in Resources */,
 				DAB2EA932C85FA1A007626F8 /* Mails.scnassets in Resources */,
@@ -788,7 +826,10 @@
 				DAAEFC342C5747F000D1F87B /* NanumSquareRoundOTFB.otf in Resources */,
 				DAB2EA8F2C85FA1A007626F8 /* Dols.scnassets in Resources */,
 				DAB2EA942C85FA1A007626F8 /* Signs.scnassets in Resources */,
-				DAB2EA9A2C85FD9F007626F8 /* lythwood_field_4k.hdr in Resources */,
+
+				65666CD12C91E3BD00B13AF1 /* Nests.scnassets in Resources */,
+				658962AE2C8624C300F27FB4 /* lythwood_field_4k.hdr in Resources */,
+
 				DAB2EA912C85FA1A007626F8 /* Accessorys.scnassets in Resources */,
 				DAA4CA082C8B7C6900409D4B /* HomeIcon.xcassets in Resources */,
 			);
@@ -815,6 +856,7 @@
 				DAA4CA052C8B7C6900409D4B /* DecorationView.swift in Sources */,
 				657780EA2C834ABC00DC08C2 /* ParkView.swift in Sources */,
 				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
+				65666CD32C91E46900B13AF1 /* Nest.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				DAA4CA012C8B7C6900409D4B /* Mail.swift in Sources */,
 				657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */,
