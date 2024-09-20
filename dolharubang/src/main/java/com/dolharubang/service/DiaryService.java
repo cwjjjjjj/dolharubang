@@ -8,6 +8,8 @@ import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.MemberRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,14 +43,54 @@ public class DiaryService {
         return DiaryResDto.fromEntity(savedDiary);
     }
 
-    //TODO RUD 메서드 생성
+    @Transactional
+    public DiaryResDto updateDiary(Long id, DiaryReqDto diaryReqDto) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
 
-//    @Transactional
-//    public DiaryResDto updateDiary(Long id, DiaryReqDto diaryReqDto) {
-//        Diary diary = diaryRepository.findByDiaryId(id)
-//            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
-//
-//        Member member = memberRepository.findByMemberId(diaryReqDto.getMemberId())
-//            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-//    }
+        Member member = memberRepository.findById(diaryReqDto.getMemberId())
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        diary.update(
+            member,
+            diaryReqDto.getContents(),
+            diaryReqDto.getEmoji(),
+            diaryReqDto.getImage(),
+            diaryReqDto.getReply()
+        );
+
+        return DiaryResDto.fromEntity(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryResDto getDiary(Long id) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+
+        return DiaryResDto.fromEntity(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DiaryResDto> getDiaryListByMemberId(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        List<Diary> response = diaryRepository.findAllByMember(member);
+
+        if(response.isEmpty()) {
+            throw new CustomException(ErrorCode.DIARY_NOT_FOUND);
+        }
+
+        return response.stream()
+            .map(DiaryResDto::fromEntity)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteDiary(Long id) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+
+        diaryRepository.delete(diary);
+    }
 }
