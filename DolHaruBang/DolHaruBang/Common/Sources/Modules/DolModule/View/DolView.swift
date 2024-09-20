@@ -125,7 +125,7 @@ struct DolView : UIViewRepresentable {
                 lastPanTranslation = translation
             } else if gestureRecognizer.state == .ended {
                 // 제스처가 끝났을 때 노드를 수평으로 맞추는 액션 정의
-                let resetRotation = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 10)
+                let resetRotation = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 2)
                 
                 if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFaceShape) reference", recursively: true) {
                     faceNode.runAction(resetRotation)
