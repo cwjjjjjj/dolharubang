@@ -12,8 +12,7 @@ func makeAmbientLight() -> SCNNode {
     let ambientLightNode = SCNNode()
     let ambientLight = SCNLight()
     ambientLight.type = .ambient
-    ambientLight.intensity = 1000 // 환경광 강도 증가
-    ambientLight.color = UIColor.white.withAlphaComponent(0.1)
+    ambientLight.intensity = 3000 // 환경광 강도 증가
     ambientLightNode.light = ambientLight
     ambientLightNode.name = "ambientLight"
     return ambientLightNode
@@ -39,24 +38,35 @@ func makeOmniLight() -> SCNNode {
 
 
 // 면광원
-func makeAreaLight() -> SCNNode {
+func makeAreaLight( intensity : CGFloat , name : String , position : SCNVector3, areaExtents : simd_float3 ) -> SCNNode {
     let areaLightNode = SCNNode()
     let areaLight = SCNLight()
     areaLight.type = .area
-    areaLight.intensity = 300 // 면광원으로 부드러운 조명 효과
-    areaLight.color = UIColor.white.withAlphaComponent(0.8)
+    areaLight.intensity = intensity // 면광원으로 부드러운 조명 효과
+//    let color = UIColor(red: 247/255.0, green: 231/255.0, blue: 198/255.0, alpha: 0.6) // 밝은 색상
+//      
+//    
+//    areaLight.color = color
+    
+    areaLight.areaType = .rectangle // 또는 .line, .polygon
+    areaLight.areaExtents = areaExtents // 크기 조절 (width, height, depth)
+
+
     areaLightNode.light = areaLight
-    areaLightNode.position = SCNVector3(0, 5, 5)
-    areaLightNode.name = "areaLight"
+    
+    areaLightNode.position = position // 적절한 위치 조정
+    areaLightNode.look(at: SCNVector3.init(x: 0.5, y: 0.6, z: 0.2))
+    areaLightNode.name = name
     return areaLightNode
 }
+
 
 
 func makeSpotLight() -> SCNNode{
     let spotLightNode = SCNNode()
     let spotLight = SCNLight()
     spotLight.type = .spot
-    spotLight.intensity = 3000
+    spotLight.intensity = 300
     spotLight.color = UIColor.white.withAlphaComponent(0.3)
     
     // 그림자 설정
@@ -92,7 +102,7 @@ func makeDirectionalLight(X: Float, Y : Float, Z : Float, intensity : CGFloat, n
     let directionalLight = SCNLight()
     directionalLight.type = .directional
     directionalLight.intensity = intensity // 방향성 조명 강도 조절
-    directionalLight.color = UIColor.white.withAlphaComponent(0.4)
+//    directionalLight.color = UIColor.white.withAlphaComponent(0.4)
     directionalLightNode.light = directionalLight
     directionalLightNode.name = name
     // 방향성 조명의 방향 설정
