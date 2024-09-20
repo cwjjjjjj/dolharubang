@@ -24,6 +24,8 @@ struct NavigationFeature {
     case home(HomeFeature)
     case DBTIQuestion1View(DBTIFeature)
     case DBTIResultView(DBTIFeature)
+    case TrophyView(TrophyFeature)
+    case SettingView(SettingFeature)
   }
     
   // path - NavigationStack 에서 사용하는 Stack
@@ -124,8 +126,19 @@ struct NavigationFeature {
               case .DBTIResultView(_):
                   state.path.append(.DBTIResultView(DBTIFeature.State()))
                   return .none
+                  
+                  
+              case .TrophyView(_):
+                  state.path.append(.TrophyView(TrophyFeature.State()))
+                  return .none
+                  
+              case .SettingView(_):
+                  state.path.append(.SettingView(SettingFeature.State()))
+                  return .none
+              
               }
-          
+                 
+           
       // 이렇게 사용하면 NavigationFeature를 불러오지 않고 기존에 사용하는 Reducer만 불러와도 사용 가능
       case let .path(action):
           switch action {
@@ -135,6 +148,22 @@ struct NavigationFeature {
             return .none
               
           case .element(id: _, action: .DBTIResultView(.goBack)), .element(id: _, action: .DBTIQuestion1View(.goBack)):
+              state.path.removeLast()
+              return .none
+              
+          case .element(id: _, action: .mypage(.trophyButtonTapped)):
+            state.path.append(.TrophyView(TrophyFeature.State()))
+            return .none
+              
+          case .element(id: _, action: .mypage(.settingButtonTapped)):
+            state.path.append(.SettingView(SettingFeature.State()))
+            return .none
+              
+          case .element(id: _, action: .TrophyView(.goBack)):
+              state.path.removeLast()
+              return .none
+              
+          case .element(id: _, action: .SettingView(.goBack)):
               state.path.removeLast()
               return .none
               

@@ -14,7 +14,7 @@ struct HomeFeature {
     struct State: Equatable {
         var selectedFace : Face = .balral
         var selectedFaceShape : FaceShape = .chic
-        var selectedBackground : Background = .April
+        @Shared(.inMemory("background"))  var selectedBackground : Background = .April
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
