@@ -12,7 +12,7 @@ import SceneKit
 func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
     
     for childNode in rootNode.childNodes {
-        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "areaLight" && childNode.name != "omniLight" && childNode.name != "directionLight" && childNode.name != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text" && childNode.name != "nest"{
+        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "areaLight" && childNode.name != "omniLight" && childNode.name != "directionLight" && childNode.name != "areaLight2" && childNode.name  != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text" && childNode.name != "nest"{
             childNode.isHidden = true
         }
     }

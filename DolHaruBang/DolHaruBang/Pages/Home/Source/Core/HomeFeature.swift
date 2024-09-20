@@ -12,8 +12,8 @@ struct HomeFeature {
     
     @ObservableState
     struct State: Equatable {
-        var selectedFace : Face = .saechim
-        var selectedFaceShape : FaceShape = .saechim
+        var selectedFace : Face = .balral
+        var selectedFaceShape : FaceShape = .chic
         var selectedBackground : Background = .April
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
