@@ -117,21 +117,10 @@ func updateMaterialsToPhysicallyBased(for scene: SCNScene) {
     scene.rootNode.enumerateChildNodes { (node, _) in
         for material in node.geometry?.materials ?? [] {
             material.lightingModel = .physicallyBased
-            // Roughness 값을 높여서 표면을 더 거칠게 함
-            material.roughness.contents = 0.9
-                        
-            // Metalness 값을 조정하여 금속성 효과 조정
-            material.metalness.contents = 0.1
-//            
-//            material.diffuse.contents = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.3)
-                        
             
-//            // Emission 값을 추가하여 밝기를 증가
-            material.emission.contents = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
-//
-//                      // Ambient 속성을 약간 더 밝게 설정하여 부드러운 효과 추가
-            material.ambient.contents = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-                
+            
+            material.roughness.contents = 0.8 // 거칠기 값을 높여 매트하게 만듭니다.
+            }
         }
-    }
+    
 }
