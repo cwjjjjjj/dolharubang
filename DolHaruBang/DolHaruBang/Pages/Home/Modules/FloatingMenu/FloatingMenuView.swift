@@ -40,11 +40,15 @@ struct FloatingMenuView : View {
           case .harubang(_):
               self.currentStack.insert(Screen(id: id, name: "Screen B"), at: 0)
           case .park(_):
-              self.currentStack.insert(Screen(id: id, name: "Screen C"), at: 0)
+              self.currentStack.insert(Screen(id: id, name: "park"), at: 0)
           case .mypage(_):
-              self.currentStack.insert(Screen(id: id, name: "Screen D"), at: 0)
+              self.currentStack.insert(Screen(id: id, name: "mypage"), at: 0)
           case .home(_):
-              self.currentStack.insert(Screen(id: id, name: "Screen E"), at: 0)
+              self.currentStack.insert(Screen(id: id, name: "home"), at: 0)
+          case .TrophyView(_):
+              self.currentStack.insert(Screen(id: id, name: "Trophy"), at: 0)
+          case .SettingView(_):
+              self.currentStack.insert(Screen(id: id, name: "Setting"), at: 0)
           default :
               self.currentStack.removeAll()
           }

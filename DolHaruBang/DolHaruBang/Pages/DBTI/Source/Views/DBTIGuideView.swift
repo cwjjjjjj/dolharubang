@@ -109,6 +109,10 @@ struct DBTIGuideView: View {
                 DBTIQuestion1View(store : store)
             case let .DBTIResultView(store):
                 DBTIResultView(store : store)
+            case let .TrophyView(store):
+                TrophyView(store : store)
+            case let .SettingView(store):
+                SettingView(store : store)
             }
         }
         // MARK: FloatingMenuView Start
