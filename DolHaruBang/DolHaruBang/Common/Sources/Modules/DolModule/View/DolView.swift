@@ -149,17 +149,17 @@ struct DolView : UIViewRepresentable {
         let scnView = SCNView()
         scnView.scene = loadScene(faceShape: selectedFaceShape)
         scnView.backgroundColor = UIColor.clear // SCNView의 배경을 투명하게 설정
-        scnView.allowsCameraControl = true
+        scnView.allowsCameraControl = false
         scnView.autoenablesDefaultLighting = false // 기본 조명 자동 활성화 비활성화
         scnView.defaultCameraController.interactionMode = .orbitTurntable
         
         // 탭 제스처 인식기 추가
-//        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
-//        scnView.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
+        scnView.addGestureRecognizer(tapGesture)
         
-        // 팬 제스처 인식기 추가
-//               let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
-//               scnView.addGestureRecognizer(panGesture)
+//         팬 제스처 인식기 추가
+               let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
+               scnView.addGestureRecognizer(panGesture)
         
         return scnView
     }
@@ -292,6 +292,10 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
 //    }
     
     
+    // shading 값 설정
+    updateMaterialsToPhysicallyBased(for: scene)
+    
+    
     let textNode = addTextNode()
     scene.rootNode.addChildNode(textNode)
     
@@ -299,40 +303,48 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     let cameraNode = makeCamera()
     scene.rootNode.addChildNode(cameraNode)
     
-    // shading 값 설정
-    updateMaterialsToPhysicallyBased(for: scene)
     
     
     // HDRI 파일의 URL을 가져옵니다.
-    guard let hdrURL = Bundle.main.url(forResource: "straw_rolls_field_01_4k", withExtension: "hdr") else {
-        print("HDR 이미지 파일을 찾을 수 없습니다.")
-        return scene
-    }
+//    guard let hdrURL = Bundle.main.url(forResource: "straw_rolls_field_01_4k", withExtension: "hdr") else {
+//        print("HDR 이미지 파일을 찾을 수 없습니다.")
+//        return scene
+//    }
+//    
+//    scene.lightingEnvironment.contents = hdrURL
     
-    scene.lightingEnvironment.contents = hdrURL
-    
-
-    // HDRI 배경 회전 (예: Y축 기준 180도 회전)
-    scene.lightingEnvironment.contentsTransform = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
+//    guard let hdrURL = Bundle.main.url(forResource: "lythwood_field_4k", withExtension: "hdr") else {
+//      print("HDR 이미지 파일을 찾을 수 없습니다.")
+//      return scene
+//    }
+//    scene.lightingEnvironment.contents = hdrURL
+//
+//    scene.lightingEnvironment.intensity = 2.0 // 강도를 2배로 설정 (기본값은 1.0)
+//    // HDRI 배경 회전 (예: Y축 기준 180도 회전)
+//    let rotationMatrix = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
+//    scene.lightingEnvironment.contentsTransform = rotationMatrix
     
     
     
     // 면광원 조명 추가
-    let areaLightNode = makeAreaLight()
+    let areaLightNode = makeAreaLight(intensity: 9000, name: "areaLight", position: SCNVector3(-8, 8, 30), areaExtents: simd_float3(x: 15, y: 15, z: 1))
     scene.rootNode.addChildNode(areaLightNode)
     
-   // 점광원 조명 추가, 빼면 어두워짐
-    let makeOmniLightNode = makeOmniLight()
-    scene.rootNode.addChildNode(makeOmniLightNode)
-    
-    let ambientLightNode = makeAmbientLight()
-    scene.rootNode.addChildNode(ambientLightNode)
-    
-//    let directionLightNode = makeDirectionalLight(X: 50, Y: 150, Z: 150, intensity: 500, name: "directionLight")
+    let areaLightNode2 = makeAreaLight(intensity: 6000, name: "areaLight2", position: SCNVector3(8, -8, 10), areaExtents: simd_float3(x: 7, y: 7, z: 1.0))
+    scene.rootNode.addChildNode(areaLightNode2)
+//
+//   // 점광원 조명 추가, 빼면 어두워짐
+//    let makeOmniLightNode = makeOmniLight()
+//    scene.rootNode.addChildNode(makeOmniLightNode)
+//    
+//    let ambientLightNode = makeAmbientLight()
+//    scene.rootNode.addChildNode(ambientLightNode)
+//    
+//    let directionLightNode = makeDirectionalLight(X: 10, Y: 1, Z: 150, intensity: 500, name: "directionLight")
 //    scene.rootNode.addChildNode(directionLightNode)
-    
-    let spotLightNode = makeSpotLight()
-    scene.rootNode.addChildNode(spotLightNode)
+//    
+//    let spotLightNode = makeSpotLight()
+//    scene.rootNode.addChildNode(spotLightNode)
     
     scene.rootNode.name = "model"
     
