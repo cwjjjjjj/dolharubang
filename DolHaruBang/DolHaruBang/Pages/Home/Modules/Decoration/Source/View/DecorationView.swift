@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 struct DecorationView: View {
     enum Tab {
-        case background, shape, face, accessory, mail, sign
+        case background, shape, face, accessory, mail, sign, nest
     }
     
     @State private var selected: Tab = .background
@@ -55,6 +55,12 @@ struct DecorationView: View {
                         action: { selected = .mail }
                     )
                     
+                    TabButton(
+                        title: "돌그릇",
+                        isSelected: selected == .nest,
+                        action: { selected = .nest }
+                    )
+                    
                     Spacer()
                 }
                 .padding(.top, 60)
@@ -95,6 +101,10 @@ struct DecorationView: View {
                         }
                         .tag(Tab.mail)
                         
+                        NavigationStack {
+                            CustomizeView<Nest>(store: store)
+                        }
+                        .tag(Tab.nest)
                     }
                 }
                 .background(Color.white) // TabView의 배경색

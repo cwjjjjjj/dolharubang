@@ -10,7 +10,7 @@ import SceneKit
 func makeCamera() -> SCNNode {
         let cameraNode = SCNNode()
        cameraNode.camera = SCNCamera()
-       cameraNode.position = SCNVector3(x: 0, y: 0, z: 3)
+       cameraNode.position = SCNVector3(x: 0, y: 0, z: 4)
        cameraNode.camera?.automaticallyAdjustsZRange = false
         cameraNode.name = "camera"
         return cameraNode
