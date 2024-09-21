@@ -11,13 +11,13 @@ import Foundation
 func fetch<T: Decodable>(
     url: String,
     model: T.Type,
-    method: HTTPMethod ,
+    method: HTTPMethod,
     queryParameters: [String: String]? = nil,
     headers: HTTPHeaders? = nil,
     body: Data? = nil
 ) async throws -> T {
     return try await withCheckedThrowingContinuation { continuation in
-        // URLRequest 객체 생성
+        // URLRequest 객체 생성 및 요청 방법 설정
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = method.rawValue
         
