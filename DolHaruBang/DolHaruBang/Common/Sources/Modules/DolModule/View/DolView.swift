@@ -19,6 +19,7 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedAccessory : Accessory
     @Binding var selectedSign : Sign
     @Binding var selectedMail : Mail
+    @Binding var selectedNest : Nest
     @Binding var signText : String
     @Binding var sign : Bool
     
@@ -33,6 +34,7 @@ struct DolView : UIViewRepresentable {
             self.parent = parent
         }
         
+        // 터치했을때의 액션
         @objc func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
             let scnView = gestureRecognizer.view as! SCNView
             let location = gestureRecognizer.location(in: scnView)
@@ -123,7 +125,7 @@ struct DolView : UIViewRepresentable {
                 lastPanTranslation = translation
             } else if gestureRecognizer.state == .ended {
                 // 제스처가 끝났을 때 노드를 수평으로 맞추는 액션 정의
-                let resetRotation = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 1)
+                let resetRotation = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 2)
                 
                 if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFaceShape) reference", recursively: true) {
                     faceNode.runAction(resetRotation)
@@ -155,7 +157,7 @@ struct DolView : UIViewRepresentable {
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
         scnView.addGestureRecognizer(tapGesture)
         
-        // 팬 제스처 인식기 추가
+//         팬 제스처 인식기 추가
                let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
                scnView.addGestureRecognizer(panGesture)
         
@@ -163,7 +165,6 @@ struct DolView : UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SCNView, context: Context) {
-        print("업데이트")
         
         // 씬이 로드되어 있다고 가정합니다.
         guard let scene = uiView.scene else {
@@ -184,6 +185,7 @@ struct DolView : UIViewRepresentable {
                 showAllNodes(rootNode: parentNode)
                 // 선택한 얼굴형중 선택한 표정만
                 hideAllNodesExcept(node: childNode, rootNode: parentNode) // 선택 노드만 보이게 설정
+                
             } else {
                 print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
             }
@@ -209,28 +211,9 @@ struct DolView : UIViewRepresentable {
                 print("출력 \(selectedSign) reference")
                 showAllNodes(rootNode: signNode)
                 hideAllNodesExcept(node: childSignNode, rootNode: signNode) // 선택 노드만 보이게 설정
-                moveNodeToPosition(node: childSignNode, x: -1.4, y: 1.0, z: -0.7) // x, y, z 값은 원하는 위치로 설정
-            } else {
-                print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
-            }
-        }
-        
-        if let textNode = scene.rootNode.childNode(withName: "text" , recursively: true){
-            // 선택한 얼굴형중 선택한 표정만black_glasses reference
-            print("textnode", textNode)
-            moveNodeToPosition(node: textNode, x: -1.4, y: 1.0, z: 1) // x, y, z 값은 원하는 위치로 설정
-            
-        }
-        
-        
-        // Mail Node Hide On Off
-        if let mailNode = scene.rootNode.childNode(withName: "Mail" , recursively: true){
-            if let childMailNode = mailNode.childNode(withName: "\(selectedMail) reference", recursively: true) {
-                // 선택한 얼굴형중 선택한 표정만black_glasses reference
-                print("출력 \(selectedMail) reference")
-                showAllNodes(rootNode: mailNode)
-                hideAllNodesExcept(node: childMailNode, rootNode: mailNode) // 선택 노드만 보이게 설정
-                moveNodeToPosition(node: childMailNode, x: 5.0, y: 1.0, z: -0.7) // x, y, z 값은 원하는 위치로 설정
+                moveNodeToPosition(node: childSignNode, x: -1.1, y: 0.4, z: -0.15) // x, y, z 값은 원하는 위치로 설정
+                
+                
             } else {
                 print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
             }
@@ -239,8 +222,41 @@ struct DolView : UIViewRepresentable {
         if let textNode = scene.rootNode.childNode(withName: "text" , recursively: true){
             print("textNode : ",textNode)
             updateTextNode(textNode, newText: signText)
-            moveNodeToPosition(node: textNode, x: -0.8, y: 0, z: -0.2) // x, y, z 값은 원하는 위치로 설정
+            moveNodeToPosition(node: textNode, x: -1.3, y: 0.2, z: 0.5) // x, y, z 값은 원하는 위치로 설정
+            
         }
+        
+        
+        // Nest Node Hide On Off
+        if let nestNode = scene.rootNode.childNode(withName: "Nest" , recursively: true){
+            if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
+                // 선택한 얼굴형중 선택한 표정만 black_glasses reference
+                print("출력 \(selectedNest) reference")
+                showAllNodes(rootNode: nestNode)
+                hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
+                moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.8, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+            } else {
+                print("\(selectedNest) 노드가 씬에 존재하지 않습니다.")
+            }
+        }
+        
+       
+        
+        // Mail Node Hide On Off
+        if let mailNode = scene.rootNode.childNode(withName: "Mail" , recursively: true){
+            if let childMailNode = mailNode.childNode(withName: "\(selectedMail) reference", recursively: true) {
+                // 선택한 얼굴형중 선택한 표정만black_glasses reference
+                print("출력 \(selectedMail) reference")
+                showAllNodes(rootNode: mailNode)
+                hideAllNodesExcept(node: childMailNode, rootNode: mailNode) // 선택 노드만 보이게 설정
+                moveNodeToPosition(node: childMailNode, x: 4.0, y: 1.0, z: -0.6) // x, y, z 값은 원하는 위치로 설정
+            } else {
+                print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
+            }
+        }
+        
+       
+        
         print("어떤것이 Hidden인지")
         printNodeDetails(node: scene.rootNode)
         print("씬의 노드 출력 끝")
@@ -255,6 +271,7 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     
     //    printNodeDetails(node: scene.rootNode)
     
+    
     let accessoryNode = addAccessory()
     scene.rootNode.addChildNode(accessoryNode)
     
@@ -265,33 +282,75 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     let mailNode = addMail()
     scene.rootNode.addChildNode(mailNode)
     
-  
+    let nestNode = addNest()
+    scene.rootNode.addChildNode(nestNode)
     
-    for node in scene.rootNode.childNodes {
-        // MARK: 모델 크기 조절
-        node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
-        
-    }
-    
-    let textNode = addTextNode()
-    scene.rootNode.addChildNode(textNode)
+//    for node in scene.rootNode.childNodes {
+//        // MARK: 모델 크기 조절
+//        node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
+//        
+//    }
     
     
     // shading 값 설정
     updateMaterialsToPhysicallyBased(for: scene)
     
-    // 환경 조명 추가
-    let ambientLightNode = makeAmbientLight()
-    scene.rootNode.addChildNode(ambientLightNode)
-    scene.rootNode.name = "model"
+    
+    let textNode = addTextNode()
+    scene.rootNode.addChildNode(textNode)
+    
+
+    let cameraNode = makeCamera()
+    scene.rootNode.addChildNode(cameraNode)
+    
+    
     
     // HDRI 파일의 URL을 가져옵니다.
-    guard let hdrURL = Bundle.main.url(forResource: "lythwood_field_4k", withExtension: "hdr") else {
-        print("HDR 이미지 파일을 찾을 수 없습니다.")
-        return scene
-    }
+//    guard let hdrURL = Bundle.main.url(forResource: "straw_rolls_field_01_4k", withExtension: "hdr") else {
+//        print("HDR 이미지 파일을 찾을 수 없습니다.")
+//        return scene
+//    }
+//    
+//    scene.lightingEnvironment.contents = hdrURL
     
-    scene.lightingEnvironment.contents = hdrURL
+//    guard let hdrURL = Bundle.main.url(forResource: "lythwood_field_4k", withExtension: "hdr") else {
+//      print("HDR 이미지 파일을 찾을 수 없습니다.")
+//      return scene
+//    }
+//    scene.lightingEnvironment.contents = hdrURL
+//
+//    scene.lightingEnvironment.intensity = 2.0 // 강도를 2배로 설정 (기본값은 1.0)
+//    // HDRI 배경 회전 (예: Y축 기준 180도 회전)
+//    let rotationMatrix = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
+//    scene.lightingEnvironment.contentsTransform = rotationMatrix
+    
+    
+    
+    // 면광원 조명 추가
+    let areaLightNode = makeAreaLight(intensity: 9000, name: "areaLight", position: SCNVector3(-8, 8, 30), areaExtents: simd_float3(x: 15, y: 15, z: 1))
+    scene.rootNode.addChildNode(areaLightNode)
+    
+    let areaLightNode2 = makeAreaLight(intensity: 6000, name: "areaLight2", position: SCNVector3(8, -8, 10), areaExtents: simd_float3(x: 7, y: 7, z: 1.0))
+    scene.rootNode.addChildNode(areaLightNode2)
+//
+//   // 점광원 조명 추가, 빼면 어두워짐
+//    let makeOmniLightNode = makeOmniLight()
+//    scene.rootNode.addChildNode(makeOmniLightNode)
+//    
+//    let ambientLightNode = makeAmbientLight()
+//    scene.rootNode.addChildNode(ambientLightNode)
+//    
+//    let directionLightNode = makeDirectionalLight(X: 10, Y: 1, Z: 150, intensity: 500, name: "directionLight")
+//    scene.rootNode.addChildNode(directionLightNode)
+//    
+//    let spotLightNode = makeSpotLight()
+//    scene.rootNode.addChildNode(spotLightNode)
+    
+    scene.rootNode.name = "model"
+    
+
+    
+  
     
     return scene
 }

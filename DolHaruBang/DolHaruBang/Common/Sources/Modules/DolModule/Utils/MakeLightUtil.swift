@@ -7,37 +7,81 @@
 
 import SceneKit
 
-// MARK: 조명관련 함수들ㅇ
-func makeAmbientLight() -> SCNNode{
+// MARK: 조명관련 함수들
+func makeAmbientLight() -> SCNNode {
     let ambientLightNode = SCNNode()
     let ambientLight = SCNLight()
     ambientLight.type = .ambient
-    ambientLight.intensity = 3000 // 환경 조명 강도 조절
+    ambientLight.intensity = 3000 // 환경광 강도 증가
     ambientLightNode.light = ambientLight
     ambientLightNode.name = "ambientLight"
     return ambientLightNode
 }
 
+
+// 점광원
+func makeOmniLight() -> SCNNode {
+    let omniLightNode = SCNNode()
+    let omniLight = SCNLight()
+    omniLight.type = .omni
+    // 중간점검 800
+    omniLight.intensity = 400 // 조명 강도를 낮추어 부드러운 느낌
+    omniLight.color = UIColor.white.withAlphaComponent(0.5) // 은은한 조명
+    omniLightNode.light = omniLight
+    omniLightNode.position = SCNVector3(0, 10, 10) // 위치 설정
+    omniLightNode.name = "omniLight"
+    
+       
+    
+    return omniLightNode
+}
+
+
+// 면광원
+func makeAreaLight( intensity : CGFloat , name : String , position : SCNVector3, areaExtents : simd_float3 ) -> SCNNode {
+    let areaLightNode = SCNNode()
+    let areaLight = SCNLight()
+    areaLight.type = .area
+    areaLight.intensity = intensity // 면광원으로 부드러운 조명 효과
+//    let color = UIColor(red: 247/255.0, green: 231/255.0, blue: 198/255.0, alpha: 0.6) // 밝은 색상
+//      
+//    
+//    areaLight.color = color
+    
+    areaLight.areaType = .rectangle // 또는 .line, .polygon
+    areaLight.areaExtents = areaExtents // 크기 조절 (width, height, depth)
+
+
+    areaLightNode.light = areaLight
+    
+    areaLightNode.position = position // 적절한 위치 조정
+    areaLightNode.look(at: SCNVector3.init(x: 0.5, y: 0.6, z: 0.2))
+    areaLightNode.name = name
+    return areaLightNode
+}
+
+
+
 func makeSpotLight() -> SCNNode{
     let spotLightNode = SCNNode()
     let spotLight = SCNLight()
     spotLight.type = .spot
-    spotLight.intensity = 1000
-    spotLight.color = UIColor(white: 1.0, alpha: 1.0) // 빛의 색상 원색
+    spotLight.intensity = 300
+    spotLight.color = UIColor.white.withAlphaComponent(0.3)
     
     // 그림자 설정
-    spotLight.castsShadow = true
-    spotLight.automaticallyAdjustsShadowProjection = true
-    spotLight.maximumShadowDistance = 20.0 // 그림자가 보이는 최대 거리
-    spotLight.orthographicScale = 10.0 // 조명 투영의 크기 (상황에 맞게 조정)
-    spotLight.shadowMapSize = CGSize(width: 2048, height: 2048) // 그림자 맵 해상도
-    spotLight.shadowMode = .deferred // 그림자 모드 설정 (Deferred는 더 좋은 품질을 제공합니다)
-    spotLight.shadowSampleCount = 128 // 그림자 샘플 수 (더 높은 수치일수록 품질이 향상됨)
-    spotLight.shadowRadius = 20.0 // 그림자의 흐림 정도
-    spotLight.shadowBias = 5.0 // 그림자 편향 (섬세하게 조정하여 그림자 부풀림을 방지)
-    spotLight.zNear = 1 // 그림자의 시작 거리
-    spotLight.zFar = 1000 // 그림자의 끝 거리
-    spotLight.shadowColor = UIColor.black.withAlphaComponent(0.36)// 그림자의 색상과 투명도
+//    spotLight.castsShadow = true
+//    spotLight.automaticallyAdjustsShadowProjection = true
+//    spotLight.maximumShadowDistance = 20.0 // 그림자가 보이는 최대 거리
+//    spotLight.orthographicScale = 10.0 // 조명 투영의 크기 (상황에 맞게 조정)
+//    spotLight.shadowMapSize = CGSize(width: 2048, height: 2048) // 그림자 맵 해상도
+//    spotLight.shadowMode = .deferred // 그림자 모드 설정 (Deferred는 더 좋은 품질을 제공합니다)
+//    spotLight.shadowSampleCount = 128 // 그림자 샘플 수 (더 높은 수치일수록 품질이 향상됨)
+//    spotLight.shadowRadius = 20.0 // 그림자의 흐림 정도
+//    spotLight.shadowBias = 5.0 // 그림자 편향 (섬세하게 조정하여 그림자 부풀림을 방지)
+//    spotLight.zNear = 1 // 그림자의 시작 거리
+//    spotLight.zFar = 1000 // 그림자의 끝 거리
+//    spotLight.shadowColor = UIColor.black.withAlphaComponent(0.36)// 그림자의 색상과 투명도
      
     spotLight.spotInnerAngle = 30 // 스팟 라이트의 내부 각도
     spotLight.spotOuterAngle = 60 // 스팟 라이트의 외부 각도
@@ -46,7 +90,7 @@ func makeSpotLight() -> SCNNode{
     spotLightNode.name = "spotLight"
     
     // 조명을 모델 위쪽 배치
-    spotLightNode.position = SCNVector3(x: 0, y: 10, z: 0) // 모델 아래쪽에 위치하도록 설정
+    spotLightNode.position = SCNVector3(x: 1, y: 10, z: 120) // 모델 아래쪽에 위치하도록 설정
     spotLightNode.look(at: SCNVector3(x: 0, y: 0, z: 0)) // 모델의 중앙을 향하도록 설정
        
     
@@ -58,7 +102,7 @@ func makeDirectionalLight(X: Float, Y : Float, Z : Float, intensity : CGFloat, n
     let directionalLight = SCNLight()
     directionalLight.type = .directional
     directionalLight.intensity = intensity // 방향성 조명 강도 조절
-    directionalLight.color = UIColor(red: 255/255, green: 236/255, blue: 206/255, alpha: 1.0) // 조명 색상 설정
+//    directionalLight.color = UIColor.white.withAlphaComponent(0.4)
     directionalLightNode.light = directionalLight
     directionalLightNode.name = name
     // 방향성 조명의 방향 설정
