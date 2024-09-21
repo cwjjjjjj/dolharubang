@@ -1,5 +1,5 @@
 //
-//  HaruBangFeature.swift
+//  ParkFeature.swift
 //  DolHaruBang
 //
 //  Created by 양희태 on 8/31/24.
@@ -7,8 +7,9 @@
 
 import ComposableArchitecture
 
+
 @Reducer
-struct HaruBangFeature {
+struct ParkFeature {
     
     @ObservableState
     struct State : Equatable {

@@ -14,7 +14,7 @@ struct HomeFeature {
     struct State: Equatable {
         var selectedFace : Face = .sparkle
         var selectedFaceShape : FaceShape = .sosim
-        var selectedBackground : Background = .December
+        @Shared(.inMemory("background")) var selectedBackground: Background = .December
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
