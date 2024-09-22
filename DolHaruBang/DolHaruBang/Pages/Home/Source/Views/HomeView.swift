@@ -64,7 +64,7 @@ struct HomeView : View {
                             // 공유, 꾸미기
                             HStack(spacing: 10){
                                 Button(action: {
-                                    store.send(.openDecoration)
+                                    store.send(.openShare)
                                 }) {
                                     VStack {
                                         Image("Share")
@@ -123,7 +123,9 @@ struct HomeView : View {
                             selectedNest: $store.selectedNest,
                             signText: $store.message,
                             sign : $store.sign,
-                            enable: $store.enable
+                            enable: $store.enable, onImagePicked: { image in
+                                store.send(.captureDol(image)) // 이미지를 캡처하고 store로 전달
+                            }
                         )
                         
                         Spacer().background(Color.red)
@@ -229,7 +231,27 @@ struct HomeView : View {
                         
                     }
                     
-                    // 팝업뷰
+                    
+                    // MARK: 공유버튼
+                    if store.shareButton {
+                        Color.black.opacity(0.2)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                store.send(.closeShare)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .zIndex(1)
+                        ShareView(
+                            showPopup: $store.shareButton, DolImage: $store.captureDol
+                        )
+                            .background(Color.white)
+                            .cornerRadius(25)
+                            .shadow(radius: 10)
+                            .zIndex(2)
+                    }
+                    
+                    
+                    // MARK: 펫말
                     MyTextFieldAlert(isShown: $store.sign , text: $store.message)
                     
                 } // ZStack

@@ -70,3 +70,45 @@ func applyMaterial(to node: SCNNode, with material: SCNMaterial) {
         applyMaterial(to: child, with: material)
     }
 }
+
+
+func captureSceneImage(scene: SCNScene, size: CGSize, selectedFaceShape: String, selectedFace: String) -> UIImage? {
+    // 1. SCNRenderer 설정
+    let renderer = SCNRenderer(device: nil, options: nil)
+
+    // 2. 새로운 SCNScene 생성 (Nest와 childNode만 포함할 장면)
+    let newScene = SCNScene()
+
+    // 3. 기존 scene에서 Nest와 childNode만 가져오기
+    if let parentNode = scene.rootNode.childNode(withName: "\(selectedFaceShape) reference", recursively: true),
+       let childNode = parentNode.childNode(withName: "\(selectedFace)", recursively: true),
+       let light = scene.rootNode.childNode(withName: "areaLight", recursively: true),
+       let light2 = scene.rootNode.childNode(withName: "areaLight2", recursively: true) {
+
+        // 노드 복제
+        let newChildNode = childNode.clone()
+        let newlightNode = light.clone()
+        let newlight2Node = light2.clone()
+
+        // 새로운 장면에 추가
+        newScene.rootNode.addChildNode(newChildNode)
+        newScene.rootNode.addChildNode(newlightNode)
+        newScene.rootNode.addChildNode(newlight2Node)
+    }
+
+    // 4. 새 장면을 렌더링할 SCNRenderer에 설정
+    renderer.scene = newScene
+
+    // 5. 캡처할 스케일 설정
+    let scale = UIScreen.main.scale
+    let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
+
+    // 6. SCNRenderer를 사용하여 새 장면을 이미지로 렌더링
+    let snapshot = renderer.snapshot(atTime: 0, with: scaledSize, antialiasingMode: .multisampling2X)
+
+    // 7. SCNScene 삭제 (새 장면과 참조된 노드들 해제)
+    renderer.scene = nil  // SCNRenderer에서 참조 해제
+    newScene.rootNode.childNodes.forEach { $0.removeFromParentNode() }  // 루트 노드에서 모든 자식 노드 제거
+
+    return snapshot
+}
