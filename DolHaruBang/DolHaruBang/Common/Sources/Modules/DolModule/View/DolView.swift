@@ -26,6 +26,8 @@ struct DolView : UIViewRepresentable {
     // 돌 굴러가는 도중에 꾸미기 누르면 버그 발생해서 막기위함
     @Binding var enable : Bool
     
+    var onImagePicked: (UIImage) -> Void // 클로저 추가
+    
     class Coordinator: NSObject {
         var parent: DolView
         private var lastPanTranslation: CGPoint = .zero
@@ -255,11 +257,10 @@ struct DolView : UIViewRepresentable {
             }
         }
         
-       
+        if let image = captureSceneImage(scene: scene, size: CGSize(width: 300, height: 300) , selectedFaceShape: "\(selectedFaceShape)", selectedFace: "\(selectedFace)"){
+            onImagePicked(image)
+        }
         
-        print("어떤것이 Hidden인지")
-        printNodeDetails(node: scene.rootNode)
-        print("씬의 노드 출력 끝")
         
     }
 }

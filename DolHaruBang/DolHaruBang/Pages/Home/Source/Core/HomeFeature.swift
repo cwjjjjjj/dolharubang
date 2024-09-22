@@ -5,6 +5,7 @@
 //  Created by 양희태 on 8/4/24.
 //
 
+import UIKit
 import ComposableArchitecture
 
 @Reducer
@@ -26,7 +27,9 @@ struct HomeFeature {
         var profile: Bool = false // 돌 프로필 온 오프
         var sign : Bool = false // 펫말 온 오프
         var isKeyboardVisible: Bool = false
+        var captureDol: UIImage = UIImage() // 돌머리
         
+        var shareButton : Bool = false
        
     }
     
@@ -46,6 +49,9 @@ struct HomeFeature {
         case updateToDol(String)
         case binding( BindingAction < State >)
         case tmpResponse(Result<Peperoni, Error>)
+        case captureDol(UIImage)
+        case openShare
+        case closeShare
     }
     
     @Dependency(\.tmpClient) var tmpClient
@@ -120,6 +126,15 @@ struct HomeFeature {
                 return .none
                 
                 
+            case let .captureDol(image):
+                state.captureDol = image
+                return .none
+            case .openShare:
+                state.shareButton = true
+                return .none
+            case .closeShare:
+                state.shareButton = false
+                return .none
             }
         }
     }
