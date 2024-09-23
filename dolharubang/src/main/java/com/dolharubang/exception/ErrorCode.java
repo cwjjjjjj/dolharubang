@@ -16,6 +16,13 @@ public enum ErrorCode {
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),
 
+    // 아이템 관련 오류
+    MEMBERITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 멤버아이템을 찾을 수 없습니다."),
+    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 아이템을 찾을 수 없습니다."),
+    DUPLICATE_ITEM(HttpStatus.CONFLICT, "중복된 아이템이 존재합니다."),
+    LACK_OF_SAND(HttpStatus.CONFLICT, "모래알이 부족합니다."),
+    ALREADY_BOUGHT(HttpStatus.CONFLICT, "이미 구매한 아이템입니다."),
+
     // 입력값 관련 오류
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "유효하지 않은 입력값입니다."),
     INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "잘못된 날짜 형식입니다."),
