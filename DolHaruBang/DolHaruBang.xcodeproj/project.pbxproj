@@ -29,6 +29,7 @@
 		65AFAD902CA17A4A00B565D1 /* TrophyEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD8F2CA17A4400B565D1 /* TrophyEnviroment.swift */; };
 		65AFAD922CA18CA400B565D1 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD912CA18C9900B565D1 /* TrophyListView.swift */; };
 		65AFAD942CA18CE200B565D1 /* TrophyListFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD932CA18CDC00B565D1 /* TrophyListFeature.swift */; };
+		65AFAD892CA0B85100B565D1 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD882CA0B84A00B565D1 /* SignView.swift */; };
 		65E1C50A2C6F7DE700A2E419 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E1C5092C6F7DE700A2E419 /* ColorHex.swift */; };
 		DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */; };
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
@@ -136,6 +137,7 @@
 		65AFAD8F2CA17A4400B565D1 /* TrophyEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyEnviroment.swift; sourceTree = "<group>"; };
 		65AFAD912CA18C9900B565D1 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		65AFAD932CA18CDC00B565D1 /* TrophyListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListFeature.swift; sourceTree = "<group>"; };
+		65AFAD882CA0B84A00B565D1 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
 		65E1C5092C6F7DE700A2E419 /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
 		DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MyPageIcon.xcassets; sourceTree = "<group>"; };
 		DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 		65AFAD852CA0A76D00B565D1 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				65AFAD882CA0B84A00B565D1 /* SignView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1072,6 +1075,7 @@
 				6597920B2C9E1CE400E2B51D /* SettingFeature.swift in Sources */,
 				657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */,
 				DA91E0C32C9158A400CD41A4 /* ParkFeature.swift in Sources */,
+				65AFAD892CA0B85100B565D1 /* SignView.swift in Sources */,
 				DAA4C9DB2C8B7A7700409D4B /* MakeCameraUtil.swift in Sources */,
 				DA461F722C81958E00270CDE /* CalendarView.swift in Sources */,
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
