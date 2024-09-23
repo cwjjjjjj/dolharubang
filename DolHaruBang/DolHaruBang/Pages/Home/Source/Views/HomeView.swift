@@ -250,9 +250,24 @@ struct HomeView : View {
                             .zIndex(2)
                     }
                     
-                    
                     // MARK: 펫말
-                    MyTextFieldAlert(isShown: $store.sign , text: $store.message)
+                    if store.sign {
+                        Color.black.opacity(0.2)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                store.send(.closeSign)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .zIndex(1)
+                        SignView(
+                            showPopup: $store.sign,
+                            message: $store.message
+                        )
+                            .background(Color.white)
+                            .cornerRadius(25)
+                            .shadow(radius: 10)
+                            .zIndex(2)
+                    }
                     
                 } // ZStack
                 .edgesIgnoringSafeArea(.all)
