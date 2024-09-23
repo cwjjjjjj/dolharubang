@@ -1,9 +1,7 @@
 package com.dolharubang.domain.entity;
 
-import com.dolharubang.mongo.enumTypes.ItemType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,28 +15,34 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "has_items")
+@Table(name = "member_items")
 @Getter
-public class HasItem extends BaseEntity{
+public class MemberItem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hasItemId;
+    private Long memberItemId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    //TODO Item 클래스와 매칭되도록 좀 더 고민해볼 것
     private String itemId;
 
-    @Enumerated(EnumType.STRING)
-    private ItemType itemType;
+    // 보유 여부
+    private boolean whetherHasItem;
 
     @Builder
-    public HasItem(Member member, String itemId, ItemType itemType) {
+    public MemberItem(Member member, Long memberItemId, String itemId, boolean whetherHasItem) {
+        this.member = member;
+        this.memberItemId = memberItemId;
+        this.itemId = itemId;
+        this.whetherHasItem = whetherHasItem;
+    }
+
+    public void update(Member member, String itemId, boolean whetherHasItem) {
         this.member = member;
         this.itemId = itemId;
-        this.itemType = itemType;
+        this.whetherHasItem = whetherHasItem;
     }
 }
