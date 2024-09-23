@@ -3,10 +3,10 @@ package com.dolharubang.mongo.entity;
 import com.dolharubang.mongo.enumTypes.ItemType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -20,13 +20,11 @@ public class Item {
 
     private ItemType itemType;
 
-    private String name;
+    private String itemName;
 
-    private String url;
+    private String imageUrl;
 
     private Long price;
-
-    private String description;
 
     @Field
     private LocalDateTime createdAt;
