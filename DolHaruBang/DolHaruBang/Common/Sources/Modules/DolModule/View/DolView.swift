@@ -80,8 +80,10 @@ struct DolView : UIViewRepresentable {
                     // 액션이 완료된 후 실행할 작업 정의
                     let completionAction = SCNAction.run { node in
                         print("액션이 완료되었습니다.")
-                        self.parent.enable = true
-                        // 액션이 끝나면 꾸미기 버튼 가능하게
+                        // UI 업데이트는 메인 스레드에서 실행
+                           DispatchQueue.main.async {
+                               self.parent.enable = true
+                           }  // 액션이 끝나면 꾸미기 버튼 가능하게
                        }
                     
                     let finalSequence = SCNAction.sequence([completeSequence, completionAction])
