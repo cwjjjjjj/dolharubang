@@ -52,6 +52,7 @@ struct HomeFeature {
         case captureDol(UIImage)
         case openShare
         case closeShare
+        case closeSign // 펫말 닫기
     }
     
     @Dependency(\.tmpClient) var tmpClient
@@ -134,6 +135,11 @@ struct HomeFeature {
                 return .none
             case .closeShare:
                 state.shareButton = false
+                return .none
+                
+                // 펫말 닫기
+            case .closeSign:
+                state.sign = false
                 return .none
             }
         }
