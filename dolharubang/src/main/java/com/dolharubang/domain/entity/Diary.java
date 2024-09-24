@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,25 +30,29 @@ public class Diary extends BaseEntity{
 
     private String emoji;
 
-    private String image;
+    private String imageUrl;
 
     private String reply;
 
     @Builder
-    public Diary(Member member, String contents, String emoji, String image, String reply,
-        LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Diary(Member member, String contents, String emoji, String imageUrl, String reply) {
         this.member = member;
         this.contents = contents;
         this.emoji = emoji;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.reply = reply;
     }
 
-    public void update(Member member, String contents, String emoji, String image, String response) {
+    public void update(Member member, String contents, String emoji, String imageUrl, String reply) {
         this.member = member;
         this.contents = contents;
         this.emoji = emoji;
-        this.image = image;
-        this.reply = response;
+        this.imageUrl = imageUrl;
+        this.reply = reply;
     }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl; // 이미지 URL 필드에 저장
+    }
+
 }
