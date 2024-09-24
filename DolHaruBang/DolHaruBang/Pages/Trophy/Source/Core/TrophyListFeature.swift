@@ -33,16 +33,16 @@ struct TrophyListFeature {
                 state.isLoading = true
                 return .run { send in
                     do {
-                        let talks = try await trophyClient.fetchTrophy()
-                        await send(.fetchTrophysResponse(.success(talks)))
+                        let trophies = try await trophyClient.fetchTrophy()
+                        await send(.fetchTrophysResponse(.success(trophies)))
                     } catch {
                         await send(.fetchTrophysResponse(.failure(error)))
                     }
                 }
                 
-            case let .fetchTrophysResponse(.success(trophys)):
+            case let .fetchTrophysResponse(.success(trophies)):
                 state.isLoading = false
-                state.trophys = trophys // 업적 목록 갱신
+                state.trophys = trophies // 업적 목록 갱신
                 return .none
                 
             case let .fetchTrophysResponse(.failure(error)):

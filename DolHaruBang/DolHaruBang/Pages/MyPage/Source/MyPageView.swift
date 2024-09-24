@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct MyPageView : View {
-    @State var store : StoreOf<MyPageFeature>
+    @Bindable var store : StoreOf<MyPageFeature>
     
     var body : some View {
         GeometryReader { geometry in
@@ -37,77 +37,123 @@ struct MyPageView : View {
                     .padding(.top , geometry.size.height * 0.07)
                     
                     VStack(alignment: .center){
+                        
                         // 프로필 수정
                         HStack(spacing:0){
                             Spacer()
                             buttonView()
                         }
                         
-                        // 프로필 이미지
-                        ZStack{
-                            
-                            if store.selectedImage != nil {
-                                // 선택된 이미지가 있을 때
-                                Image(uiImage: store.selectedImage!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 108, height: 108)
-                                    .clipShape(Circle()) // 이미지를 원형으로 클리핑
-                            } else {
-                                // 선택된 이미지가 없을 때
-                                Image("normalprofile")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 108, height: 108)
-                                    .clipShape(Circle())
-                            }
+                        if let userinfo = store.userInfo {
+                            // 프로필 이미지
+                            ZStack{
+                                
+                                if store.selectedImage != nil {
+                                    // 선택된 이미지가 있을 때
+                                    Image(uiImage: store.selectedImage!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 108, height: 108)
+                                        .clipShape(Circle()) // 이미지를 원형으로 클리핑
+                                } else {
+                                    // 선택된 이미지가 없을 때
+                                    Image("normalprofile")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 108, height: 108)
+                                        .clipShape(Circle())
+                                }
 
+                                
+                                // 오른쪽 위에 플러스 버튼 배치
+                                
+                                if store.selectedProfileEdit {
+                                            plusButton()
+                                                .offset(x: 40, y: -40)
+                                        }
+                            }
                             
-                            // 오른쪽 위에 플러스 버튼 배치
-                            
-                            if store.selectedProfileEdit {
-                                        plusButton()
-                                            .offset(x: 40, y: -40)
+                           
+                            VStack(spacing : 12){
+                                
+                                if store.selectedProfileEdit {
+                                    VStack {
+                                       HStack(spacing : 6){
+                                           Image("human")
+                                               .resizable()
+                                               .aspectRatio(contentMode: .fit)
+                                               .frame(width: 16, height: 16)
+                                           HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                                               TextField("", text: $store.userName.sending(\.userNameChanged))
+                                                   .font(.customFont(Font.button2))
+                                                   .lineSpacing(28.80)
+                                                   .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                                                   .multilineTextAlignment(.center) // 텍스트 중앙 정렬
+                                                   .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
+                                                  
+                                       }
+                                       .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+                                       .frame(width: 184, height: 32)
+                                       .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                                       .cornerRadius(16)
+                                       }
+                                           
+                                       HStack(spacing:6){
+                                           Image("home")
+                                               .resizable()
+                                               .aspectRatio(contentMode: .fit)
+                                               .frame(width: 16, height: 16)
+                                           HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                                               TextField("", text: $store.roomName.sending(\.roomNameChanged))
+                                                   .font(.customFont(Font.button2))
+                                                   .lineSpacing(28.80)
+                                                   .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                                                   .multilineTextAlignment(.center) // 텍스트 중앙 정렬
+                                                   .textFieldStyle(PlainTextFieldStyle())
+                                                
+                                           }
+                                           .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+                                           .frame(width: 184, height: 32)
+                                           .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                                           .cornerRadius(16)
+                                       }
+                                      
+                                   }
+                                        .frame(width: 210, height: 65)
+                                            } else {
+                                                falseContent(username: store.userName, roomname: store.roomName)
+                                                    .frame(width: 210, height: 65)
+                                            }
+                                
+                                // 탄생석, 사용자 생년월일
+                                HStack(spacing: 8) {
+                                    HStack(spacing: 10) {
+                                        Text("\(userinfo.birthStone)")
+                                            .font(Font.custom("NanumSquareRound", size: 12).weight(.bold))
+                                            .lineSpacing(21.60)
+                                            .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
                                     }
+                                    .padding(6)
+                                    .background(Color(red: 0.79, green: 0.32, blue: 0.17))
+                                    .cornerRadius(20)
+                                    Text("\(userinfo.birthDay)")
+                                        .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
+                                        .lineSpacing(25.20)
+                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                }
+                                .frame(width: 152, height: 21)
+                                
+                                // 사용자 이메일 주소
+                                Text("\(userinfo.emailAddress)")// 텍스트 선택 비활성화 (iOS 15 이상에서 가능)
+                                    .font(Font.custom("NanumSquareRound", size: 12))
+                                    .lineSpacing(21.60)
+                                    .foregroundColor(Color(hex: "837C74"))
+                                
+                                
+                            }.padding(.bottom,20).animation(.easeIn, value: store.selectedProfileEdit)
+                            
                         }
                         
-                       
-                        VStack(spacing : 12){
-                            
-                            if store.selectedProfileEdit {
-                                            trueContent()
-                                    .frame(width: 210, height: 65)
-                                        } else {
-                                            falseContent()
-                                                .frame(width: 210, height: 65)
-                                        }
-                            
-                            // 탄생석, 사용자 생년월일
-                            HStack(spacing: 8) {
-                                HStack(spacing: 10) {
-                                    Text("가넷")
-                                        .font(Font.custom("NanumSquareRound", size: 12).weight(.bold))
-                                        .lineSpacing(21.60)
-                                        .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
-                                }
-                                .padding(6)
-                                .background(Color(red: 0.79, green: 0.32, blue: 0.17))
-                                .cornerRadius(20)
-                                Text("2000년 01월 13일")
-                                    .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
-                                    .lineSpacing(25.20)
-                                    .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
-                            }
-                            .frame(width: 152, height: 21)
-                            
-                            // 사용자 이메일 주소
-                            Text("bahaea@*****.com")// 텍스트 선택 비활성화 (iOS 15 이상에서 가능)
-                                .font(Font.custom("NanumSquareRound", size: 12))
-                                .lineSpacing(21.60)
-                                .foregroundColor(Color(hex: "837C74"))
-                            
-                            
-                        }.padding(.bottom,20).animation(.easeIn, value: store.selectedProfileEdit)
                         
                         Divider()
                             .frame(width: 353, height: 0.4) // 길이와 두께 설정
@@ -180,7 +226,9 @@ struct MyPageView : View {
                 
                 
             } // ZStack
-            
+            .onAppear {
+                store.send(.fetchUserInfo)
+            }
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기
             .sheet(isPresented: $store.clickPlus) {
@@ -244,18 +292,19 @@ struct MyPageView : View {
     
     // 프로필 수정 페이지
     @ViewBuilder
-      private func trueContent() -> some View {
-          VStack {
+    private func trueContent() -> some View {
+           VStack {
               HStack(spacing : 6){
                   Image("human")
                       .resizable()
                       .aspectRatio(contentMode: .fit)
                       .frame(width: 16, height: 16)
                   HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                  Text("해인")
-                      .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
-                      .lineSpacing(28.80)
-                      .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                      TextField("방 이름을 입력하세요", text: $store.userName.sending(\.userNameChanged))
+//                          .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
+                          .lineSpacing(28.80)
+                          .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                          .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
               }
               .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
               .frame(width: 184, height: 32)
@@ -269,7 +318,7 @@ struct MyPageView : View {
                       .aspectRatio(contentMode: .fit)
                       .frame(width: 16, height: 16)
                   HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                      Text("돌돌이의방")
+                      Text("돌돌이")
                           .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
                           .lineSpacing(28.80)
                           .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
@@ -284,10 +333,10 @@ struct MyPageView : View {
       }
 
       @ViewBuilder
-      private func falseContent() -> some View {
+      private func falseContent(username : String, roomname : String) -> some View {
           VStack {
               // 사용자명
-              Text("해인")
+              Text(username)
                   .font(Font.custom("NanumSquareRound", size: 22).weight(.bold))
                   .lineSpacing(35.20)
                   .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
@@ -298,7 +347,7 @@ struct MyPageView : View {
                       .resizable()
                       .aspectRatio(contentMode: .fit)
 
-                  Text("돌돌이방")
+                  Text(roomname)
                       .font(Font.custom("NanumSquareRound", size: 18).weight(.bold))
                       .lineSpacing(28.80)
                       .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
