@@ -22,6 +22,8 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedNest : Nest
     @Binding var signText : String
     @Binding var sign : Bool
+    @Binding var profile : Bool
+    @Binding var mail : Bool
     
     // 돌 굴러가는 도중에 꾸미기 누르면 버그 발생해서 막기위함
     @Binding var enable : Bool
@@ -55,13 +57,13 @@ struct DolView : UIViewRepresentable {
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
-                    let moveAction = SCNAction.moveBy(x: 0, y: 0, z: 3, duration: 1)
-                    parentNode.runAction(moveAction)
+                    parent.mail = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
                     
+                    parent.profile = true
                     parent.enable = false
                     // 돌 굴러가유
                     // 노드가 회전할 때의 회전과 이동 애니메이션 정의

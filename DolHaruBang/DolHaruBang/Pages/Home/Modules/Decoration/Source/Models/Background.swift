@@ -7,7 +7,7 @@
 import ComposableArchitecture
 
 // 배경
-enum Background : String,Customizable {
+enum Background : String, Customizable ,Codable {
     
     func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
         store.send(.selectBackground(self))

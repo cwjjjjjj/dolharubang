@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 
 struct HomeView : View {
-    @State var store: StoreOf<HomeFeature>
+    @Bindable var store: StoreOf<HomeFeature>
     
     var body : some View {
             GeometryReader { geometry in
@@ -123,7 +123,10 @@ struct HomeView : View {
                             selectedNest: $store.selectedNest,
                             signText: $store.message,
                             sign : $store.sign,
-                            enable: $store.enable, onImagePicked: { image in
+                            profile: $store.profile,
+                            mail: $store.mail,
+                            enable: $store.enable,
+                            onImagePicked: { image in
                                 store.send(.captureDol(image)) // 이미지를 캡처하고 store로 전달
                             }
                         )
@@ -217,17 +220,6 @@ struct HomeView : View {
                         .animation(.easeInOut, value: store.isKeyboardVisible)
                         
                         Spacer().frame(height: geometry.size.height * 0.12)
-                      
-//                        // 하단 버튼들
-//                        HStack{
-//                            BottomButtonView(imageName: "Calander", buttonText: "달력", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Harubang", buttonText: "하루방", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Home", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Park", buttonText: "공원", destination: AnyView(LoginView()))
-//                            BottomButtonView(imageName: "Mypage", buttonText: "마이페이지", destination: AnyView(LoginView()))
-//
-//                        }
-//                        .padding(.bottom , geometry.size.height * 0.035)
                         
                     }
                     
@@ -262,6 +254,44 @@ struct HomeView : View {
                         SignView(
                             showPopup: $store.sign,
                             message: $store.message
+                        )
+                            .background(Color.white)
+                            .cornerRadius(25)
+                            .shadow(radius: 10)
+                            .zIndex(2)
+                    }
+                    
+                    // MARK: 프로필
+                    if store.profile {
+                        Color.black.opacity(0.2)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                store.send(.closeProfile)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .zIndex(1)
+                        ProfileView(
+                            showPopup: $store.profile, captureDol: store.captureDol, store: Store(initialState: ProfileFeature.State()){
+                                ProfileFeature()
+                            }
+                        )
+                            .background(Color.white)
+                            .cornerRadius(25)
+                            .shadow(radius: 10)
+                            .zIndex(2)
+                    }
+                    
+                    // MARK: 우체통
+                    if store.mail {
+                        Color.black.opacity(0.2)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                store.send(.closeMail)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .zIndex(1)
+                        MailView(
+                            showPopup: $store.mail
                         )
                             .background(Color.white)
                             .cornerRadius(25)
