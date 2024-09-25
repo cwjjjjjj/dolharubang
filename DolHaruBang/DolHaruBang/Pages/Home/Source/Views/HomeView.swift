@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 
 struct HomeView : View {
-    @Bindable var store: StoreOf<HomeFeature>
+    @State var store: StoreOf<HomeFeature>
     
     var body : some View {
             GeometryReader { geometry in
@@ -128,7 +128,8 @@ struct HomeView : View {
                             enable: $store.enable,
                             onImagePicked: { image in
                                 store.send(.captureDol(image)) // 이미지를 캡처하고 store로 전달
-                            }
+                            },
+                            hasRendered: $store.needCapture
                         )
                         
                         Spacer().background(Color.red)
@@ -271,7 +272,7 @@ struct HomeView : View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .zIndex(1)
                         ProfileView(
-                            showPopup: $store.profile, captureDol: store.captureDol, store: Store(initialState: ProfileFeature.State()){
+                            showPopup: $store.profile, store: Store(initialState: ProfileFeature.State()){
                                 ProfileFeature()
                             }
                         )

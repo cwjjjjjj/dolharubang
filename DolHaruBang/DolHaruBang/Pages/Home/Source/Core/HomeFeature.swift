@@ -15,11 +15,14 @@ struct HomeFeature {
     struct State: Equatable {
         var selectedFace : Face = .sparkle
         var selectedFaceShape : FaceShape = .sosim
-       /* @Shared(.inMemory("background")) */var selectedBackground: Background = .December
+        @Shared(.inMemory("background")) var selectedBackground: Background = .December
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
         var selectedNest : Nest = .nest
+        
+        var needCapture : Bool = false
+        
         var message: String = "" // 텍스트필드 메시지
         
         // Home Button state
@@ -33,7 +36,7 @@ struct HomeFeature {
         var mail : Bool = false // 펫말 온 오프
         
         var isKeyboardVisible: Bool = false
-        var captureDol: UIImage = UIImage() // 돌머리
+        @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
         
         var shareButton : Bool = false
        
@@ -98,9 +101,11 @@ struct HomeFeature {
                return .none
             case let .selectFace(selectedFace) :
                 state.selectedFace = selectedFace
+                state.needCapture = false
                 return .none
             case let .selectFaceShape(selectedFaceShape) :
                 state.selectedFaceShape = selectedFaceShape
+                state.needCapture = false
                 return .none
             case let .selectBackground(selectedBackground) :
                 state.selectedBackground = selectedBackground

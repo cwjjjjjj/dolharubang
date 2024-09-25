@@ -13,7 +13,7 @@ struct ProfileFeature {
     
     @ObservableState
     struct State: Equatable {
-        var captureDol: UIImage = UIImage() // 돌머리
+        @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
         var profile : ProfileInfo? = nil
     }
     

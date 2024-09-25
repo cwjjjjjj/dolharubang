@@ -30,6 +30,8 @@ struct DolView : UIViewRepresentable {
     
     var onImagePicked: (UIImage) -> Void // 클로저 추가
     
+    @Binding var hasRendered: Bool // 코드가 실행되었는지를 추적하는 변수
+    
     class Coordinator: NSObject {
         var parent: DolView
         private var lastPanTranslation: CGPoint = .zero
@@ -159,17 +161,20 @@ struct DolView : UIViewRepresentable {
         scnView.autoenablesDefaultLighting = false // 기본 조명 자동 활성화 비활성화
         scnView.defaultCameraController.interactionMode = .orbitTurntable
         
+        
         // 탭 제스처 인식기 추가
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
         scnView.addGestureRecognizer(tapGesture)
         
-//         팬 제스처 인식기 추가
-               let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
-               scnView.addGestureRecognizer(panGesture)
+        // 팬 제스처 인식기 추가
+        let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
+        scnView.addGestureRecognizer(panGesture)
         
         return scnView
     }
     
+    
+    // MARK: UpdateView
     func updateUIView(_ uiView: SCNView, context: Context) {
         
         // 씬이 로드되어 있다고 가정합니다.
@@ -261,11 +266,14 @@ struct DolView : UIViewRepresentable {
             }
         }
         
+        guard !hasRendered else { return }
+        
         if let image = captureSceneImage(scene: scene, size: CGSize(width: 300, height: 300) , selectedFaceShape: "\(selectedFaceShape)", selectedFace: "\(selectedFace)"){
-            onImagePicked(image)
+            DispatchQueue.main.async {
+                           onImagePicked(image)
+                           hasRendered = true // 이미 렌더링 완료했음을 표시
+            }
         }
-        
-        
     }
 }
 
@@ -350,6 +358,8 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
 //    
 //    let spotLightNode = makeSpotLight()
 //    scene.rootNode.addChildNode(spotLightNode)
+    
+    
     
     scene.rootNode.name = "model"
     

@@ -11,7 +11,6 @@ import SwiftUI
 
 struct ProfileView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
-    @State var captureDol : UIImage
 
     @State var store: StoreOf<ProfileFeature> // Store로 상태 및 액션 전달
     
@@ -46,7 +45,7 @@ struct ProfileView: View {
                     // 상단 부분
                     HStack{
                         //이미지
-                        Image(uiImage: captureDol)
+                        Image(uiImage: store.captureDol)
                                      .resizable()
                                      .scaledToFit()
                                      .frame(width: 100, height: 100) // 원하는 크기로 조절
