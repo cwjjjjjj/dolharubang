@@ -22,11 +22,15 @@ struct DolView : UIViewRepresentable {
     @Binding var selectedNest : Nest
     @Binding var signText : String
     @Binding var sign : Bool
+    @Binding var profile : Bool
+    @Binding var mail : Bool
     
     // 돌 굴러가는 도중에 꾸미기 누르면 버그 발생해서 막기위함
     @Binding var enable : Bool
     
     var onImagePicked: (UIImage) -> Void // 클로저 추가
+    
+    @Binding var hasRendered: Bool // 코드가 실행되었는지를 추적하는 변수
     
     class Coordinator: NSObject {
         var parent: DolView
@@ -55,13 +59,13 @@ struct DolView : UIViewRepresentable {
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
-                    let moveAction = SCNAction.moveBy(x: 0, y: 0, z: 3, duration: 1)
-                    parentNode.runAction(moveAction)
+                    parent.mail = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
                     print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
                     
+                    parent.profile = true
                     parent.enable = false
                     // 돌 굴러가유
                     // 노드가 회전할 때의 회전과 이동 애니메이션 정의
@@ -157,17 +161,20 @@ struct DolView : UIViewRepresentable {
         scnView.autoenablesDefaultLighting = false // 기본 조명 자동 활성화 비활성화
         scnView.defaultCameraController.interactionMode = .orbitTurntable
         
+        
         // 탭 제스처 인식기 추가
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTapGesture(_:)))
         scnView.addGestureRecognizer(tapGesture)
         
-//         팬 제스처 인식기 추가
-               let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
-               scnView.addGestureRecognizer(panGesture)
+        // 팬 제스처 인식기 추가
+        let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePanGesture(_:)))
+        scnView.addGestureRecognizer(panGesture)
         
         return scnView
     }
     
+    
+    // MARK: UpdateView
     func updateUIView(_ uiView: SCNView, context: Context) {
         
         // 씬이 로드되어 있다고 가정합니다.
@@ -259,11 +266,14 @@ struct DolView : UIViewRepresentable {
             }
         }
         
+        guard !hasRendered else { return }
+        
         if let image = captureSceneImage(scene: scene, size: CGSize(width: 300, height: 300) , selectedFaceShape: "\(selectedFaceShape)", selectedFace: "\(selectedFace)"){
-            onImagePicked(image)
+            DispatchQueue.main.async {
+                           onImagePicked(image)
+                           hasRendered = true // 이미 렌더링 완료했음을 표시
+            }
         }
-        
-        
     }
 }
 
@@ -348,6 +358,8 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
 //    
 //    let spotLightNode = makeSpotLight()
 //    scene.rootNode.addChildNode(spotLightNode)
+    
+    
     
     scene.rootNode.name = "model"
     
