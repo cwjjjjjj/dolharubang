@@ -28,17 +28,17 @@ struct TrophyView : View {
                     
                     HStack{
                         Text("업적")
-                            .font(Font.custom("Cafe24 Ssurround", size: 26).weight(.bold))
+                            .font(Font.customFont(Font.h6))
                             .lineSpacing(41.60)
                             .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
                             .padding(.bottom,15)
                         
                     }
                     .frame(height : geometry.size.height * 0.1)
-                    .padding(.top , geometry.size.height * 0.07)
+                    .padding(.top , geometry.size.height * 0.08)
                     
-                    TrophyListView(store: store.scope(state: \.trophyListFeatureState, action: \.trophyListFeatureAction))
-                    
+                    TrophyListView(store: store.scope(state: \.trophyListFeatureState, action: \.trophyListFeatureAction), geometry: geometry)
+                   
                     Spacer()
                     
                 }
@@ -54,6 +54,7 @@ struct TrophyView : View {
                         }) {
                             Image("BackIcon")
                                 .resizable()
+                                .scaledToFit()
                                 .frame(width: 38, height: 38)
                         }
                     }

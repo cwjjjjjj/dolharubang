@@ -50,7 +50,7 @@ struct ProfileView: View {
                                      .scaledToFit()
                                      .frame(width: 80, height: 80) // 원하는 크기로 조절
                                      .padding(14)
-                                     .background(Color(red: 0.90, green: 0.87, blue: 0.84)) // 배경색을 회색으로 설정
+                                     .background(Color.init(hex: "F2EEE7")) // 배경색을 회색으로 설정
                                      .clipShape(Circle()) // 이미지를 원형으로 자르기
                                      
                         

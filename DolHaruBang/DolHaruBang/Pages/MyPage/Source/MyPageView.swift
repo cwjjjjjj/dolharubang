@@ -27,7 +27,7 @@ struct MyPageView : View {
                     
                     HStack{
                         Text("마이페이지")
-                            .font(Font.custom("Cafe24 Ssurround", size: 26).weight(.bold))
+                            .font(Font.customFont(Font.h6))
                             .lineSpacing(41.60)
                             .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
                             .padding(.bottom,15)
@@ -129,7 +129,7 @@ struct MyPageView : View {
                                 HStack(spacing: 8) {
                                     HStack(spacing: 10) {
                                         Text("\(userinfo.birthStone)")
-                                            .font(Font.custom("NanumSquareRound", size: 12).weight(.bold))
+                                            .font(Font.customFont(Font.body3Bold))
                                             .lineSpacing(21.60)
                                             .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
                                     }
@@ -137,7 +137,7 @@ struct MyPageView : View {
                                     .background(Color(red: 0.79, green: 0.32, blue: 0.17))
                                     .cornerRadius(20)
                                     Text("\(userinfo.birthDay)")
-                                        .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
+                                        .font(Font.customFont(Font.body3Bold))
                                         .lineSpacing(25.20)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
@@ -145,7 +145,7 @@ struct MyPageView : View {
                                 
                                 // 사용자 이메일 주소
                                 Text("\(userinfo.emailAddress)")// 텍스트 선택 비활성화 (iOS 15 이상에서 가능)
-                                    .font(Font.custom("NanumSquareRound", size: 12))
+                                    .font(Font.customFont(Font.body2Bold))
                                     .lineSpacing(21.60)
                                     .foregroundColor(Color(hex: "837C74"))
                                 
@@ -176,7 +176,7 @@ struct MyPageView : View {
                             }){
                                 HStack{
                                     Text("설정")
-                                        .font(Font.custom("NanumSquareRound", size: 12).weight(.bold))
+                                        .font(Font.customFont(Font.body3Bold))
                                         .lineSpacing(19.20)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
@@ -196,7 +196,7 @@ struct MyPageView : View {
                             }){
                                 HStack{
                                     Text("로그아웃")
-                                        .font(Font.custom("NanumSquareRound", size: 12).weight(.bold))
+                                        .font(Font.customFont(Font.body3Bold))
                                         .lineSpacing(19.20)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
@@ -258,7 +258,7 @@ struct MyPageView : View {
         Button(action: buttonAction) {
             HStack {
                 Text(buttonTitle)
-                    .font(Font.custom("NanumSquareRound", size: 12).weight(.heavy))
+                    .font(Font.customFont(Font.body3Bold))
                     .lineSpacing(19.20)
                     .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
             }
@@ -306,7 +306,7 @@ struct MyPageView : View {
                           .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                           .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
               }
-              .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+              .padding(.vertical, 11)
               .frame(width: 184, height: 32)
               .background(Color(red: 0.95, green: 0.93, blue: 0.91))
               .cornerRadius(16)
@@ -315,15 +315,15 @@ struct MyPageView : View {
               HStack(spacing:6){
                   Image("home")
                       .resizable()
-                      .aspectRatio(contentMode: .fit)
-                      .frame(width: 16, height: 16)
+                      .scaledToFit()
+                      .frame(width: 8, height: 8)
                   HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
                       Text("돌돌이")
-                          .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
+                          .font(Font.customFont(Font.body2Bold))
                           .lineSpacing(28.80)
                           .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                   }
-                  .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+                  .padding(.vertical, 11)
                   .frame(width: 184, height: 32)
                   .background(Color(red: 0.95, green: 0.93, blue: 0.91))
                   .cornerRadius(16)
@@ -337,7 +337,7 @@ struct MyPageView : View {
           VStack {
               // 사용자명
               Text(username)
-                  .font(Font.custom("NanumSquareRound", size: 22).weight(.bold))
+                  .font(Font.customFont(Font.subtitle2))
                   .lineSpacing(35.20)
                   .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
 
@@ -345,14 +345,14 @@ struct MyPageView : View {
               HStack(spacing: 8) {
                   Image("home")
                       .resizable()
-                      .aspectRatio(contentMode: .fit)
+                      .scaledToFit()
+                      .frame(width: 16, height: 17)
 
                   Text(roomname)
-                      .font(Font.custom("NanumSquareRound", size: 18).weight(.bold))
+                      .font(Font.customFont(Font.subtitle3))
                       .lineSpacing(28.80)
                       .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
               }
-              .frame(width: 89, height: 17)
           }
       }
 }

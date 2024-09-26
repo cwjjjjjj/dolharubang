@@ -292,7 +292,9 @@ struct HomeView : View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .zIndex(1)
                         MailView(
-                            showPopup: $store.mail
+                            showPopup: $store.mail, store: Store(initialState: MailFeature.State()){
+                                MailFeature()
+                            }
                         )
                             .background(Color.white)
                             .cornerRadius(25)
