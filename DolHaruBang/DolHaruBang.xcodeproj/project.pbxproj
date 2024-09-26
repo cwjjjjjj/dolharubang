@@ -24,6 +24,12 @@
 		657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780F72C84AFC400DC08C2 /* DBTIFeature.swift */; };
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
 		657E5F982C745356002FFA69 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F972C745356002FFA69 /* View.swift */; };
+		658216AC2CA55DE200C5CD37 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A82CA55DE200C5CD37 /* Dols.scnassets */; };
+		658216AD2CA55DE200C5CD37 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A92CA55DE200C5CD37 /* Mails.scnassets */; };
+		658216AE2CA55DE200C5CD37 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216AA2CA55DE200C5CD37 /* Nests.scnassets */; };
+		658216AF2CA55DE200C5CD37 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A72CA55DE200C5CD37 /* Accessorys.scnassets */; };
+		658216B02CA55DE200C5CD37 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216AB2CA55DE200C5CD37 /* Signs.scnassets */; };
+		658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216B52CA56B0400C5CD37 /* Profile.xcassets */; };
 		658962822C856D3600F27FB4 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658962812C856D3600F27FB4 /* Demo.swift */; };
 		659469752C7DC022004D487C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 659469742C7DC022004D487C /* Alamofire */; };
 		659792062C9E13BD00E2B51D /* TrophyIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 659792052C9E13BD00E2B51D /* TrophyIcon.xcassets */; };
@@ -40,11 +46,6 @@
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
 		DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */; };
 		DA0E9EFA2C9F390A00A3CD39 /* MyPageIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */; };
-		DA0E9F002C9F3C4500A3CD39 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EFE2C9F3C4500A3CD39 /* Nests.scnassets */; };
-		DA0E9F012C9F3C4500A3CD39 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EFB2C9F3C4500A3CD39 /* Accessorys.scnassets */; };
-		DA0E9F022C9F3C4500A3CD39 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EFC2C9F3C4500A3CD39 /* Dols.scnassets */; };
-		DA0E9F032C9F3C4500A3CD39 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EFD2C9F3C4500A3CD39 /* Mails.scnassets */; };
-		DA0E9F042C9F3C4500A3CD39 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EFF2C9F3C4500A3CD39 /* Signs.scnassets */; };
 		DA461F722C81958E00270CDE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F712C81958E00270CDE /* CalendarView.swift */; };
 		DA461F742C81E45C00270CDE /* CalendarUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F732C81E45C00270CDE /* CalendarUtil.swift */; };
 		DA461F762C81E50300270CDE /* FigmaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F752C81E50300270CDE /* FigmaEffects.swift */; };
@@ -138,6 +139,12 @@
 		657780F72C84AFC400DC08C2 /* DBTIFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIFeature.swift; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		657E5F972C745356002FFA69 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		658216A72CA55DE200C5CD37 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		658216A82CA55DE200C5CD37 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
+		658216A92CA55DE200C5CD37 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
+		658216AA2CA55DE200C5CD37 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
+		658216AB2CA55DE200C5CD37 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
+		658216B52CA56B0400C5CD37 /* Profile.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Profile.xcassets; sourceTree = "<group>"; };
 		658962812C856D3600F27FB4 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		659792052C9E13BD00E2B51D /* TrophyIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TrophyIcon.xcassets; sourceTree = "<group>"; };
 		659792082C9E1CA000E2B51D /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -153,11 +160,6 @@
 		DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeature.swift; sourceTree = "<group>"; };
 		DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		DA0E9EFB2C9F3C4500A3CD39 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
-		DA0E9EFC2C9F3C4500A3CD39 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
-		DA0E9EFD2C9F3C4500A3CD39 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
-		DA0E9EFE2C9F3C4500A3CD39 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
-		DA0E9EFF2C9F3C4500A3CD39 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
 		DA461F712C81958E00270CDE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DA461F732C81E45C00270CDE /* CalendarUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtil.swift; sourceTree = "<group>"; };
 		DA461F752C81E50300270CDE /* FigmaEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaEffects.swift; sourceTree = "<group>"; };
@@ -267,9 +269,8 @@
 		65382E7B2CA32232003F130B /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				65382E832CA32765003F130B /* ProfileEnviroment.swift */,
-				65382E812CA326F6003F130B /* ProfileFeature.swift */,
-				65382E7C2CA3223B003F130B /* ProfileView.swift */,
+				658216B22CA56AD300C5CD37 /* Source */,
+				658216B12CA56ACD00C5CD37 /* Resource */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -344,17 +345,17 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DA0E9EFB2C9F3C4500A3CD39 /* Accessorys.scnassets */,
-				DA0E9EFC2C9F3C4500A3CD39 /* Dols.scnassets */,
-				DA0E9EFD2C9F3C4500A3CD39 /* Mails.scnassets */,
-				DA0E9EFE2C9F3C4500A3CD39 /* Nests.scnassets */,
-				DA0E9EFF2C9F3C4500A3CD39 /* Signs.scnassets */,
 				DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
 				DAAEFC2C2C57436B00D1F87B /* Fonts */,
 				65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */,
+				658216A72CA55DE200C5CD37 /* Accessorys.scnassets */,
+				658216A82CA55DE200C5CD37 /* Dols.scnassets */,
+				658216A92CA55DE200C5CD37 /* Mails.scnassets */,
+				658216AA2CA55DE200C5CD37 /* Nests.scnassets */,
+				658216AB2CA55DE200C5CD37 /* Signs.scnassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -501,6 +502,24 @@
 				6550AA3C2C59E726000A264E /* Util */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		658216B12CA56ACD00C5CD37 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				658216B52CA56B0400C5CD37 /* Profile.xcassets */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		658216B22CA56AD300C5CD37 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				65382E832CA32765003F130B /* ProfileEnviroment.swift */,
+				65382E812CA326F6003F130B /* ProfileFeature.swift */,
+				65382E7C2CA3223B003F130B /* ProfileView.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		659792042C9E13AE00E2B51D /* Resource */ = {
@@ -1036,14 +1055,15 @@
 				DAA4C9FD2C8B7C6900409D4B /* Background.xcassets in Resources */,
 				DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
+				658216AC2CA55DE200C5CD37 /* Dols.scnassets in Resources */,
+				658216AD2CA55DE200C5CD37 /* Mails.scnassets in Resources */,
+				658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */,
+				658216AE2CA55DE200C5CD37 /* Nests.scnassets in Resources */,
+				658216AF2CA55DE200C5CD37 /* Accessorys.scnassets in Resources */,
+				658216B02CA55DE200C5CD37 /* Signs.scnassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
-				DA0E9F002C9F3C4500A3CD39 /* Nests.scnassets in Resources */,
-				DA0E9F012C9F3C4500A3CD39 /* Accessorys.scnassets in Resources */,
 				65AFAD832CA0A26B00B565D1 /* lythwood_field_4k.hdr in Resources */,
-				DA0E9F022C9F3C4500A3CD39 /* Dols.scnassets in Resources */,
-				DA0E9F032C9F3C4500A3CD39 /* Mails.scnassets in Resources */,
-				DA0E9F042C9F3C4500A3CD39 /* Signs.scnassets in Resources */,
 				656953522C76891D007B4DA1 /* Background.xcassets in Resources */,
 				659792062C9E13BD00E2B51D /* TrophyIcon.xcassets in Resources */,
 				DA0E9EFA2C9F390A00A3CD39 /* MyPageIcon.xcassets in Resources */,

@@ -61,7 +61,7 @@ extension ProfileInfo {
         personality: "사교적",
         baseAbility: "친화력",
         dolBirth: "2022-05-15",
-        friendShip: 80,
+        friendShip: 365,
         activeAbility: ["재치있는 대화", "즉흥적인 연주"],
         potential: ["리더십", "창의성"]
     )
