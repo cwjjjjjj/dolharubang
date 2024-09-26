@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct TrophyListView : View {
     @State var store : StoreOf<TrophyListFeature>
-    
+    var geometry : GeometryProxy
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -18,8 +18,7 @@ struct TrophyListView : View {
     
     
     var body: some View {
-        
-        GeometryReader { geometry in
+        VStack{
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     if let trophys = store.state.trophys {
@@ -44,12 +43,12 @@ struct TrophyListView : View {
                                 // 업적명, 업적 과제
                                 VStack(spacing: 12) {
                                     Text("\(trophy.title)")
-                                        .font(Font.custom("NanumSquareRound", size: 16).weight(.bold))
+                                        .font(Font.customFont(Font.body1Bold))
                                         .lineSpacing(28.80)
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
                                     
                                     Text("\(trophy.subtitle)")
-                                        .font(Font.custom("NanumSquareRound", size: 11))
+                                        .font(Font.customFont(Font.body4Regular))
                                         .lineSpacing(19.80)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }.padding(.bottom, 15)
@@ -71,8 +70,7 @@ struct TrophyListView : View {
                                         Text("이미지 로드 실패")
                                     }
                                     
-                                    Text("\(trophy.rewardName)")
-                                        .font(Font.custom("NanumSquareRound", size: 10).weight(.bold))
+                                    Text("\(trophy.rewardName)")  .font(Font.customFont(Font.body5Bold))
                                         .lineSpacing(18)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }.padding(.top,7)
@@ -97,12 +95,13 @@ struct TrophyListView : View {
                 .padding(20) // 수평 패딩 추가
                 .padding(.top,10)
             }
+        }
+        .frame(width: geometry.size.width ,height : geometry.size.height * 0.83)
+            .background(Color(red: 0.98, green: 0.98, blue: 0.97))
+            .cornerRadius(15) // 뭉툭한 테두리
             .onAppear {
                 store.send(.fetchTrophys)
             }
-            .frame(width: geometry.size.width ,height : geometry.size.height * 0.78)
-            .background(Color(red: 0.98, green: 0.98, blue: 0.97))
-            .cornerRadius(15) // 뭉툭한 테두리
-        }
+            
     }
 }

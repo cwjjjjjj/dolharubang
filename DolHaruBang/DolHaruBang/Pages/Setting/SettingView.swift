@@ -28,7 +28,7 @@ struct SettingView : View {
                     
                     HStack{
                         Text("설정")
-                            .font(Font.custom("Cafe24 Ssurround", size: 26).weight(.bold))
+                            .font(Font.customFont(Font.h6))
                             .lineSpacing(41.60)
                             .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
                             .padding(.bottom,15)

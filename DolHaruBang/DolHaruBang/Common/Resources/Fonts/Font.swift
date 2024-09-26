@@ -33,8 +33,9 @@ extension Font {
     static var body2Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var body3Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 12) }
     static var body4Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 11) }
-    
     static var body5Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 10) }
+    
+    static var body6Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 8) }
    
     static var body1Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 16) }
     static var body2Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 14) }
