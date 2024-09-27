@@ -231,12 +231,11 @@ struct MyPageView : View {
             }
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기
-            .sheet(isPresented: $store.clickPlus) {
-                            ImagePicker(sourceType: .photoLibrary) { image in
-                                store.send(.selectImage(image))
-                                store.send(.completeSelectPhoto)
-                            }
-                        }
+            .sheet(isPresented: $store.showImagePicker) {
+                ImagePicker(sourceType: .photoLibrary) { image in
+                    store.send(.selectImage(image))
+                }
+            }
         }
       
         

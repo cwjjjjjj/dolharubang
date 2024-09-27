@@ -14,6 +14,10 @@ struct TalkFeature {
         var floatingDate: Date = Date() // 보이는 대화 날짜
         var showEmojiGrid: Bool = false // 이모티콘 및 이미지 첨부용 그리드 보이는 상태
         var selectedEmoji: String? = nil // 고른 이모티콘
+        var showImagePicker: Bool = false // ImagePicker 표시 상태
+        var selectedImage: UIImage? = nil // 고른 사진
+        var showImagePreview: Bool = false // 고른 사진 보내기 전 확인용 뷰 표시 상태
+        var messageCount : Int = 0
     }
     
     enum Action: BindableAction {
@@ -21,6 +25,9 @@ struct TalkFeature {
         case updateFloatingDate(Date)
         case selectEmoji(String?)
         case toggleEmojiGrid
+        case toggleImagePicker
+        case imagePicked(UIImage?)
+        case toggleImagePreview
         case fetchTalk
         case fetchTalks
         case fetchTalkResponse(Result<Talk, Error>)
@@ -39,6 +46,7 @@ struct TalkFeature {
         Reduce { state, action in
             switch action {
             case .binding(\.messageInput):
+                state.messageCount = state.messageInput.count
                 return .none
             case .binding:
                 return .none
@@ -58,7 +66,26 @@ struct TalkFeature {
                 else {
                     state.selectedEmoji = nil
                 }
-                state.showEmojiGrid.toggle()
+                if (state.showEmojiGrid == true) {
+                    state.showEmojiGrid.toggle()
+                }
+                return .none
+            case .toggleImagePicker:
+                state.showImagePicker.toggle()
+                return .none
+            case .imagePicked(let image):
+                if let image = image {
+                    state.selectedImage = image // 선택된 사진 업데이트
+                    if (state.showEmojiGrid == true) {
+                        state.showEmojiGrid.toggle()
+                    }
+                }
+                else {
+                    state.selectedImage = nil
+                }
+                return .none
+            case .toggleImagePreview:
+                state.showImagePreview.toggle()
                 return .none
                     
             // [GET] 대화 한 개 가져오기

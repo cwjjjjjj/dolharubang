@@ -195,7 +195,8 @@ struct HomeView : View {
                                     useDidEndEditing: false,
                                     customFontStyle: Font.body3Bold,
                                     alignment: Align.leading,
-                                    leftPadding : 5
+                                    leftPadding : 5,
+                                    rightPadding : 5
                                 )
                                 .frame(width: geometry.size.width * 0.65, height: geometry.size.width * 0.1)
                                 .cornerRadius(25)
@@ -308,6 +309,9 @@ struct HomeView : View {
                 .frame(height: geometry.size.height)
                 .keyboardResponder(isKeyboardVisible: $store.isKeyboardVisible)
                 .onAppear (perform : UIApplication.shared.hideKeyboard)
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
                 .sheet(isPresented: $store.decoration) {
                     // 이 뷰가 모달로 표시됩니다.
                     DecorationView(store: store)

@@ -2,6 +2,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct TalkView: View {
+    
     @State var store: StoreOf<TalkFeature> // Store로 상태 및 액션 전달
 
     var body: some View {
@@ -18,12 +19,8 @@ struct TalkView: View {
                                             content: emoji,
                                             createdAt: talk.createdAt,
                                             isResponse: false,
-                                            onEdit: {
-                                                // 수정 액션 처리
-                                            },
-                                            onDelete: {
-                                                // 삭제 액션 처리
-                                            },
+                                            onEdit: nil,
+                                            onDelete: nil,
                                             isEmoji: true
                                         )
                                     }
@@ -48,9 +45,7 @@ struct TalkView: View {
                                             content: image,
                                             createdAt: talk.createdAt,
                                             isResponse: false,
-                                            onEdit: {
-                                                // 수정 액션 처리
-                                            },
+                                            onEdit: nil,
                                             onDelete: {
                                                 // 삭제 액션 처리
                                             },
@@ -72,7 +67,6 @@ struct TalkView: View {
                         }
                         .padding(.vertical, 16)
                     }
-                    .padding(.horizontal, 16)
                     .background(Color.clear)
                     .onAppear {
                         store.send(.fetchTalks)
@@ -83,6 +77,7 @@ struct TalkView: View {
 
             // 메시지 입력 및 전송 UI
             VStack {
+                
                 // 현재 가장 아래 말풍선의 작성일
                 HStack {
                     Spacer()
@@ -100,208 +95,113 @@ struct TalkView: View {
                         )
                     Spacer()
                 }
-                .padding(.top, 10)
+                .padding(.top, 8)
                 
                 Spacer()
                 
                 if store.showEmojiGrid {
-                    HStack () {
-                        Rectangle()
-                            .fill(Color.coreWhite)
-                            .frame(width: 256, height: 48)
-                            .cornerRadius(30)
-                            .padding(.horizontal, 20)
-                            .overlay(
-                                HStack {
-                                    Button (action: {
-                                        if (store.selectedEmoji == "heartEyedEmoji") {
-                                            print("heartEyedEmoji 다시 눌림!")
-                                            store.send(.selectEmoji(nil))
-                                        }
-                                        else {
-                                            print("heartEyedEmoji 눌림!")
-                                            store.send(.selectEmoji("heartEyedEmoji"))
-                                        }
-                                    }) {
-                                        ZStack {
-                                            Image("heartEyedEmoji")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                            if (store.selectedEmoji == "heartEyedEmoji") {
-                                                Circle()
-                                                .fill(Color.black.opacity(0.3))
-                                                .frame(width: 32, height: 32) // 원의 크기
-                                            }
-                                        }
-                                    }
-                                    Button (action: {
-                                        if (store.selectedEmoji == "smileEmoji") {
-                                            print("smileEmoji 다시 눌림!")
-                                            store.send(.selectEmoji(nil))
-                                        }
-                                        else {
-                                            print("smileEmoji 눌림!")
-                                            store.send(.selectEmoji("smileEmoji"))
-                                        }
-                                    }) {
-                                        ZStack {
-                                            Image("smileEmoji")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                            if (store.selectedEmoji == "smileEmoji") {
-                                                Circle()
-                                                .fill(Color.black.opacity(0.3))
-                                                .frame(width: 32, height: 32) // 원의 크기
-                                            }
-                                        }
-                                    }
-                                    Button (action: {
-                                        if (store.selectedEmoji == "sosoEmoji") {
-                                            print("sosoEmoji 다시 눌림!")
-                                            store.send(.selectEmoji(nil))
-                                        }
-                                        else {
-                                            print("sosoEmoji 눌림!")
-                                            store.send(.selectEmoji("sosoEmoji"))
-                                        }
-                                    }) {
-                                        ZStack {
-                                            Image("sosoEmoji")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                            if (store.selectedEmoji == "sosoEmoji") {
-                                                Circle()
-                                                .fill(Color.black.opacity(0.3))
-                                                .frame(width: 32, height: 32) // 원의 크기
-                                            }
-                                        }
-                                    }
-                                    Button (action: {
-                                        if (store.selectedEmoji == "sadEmoji") {
-                                            print("sadEmoji 다시 눌림!")
-                                            store.send(.selectEmoji(nil))
-                                        }
-                                        else {
-                                            print("sadEmoji 눌림!")
-                                            store.send(.selectEmoji("sadEmoji"))
-                                        }
-                                    }) {
-                                        ZStack {
-                                            Image("sadEmoji")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                            if (store.selectedEmoji == "sadEmoji") {
-                                                Circle()
-                                                .fill(Color.black.opacity(0.3))
-                                                .frame(width: 32, height: 32) // 원의 크기
-                                            }
-                                        }
-                                    }
-                                    Button (action: {
-                                        if (store.selectedEmoji == "angryEmoji") {
-                                            print("angryEmoji 다시 눌림!")
-                                            store.send(.selectEmoji(nil))
-                                        }
-                                        else {
-                                            print("angryEmoji 눌림!")
-                                            store.send(.selectEmoji("angryEmoji"))
-                                        }
-                                    }) {
-                                        ZStack {
-                                            Image("angryEmoji")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                            if (store.selectedEmoji == "angryEmoji") {
-                                                Circle()
-                                                .fill(Color.black.opacity(0.3))
-                                                .frame(width: 32, height: 32) // 원의 크기
-                                            }
-                                        }
-                                    }
-                                    Button (action: {
-                                        print("postImageEmoji 눌림!")
-                                        store.send(.selectEmoji(nil))
-                                    }) {
-                                        Image("postImageEmoji")
-                                            .resizable()
-                                            .frame(width: 32, height: 32)
-                                    }
-                                }
-                                .padding(8)
-                            )
-                            .shadow(color: Color(hex: "B4B8BF"), radius: 5, x: 0, y: 1)
-                        Spacer()
-                    }
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    
-                    Spacer().frame(height: 8)
-                }
+                     EmojiGridView(store: store)
+                        .transition(.move(edge: .leading))
+                        .animation(.easeInOut(duration: 0.3))
+                 }
                 
                 // 이모지 및 사진 추가 그리드 띄우기 버튼과 내용 입력 및 보내기 버튼
-                HStack {
+                HStack(alignment: .bottom, spacing: 0) {
                     // 파일 추가 버튼
                     Button(action: {
                         store.send(.toggleEmojiGrid)
                     }) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.coreWhite)
-                                .frame(width: 48, height: 48)
-                                .shadow(color: Color(hex: "CEC6CE"), radius: 5, x: 0, y: 1)
+                        VStack (spacing: 10) {
+                            if let selectedEmoji = store.selectedEmoji, !store.showEmojiGrid {
+                                Button(action: {
+                                    store.send(.selectEmoji(nil))
+                                }) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(Color(hex: "EFECE1"))
+                                            .frame(width: UIScreen.main.bounds.width * 40 / 393, height: UIScreen.main.bounds.width * 40 / 393)
+                                            .shadow(color: Color(hex: "CEC6CE"), radius: 5, x: 0, y: 1)
+                                        
+                                        
+                                        Image(systemName: "xmark")
+                                            .font(.system(size: 22, weight: .bold))
+                                            .foregroundColor(.coreLightGray)
+                                    }
+                                }
+                            }
                             
-                            if let emoji = store.selectedEmoji {
-                                Image("\(emoji)") // 선택된 이모지 표시
-                                    .resizable()
-                                    .frame(width: 32, height: 32)
-//                                    .overlay(
-//                                        Button(action: {
-//                                            print("XXXXXXXX")
-//                                            store.send(.selectEmoji(nil))
-//                                        }) {
-//                                            ZStack {
-//                                                Circle()
-//                                                    .fill(Color.red)
-//                                                    .frame(width: 24, height: 24)
-//                                                    .shadow(color: Color(hex: "CEC6CE"), radius: 5, x: 0, y: 1)
-//                                                Image(systemName: "xmark")
-//                                                    .font(.system(size: 16, weight: .bold))
-//                                                    .foregroundColor(.coreWhite)
-//                                            }
-//                                            .offset(x: 24, y: -24)
-//                                        }
-//                                        .buttonStyle(PlainButtonStyle())
-//                                    )
-                            } else {
-                                Image(systemName: store.showEmojiGrid ? "xmark" : "plus")
-                                    .font(.system(size: 25, weight: .bold))
-                                    .foregroundColor(.coreLightGray)
+                            ZStack {
+                                Circle()
+                                    .fill(Color.coreWhite)
+                                    .frame(width: UIScreen.main.bounds.width * 40 / 393, height: UIScreen.main.bounds.width * 40 / 393)
+                                    .shadow(color: Color(hex: "CEC6CE"), radius: 5, x: 0, y: 1)
+                                
+                                if let emoji = store.selectedEmoji {
+                                    Image("\(emoji)") // 선택된 이모지 표시
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 28, height: 28)
+                                } else {
+                                    Image(systemName: store.showEmojiGrid ? "xmark" : "plus")
+                                        .font(.system(size: 22, weight: .bold))
+                                        .foregroundColor(.coreLightGray)
+                                }
                             }
                         }
                     }
-                    .background(GeometryReader { geometry in
-                        Color.clear
-                            .onAppear {
-                                // 버튼의 위치를 저장
-                                let buttonPosition = geometry.frame(in: .global).minY
-                                // 버튼의 위치를 사용하여 그리드의 위치 조정
-                            }
-                    })
-            
 
                     // 입력 텍스트 필드
-                    ZStack(alignment: .topTrailing) {
-                        CustomTextField(
-                            text: $store.messageInput,
-                            placeholder: "돌에게 오늘의 이야기를 들려주세요",
-                            placeholderColor: Color(hex:"C8BEB2").toUIColor(),
-                            backgroundColor: .coreWhite,
-                            maxLength: 500,
-                            useDidEndEditing: false,
-                            customFontStyle: Font.body3Bold,
-                            alignment: Align.leading,
-                            leftPadding : 5
-                        )
-                        .frame(width: UIScreen.main.bounds.width * 250/393, height: 40)
+                    VStack{
+                        HStack {
+                            Spacer()
+                            Text("\(store.messageInput.count) / 500")
+                                .font(.customFont(Font.body4Regular))
+                                .foregroundColor(.coreWhite)
+                                .shadow(color: Color(hex:"CECECE"), radius: 4, x: 0, y: 0)
+                        }
+
+                        VStack{
+                            if let selectImage = store.selectedImage {
+                                HStack{
+                                    ZStack {
+                                        Image(uiImage: selectImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 64, height: 64)
+                                            .cornerRadius(15) // 코너 반경 15 적용
+                                            .padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 0))
+                                        Button(
+                                            action: {
+                                                store.send(.imagePicked(nil))
+                                            }
+                                        ) {
+                                            ZStack {
+                                                Circle()
+                                                    .fill(Color.coreLightGray)
+                                                    .frame(width: 16, height: 16)
+                                                    .shadow(color: Color(hex:"B4B8BF"), radius: 5, x: 0, y: 1)
+                                                    .blendMode(.multiply)
+                                                
+                                                
+                                                Image(systemName: "xmark")
+                                                    .font(.system(size: 12, weight: .bold))
+                                                    .foregroundColor(.coreWhite)
+                                            }
+                                        }
+                                        .offset(x: 28, y: -14)
+                                    }
+                                    Spacer()
+                                }
+                            }
+                            // 여기
+                            ResizableTextView(text: $store.messageInput, maxTextWidth: UIScreen.main.bounds.width * 248/393)
+                                .font(Font.customFont(Font.body3Regular))
+                                .transparentScrolling()
+                                .background(.coreWhite)
+                                .foregroundColor(.coreBlack)
+
+                        }
+                        .background(Color.coreWhite)
                         .cornerRadius(25)
                         .onTapGesture {
                             if (store.showEmojiGrid) {
@@ -309,13 +209,8 @@ struct TalkView: View {
                             }
                         }
                         .shadow(color: Color(hex:"B4B8BF"), radius: 5, x: 0, y: 1)
-
-                        Text("\(store.messageInput.count) / 500")
-                            .font(.customFont(Font.body4Regular))
-                            .foregroundColor(.coreWhite)
-                            .shadow(color: Color(hex:"CECECE"), radius: 4, x: 0, y: 0)
-                            .padding(.top, -16)
                     }
+                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
 
                     // 메시지 전송 버튼
                     Button(action: {
@@ -332,11 +227,10 @@ struct TalkView: View {
                     }) {
                         Image("sendIcon")
                             .resizable()
-                            .frame(width: 40, height: 40)
+                            .frame(width: UIScreen.main.bounds.width * 40 / 393, height: UIScreen.main.bounds.width * 40 / 393)
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
             }
         }
         .background(Color.clear)
@@ -346,6 +240,14 @@ struct TalkView: View {
             }
             else {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        }
+        .sheet(isPresented: $store.showImagePreview) {
+            ImagePreviewSheet(store: store)
+        }
+        .sheet(isPresented: $store.showImagePicker) {
+            ImagePicker(sourceType: .photoLibrary) { image in
+                store.send(.imagePicked(image))
             }
         }
     }
@@ -366,3 +268,149 @@ struct TalkView: View {
         return formatter.string(from: date)
     }
 }
+
+struct EmojiGridView: View {
+    @State var store: StoreOf<TalkFeature>
+    
+    var body: some View {
+        HStack() {
+            Rectangle()
+                .fill(Color.coreWhite)
+                .frame(width: 256, height: 48)
+                .cornerRadius(30)
+                .padding(.horizontal, 20)
+                .overlay(
+                    HStack(spacing: 4) {
+                        emojiButton("heartEyedEmoji")
+                        emojiButton("smileEmoji")
+                        emojiButton("sosoEmoji")
+                        emojiButton("sadEmoji")
+                        emojiButton("angryEmoji")
+                        Button(action: {
+                            store.send(.toggleImagePicker)
+                        }) {
+                            Image("postImageEmoji")
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                        }
+                    }
+                    .padding(8)
+                )
+            Spacer()
+        }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
+    }
+    
+    private func emojiButton(_ emojiName: String) -> some View {
+        Button(action: {
+            store.send(.selectEmoji(emojiName))
+        }) {
+            ZStack {
+                Image(emojiName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            }
+        }
+    }
+}
+
+struct ImagePreviewSheet: View {
+    @State var store: StoreOf<TalkFeature>
+    
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Spacer()
+                // 고른 사진
+                if let selectedImage = store.selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+                }
+                
+                Spacer()
+                
+                HStack(spacing: 20) {
+                    // 닫기 버튼
+                    Button(action: {
+                        store.send(.toggleImagePreview)
+                    }) {
+                        Text("닫기")
+                            .font(.headline)
+                            .padding()
+                            .background(Color.white)
+                            .foregroundColor(.black)
+                            .cornerRadius(8)
+                    }
+
+                    // 삭제 버튼
+                    Button(action: {
+                        store.send(.imagePicked(nil))
+                        store.send(.toggleImagePreview)
+                    }) {
+                        Text("삭제")
+                            .font(.headline)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+
+                    // 바꾸기 버튼
+                    Button(action: {
+                        store.send(.toggleImagePreview)
+                        store.send(.toggleImagePicker)
+                    }) {
+                        Text("바꾸기")
+                            .font(.headline)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+                .padding(.bottom, 20)
+            }
+        }
+    }
+}
+
+
+struct ResizableTextField: View {
+    @Binding var text: String
+    var minHeight: CGFloat = 40 // 최소 높이
+    var width: CGFloat = 200 // 고정된 너비
+
+    var body: some View {
+        
+        let additionalHeight = CGFloat((text.count / 10) * 10) // 10 단위로 증가
+               let dynamicHeight = minHeight + additionalHeight
+        
+        TextField("텍스트 필드", text: $text)
+            .padding()
+            .frame(width: width, height: dynamicHeight)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+            .animation(.easeInOut, value: text) // 애니메이션 추가
+    }
+}
+
+
+
+//public extension View {
+//    func transparentScrolling() -> some View {
+//        if #available(iOS 16.0, *) {
+//            return scrollContentBackground(.hidden)
+//        } else {
+//            return onAppear {
+//                UITextView.appearance().backgroundColor = .clear
+//            }
+//        }
+//    }
+//}
