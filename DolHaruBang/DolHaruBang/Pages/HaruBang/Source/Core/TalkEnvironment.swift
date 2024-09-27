@@ -149,7 +149,7 @@ extension Talk {
         contents: "안녕하세요! 오늘은 날씨가 좋네요.",
         emoji: "heartEyedEmoji",
         image: "sunny.png",
-        reply: "네, 정말 그렇습니다!",
+        reply: "아니요, 너무 더운데요? 이게 추석 지난 9월 날씨가 맞다고 생각하시나요? 진짜 날씨 관리 제대로 안하나요? 에어컨 없으면 정말 살 수가 없어요. 다시 한 번 캐리어 형님의 감사함을 깨닫습니다. 노벨 평화상은 캐리어 형님이 받으셨어야 해요.",
         createdAt: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 24, hour: 10, minute: 15)) ?? Date(),
         modifiedAt: nil
     )

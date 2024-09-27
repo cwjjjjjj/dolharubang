@@ -79,6 +79,7 @@ struct FloatingMenuView : View {
                    }
                    
                }
+               .padding(.horizontal, UIScreen.main.bounds.width * 12/393)
            }
        }
    }
@@ -106,7 +107,8 @@ struct FloatingMenuView : View {
                         Spacer()
                         Image(imageName)
                             .resizable()
-                           .frame(width: 48, height: 48)
+                            .aspectRatio(contentMode: .fit)
+                           .frame(width: UIScreen.main.bounds.width * 48/393, height: UIScreen.main.bounds.width * 48/393)
                         Spacer()
                     }
                     if let buttonText = buttonText {
@@ -114,15 +116,15 @@ struct FloatingMenuView : View {
                             Text(buttonText)
                                 .font(Font.customFont(Font.caption1))
                                 .foregroundColor(.white)
-                                .padding(.bottom, 2)
+                                .padding(.bottom, UIScreen.main.bounds.width * 2/393)
                         }
                     }
                 }
             }
-            .frame(width: 64, height: 64)
+            .frame(width: UIScreen.main.bounds.width * 64/393, height: UIScreen.main.bounds.width * 64/393)
             .background(Color.mainBrown)
             .cornerRadius(15)
-            .padding(.bottom, 29)
+            .padding(.bottom, UIScreen.main.bounds.width * 24/393)
         }
     }
 }

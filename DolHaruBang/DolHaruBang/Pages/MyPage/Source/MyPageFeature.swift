@@ -17,9 +17,9 @@ struct MyPageFeature {
         @Shared(.inMemory("background")) var selectedBackground: Background = .December
         
         var selectedProfileEdit : Bool = false
-        var clickPlus : Bool = false
+        var showImagePicker: Bool = false // ImagePicker 표시 상태
         var selectedImage: UIImage?
-        
+
     }
     
     enum Action : BindableAction{
@@ -28,33 +28,36 @@ struct MyPageFeature {
         case clickEditProfile
         case completeEditProfile
         case clickPlusButton
-        case completeSelectPhoto
+//        case completeSelectPhoto
         case selectImage(UIImage)
         case binding( BindingAction < State >)
     }
     
     var body : some Reducer<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
-            case .binding(\.clickPlus):
+//            case .binding(\.showImagePicker):
+//                return .none
+                
+//            case .binding( _ ):
+//               return .none
+            case .binding:
                 return .none
                 
-            case .binding( _ ):
-               return .none
-                
-                // 이미지 추가 버튼 클릭
+            // 이미지 추가 버튼 클릭
             case .clickPlusButton:
-                state.clickPlus = true
+                state.showImagePicker = true
                 return .none
                 
                 // 이미지 선택할당
             case let .selectImage(uiimage):
                 state.selectedImage = uiimage
                 return.none
-                
-            case .completeSelectPhoto:
-                state.clickPlus = false
-                return .none
+            
+//            case .completeSelectPhoto:
+//                state.clickPlus = false
+//                return .none
                 // 업적 이동
             case .trophyButtonTapped:
                 return .none

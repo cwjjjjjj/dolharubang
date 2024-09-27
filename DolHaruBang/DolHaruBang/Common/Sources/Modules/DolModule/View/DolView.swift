@@ -258,7 +258,7 @@ struct DolView : UIViewRepresentable {
        
         
         print("어떤것이 Hidden인지")
-        printNodeDetails(node: scene.rootNode)
+//        printNodeDetails(node: scene.rootNode)
         print("씬의 노드 출력 끝")
         
     }

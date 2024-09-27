@@ -36,6 +36,7 @@ struct CustomTextField: UIViewRepresentable {
     var customFontStyle: Font.FontStyle?
     var alignment: Align = .center
     var leftPadding: CGFloat = 0
+    var rightPadding: CGFloat = 0
     
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: CustomTextField
@@ -92,7 +93,7 @@ struct CustomTextField: UIViewRepresentable {
         textField.borderStyle = .roundedRect
         textField.backgroundColor = backgroundColor ?? .coreGray // backgroundColor 설정
         textField.textAlignment = alignment.uiTextAlignment
-        textField.addPadding(left: leftPadding)
+        textField.addPadding(left: leftPadding, right: rightPadding)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment.uiTextAlignment
@@ -222,4 +223,47 @@ struct SimpleCustomTextField: UIViewRepresentable {
     }
 }
 
+struct ResizableTextView: View {
+    @Binding var text: String
+    let font: UIFont = UIFont(name: Font.body3Regular.customFont.rawValue, size: Font.body3Regular.size) ?? UIFont.systemFont(ofSize: 12)
+
+    // TextEditor 최대 너비
+    var maxTextWidth: CGFloat
+    
+    // TextEditor 높이
+    @State private var textHeight: CGFloat = 48
+    
+    var body: some View {
+        TextEditor(text: $text)
+            .frame(height: textHeight)
+            .padding(EdgeInsets(top: 10, leading: 16, bottom: 12, trailing: 16))
+            .onAppear {
+                calculateHeight()
+            }
+            .onChange(of: text) { _ in
+                calculateHeight()
+            }
+    }
+
+    private func calculateHeight() {
+        let lineCount = autoLineCount(text: text, font: font, maxTextWidth: maxTextWidth - 40)
+        let minH : CGFloat = font.lineHeight + 2
+        let maxH : CGFloat = 120.0
+        textHeight = min(max(minH, lineCount * (font.lineHeight+2)), maxH)
+    }
+    
+    private func autoLineCount(text: String, font: UIFont, maxTextWidth: CGFloat) -> CGFloat {
+        var lineCount: CGFloat = 0
+        text.components(separatedBy: "\n").forEach { line in
+            let label = UILabel()
+            label.font = font
+            label.text = line
+            label.sizeToFit()
+            let currentTextWidth = label.frame.width
+            lineCount += ceil(currentTextWidth / maxTextWidth)
+        }
+        print("lineCount = \(lineCount)")
+        return lineCount
+    }
+}
 
