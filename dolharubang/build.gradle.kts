@@ -41,10 +41,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation ("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
-    implementation("org.springframework.security:spring-security-oauth2-client:6.3.3")
-    implementation("org.springframework.boot:spring-boot-starter-security:3.3.4")
+    implementation ("org.springframework.boot:spring-boot-starter-oauth2-client") //oauth2
+    implementation ("org.springframework.boot:spring-boot-starter-security") //스프링 시큐리티
+    implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
     implementation ("commons-io:commons-io:2.7")
+    implementation("io.jsonwebtoken:jjwt:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 configurations.all {

@@ -1,6 +1,7 @@
 package com.dolharubang.domain.dto.response;
 
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.oauth2.model.Role;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,12 +18,9 @@ public class MemberResDto {
     private String memberEmail;
     private String nickname;
     private String birthday;
-    private String refreshToken;
-    private String provider;
     private Long sands;
-    private LocalDateTime createdAt;
+    private Role role;
     private LocalDateTime lastLoginAt;
-    private LocalDateTime modifiedAt;
     private Long totalLoginDays;
     private String profilePicture;
     private String spaceName;
@@ -33,12 +31,9 @@ public class MemberResDto {
             .memberEmail(member.getMemberEmail())
             .nickname(member.getNickname())
             .birthday(member.getBirthday())
-            .refreshToken(member.getRefreshToken())
-            .provider(member.getProvider())
             .sands(member.getSands())
-            .createdAt(member.getCreatedAt())
+            .role(member.getRole())
             .lastLoginAt(member.getLastLoginAt())
-            .modifiedAt(member.getModifiedAt())
             .totalLoginDays(member.getTotalLoginDays())
             .spaceName(member.getSpaceName())
             .build();
