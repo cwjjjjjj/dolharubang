@@ -58,14 +58,32 @@ struct CustomTextField: UIViewRepresentable {
             return true
         }
 
+//        func textFieldDidEndEditing(_ textField: UITextField) {
+//            if parent.useDidEndEditing {
+//                if parent.text.count < parent.minLength {
+//                    parent.showAlert(
+//                        title: parent.alertTitle ?? "경고",
+//                        message: parent.alertMessage ?? "올바르지 않은 입력입니다.",
+//                        dismissButtonTitle: parent.dismissButtonTitle ?? "확인"
+//                    )
+//                } else {
+//                    parent.onEndEditing?()  // 텍스트 편집 종료 시 동작
+//                }
+//            }
+//        }
+        // 조건 추가해서 매개변수로 알림 관련 버튼 내용이 있을 때만 알림 표시하도록 함!
         func textFieldDidEndEditing(_ textField: UITextField) {
             if parent.useDidEndEditing {
                 if parent.text.count < parent.minLength {
-                    parent.showAlert(
-                        title: parent.alertTitle ?? "경고",
-                        message: parent.alertMessage ?? "올바르지 않은 입력입니다.",
-                        dismissButtonTitle: parent.dismissButtonTitle ?? "확인"
-                    )
+                    if let alertTitle = parent.alertTitle,
+                       let alertMessage = parent.alertMessage,
+                       let dismissButtonTitle = parent.dismissButtonTitle {
+                        parent.showAlert(
+                            title: alertTitle,
+                            message: alertMessage,
+                            dismissButtonTitle: dismissButtonTitle
+                        )
+                    }
                 } else {
                     parent.onEndEditing?()  // 텍스트 편집 종료 시 동작
                 }
@@ -148,6 +166,7 @@ struct CustomTextField: UIViewRepresentable {
 
         rootViewController.present(alert, animated: true, completion: nil)
     }
+    
 }
 
 

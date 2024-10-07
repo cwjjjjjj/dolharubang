@@ -26,6 +26,7 @@ extension Font {
     static var h6: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 26) }
     static var h7: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 22) }
     static var h8: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 20) }
+    static var h9: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 18) }
     static var subtitle1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 24) }
     static var subtitle2: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 22) }
     static var subtitle3: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 18) }
@@ -46,6 +47,7 @@ extension Font {
     static var button1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 16) }
     static var button2: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var button3: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 14) }
+    static var button4: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 12) }
     static var caption1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 10) }
     static var caption2: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }
     static var overline: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }

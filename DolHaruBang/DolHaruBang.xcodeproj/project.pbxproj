@@ -55,6 +55,15 @@
 		DA461F762C81E50300270CDE /* FigmaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F752C81E50300270CDE /* FigmaEffects.swift */; };
 		DA461F7D2C840C7200270CDE /* HaruBangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F7C2C840C7200270CDE /* HaruBangView.swift */; };
 		DA461F7F2C840C8900270CDE /* HaruBangFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F7E2C840C8900270CDE /* HaruBangFeature.swift */; };
+		DA69041D2CAFBEC400A557A1 /* ParkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */; };
+		DA69041F2CAFBF2B00A557A1 /* DoljanchiFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */; };
+		DA6904232CAFBF4500A557A1 /* FriendListFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */; };
+		DA6904272CAFC13900A557A1 /* DoljanchiView..swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904262CAFC13100A557A1 /* DoljanchiView..swift */; };
+		DA6904292CAFC15300A557A1 /* FriendListView..swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904282CAFC13E00A557A1 /* FriendListView..swift */; };
+		DA69042B2CAFC1A700A557A1 /* ParkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042A2CAFC1A700A557A1 /* ParkView.swift */; };
+		DA69042D2CB0070B00A557A1 /* JarangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042C2CB0070B00A557A1 /* JarangView.swift */; };
+		DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042F2CB2E79200A557A1 /* ProfileImageView.swift */; };
+		DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */; };
 		DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */; };
 		DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */; };
 		DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */; };
@@ -73,8 +82,6 @@
 		DA7FE5852C8826A200843462 /* RecordPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5842C8826A200843462 /* RecordPopupView.swift */; };
 		DA91E0B72C91562200CD41A4 /* TalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B62C91562200CD41A4 /* TalkView.swift */; };
 		DA91E0B92C91566000CD41A4 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */; };
-		DA91E0C12C91588E00CD41A4 /* ParkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C02C91588E00CD41A4 /* ParkView.swift */; };
-		DA91E0C32C9158A400CD41A4 /* ParkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C22C9158A400CD41A4 /* ParkFeature.swift */; };
 		DA91E0C52C916AAE00CD41A4 /* TalkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C42C916AAE00CD41A4 /* TalkFeature.swift */; };
 		DA91E0C72C916B6D00CD41A4 /* SpeechBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C62C916B6D00CD41A4 /* SpeechBubbleView.swift */; };
 		DAA4C9D02C8B79DB00409D4B /* apiFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9CE2C8B79DA00409D4B /* apiFetch.swift */; };
@@ -173,6 +180,15 @@
 		DA461F752C81E50300270CDE /* FigmaEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaEffects.swift; sourceTree = "<group>"; };
 		DA461F7C2C840C7200270CDE /* HaruBangView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HaruBangView.swift; sourceTree = "<group>"; };
 		DA461F7E2C840C8900270CDE /* HaruBangFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HaruBangFeature.swift; sourceTree = "<group>"; };
+		DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkFeature.swift; sourceTree = "<group>"; };
+		DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoljanchiFeature.swift; sourceTree = "<group>"; };
+		DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListFeature.swift; sourceTree = "<group>"; };
+		DA6904262CAFC13100A557A1 /* DoljanchiView..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoljanchiView..swift; sourceTree = "<group>"; };
+		DA6904282CAFC13E00A557A1 /* FriendListView..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListView..swift; sourceTree = "<group>"; };
+		DA69042A2CAFC1A700A557A1 /* ParkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkView.swift; sourceTree = "<group>"; };
+		DA69042C2CB0070B00A557A1 /* JarangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JarangView.swift; sourceTree = "<group>"; };
+		DA69042F2CB2E79200A557A1 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPopupView.swift; sourceTree = "<group>"; };
 		DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.ttf; sourceTree = "<group>"; };
 		DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpringHasCome.mp3; sourceTree = "<group>"; };
 		DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUserInfoView.swift; sourceTree = "<group>"; };
@@ -193,8 +209,6 @@
 		DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		DA91E0BA2C91580E00CD41A4 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageView.swift; path = DolHaruBang/Pages/Calendar/Source/View/MyPageView.swift; sourceTree = SOURCE_ROOT; };
 		DA91E0BE2C91584800CD41A4 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageFeature.swift; path = DolHaruBang/Pages/Calendar/Source/View/MyPageFeature.swift; sourceTree = SOURCE_ROOT; };
-		DA91E0C02C91588E00CD41A4 /* ParkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ParkView.swift; path = DolHaruBang/Pages/Calendar/Source/View/ParkView.swift; sourceTree = SOURCE_ROOT; };
-		DA91E0C22C9158A400CD41A4 /* ParkFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ParkFeature.swift; path = DolHaruBang/Pages/Calendar/Source/View/ParkFeature.swift; sourceTree = SOURCE_ROOT; };
 		DA91E0C42C916AAE00CD41A4 /* TalkFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeature.swift; sourceTree = "<group>"; };
 		DA91E0C62C916B6D00CD41A4 /* SpeechBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleView.swift; sourceTree = "<group>"; };
 		DAA4C9CE2C8B79DA00409D4B /* apiFetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = apiFetch.swift; sourceTree = "<group>"; };
@@ -304,10 +318,10 @@
 		6550AA392C59E5BF000A264E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				DA6904182CAFBD7600A557A1 /* Park */,
 				DA0E9EF62C9F390A00A3CD39 /* MyPage */,
 				659792072C9E1C7F00E2B51D /* Setting */,
 				65054FE72C9DEABE00A14601 /* Trophy */,
-				DA461F7A2C840C2C00270CDE /* Park */,
 				DA461F792C840BC500270CDE /* HaruBang */,
 				DA461F6B2C81606800270CDE /* Calendar */,
 				6550AA3E2C59E740000A264E /* Splash */,
@@ -330,6 +344,7 @@
 		6550AA3B2C59E718000A264E /* Design */ = {
 			isa = PBXGroup;
 			children = (
+				DA69042E2CB2E77B00A557A1 /* ProfileImage */,
 				DA6E57712C58F67D0088A7A7 /* Buttons */,
 				DA6E57702C58F66F0088A7A7 /* TextField */,
 				DA461F752C81E50300270CDE /* FigmaEffects.swift */,
@@ -690,7 +705,7 @@
 		DA461F6C2C81608D00270CDE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				DA461F6E2C81609900270CDE /* Core */,
+				DA6904332CB3D4B400A557A1 /* Core */,
 				DA461F6D2C81609300270CDE /* View */,
 			);
 			path = Source;
@@ -706,14 +721,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		DA461F6E2C81609900270CDE /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				DA7FE5822C88231100843462 /* CalendarFeature.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		DA461F792C840BC500270CDE /* HaruBang */ = {
 			isa = PBXGroup;
 			children = (
@@ -723,13 +730,51 @@
 			path = HaruBang;
 			sourceTree = "<group>";
 		};
-		DA461F7A2C840C2C00270CDE /* Park */ = {
+		DA6904182CAFBD7600A557A1 /* Park */ = {
 			isa = PBXGroup;
 			children = (
-				DA91E0C02C91588E00CD41A4 /* ParkView.swift */,
-				DA91E0C22C9158A400CD41A4 /* ParkFeature.swift */,
+				DA69041B2CAFBD8800A557A1 /* View */,
+				DA6904192CAFBD7B00A557A1 /* Core */,
 			);
 			path = Park;
+			sourceTree = "<group>";
+		};
+		DA6904192CAFBD7B00A557A1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */,
+				DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */,
+				DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		DA69041B2CAFBD8800A557A1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DA6904282CAFC13E00A557A1 /* FriendListView..swift */,
+				DA6904262CAFC13100A557A1 /* DoljanchiView..swift */,
+				DA69042A2CAFC1A700A557A1 /* ParkView.swift */,
+				DA69042C2CB0070B00A557A1 /* JarangView.swift */,
+				DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DA69042E2CB2E77B00A557A1 /* ProfileImage */ = {
+			isa = PBXGroup;
+			children = (
+				DA69042F2CB2E79200A557A1 /* ProfileImageView.swift */,
+			);
+			path = ProfileImage;
+			sourceTree = "<group>";
+		};
+		DA6904332CB3D4B400A557A1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				DA7FE5822C88231100843462 /* CalendarFeature.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		DA6E576B2C58609B0088A7A7 /* BGM */ = {
@@ -1156,8 +1201,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA69042D2CB0070B00A557A1 /* JarangView.swift in Sources */,
 				DAA4CA032C8B7C6900409D4B /* Sign.swift in Sources */,
 				657E5F982C745356002FFA69 /* View.swift in Sources */,
+				DA69041D2CAFBEC400A557A1 /* ParkFeature.swift in Sources */,
 				DAAEFC182C56941A00D1F87B /* Persistence.swift in Sources */,
 				DAA4C9DC2C8B7A7700409D4B /* MakeLightUtil.swift in Sources */,
 				DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */,
@@ -1165,14 +1212,15 @@
 				DA461F7D2C840C7200270CDE /* HaruBangView.swift in Sources */,
 				DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */,
 				DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */,
+				DA6904272CAFC13900A557A1 /* DoljanchiView..swift in Sources */,
 				65AFAD942CA18CE200B565D1 /* TrophyListFeature.swift in Sources */,
 				DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */,
 				65AFAD872CA0A77900B565D1 /* ShareView.swift in Sources */,
 				658216CD2CA58FA000C5CD37 /* MailUtil.swift in Sources */,
+				DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */,
 				DAA4C9FA2C8B7C6900409D4B /* HomeEnviroment.swift in Sources */,
 				DAA4C9FE2C8B7C6900409D4B /* Accessory.swift in Sources */,
 				DA91E0B92C91566000CD41A4 /* CalendarGridView.swift in Sources */,
-				DA91E0C12C91588E00CD41A4 /* ParkView.swift in Sources */,
 				65382E7D2CA3223F003F130B /* ProfileView.swift in Sources */,
 				DAA4CA022C8B7C6900409D4B /* Shape.swift in Sources */,
 				DA461F7F2C840C8900270CDE /* HaruBangFeature.swift in Sources */,
@@ -1188,8 +1236,10 @@
 				DAA4CA0A2C8B7D5E00409D4B /* UITextFieldPadding.swift in Sources */,
 				DAA4CA072C8B7C6900409D4B /* SignPopUpView.swift in Sources */,
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
+				DA6904292CAFC15300A557A1 /* FriendListView..swift in Sources */,
 				658962822C856D3600F27FB4 /* Demo.swift in Sources */,
 				DAA4C9D02C8B79DB00409D4B /* apiFetch.swift in Sources */,
+				DA6904232CAFBF4500A557A1 /* FriendListFeature.swift in Sources */,
 				657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */,
 				65382E842CA3276A003F130B /* ProfileEnviroment.swift in Sources */,
 				DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */,
@@ -1199,7 +1249,6 @@
 				658216C02CA5798400C5CD37 /* MailFeature.swift in Sources */,
 				6597920B2C9E1CE400E2B51D /* SettingFeature.swift in Sources */,
 				657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */,
-				DA91E0C32C9158A400CD41A4 /* ParkFeature.swift in Sources */,
 				65AFAD892CA0B85100B565D1 /* SignView.swift in Sources */,
 				DAA4C9DB2C8B7A7700409D4B /* MakeCameraUtil.swift in Sources */,
 				DA461F722C81958E00270CDE /* CalendarView.swift in Sources */,
@@ -1218,10 +1267,12 @@
 				65AFAD922CA18CA400B565D1 /* TrophyListView.swift in Sources */,
 				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
 				DA7FE5832C88231100843462 /* CalendarFeature.swift in Sources */,
+				DA69041F2CAFBF2B00A557A1 /* DoljanchiFeature.swift in Sources */,
 				65382E722CA28E21003F130B /* MyPageEnviroment.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DAA4C9FF2C8B7C6900409D4B /* Background.swift in Sources */,
 				65382E822CA326F9003F130B /* ProfileFeature.swift in Sources */,
+				DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
 				DA7FE5852C8826A200843462 /* RecordPopupView.swift in Sources */,
@@ -1231,6 +1282,7 @@
 				DA91E0C72C916B6D00CD41A4 /* SpeechBubbleView.swift in Sources */,
 				DA91E0B72C91562200CD41A4 /* TalkView.swift in Sources */,
 				DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */,
+				DA69042B2CAFC1A700A557A1 /* ParkView.swift in Sources */,
 				658216BE2CA5795C00C5CD37 /* MailEnviroment.swift in Sources */,
 				DAA4C9FC2C8B7C6900409D4B /* HomeView.swift in Sources */,
 				DAA4CA062C8B7C6900409D4B /* FloatingMenuView.swift in Sources */,
@@ -1406,6 +1458,9 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = www.dolharubang.DolHaruBang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1437,6 +1492,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = www.dolharubang.DolHaruBang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

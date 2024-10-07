@@ -10,9 +10,7 @@ struct CustomButton: UIViewRepresentable {
         }
 
         @objc func buttonTapped() {
-            print("tabbed1")
             if !parent.isDisabled {
-                print("tabbed2")
                 parent.action()
             } else {
                 print("Button is disabled")
