@@ -16,12 +16,12 @@ extension Color {
     static let mainBrown = Color("coreBrown")
     static let mainBlue = Color("coreBlue")
     
-    static let mainWhite = Color("coreWhite")
+    static let mainWhite = Color("coreWhite") // FBFAF7
     static let whiteWhite = Color("ffffff")
     static let mainBlack = Color("coreBlack")
-    static let mainGray = Color("coreGray")
-    static let mainLightGray = Color("coreLightGray")
-    static let disabled = Color("coreDisabled")
+    static let mainGray = Color("coreGray") // F2EEE7
+    static let mainLightGray = Color("coreLightGray") // C8BEB2
+    static let disabled = Color("coreDisabled") // 837C74
     
     static let pointColor = Color("PointColor")
     static let placeHolder = Color(hex:"C8BEB2")

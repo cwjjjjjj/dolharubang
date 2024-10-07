@@ -31,8 +31,8 @@ struct HaruBangView: View {
                     
                     // TalkView에 store의 talkFeatureState 전달
                     TalkView(store: store.scope(state: \.talkFeatureState, action: \.talkFeatureAction))
+                        .background(.clear)
                         .frame(height: totalHeight * 680 / 852)
-//                        .clipped()
                     
 
                     Spacer().frame(minHeight: totalHeight * 64 / 804)

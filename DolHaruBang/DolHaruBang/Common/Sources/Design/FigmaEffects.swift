@@ -220,3 +220,28 @@ extension UIColor {
         }
     }
 }
+
+struct InnerShadowText: View {
+    let text: String
+    let blur: CGFloat
+    let x: CGFloat
+    let y: CGFloat
+    let textColor: Color
+    let shadowColor: Color
+    let blendMode: Bool
+    let opacity: CGFloat?
+    
+    
+    var body: some View {
+        ZStack {
+            Text(text)
+                .foregroundColor(shadowColor.opacity(opacity ?? 1))
+                .blur(radius: blur)
+                .offset(x: x, y: y)
+                .blendMode(blendMode ? .multiply : .normal)
+            
+            Text(text)
+                .foregroundColor(textColor)
+        }
+    }
+}
