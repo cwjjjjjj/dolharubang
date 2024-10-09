@@ -21,7 +21,6 @@ struct SplashView: View {
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .blendMode(.multiply)
             .edgesIgnoringSafeArea(.all)
 
             VStack {
