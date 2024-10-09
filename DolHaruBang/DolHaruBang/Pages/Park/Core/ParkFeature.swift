@@ -7,7 +7,6 @@ struct History: Identifiable, Equatable {
     let nickname: String
     let profileImg: URL?
     let modifiedAt: Date
-    let isRequest: Bool
 }
 
 @Reducer
@@ -93,8 +92,7 @@ struct ParkFeature {
                                     email: ["abc@naver.com", "def@naver.com", "qwer@naver.com","asdf@naver.com","doldol@apple.com","haru123@naver.com",][i],
                                     nickname: ["해인", "우진", "희태", "상준", "성재", "영규"][i],
                                     profileImg: imageURL,
-                                    modifiedAt: Date(),
-                                    isRequest: [true, true, false, true, false, false][i]
+                                    modifiedAt: Date()
                                 )
                                 dummyHistories.append(histories)
                             }

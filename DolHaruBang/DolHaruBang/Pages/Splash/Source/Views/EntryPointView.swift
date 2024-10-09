@@ -24,7 +24,7 @@ struct EntryPointView: View {
                 SplashView().onAppear{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                         withAnimation{
-                            showMainView = true
+                            showMainView = false
                         }
                     }
                 }
