@@ -171,6 +171,7 @@
 		65AFAD912CA18C9900B565D1 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		65AFAD932CA18CDC00B565D1 /* TrophyListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListFeature.swift; sourceTree = "<group>"; };
 		65E1C5092C6F7DE700A2E419 /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
+		65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DolHaruBangDebug.entitlements; sourceTree = "<group>"; };
 		DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MyPageIcon.xcassets; sourceTree = "<group>"; };
 		DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeature.swift; sourceTree = "<group>"; };
@@ -1037,6 +1038,7 @@
 		DAAEFC0D2C56941800D1F87B /* DolHaruBang */ = {
 			isa = PBXGroup;
 			children = (
+				65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */,
 				DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */,
 				6550AA382C59E5A6000A264E /* Common */,
 				6550AA392C59E5BF000A264E /* Pages */,
@@ -1437,6 +1439,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DolHaruBang/DolHaruBangDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";

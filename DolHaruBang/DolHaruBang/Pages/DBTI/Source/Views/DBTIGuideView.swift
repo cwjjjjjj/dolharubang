@@ -7,13 +7,15 @@
 
 import SwiftUI
 import ComposableArchitecture
+import AuthenticationServices
 
 // MARK: NavigationStack Start (임시 위치 추후에는 로그인 화면)
 struct DBTIGuideView: View {
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
     @Bindable var nav: StoreOf<NavigationFeature>
-   
+    @StateObject private var signInViewModel = SignInViewModel()
+    
     var body: some View {
         
         // path : 이동하는 경로들을 전부 선언해줌
@@ -28,8 +30,12 @@ struct DBTIGuideView: View {
                     VStack (alignment: .center, spacing: 0){
                         Spacer().frame(height: geometry.size.height * 0.2892)
                         
+                        
+                
                         HStack {
                             Spacer()
+                            
+                          
                             
                             CustomText(text: "이제 하루를 함께 할\n반려돌을 주워볼까요?",
                                        font: Font.uiFont(for: Font.subtitle2)!,
@@ -58,7 +64,7 @@ struct DBTIGuideView: View {
                         HStack {
                             Spacer()
                             
-                            CustomText(text: "간단한 심리테스트를 통해\n나와 잘 맞는 반려돌을 주울 수 있어요!.", 
+                            CustomText(text: "간단한 심리테스트를 통해\n나와 잘 맞는 반려돌을 주울 수 있어요!.",
                                        font: Font.uiFont(for: Font.body2Regular)!,
                                        textColor: .coreDisabled,
                                        letterSpacingPercentage: -2.5,
@@ -71,6 +77,19 @@ struct DBTIGuideView: View {
                         
                         Spacer().frame(height: 30)
                         
+                        // 애플로그인 테스트
+                        SignInWithAppleButton(
+                            .signIn,
+                            onRequest: { request in
+                                request.requestedScopes = [.fullName, .email]
+                            },
+                            onCompletion: { result in
+                                signInViewModel.handleSignInWithAppleResult(result)
+                            }
+                        )
+                        .frame(width: 280, height: 45)
+                        .padding()
+                        // 애플로그인 테스트 종료
                         HStack {
                             NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View(DBTIFeature.State())){
                                 HStack {
@@ -118,7 +137,7 @@ struct DBTIGuideView: View {
         // MARK: FloatingMenuView Start
         .safeAreaInset(edge: .bottom) {
             FloatingMenuView(nav: nav)
-          }
+        }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
         .toolbar {
@@ -136,4 +155,42 @@ struct DBTIGuideView: View {
             }
         }
     }
+}
+
+
+class SignInViewModel: ObservableObject {
+    @Published var userInfo: UserInfoo?
+    
+    func handleSignInWithAppleResult(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .success(let authorization):
+            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                let userId = appleIDCredential.user
+                let email = appleIDCredential.email
+                let fullName = appleIDCredential.fullName
+                
+                DispatchQueue.main.async {
+                    self.userInfo = UserInfoo(
+                        id: userId,
+                        email: email,
+                        firstName: fullName?.givenName,
+                        lastName: fullName?.familyName
+                    )
+                }
+                
+                print("User ID: \(userId)")
+                print("Email: \(email ?? "N/A")")
+                print("Full Name: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
+            }
+        case .failure(let error):
+            print("Authorization failed: \(error.localizedDescription)")
+        }
+    }
+}
+
+struct UserInfoo {
+    let id: String
+    let email: String?
+    let firstName: String?
+    let lastName: String?
 }
