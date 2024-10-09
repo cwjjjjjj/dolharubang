@@ -10,7 +10,7 @@ import AVFoundation
 
 @main
 struct DolHaruBangApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var userManager = UserManager()
 //    let persistenceController = PersistenceController.shared
 
