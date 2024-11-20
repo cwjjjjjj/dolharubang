@@ -40,29 +40,35 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation ("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
-    implementation ("org.springframework.boot:spring-boot-starter-oauth2-client") //oauth2
-    implementation ("org.springframework.boot:spring-boot-starter-security") //스프링 시큐리티
-    implementation ("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
-    implementation ("commons-io:commons-io:2.7")
-    implementation("io.jsonwebtoken:jjwt:0.11.5")
+    implementation("commons-io:commons-io:2.7")
+    testImplementation("org.springframework.security:spring-security-test")
+    implementation("com.auth0:java-jwt:3.19.2")
+    implementation("com.google.code.gson:gson:2.8.9")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-}
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.23")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-configurations.all {
-    exclude(group = "commons-logging")
-}
-
-sonarqube {
-    properties {
-        property("sonar.projectKey", "dolharubang-backend")
-        property("sonar.projectName", "dolharubang-backend")
+    configurations.all {
+        exclude(group = "commons-logging")
     }
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+    sonarqube {
+        properties {
+            property("sonar.projectKey", "dolharubang-backend")
+            property("sonar.projectName", "dolharubang-backend")
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
