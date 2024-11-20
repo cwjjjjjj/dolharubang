@@ -53,12 +53,11 @@ public class Member extends BaseEntity {
     private String spaceName;
 
     @Builder
-    public Member(SocialType socialType, String socialId, String refreshToken, String memberEmail,
+    public Member(SocialType socialType, String socialId, String memberEmail,
         String nickname, String birthday, Long sands, LocalDateTime lastLoginAt,
         Long totalLoginDays, String profilePicture, String spaceName) {
         this.socialType = socialType;
         this.socialId = socialId;
-        this.refreshToken = refreshToken;
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.birthday = birthday;
