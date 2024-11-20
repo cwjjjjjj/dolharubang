@@ -1,6 +1,6 @@
 package com.dolharubang.domain.entity;
 
-import com.dolharubang.oauth2.model.Role;
+import com.dolharubang.type.SocialType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,7 +27,12 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Enumerated(value = EnumType.STRING)
+    private SocialType socialType;
+
     private String socialId;
+
+    private String refreshToken;
 
     private String memberEmail;
 
@@ -37,9 +42,6 @@ public class Member extends BaseEntity {
 
     @ColumnDefault("0")
     private Long sands;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     private LocalDateTime lastLoginAt;
 
@@ -51,15 +53,16 @@ public class Member extends BaseEntity {
     private String spaceName;
 
     @Builder
-    public Member(String socialId, String memberEmail, String nickname, String birthday, Long sands,
-        Role role, LocalDateTime lastLoginAt, Long totalLoginDays, String profilePicture,
-        String spaceName) {
+    public Member(SocialType socialType, String socialId, String refreshToken, String memberEmail,
+        String nickname, String birthday, Long sands, LocalDateTime lastLoginAt,
+        Long totalLoginDays, String profilePicture, String spaceName) {
+        this.socialType = socialType;
         this.socialId = socialId;
+        this.refreshToken = refreshToken;
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.birthday = birthday;
         this.sands = sands;
-        this.role = role;
         this.lastLoginAt = lastLoginAt;
         this.totalLoginDays = totalLoginDays;
         this.profilePicture = profilePicture;
@@ -74,6 +77,14 @@ public class Member extends BaseEntity {
     // 마지막 로그인 시간 업데이트
     public void updateLastLoginAt() {
         this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void resetRefreshToken() {
+        this.refreshToken = null;
     }
 
     public void update(String nickname, Long sands, String profilePicture, String spaceName) {
