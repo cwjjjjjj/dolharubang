@@ -255,7 +255,8 @@ struct HomeView : View {
                             .zIndex(1)
                         SignView(
                             showPopup: $store.sign,
-                            message: $store.message
+                            message: $store.message, store: Store(initialState: SignFeature.State()){
+                                SignFeature()}
                         )
                             .background(Color.white)
                             .cornerRadius(25)

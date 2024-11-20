@@ -11,6 +11,8 @@ import SwiftUI
 struct SignView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
     @Binding var message : String
+    
+    @State var store: StoreOf<SignFeature> // Store로 상태 및 액션 전달
 
     var body: some View {
         VStack(alignment: .center) {
@@ -38,6 +40,11 @@ struct SignView: View {
             Spacer().frame(height: 20)
             
             Divider()
+            
+            if let signInfo = store.signInfo {
+                Text(signInfo.message)
+                    .foregroundColor(.black) // 입력된 텍스트 색상
+            }
 
             
             TextField("", text: $message)
@@ -49,6 +56,9 @@ struct SignView: View {
         .background(Color.white)
         .cornerRadius(25)
         .shadow(radius: 10)
+        .onAppear{
+            store.send(.fetchSign)
+        }
         
     }
 }
