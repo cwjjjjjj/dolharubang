@@ -1,7 +1,6 @@
 package com.dolharubang.domain.dto.response;
 
 import com.dolharubang.domain.entity.Member;
-import com.dolharubang.oauth2.model.Role;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +18,6 @@ public class MemberResDto {
     private String nickname;
     private String birthday;
     private Long sands;
-    private Role role;
     private LocalDateTime lastLoginAt;
     private Long totalLoginDays;
     private String profilePicture;
@@ -32,7 +30,6 @@ public class MemberResDto {
             .nickname(member.getNickname())
             .birthday(member.getBirthday())
             .sands(member.getSands())
-            .role(member.getRole())
             .lastLoginAt(member.getLastLoginAt())
             .totalLoginDays(member.getTotalLoginDays())
             .spaceName(member.getSpaceName())
