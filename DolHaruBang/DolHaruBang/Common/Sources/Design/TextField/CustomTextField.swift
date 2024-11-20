@@ -285,4 +285,3 @@ struct ResizableTextView: View {
         return lineCount
     }
 }
-
