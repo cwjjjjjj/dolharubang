@@ -2,23 +2,21 @@ package com.dolharubang.domain.entity;
 
 import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.type.AbilityType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.MapKeyEnumerated;
 import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.MapKeyEnumerated;
-import jakarta.persistence.CollectionTable;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "stones")
 @Getter
 public class Stone {
 
