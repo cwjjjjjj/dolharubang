@@ -1,12 +1,14 @@
 package com.dolharubang.domain.entity;
 
+import com.dolharubang.type.SocialType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,13 +18,19 @@ import org.hibernate.annotations.ColumnDefault;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "members")
 @Getter
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+
+    @Enumerated(value = EnumType.STRING)
+    private SocialType socialType;
+
+    private String socialId;
+
+    private String refreshToken;
 
     private String memberEmail;
 
@@ -30,18 +38,10 @@ public class Member {
 
     private String birthday;
 
-    private String refreshToken;
-
-    private String provider;
-
     @ColumnDefault("0")
     private Long sands;
 
-    private LocalDateTime createdAt;
-
     private LocalDateTime lastLoginAt;
-
-    private LocalDateTime modifiedAt;
 
     @ColumnDefault("0")
     private Long totalLoginDays;
@@ -51,37 +51,37 @@ public class Member {
     private String spaceName;
 
     @Builder
-    public Member(Long memberId, String memberEmail, String nickname, String birthday, String refreshToken,
-        String provider, Long sands, LocalDateTime createdAt, LocalDateTime lastLoginAt,
-        LocalDateTime modifiedAt, Long totalLoginDays, String profilePicture, String spaceName) {
-        this.memberId = memberId;
+    public Member(SocialType socialType, String socialId, String memberEmail,
+        String nickname, String birthday, Long sands, LocalDateTime lastLoginAt,
+        Long totalLoginDays, String profilePicture, String spaceName) {
+        this.socialType = socialType;
+        this.socialId = socialId;
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.birthday = birthday;
-        this.refreshToken = refreshToken;
-        this.provider = provider;
         this.sands = sands;
-        this.createdAt = createdAt;
         this.lastLoginAt = lastLoginAt;
-        this.modifiedAt = modifiedAt;
         this.totalLoginDays = totalLoginDays;
         this.profilePicture = profilePicture;
         this.spaceName = spaceName;
     }
 
-    //Refresh Token 갱신
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
-    }
-
     //로그인 일수 증가
     public void incrementTotalLoginDays(Long totalLoginDays) {
-        this.totalLoginDays  = totalLoginDays + 1;
+        this.totalLoginDays = totalLoginDays + 1;
     }
 
     // 마지막 로그인 시간 업데이트
     public void updateLastLoginAt() {
         this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void resetRefreshToken() {
+        this.refreshToken = null;
     }
 
     public void update(String nickname, Long sands, String profilePicture, String spaceName) {

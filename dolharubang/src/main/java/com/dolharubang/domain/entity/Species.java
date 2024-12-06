@@ -1,11 +1,10 @@
 package com.dolharubang.domain.entity;
 
-import com.dolharubang.mongo.enumTypes.AbilityType;
+import com.dolharubang.type.AbilityType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "species")
 @Getter
 public class Species {
 
