@@ -16,7 +16,7 @@ public class DiaryResDto {
     private Long diaryId;
     private String contents;
     private String emoji;
-    private String image;
+    private String imageUrl;
     private String reply;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -26,7 +26,7 @@ public class DiaryResDto {
             .diaryId(diary.getDiaryId())
             .contents(diary.getContents())
             .emoji(diary.getEmoji())
-            .image(diary.getImage())
+            .imageUrl(diary.getImageUrl())
             .reply(diary.getReply())
             .createdAt(diary.getCreatedAt())
             .modifiedAt(diary.getModifiedAt())
