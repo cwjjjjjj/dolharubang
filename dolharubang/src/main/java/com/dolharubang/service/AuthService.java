@@ -9,6 +9,7 @@ import com.dolharubang.jwt.UserAuthentication;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.type.SocialType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AuthService {
 
-    private static final int ACCESS_TOKEN_EXPIRATION = 7200000;
-    private static final int REFRESH_TOKEN_EXPIRATION = 1209600000;
+    @Value("${jwt.access.expiration}")
+    private int ACCESS_TOKEN_EXPIRATION;
+
+    @Value("${jwt.refresh.expiration}")
+    private int REFRESH_TOKEN_EXPIRATION;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
