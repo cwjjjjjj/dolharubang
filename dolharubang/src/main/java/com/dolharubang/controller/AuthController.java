@@ -20,18 +20,20 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<SignInResDto> signIn(@RequestHeader("Authorization") String socialAccessToken,
+    public ResponseEntity<SignInResDto> signIn(
+        @RequestHeader("Authorization") String socialAccessToken,
         @RequestBody SignInReqDto reqDto) {
         SignInResDto response = authService.signIn(socialAccessToken, reqDto);
         //TODO return 값 수정 필요
         return ResponseEntity.ok(response);
     }
 
+    //로그아웃은 일단 유기하자...
     @PostMapping("/logout")
     public ResponseEntity<Void> singOut(Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         authService.signOut(memberId);
+        //TODO return 값 수정 필요
         return ResponseEntity.ok(null);
     }
-
 }
