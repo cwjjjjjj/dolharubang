@@ -3,7 +3,7 @@ package com.dolharubang.domain.dto.request;
 import com.dolharubang.type.SocialType;
 import lombok.NonNull;
 
-public record SignInReqDto (
+public record SignInReqDto(
     @NonNull
     SocialType socialType
 ) {

@@ -5,6 +5,7 @@ import com.dolharubang.type.AbilityType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,13 +37,13 @@ public class Stone {
 
     @ElementCollection
     @CollectionTable(name = "stone_ability_able", joinColumns = @JoinColumn(name = "stone_id"))
-    @MapKeyEnumerated  // 또는 @MapKeyColumn을 사용하여 key의 타입에 따라 설정
+    @MapKeyEnumerated(EnumType.STRING)
     private Map<AbilityType, Boolean> abilityAble;
 
     private String signText;
 
     @ElementCollection
     @CollectionTable(name = "stone_custom", joinColumns = @JoinColumn(name = "stone_id"))
-    @MapKeyEnumerated  // 또는 @MapKeyColumn을 사용하여 key의 타입에 따라 설정
+    @MapKeyEnumerated(EnumType.STRING)
     private Map<ItemType, String> custom;
 }
