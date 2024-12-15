@@ -39,6 +39,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/oauth2/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
                     .requestMatchers("/api/v1/login/page").permitAll()
                     .anyRequest().authenticated())
