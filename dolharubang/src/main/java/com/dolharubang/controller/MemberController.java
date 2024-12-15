@@ -24,7 +24,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @Operation(summary = "회원 가입하기 (소셜로그인 아닌, 임시 방식)", description = "회원을 생성한다.")
+    @Operation(description = "회원을 생성한다.")
     @PostMapping
     public ResponseEntity<MemberResDto> createMember(@RequestBody MemberReqDto memberReqDto) {
         MemberResDto response = memberService.createMember(memberReqDto);

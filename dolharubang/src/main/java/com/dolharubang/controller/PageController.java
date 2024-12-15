@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/api/v1/oauth2")
+//@RequestMapping("/api/v1/oauth2")
 @Tag(name = "카카오 로그인 테스트", description = "백엔드 테스트를 위한 코드")
 public class PageController {
 

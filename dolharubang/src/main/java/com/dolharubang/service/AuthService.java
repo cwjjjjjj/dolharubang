@@ -30,6 +30,7 @@ public class AuthService {
     private final AppleService appleService;
     private final KakaoService kakaoService;
 
+    //로그인
     @Transactional
     public SignInResDto signIn(String socialAccessToken, SignInReqDto request) {
         Member member = getMember(socialAccessToken, request);
@@ -37,12 +38,14 @@ public class AuthService {
         return SignInResDto.of(token);
     }
 
+    //로그아웃
     @Transactional
     public void signOut(Long memberId) {
         Member member = findMember(memberId);
         member.resetRefreshToken();
     }
 
+    //탈퇴
     @Transactional
     public void withdraw(Long memberId) {
         Member member = findMember(memberId);
@@ -63,6 +66,7 @@ public class AuthService {
         };
     }
 
+    //신규 가입자라면 회원 가입
     private Member signUp(SocialType socialType, String socialId) {
         return memberRepository.findBySocialTypeAndSocialId(socialType, socialId)
             .orElseGet(() -> saveMember(socialType, socialId));
