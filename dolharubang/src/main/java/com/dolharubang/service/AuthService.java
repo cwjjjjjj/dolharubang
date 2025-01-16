@@ -1,22 +1,29 @@
 package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.SignInReqDto;
+import com.dolharubang.domain.dto.response.MemberResDto;
 import com.dolharubang.domain.dto.response.SignInResDto;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.jwt.JwtTokenProvider;
 import com.dolharubang.jwt.Token;
 import com.dolharubang.jwt.UserAuthentication;
+import com.dolharubang.mongo.entity.Item;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.type.SocialType;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+// TODO 어노테이션 메서드마다 다시 지정
+//@Transactional(readOnly = true)
 public class AuthService {
 
     @Value("${jwt.access.expiration}")
@@ -72,12 +79,34 @@ public class AuthService {
             .orElseGet(() -> saveMember(socialType, socialId));
     }
 
-    private Member saveMember(SocialType socialType, String socialId) {
+    @Transactional
+    public Member saveMember(SocialType socialType, String socialId) {
         Member member = Member.builder()
-            .socialType(socialType)
-            .socialId(socialId)
+            .memberEmail(requestDto.getMemberEmail())
+            .nickname(requestDto.getNickname())
+            .birthday(requestDto.getBirthday())
+            .sands(requestDto.getSands())
+            .totalLoginDays(requestDto.getTotalLoginDays())
+            .profilePicture((requestDto.getProfilePicture()))
+            .spaceName(requestDto.getSpaceName())
             .build();
-        return memberRepository.save(member);
+
+        Member savedMember = memberRepository.save(member);
+
+
+        //회원 가입 시 mongoDB의 모든 아이템 목록에 대해 false로 memberItem 생성
+        List<Item> items = itemRepository.findAll();
+
+        for (Item item : items) {
+            MemberItem memberItem = MemberItem.builder()
+                .member(savedMember)
+                .itemId(item.getItemId().toString())
+                .whetherHasItem(false)
+                .build();
+            memberItemRepository.save(memberItem);
+        }
+
+        return MemberResDto.fromEntity(savedMember);
     }
 
     //사용자 정보를 통해 refreshToken을 Member에 저장해주고 Token을 가져옴
