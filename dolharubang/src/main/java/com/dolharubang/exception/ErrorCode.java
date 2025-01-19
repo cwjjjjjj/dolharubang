@@ -16,6 +16,10 @@ public enum ErrorCode {
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),
 
+    //돌 관련 오류
+    STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
+    SIGNTEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
+
     // 아이템 관련 오류
     MEMBERITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 멤버아이템을 찾을 수 없습니다."),
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 아이템을 찾을 수 없습니다."),
