@@ -11,6 +11,7 @@ import com.dolharubang.mongo.repository.ItemRepository;
 import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,15 @@ public class MemberService {
         this.memberRepository = memberRepository;
         this.itemRepository = itemRepository;
         this.memberItemRepository = memberItemRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberResDto> getAllMembers() {
+        List<Member> members = memberRepository.findAll();
+
+        return members.stream()
+            .map(MemberResDto::fromEntity)
+            .collect(Collectors.toList());
     }
 
     @Transactional
