@@ -50,6 +50,7 @@ public class DiaryService {
         return DiaryResDto.fromEntity(savedDiary);
     }
 
+    //TODO 일기 수정 기능에 제한 필요
 //    @Transactional
 //    public DiaryResDto updateDiary(Long id, DiaryReqDto diaryReqDto) {
 //        Diary diary = diaryRepository.findByDiaryId(id)
