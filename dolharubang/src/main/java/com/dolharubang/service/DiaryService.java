@@ -80,7 +80,7 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<DiaryResDto> getDiaryListByMemberId(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         List<Diary> response = diaryRepository.findAllByMember(member);

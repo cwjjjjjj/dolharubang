@@ -69,7 +69,7 @@ public class MemberService {
 
     @Transactional
     public MemberResDto updateMember(Long memberId, MemberReqDto requestDto) {
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         member.update(
@@ -84,7 +84,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberResDto getMember(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         return MemberResDto.fromEntity(member);
