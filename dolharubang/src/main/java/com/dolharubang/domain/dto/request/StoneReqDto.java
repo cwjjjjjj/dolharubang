@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public class StoneReqDto {
 
-    private Member member;
+    private Long memberId;
     private Long speciesId;
     private String stoneName;
     private Long closeness;
