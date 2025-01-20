@@ -10,5 +10,5 @@ public interface StoneRepository extends JpaRepository<Stone, Long> {
 
     Optional<Stone> findByMember(Member member);
 
-    Optional<String> findSignTextByMember(Member member);
+    String findSignTextByMember(Member member);
 }
