@@ -39,7 +39,8 @@ extension SignClient: DependencyKey {
     static let liveValue = SignClient(
         fetchSign: {
             
-            let url = "https://dolharubang.store/api/v1/pepperoni"
+//            let url = "https://dolharubang.store/api/v1/pepperoni"
+            let url = "https://b74c-118-42-124-3.ngrok-free.app/api/v1/pepperoni"
             return try await fetch(url: url, model: SignInfo.self, method: .get)
             
 //            return SignInfo.mockSignInfo

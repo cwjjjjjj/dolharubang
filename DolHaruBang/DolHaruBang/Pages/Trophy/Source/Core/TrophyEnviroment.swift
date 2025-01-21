@@ -69,7 +69,7 @@ extension Trophy {
         title: "첫 번째 트로피",
         subtitle: "이것은 첫 번째 트로피입니다.",
         rewardImage: loadImageData(named: "BackIcon") ?? Data(),
-        rewardName: "골드 트로피"
+        rewardName: "50 모래알"
     )
 
     static let mockTrophy2 = Self(

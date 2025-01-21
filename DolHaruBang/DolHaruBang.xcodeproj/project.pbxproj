@@ -47,6 +47,9 @@
 		65AFAD902CA17A4A00B565D1 /* TrophyEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD8F2CA17A4400B565D1 /* TrophyEnviroment.swift */; };
 		65AFAD922CA18CA400B565D1 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD912CA18C9900B565D1 /* TrophyListView.swift */; };
 		65AFAD942CA18CE200B565D1 /* TrophyListFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD932CA18CDC00B565D1 /* TrophyListFeature.swift */; };
+		65C8B1E72D40135C006D9317 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1E62D401356006D9317 /* AppSetting.swift */; };
+		65C8B1E92D401450006D9317 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1E82D40144C006D9317 /* AudioManager.swift */; };
+		65C8B1EB2D401712006D9317 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1EA2D40170E006D9317 /* Button.swift */; };
 		65E1C50A2C6F7DE700A2E419 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E1C5092C6F7DE700A2E419 /* ColorHex.swift */; };
 		DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */; };
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
@@ -174,6 +177,9 @@
 		65AFAD8F2CA17A4400B565D1 /* TrophyEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyEnviroment.swift; sourceTree = "<group>"; };
 		65AFAD912CA18C9900B565D1 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		65AFAD932CA18CDC00B565D1 /* TrophyListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListFeature.swift; sourceTree = "<group>"; };
+		65C8B1E62D401356006D9317 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
+		65C8B1E82D40144C006D9317 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		65C8B1EA2D40170E006D9317 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		65E1C5092C6F7DE700A2E419 /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
 		65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DolHaruBangDebug.entitlements; sourceTree = "<group>"; };
 		DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MyPageIcon.xcassets; sourceTree = "<group>"; };
@@ -526,6 +532,7 @@
 		657780F42C84A8F600DC08C2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				65C8B1E52D40134B006D9317 /* Setting */,
 				657780F52C84A8FF00DC08C2 /* Naviagion */,
 			);
 			path = Core;
@@ -697,6 +704,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		65C8B1E52D40134B006D9317 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				65C8B1E82D40144C006D9317 /* AudioManager.swift */,
+				65C8B1E62D401356006D9317 /* AppSetting.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		DA0E9EF12C9F390A00A3CD39 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -827,6 +843,7 @@
 		DA6E57712C58F67D0088A7A7 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				65C8B1EA2D40170E006D9317 /* Button.swift */,
 				DA6E57742C5904900088A7A7 /* CustomButton.swift */,
 				DA6E57762C5908420088A7A7 /* CustomYearButton.swift */,
 				DA6E57782C59084A0088A7A7 /* CustomMonthButton.swift */,
@@ -1248,6 +1265,7 @@
 				DA6904272CAFC13900A557A1 /* DoljanchiView..swift in Sources */,
 				65AFAD942CA18CE200B565D1 /* TrophyListFeature.swift in Sources */,
 				DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */,
+				65C8B1EB2D401712006D9317 /* Button.swift in Sources */,
 				65AFAD872CA0A77900B565D1 /* ShareView.swift in Sources */,
 				658216CD2CA58FA000C5CD37 /* MailUtil.swift in Sources */,
 				DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */,
@@ -1263,6 +1281,7 @@
 				6550AA492C59EA35000A264E /* SplashView.swift in Sources */,
 				DAC94BC12C9D43C400112DA7 /* TalkEnvironment.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
+				65C8B1E72D40135C006D9317 /* AppSetting.swift in Sources */,
 				DAA4CA012C8B7C6900409D4B /* Mail.swift in Sources */,
 				65382E802CA32266003F130B /* MailView.swift in Sources */,
 				657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */,
@@ -1319,6 +1338,7 @@
 				DA69042B2CAFC1A700A557A1 /* ParkView.swift in Sources */,
 				658216BE2CA5795C00C5CD37 /* MailEnviroment.swift in Sources */,
 				DAA4C9FC2C8B7C6900409D4B /* HomeView.swift in Sources */,
+				65C8B1E92D401450006D9317 /* AudioManager.swift in Sources */,
 				DAA4CA062C8B7C6900409D4B /* FloatingMenuView.swift in Sources */,
 				DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */,
 				65AFAD902CA17A4A00B565D1 /* TrophyEnviroment.swift in Sources */,
