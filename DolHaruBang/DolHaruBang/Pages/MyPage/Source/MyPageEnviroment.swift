@@ -65,7 +65,7 @@ private let jsonDecoder: JSONDecoder = {
 
 extension UserInfo {
     static let mockUserInf = Self(
-        userName : "희태",
+         userName : "희태",
          roomName : "돌돌이방",
          birthStone : "가넷",
          birthDay : "2023년 10월 31일",

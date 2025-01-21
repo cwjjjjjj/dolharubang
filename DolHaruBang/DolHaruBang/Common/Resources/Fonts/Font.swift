@@ -55,6 +55,7 @@ extension Font {
     
     static var body6Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 8) }
    
+    static var bodyRegular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 18) }
     static var body1Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 16) }
     static var body2Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 14) }
     static var body3Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 12) }
