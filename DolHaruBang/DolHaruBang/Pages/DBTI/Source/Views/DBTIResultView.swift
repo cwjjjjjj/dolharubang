@@ -181,26 +181,20 @@ struct DBTIResultView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    Button(action: {
-                        store.send(.homeButtonTapped)
-                        tag = 1
-                        print("tabbed3")
-                    }) {
-                        CustomButton(
-                            title: "함께 시작하기!",
-                            font: .customFont(Font.button1),
-                            textColor: .coreWhite,
-                            pressedBackgroundColor: .coreDarkGreen,
-                            isDisabled: Binding(
-                                get: {
-                                    stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName
-                                },
-                                set: { _ in }
-                            ),
-                            action: { }
-                        )
+                    HStack {
+                        NavigationLink(state: NavigationFeature.Path.State.home(HomeFeature.State())) {
+                            HStack {
+                                Spacer()
+                                Text("함께 시작하기!")
+                                    .font(.customFont(Font.button1))
+                                    .foregroundColor(.mainWhite)
+                                Spacer()
+                            }
+                        }
                         .frame(width: 320, height: 48)
+                        .background(Color.mainGreen)
                         .cornerRadius(24)
+                        .disabled(stoneName.isEmpty || roomName.isEmpty || isEditingName || isEditingRoomName)
                     }
 
                                   

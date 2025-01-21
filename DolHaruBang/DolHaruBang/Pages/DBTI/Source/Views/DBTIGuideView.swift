@@ -29,14 +29,8 @@ struct DBTIGuideView: View {
                 GeometryReader { geometry in
                     VStack (alignment: .center, spacing: 0){
                         Spacer().frame(height: geometry.size.height * 0.2892)
-                        
-                        
-                
                         HStack {
                             Spacer()
-                            
-                          
-                            
                             CustomText(text: "이제 하루를 함께 할\n반려돌을 주워볼까요?",
                                        font: Font.uiFont(for: Font.subtitle2)!,
                                        textColor: .coreBlack,
