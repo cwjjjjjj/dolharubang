@@ -50,6 +50,7 @@ public class DiaryService {
         return DiaryResDto.fromEntity(savedDiary);
     }
 
+    //TODO 일기 수정 기능에 제한 필요
 //    @Transactional
 //    public DiaryResDto updateDiary(Long id, DiaryReqDto diaryReqDto) {
 //        Diary diary = diaryRepository.findByDiaryId(id)
@@ -79,7 +80,7 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<DiaryResDto> getDiaryListByMemberId(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         List<Diary> response = diaryRepository.findAllByMember(member);

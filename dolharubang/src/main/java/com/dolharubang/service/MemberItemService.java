@@ -37,7 +37,7 @@ public class MemberItemService {
     //새로운 아이템이 추가될 경우 모든 멤버에 대해 실행하는 메서드
     @Transactional
     public MemberItemResDto createMemberItem(MemberItemReqDto memberItemReqDto) {
-        Member member = memberRepository.findByMemberId(memberItemReqDto.getMemberId())
+        Member member = memberRepository.findById(memberItemReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //멤버를 잘 찾았다면
@@ -62,7 +62,7 @@ public class MemberItemService {
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
         System.out.println(memberItem.getItemId());
 
-        Member member = memberRepository.findByMemberId(memberItem.getMember().getMemberId())
+        Member member = memberRepository.findById(memberItem.getMember().getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         Item item = itemService.findByItemId(memberItem.getItemId())
@@ -90,7 +90,7 @@ public class MemberItemService {
 
     @Transactional
     public List<MemberItemResDto> getMemberItem(Long memberItemId) {
-        Member member = memberRepository.findByMemberId(memberItemId)
+        Member member = memberRepository.findById(memberItemId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         List<MemberItem> response = memberItemRepository.findAllByMember(member);

@@ -40,7 +40,7 @@ public class SecurityConfig {
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/login/page")).permitAll()
 
-                    //TODO 개발환경용
+                    //TODO 개발환경용. 배포 전 해제할 것
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api-docs")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/v2/api-docs")).permitAll()
@@ -57,6 +57,8 @@ public class SecurityConfig {
                     .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/swagger-ui.html")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/swagger/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("**")).permitAll()
                     .anyRequest().authenticated())
             //Http 요청이 UsernamePasswordAuthenticationFilter 전에 JwtAuthenticationFilter 거치게 함 TODO 주석 해제
 //            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

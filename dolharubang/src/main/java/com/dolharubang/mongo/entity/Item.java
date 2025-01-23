@@ -28,5 +28,4 @@ public class Item {
 
     @Field
     private LocalDateTime modifiedAt;
-
 }

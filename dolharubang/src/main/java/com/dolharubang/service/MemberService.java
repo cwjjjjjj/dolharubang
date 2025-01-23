@@ -1,7 +1,9 @@
 package com.dolharubang.service;
 
+import com.dolharubang.domain.dto.request.MemberProfileReqDto;
 import com.dolharubang.domain.dto.request.MemberReqDto;
-import com.dolharubang.domain.dto.response.MemberResDto;
+import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
+import com.dolharubang.domain.dto.response.member.MemberResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
@@ -68,13 +70,12 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResDto updateMember(Long memberId, MemberReqDto requestDto) {
-        Member member = memberRepository.findByMemberId(memberId)
+    public MemberResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         member.update(
             requestDto.getNickname(),
-            requestDto.getSands(),
             requestDto.getProfilePicture(),
             requestDto.getSpaceName()
         );
@@ -84,9 +85,17 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberResDto getMember(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
         return MemberResDto.fromEntity(member);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberProfileResDto getMemberProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
+
+        return MemberProfileResDto.fromEntity(member);
     }
 }

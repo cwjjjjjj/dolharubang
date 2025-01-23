@@ -13,13 +13,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyEnumerated;
 import java.util.Map;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
 @Getter
-public class Stone {
+public class Stone extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +47,25 @@ public class Stone {
     @CollectionTable(name = "stone_custom", joinColumns = @JoinColumn(name = "stone_id"))
     @MapKeyEnumerated(EnumType.STRING)
     private Map<ItemType, String> custom;
+
+    @Builder
+    public Stone (Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText, Map<ItemType, String> custom) {
+        this.member = member;
+        this.speciesId = speciesId;
+        this.stoneName = stoneName;
+        this.closeness = closeness;
+        this.abilityAble = abilityAble;
+        this.signText = signText;
+        this.custom = custom;
+    }
+
+    public void update(Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText, Map<ItemType, String> custom) {
+        this.member = member;
+        this.speciesId = speciesId;
+        this.stoneName = stoneName;
+        this.closeness = closeness;
+        this.abilityAble = abilityAble;
+        this.signText = signText;
+        this.custom = custom;
+    }
 }

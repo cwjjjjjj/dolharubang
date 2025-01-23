@@ -52,5 +52,4 @@ public class Diary extends BaseEntity{
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl; // 이미지 URL 필드에 저장
     }
-
 }
