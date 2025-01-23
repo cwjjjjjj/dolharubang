@@ -1,15 +1,13 @@
-package com.dolharubang.domain.dto.response;
+package com.dolharubang.domain.dto.response.member;
 
 import com.dolharubang.domain.entity.Member;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @Builder
 @Getter
-@Setter
 @ToString
 public class MemberResDto {
 
@@ -32,6 +30,7 @@ public class MemberResDto {
             .sands(member.getSands())
             .lastLoginAt(member.getLastLoginAt())
             .totalLoginDays(member.getTotalLoginDays())
+            .profilePicture(member.getProfilePicture())
             .spaceName(member.getSpaceName())
             .build();
     }
