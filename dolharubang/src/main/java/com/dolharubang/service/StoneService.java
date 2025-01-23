@@ -1,7 +1,7 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.StoneReqDto;
-import com.dolharubang.domain.dto.response.StoneResDto;
+import com.dolharubang.domain.dto.request.stone.StoneReqDto;
+import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Stone;
 import com.dolharubang.exception.CustomException;
