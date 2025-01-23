@@ -1,4 +1,4 @@
-package com.dolharubang.domain.dto.response;
+package com.dolharubang.domain.dto.response.stone;
 
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Stone;
