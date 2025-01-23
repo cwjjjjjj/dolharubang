@@ -39,5 +39,4 @@ public class MemberItemController {
 
         return ResponseEntity.ok(response);
     }
-
 }

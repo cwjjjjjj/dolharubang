@@ -1,5 +1,6 @@
 package com.dolharubang.service;
 
+import com.dolharubang.domain.dto.request.MemberProfileReqDto;
 import com.dolharubang.domain.dto.request.MemberReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
@@ -69,7 +70,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResDto updateMemberProfile(Long memberId, MemberReqDto requestDto) {
+    public MemberResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
 
