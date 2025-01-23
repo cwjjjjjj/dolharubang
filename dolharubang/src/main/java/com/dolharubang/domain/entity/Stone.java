@@ -84,4 +84,12 @@ public class Stone extends BaseEntity {
         this.signText = signText;
         this.custom = custom;
     }
+
+    public void updateStoneName(String newStoneName) {
+        this.stoneName = newStoneName;
+    }
+
+    public void updateSignText(String newSignText) {
+        this.signText = newSignText;
+    }
 }
