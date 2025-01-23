@@ -36,6 +36,7 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
+    //TODO birthStone 필요함
     private String birthday;
 
     @ColumnDefault("0")
@@ -84,9 +85,8 @@ public class Member extends BaseEntity {
         this.refreshToken = null;
     }
 
-    public void update(String nickname, Long sands, String profilePicture, String spaceName) {
+    public void update(String nickname, String profilePicture, String spaceName) {
         this.nickname = nickname;
-        this.sands = sands;
         this.profilePicture = profilePicture;
         this.spaceName = spaceName;
         this.modifiedAt = LocalDateTime.now();
