@@ -31,7 +31,7 @@ public class StoneController {
     }
 
     @Operation(summary = "돌 입양하기", description = "돌을 입양한다.")
-    @PostMapping("/adopt/stone")
+    @PostMapping("/adopt")
     public ResponseEntity<StoneResDto> addStone(@RequestBody StoneReqDto requestDto) {
         StoneResDto response = stoneService.adoptStone(requestDto);
 
@@ -39,7 +39,7 @@ public class StoneController {
     }
 
     @Operation(summary = "돌 프로필 조회하기", description = "memberId를 통해 보유한 돌의 정보를 조회한다.")
-    @GetMapping("/stone-profile/{memberId}")
+    @GetMapping("/profile/{memberId}")
     public ResponseEntity<StoneProfileResDto> readStoneProfile(@PathVariable Long memberId) {
         StoneProfileResDto response = stoneService.getStoneProfile(memberId);
 
@@ -56,7 +56,7 @@ public class StoneController {
     }
 
     @Operation(summary = "돌 이름 수정하기", description = "memberId가 소유한 돌의 이름을 수정한다.")
-    @PostMapping("/update/stone-name/{memberId}")
+    @PostMapping("/update/name/{memberId}")
     public String updateStoneName(@PathVariable Long memberId,
         @RequestBody String newStoneName) {
 

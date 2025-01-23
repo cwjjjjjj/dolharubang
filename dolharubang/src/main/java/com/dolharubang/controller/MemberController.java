@@ -58,7 +58,7 @@ public class MemberController {
     }
 
     @Operation(summary = "프로필 회원 정보 수정하기", description = "닉네임, 공간 이름, 프로필 사진 수정 가능")
-    @PostMapping("/update-member/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<MemberResDto> updateMember(@PathVariable Long id,
         @RequestBody MemberProfileReqDto memberReqDto) {
         MemberResDto response = memberService.updateMemberProfile(id, memberReqDto);

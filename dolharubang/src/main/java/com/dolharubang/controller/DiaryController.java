@@ -54,10 +54,10 @@ public class DiaryController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "유저의 모든 일기 조회하기", description = "member_id를 사용하여 유저의 모든 일기를 조회한다.")
-    @GetMapping("/by-member/{memberId}")
-    public ResponseEntity<List<DiaryResDto>> getDiaryByMemberId(@PathVariable Long memberId) {
-        List<DiaryResDto> response = diaryService.getDiaryListByMemberId(memberId);
+    @Operation(summary = "유저의 모든 일기 조회하기", description = "member_id를 사용해 유저의 모든 일기를 조회한다.")
+    @GetMapping("/member-harubang/{id}")
+    public ResponseEntity<List<DiaryResDto>> getDiaryByMemberId(@PathVariable Long id) {
+        List<DiaryResDto> response = diaryService.getDiaryListByMemberId(id);
 
         return ResponseEntity.ok(response);
     }
