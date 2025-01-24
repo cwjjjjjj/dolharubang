@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Item {
 
     @Id
+    @Field(name = "_id")
     private ObjectId itemId;
 
     private ItemType itemType;
