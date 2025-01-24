@@ -1,5 +1,6 @@
 package com.dolharubang.controller;
 
+import com.dolharubang.domain.dto.common.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.request.stone.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
@@ -46,6 +47,16 @@ public class StoneController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Operation(summary = "돌 이름 수정하기", description = "memberId가 소유한 돌의 이름을 수정한다.")
+    @PostMapping("/update/name/{memberId}")
+    public Map<String, String> updateStoneName(@PathVariable Long memberId,
+        @RequestBody StoneTextUpdateReqDto dto) {
+        Map<String, String> response = new HashMap<>();
+        response.put("stoneName", stoneService.updateStoneName(memberId, dto));
+
+        return response;
+    }
+
     @Operation(summary = "팻말 문구 조회하기", description = "팻말 문구의 내용을 조회한다.")
     @GetMapping(path = "/sign-text/{memberId}", produces = "application/json")
     public Map<String, String> readSignText(@PathVariable Long memberId) {
@@ -55,19 +66,13 @@ public class StoneController {
         return response;
     }
 
-    @Operation(summary = "돌 이름 수정하기", description = "memberId가 소유한 돌의 이름을 수정한다.")
-    @PostMapping("/update/name/{memberId}")
-    public String updateStoneName(@PathVariable Long memberId,
-        @RequestBody String newStoneName) {
-
-        return stoneService.updateStoneName(memberId, newStoneName);
-    }
-
     @Operation(summary = "팻말 문구 수정하기", description = "memberId의 팻말 문구을 수정한다.")
-    @PostMapping("/update/sing-text/{memberId}")
-    public String updateSignText(@PathVariable Long memberId,
-        @RequestBody String newSignText) {
+    @PostMapping("/update/sign-text/{memberId}")
+    public Map<String, String> updateSignText(@PathVariable Long memberId,
+        @RequestBody StoneTextUpdateReqDto dto) {
+        Map<String, String> response = new HashMap<>();
+        response.put("singText", stoneService.updateSignText(memberId, dto));
 
-        return stoneService.updateSignText(memberId, newSignText);
+        return response;
     }
 }
