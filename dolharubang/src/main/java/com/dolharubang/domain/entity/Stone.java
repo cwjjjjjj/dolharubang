@@ -12,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyEnumerated;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,6 +62,19 @@ public class Stone extends BaseEntity {
         this.custom = custom;
     }
 
+    //엔티티가 영속성 컨텍스트에 저장되기 전에 호출
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    //엔티티가 영속성 컨텍스트에 업데이트되기 전에 호출
+    @PreUpdate
+    protected void onUpdate() {
+        this.modifiedAt = LocalDateTime.now();
+    }
+
     public void update(Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText, Map<ItemType, String> custom) {
         this.member = member;
         this.speciesId = speciesId;
@@ -67,5 +83,13 @@ public class Stone extends BaseEntity {
         this.abilityAble = abilityAble;
         this.signText = signText;
         this.custom = custom;
+    }
+
+    public void updateStoneName(String newStoneName) {
+        this.stoneName = newStoneName;
+    }
+
+    public void updateSignText(String newSignText) {
+        this.signText = newSignText;
     }
 }
