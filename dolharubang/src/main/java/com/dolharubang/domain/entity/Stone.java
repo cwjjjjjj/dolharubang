@@ -1,5 +1,7 @@
 package com.dolharubang.domain.entity;
 
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.type.AbilityType;
 import jakarta.persistence.CollectionTable;
@@ -91,5 +93,12 @@ public class Stone extends BaseEntity {
 
     public void updateSignText(String newSignText) {
         this.signText = newSignText;
+    }
+
+    public void updateAbilityAble(AbilityType abilityType) {
+        if (abilityAble.get(abilityType)) {
+            throw new CustomException(ErrorCode.ABILITY_ALREADY_ACTIVATED);
+        }
+        abilityAble.put(abilityType, true);
     }
 }

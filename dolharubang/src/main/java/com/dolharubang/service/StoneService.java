@@ -97,6 +97,19 @@ public class StoneService {
         return dto.updateSignText(stone);
     }
 
+    @Transactional(readOnly = true)
+    public Map<AbilityType, Boolean> readAbilityAble(Long memberId) {
+        Stone stone = findStoneByMemberId(memberId);
+        return stone.getAbilityAble();
+    }
+
+    @Transactional
+    public Map<AbilityType, Boolean> updateAbilityAble(Long memberId, AbilityType abilityType) {
+        Stone stone = findStoneByMemberId(memberId);
+        stone.updateAbilityAble(abilityType);
+        return stone.getAbilityAble();
+    }
+
     private Stone findStoneByMemberId(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));

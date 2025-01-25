@@ -5,6 +5,7 @@ import com.dolharubang.domain.dto.request.stone.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.service.StoneService;
+import com.dolharubang.type.AbilityType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
@@ -74,5 +75,18 @@ public class StoneController {
         response.put("singText", stoneService.updateSignText(memberId, dto));
 
         return response;
+    }
+
+    @Operation(summary = "잠재능력 조회하기", description = "잠재능력의 획득/미획득 여부를 조회한다.")
+    @PostMapping("/ability-able/{memberId}")
+    public Map<AbilityType, Boolean> readAbilityAble(@PathVariable Long memberId) {
+        return stoneService.readAbilityAble(memberId);
+    }
+
+    @Operation(summary = "잠재능력 획득하기", description = "하나의 잠재능력 획득 여부를 true로 변경한다.")
+    @PostMapping("/get/ability/{memberId}")
+    public Map<AbilityType, Boolean> getAbilityAble(@PathVariable Long memberId,
+        @RequestBody AbilityType abilityType) {
+        return stoneService.updateAbilityAble(memberId, abilityType);
     }
 }
