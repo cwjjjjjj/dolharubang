@@ -71,8 +71,7 @@ public class MemberService {
 
     @Transactional
     public MemberResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
+        Member member = findMember(memberId);
 
         member.update(
             requestDto.getNickname(),
@@ -85,17 +84,18 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberResDto getMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
-
+        Member member = findMember(memberId);
         return MemberResDto.fromEntity(member);
     }
 
     @Transactional(readOnly = true)
     public MemberProfileResDto getMemberProfile(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
-
+        Member member = findMember(memberId);
         return MemberProfileResDto.fromEntity(member);
+    }
+
+    private Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));
     }
 }
