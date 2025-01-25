@@ -94,6 +94,12 @@ public class MemberService {
         return MemberProfileResDto.fromEntity(member);
     }
 
+    @Transactional(readOnly = true)
+    public Long getSands(Long memberId) {
+        Member member = findMember(memberId);
+        return member.getSands();
+    }
+
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, "Member not found with ID: " + memberId));

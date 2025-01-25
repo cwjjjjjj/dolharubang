@@ -65,4 +65,10 @@ public class MemberController {
 
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "회원 모래알 조회하기", description = "모래알을 조회한다.")
+    @GetMapping("/sands/{memberId}")
+    public Long getSands(@PathVariable Long memberId) {
+        return memberService.getSands(memberId);
+    }
 }
