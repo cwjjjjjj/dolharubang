@@ -1,7 +1,7 @@
 package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.common.StoneTextUpdateReqDto;
-import com.dolharubang.domain.dto.request.stone.StoneReqDto;
+import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.service.StoneService;
@@ -49,7 +49,7 @@ public class StoneController {
     }
 
     @Operation(summary = "돌 이름 수정하기", description = "memberId가 소유한 돌의 이름을 수정한다.")
-    @PostMapping("/update/name/{memberId}")
+    @PostMapping("/name/{memberId}")
     public Map<String, String> updateStoneName(@PathVariable Long memberId,
         @RequestBody StoneTextUpdateReqDto dto) {
         Map<String, String> response = new HashMap<>();
@@ -68,7 +68,7 @@ public class StoneController {
     }
 
     @Operation(summary = "팻말 문구 수정하기", description = "memberId의 팻말 문구을 수정한다.")
-    @PostMapping("/update/sign-text/{memberId}")
+    @PostMapping("/sign-text/{memberId}")
     public Map<String, String> updateSignText(@PathVariable Long memberId,
         @RequestBody StoneTextUpdateReqDto dto) {
         Map<String, String> response = new HashMap<>();
@@ -78,7 +78,7 @@ public class StoneController {
     }
 
     @Operation(summary = "잠재능력 조회하기", description = "잠재능력의 획득/미획득 여부를 조회한다.")
-    @PostMapping("/ability-able/{memberId}")
+    @PostMapping("/ability/{memberId}")
     public Map<AbilityType, Boolean> readAbilityAble(@PathVariable Long memberId) {
         return stoneService.readAbilityAble(memberId);
     }
