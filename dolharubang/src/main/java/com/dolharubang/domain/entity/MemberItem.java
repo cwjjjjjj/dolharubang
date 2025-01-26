@@ -33,18 +33,25 @@ public class MemberItem extends BaseEntity {
     // 보유 여부
     private boolean whetherHasItem;
 
+    // 장착 여부
+    private boolean isSelected;
+
     @Builder
-    public MemberItem(Member member, Long memberItemId, String itemId, boolean whetherHasItem) {
+    public MemberItem(Member member, Long memberItemId, String itemId, boolean whetherHasItem, boolean isSelected) {
         this.member = member;
         this.memberItemId = memberItemId;
         this.itemId = itemId;
         this.whetherHasItem = whetherHasItem;
+        this.isSelected = isSelected;
     }
 
-    public void update(Member member, String itemId, boolean whetherHasItem) {
-        this.member = member;
-        this.itemId = itemId;
-        this.whetherHasItem = whetherHasItem;
+    //true로 바꾼 후 같은 타입의 다른 모든 item의 whether어쩌고는 false로 변경
+    public void updateWhetherHasItem() {
+        this.whetherHasItem = true;
+    }
+
+    public void updateIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     //엔티티가 영속성 컨텍스트에 저장되기 전에 호출
