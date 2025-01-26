@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -86,7 +87,7 @@ public class StoneController {
     @Operation(summary = "잠재능력 획득하기", description = "하나의 잠재능력 획득 여부를 true로 변경한다.")
     @PostMapping("/get/ability/{memberId}")
     public Map<AbilityType, Boolean> getAbilityAble(@PathVariable Long memberId,
-        @RequestBody AbilityType abilityType) {
+        @RequestParam AbilityType abilityType) {
         return stoneService.updateAbilityAble(memberId, abilityType);
     }
 }
