@@ -1,7 +1,7 @@
 package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.common.StoneTextUpdateReqDto;
-import com.dolharubang.domain.dto.request.stone.StoneReqDto;
+import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
@@ -55,7 +55,6 @@ public class StoneService {
             .closeness(stoneReqDto.getCloseness())
             .abilityAble(abilityMap)
             .signText(stoneReqDto.getSignText())
-            .custom(stoneReqDto.getCustom())
             .build();
 
         Stone adoptedStone = stoneRepository.save(stone);

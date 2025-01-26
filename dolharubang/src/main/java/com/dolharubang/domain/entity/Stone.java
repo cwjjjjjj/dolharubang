@@ -2,7 +2,6 @@ package com.dolharubang.domain.entity;
 
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.type.AbilityType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
@@ -48,20 +47,14 @@ public class Stone extends BaseEntity {
 
     private String signText;
 
-    @ElementCollection
-    @CollectionTable(name = "stone_custom", joinColumns = @JoinColumn(name = "stone_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    private Map<ItemType, String> custom;
-
     @Builder
-    public Stone (Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText, Map<ItemType, String> custom) {
+    public Stone (Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText) {
         this.member = member;
         this.speciesId = speciesId;
         this.stoneName = stoneName;
         this.closeness = closeness;
         this.abilityAble = abilityAble;
         this.signText = signText;
-        this.custom = custom;
     }
 
     //엔티티가 영속성 컨텍스트에 저장되기 전에 호출
@@ -77,14 +70,13 @@ public class Stone extends BaseEntity {
         this.modifiedAt = LocalDateTime.now();
     }
 
-    public void update(Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText, Map<ItemType, String> custom) {
+    public void update(Member member, Long speciesId, String stoneName, Long closeness, Map<AbilityType, Boolean> abilityAble, String signText) {
         this.member = member;
         this.speciesId = speciesId;
         this.stoneName = stoneName;
         this.closeness = closeness;
         this.abilityAble = abilityAble;
         this.signText = signText;
-        this.custom = custom;
     }
 
     public void updateStoneName(String newStoneName) {
