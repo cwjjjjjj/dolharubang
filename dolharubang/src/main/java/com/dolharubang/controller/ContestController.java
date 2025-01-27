@@ -4,8 +4,11 @@ import com.dolharubang.domain.dto.request.ContestReqDto;
 import com.dolharubang.domain.dto.response.ContestResDto;
 import com.dolharubang.service.ContestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,11 @@ public class ContestController {
     public ResponseEntity<ContestResDto> createContest(@RequestParam Long memberId,
         @RequestBody ContestReqDto reqDto) {
         return ResponseEntity.ok(contestService.createContest(memberId, reqDto));
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<List<ContestResDto>> getMyAllContestProfile(@PathVariable Long memberId) {
+        return ResponseEntity.ok(contestService.getMyAllContestProfiles(memberId));
     }
 
 }
