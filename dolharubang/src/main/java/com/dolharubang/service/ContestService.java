@@ -9,6 +9,8 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.ContestRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,4 +49,18 @@ public class ContestService {
 
         return ContestResDto.fromEntity(savedContest);
     }
+
+    @Transactional(readOnly = true)
+    public List<ContestResDto> getMyAllContestProfiles(Long memberId) {
+        List<Contest> contest = contestRepository.findAllByMember(
+            memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)));
+        if (contest.isEmpty()) {
+            throw new CustomException(ErrorCode.CONTEST_NOT_FOUND_BY_MEMBER);
+        }
+        return contest.stream()
+            .map(ContestResDto::fromEntity)
+            .collect(Collectors.toList());
+    }
+
 }
