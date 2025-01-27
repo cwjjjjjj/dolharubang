@@ -69,7 +69,8 @@ public enum ErrorCode {
 
     // contest 관련 오류
     CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 돌 자랑을 찾을 수 없습니다."),
-    CONTEST_NOT_FOUND_BY_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버의 돌 자랑은 없습니다.");
+    CONTEST_NOT_FOUND_BY_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버의 돌 자랑은 없습니다."),
+    CONTEST_MEMBER_MISMATCH(HttpStatus.NOT_FOUND, "해당 멤버에게서 확인할 수 없는 돌자랑입니다.");
 
 
     private final HttpStatus httpStatus;
