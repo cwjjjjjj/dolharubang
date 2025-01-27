@@ -83,7 +83,19 @@ public class ContestService {
             .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
 
         contest.updateContestVisibility(isPublic);
-        
+
         return ContestResDto.fromEntity(contest);
     }
+
+    @Transactional
+    public void deleteContest(Long memberId, Long contestId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Contest contest = contestRepository.findByIdAndMember(contestId, member)
+            .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
+        
+        contestRepository.delete(contest);
+    }
+
 }
