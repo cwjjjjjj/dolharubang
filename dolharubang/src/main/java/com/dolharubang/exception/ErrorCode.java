@@ -65,7 +65,12 @@ public enum ErrorCode {
     FRIEND_CANNOT_BE_DELETED(HttpStatus.BAD_REQUEST, "친구를 삭제할 수 없습니다."),
     FRIEND_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 수락했습니다."),
     FRIEND_ALREADY_PENDING(HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
-    FRIEND_ALREADY_DECLINED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 거절했습니다.");
+    FRIEND_ALREADY_DECLINED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 거절했습니다."),
+
+    // contest 관련 오류
+    CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 돌 자랑을 찾을 수 없습니다."),
+    CONTEST_NOT_FOUND_BY_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버의 돌 자랑은 없습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String detail;
