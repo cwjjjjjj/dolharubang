@@ -74,4 +74,16 @@ public class ContestService {
         return ContestResDto.fromEntity(contest);
     }
 
+    @Transactional
+    public ContestResDto updateContestVisibility(Long memberId, Long contestId, Boolean isPublic) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Contest contest = contestRepository.findByIdAndMember(contestId, member)
+            .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
+
+        contest.updateContestVisibility(isPublic);
+        
+        return ContestResDto.fromEntity(contest);
+    }
 }
