@@ -3,6 +3,7 @@ package com.dolharubang.controller;
 import com.dolharubang.domain.dto.request.ContestReqDto;
 import com.dolharubang.domain.dto.response.ContestResDto;
 import com.dolharubang.service.ContestService;
+import com.dolharubang.type.ContestFeedSortType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -59,4 +60,14 @@ public class ContestController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/feed/{memberId}")
+    public ResponseEntity<List<ContestResDto>> getFeedContests(
+        @PathVariable Long memberId,
+        @RequestParam(required = false) Long lastContestId,
+        @RequestParam(defaultValue = "RECOMMENDED") ContestFeedSortType contestFeedSortType,
+        @RequestParam(defaultValue = "16") int size) {
+
+        return ResponseEntity.ok(
+            contestService.getFeedContests(memberId, lastContestId, contestFeedSortType, size));
+    }
 }
