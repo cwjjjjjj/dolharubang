@@ -34,4 +34,11 @@ public class ContestController {
         return ResponseEntity.ok(contestService.getMyAllContestProfiles(memberId));
     }
 
+    @GetMapping("/{memberId}/{contestId}")
+    public ResponseEntity<ContestResDto> getContestProfile(
+        @PathVariable Long memberId,
+        @PathVariable Long contestId) {
+        ContestResDto contestResDto = contestService.getContestProfile(memberId, contestId);
+        return ResponseEntity.ok(contestResDto);
+    }
 }
