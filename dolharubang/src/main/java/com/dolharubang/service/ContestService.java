@@ -63,4 +63,15 @@ public class ContestService {
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public ContestResDto getContestProfile(Long memberId, Long contestId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Contest contest = contestRepository.findByIdAndMember(contestId, member)
+            .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
+
+        return ContestResDto.fromEntity(contest);
+    }
+
 }
