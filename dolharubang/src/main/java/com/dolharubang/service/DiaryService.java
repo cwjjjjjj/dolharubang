@@ -43,7 +43,8 @@ public class DiaryService {
             .build();
 
         Diary savedDiary = diaryRepository.save(diary);
-        String imageUrl = s3UploadService.saveImage(diaryReqDto.getImageBase64(), savedDiary.getDiaryId());
+        String imageUrl = s3UploadService.saveImage(diaryReqDto.getImageBase64(),
+            "dolharubang/diary/", savedDiary.getDiaryId());
 
         savedDiary.updateImageUrl(imageUrl);
 
@@ -85,7 +86,7 @@ public class DiaryService {
 
         List<Diary> response = diaryRepository.findAllByMember(member);
 
-        if(response.isEmpty()) {
+        if (response.isEmpty()) {
             throw new CustomException(ErrorCode.DIARY_NOT_FOUND);
         }
 
