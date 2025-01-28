@@ -9,6 +9,7 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.ContestRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import com.dolharubang.type.ContestFeedSortType;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,48 @@ public class ContestService {
             .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
 
         return ContestResDto.fromEntity(contest);
+    }
+
+    @Transactional
+    public ContestResDto updateContestVisibility(Long memberId, Long contestId, Boolean isPublic) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Contest contest = contestRepository.findByIdAndMember(contestId, member)
+            .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
+
+        contest.updateContestVisibility(isPublic);
+
+        return ContestResDto.fromEntity(contest);
+    }
+
+    @Transactional
+    public void deleteContest(Long memberId, Long contestId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Contest contest = contestRepository.findByIdAndMember(contestId, member)
+            .orElseThrow(() -> new CustomException(ErrorCode.CONTEST_MEMBER_MISMATCH));
+
+        contestRepository.delete(contest);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ContestResDto> getFeedContests(Long memberId, Long lastContestId,
+        ContestFeedSortType contestFeedSortType, int size) {
+        List<Contest> contests = switch (contestFeedSortType) {
+            case RECOMMENDED ->
+                contestRepository.findFeedContestsWithWeight(memberId, lastContestId, size);
+            case LATEST -> contestRepository.findLatestContests(lastContestId, size);
+        };
+
+        if (contests.isEmpty()) {
+            throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+        }
+
+        return contests.stream()
+            .map(ContestResDto::fromEntity)
+            .collect(Collectors.toList());
     }
 
 }

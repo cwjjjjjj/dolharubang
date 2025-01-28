@@ -44,4 +44,7 @@ public class Contest extends BaseEntity {
         this.profileImgUrl = profileImgUrl;
     }
 
+    public void updateContestVisibility(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }
