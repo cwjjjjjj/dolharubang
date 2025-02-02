@@ -78,7 +78,7 @@ extension CustomizeItem {
     
     static let mockFaceItem : [CustomizeItem] = [
         CustomizeItem(name: Face.sparkle.description, isOwned: true, isSelected: false, price: 50),
-              CustomizeItem(name: Face.sosim.description, isOwned: false, isSelected: true, price: 50),
+              CustomizeItem(name: Face.sosim.description, isOwned: false, isSelected: false, price: 50),
               CustomizeItem(name: Face.saechim.description, isOwned: true, isSelected: false, price: 24),
               CustomizeItem(name: Face.nareun.description, isOwned: false, isSelected: false, price: 15),
               CustomizeItem(name: Face.meong.description, isOwned: true, isSelected: false, price: 27),

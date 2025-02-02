@@ -13,9 +13,22 @@ struct HomeFeature {
     
     @ObservableState
     struct State: Equatable {
-        var selectedFace : Face = .sparkle
+        var selectedFace: Face = {
+               if let selectedItem = CustomizeItem.mockFaceItem.first(where: { $0.isSelected }) {
+                   return Face.allCases.first { $0.description == selectedItem.name } ?? .sparkle
+               }
+               return .sparkle
+           }()
+        
         var selectedFaceShape : FaceShape = .sosim
-        @Shared(.inMemory("background")) var selectedBackground: Background = .December
+        
+        @Shared(.inMemory("background")) var selectedBackground: Background = {
+            if let selectedItem = CustomizeItem.mockFaceItem.first(where: { $0.isSelected }) {
+            return Background.allCases.first { $0.description == selectedItem.name } ?? .December
+        }
+        return .December
+    }()
+    
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
         var selectedMail : Mail = .mailbox
@@ -40,8 +53,14 @@ struct HomeFeature {
         
         var shareButton : Bool = false
        
-        
+        // 배경, 돌굴, 돌굴형 따로따로 담는 변수 생성
         var customizeInfo : [CustomizeItem] = CustomizeItem.mockBackItem
+        
+        var backItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        var faceItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        var faceShapeItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        var nestItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        var accesoryItems : [CustomizeItem] = CustomizeItem.mockBackItem
     }
     
     enum Action: BindableAction {
@@ -71,6 +90,9 @@ struct HomeFeature {
         case fetchFaceShape
         case fetchFace
         case fetchBackground
+        
+        case faceItemsResponse(Result<[CustomizeItem], Error>)
+        case backItemsResponse(Result<[CustomizeItem], Error>)
         case customizeInfoResponse(Result<[CustomizeItem], Error>)
         
         
@@ -166,7 +188,8 @@ struct HomeFeature {
             case .closeMail:
                     state.mail = false
                     return .none
-                
+            
+            // 상점에서 아이템들 갱신하는 로직
             case .fetchFaceShape:
                 return .run { send in
                     do {
@@ -180,23 +203,37 @@ struct HomeFeature {
                 return .run { send in
                     do {
                         let customizeInfo = try await homeClient.face()
-                        await send(.customizeInfoResponse(.success(customizeInfo)))
+                        await send(.faceItemsResponse(.success(customizeInfo)))
                     } catch {
-                        await send(.customizeInfoResponse(.failure(error)))
+                        await send(.faceItemsResponse(.failure(error)))
                     }
                 }
             case .fetchBackground:
                 return .run { send in
                     do {
                         let customizeInfo = try await homeClient.background()
-                        await send(.customizeInfoResponse(.success(customizeInfo)))
+                        await send(.backItemsResponse(.success(customizeInfo)))
                     } catch {
-                        await send(.customizeInfoResponse(.failure(error)))
+                        await send(.backItemsResponse(.failure(error)))
                     }
                 }
                 
+            case let .faceItemsResponse(.success(customizeInfo)):
+                state.faceItems = customizeInfo
+                return .none
+                
+            case let .faceItemsResponse(.failure(error)):
+                return .none
+                
+            case let .backItemsResponse(.success(customizeInfo)):
+                state.backItems = customizeInfo
+                return .none
+                
+            case let .backItemsResponse(.failure(error)):
+                return .none
+                
             case let .customizeInfoResponse(.success(customizeInfo)):
-                state.customizeInfo = customizeInfo // 업적 목록 갱신
+                state.customizeInfo = customizeInfo
                 return .none
                 
             case let .customizeInfoResponse(.failure(error)):
@@ -204,6 +241,7 @@ struct HomeFeature {
                 
                 
                 
+           
             }
         }
     }

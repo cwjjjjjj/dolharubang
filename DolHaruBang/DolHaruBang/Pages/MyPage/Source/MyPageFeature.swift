@@ -47,6 +47,9 @@ struct MyPageFeature {
         
         case fetchUserInfo
         case fetchUserInfoResponse(Result<UserInfo, Error>)
+        
+        case changeUserInfo
+        
     }
     
     var body : some Reducer<State, Action> {
@@ -116,6 +119,23 @@ struct MyPageFeature {
                         await send(.fetchUserInfoResponse(.failure(error)))
                     }
                 }
+                
+            case .changeUserInfo:
+                
+                let userName = state.userName  // 상태 값을 미리 복사
+                let roomName = state.roomName  // 상태 값을 미리 복사
+                
+                return .run { send in
+                    do {
+                        let userinfo = try await myPageClient.updateUserInfo(
+                            UserUpdateRequest(nickname: userName, profilePicture: "dd", spaceName: roomName)
+                        )
+                        await send(.fetchUserInfoResponse(.success(userinfo)))
+                    } catch {
+                        await send(.fetchUserInfoResponse(.failure(error)))
+                    }
+                }
+                
             case let .fetchUserInfoResponse(.success(userinfo)):
                 state.isLoading = false
                 state.userInfo = userinfo // 업적 목록 갱신
@@ -127,6 +147,9 @@ struct MyPageFeature {
                 state.isLoading = false
                 state.errorMessage = error.localizedDescription
                 return .none
+                
+          
+                
             }
         }
     }

@@ -12,7 +12,9 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
     let store: StoreOf<HomeFeature>
     
     @State private var selectedItem : T?
-    
+    // 추가 0
+    @State private var showPurchaseAlert = false
+      
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -28,8 +30,14 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                                        
                             
                             Button(action: {
-                                selectedItem = item
-                                item.performAction(with: store)
+                                // if문 추가 1
+                                if matchedItem?.isOwned == false {
+                                    showPurchaseAlert = true
+                                } else {
+                                    // 기존 동작
+                                    selectedItem = item
+                                    item.performAction(with: store)
+                                }
                             }) {
                                 VStack(spacing: 4) {
                                     ZStack(alignment: .topTrailing){
@@ -74,6 +82,23 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                 }
                                 .frame(width: 108, height: 140)
                             }
+                            // 추가2
+                            .alert("구매 확인", isPresented: $showPurchaseAlert) {
+                                Button("취소", role: .cancel) {
+                                    print("취소 버튼 클릭: showPurchaseAlert = \(showPurchaseAlert)")  // 상태 확인
+                                  
+                                }
+                                Button("구매", role: .none) {
+                                    // 여기에 구매 로직 추가
+                                }
+                            } message: {
+                                if let price = matchedItem?.price {
+                                    Text("\(price) Sand를 사용하여 구매하시겠습니까?")
+                                } else {
+                                    Text("네트워크 오류")
+                                }
+                            }
+                            // 추가끝2
                         }
                     }
                     .padding(.leading, 20)
