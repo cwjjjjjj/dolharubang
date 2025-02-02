@@ -18,9 +18,18 @@ struct UserInfo: Decodable, Equatable, Sendable {
     var emailAddress : String
 }
 
+// 프로필 수정용
+struct UserUpdateRequest: Codable {
+    let nickname: String
+    let profilePicture: String
+    let spaceName: String
+}
+
+
 @DependencyClient
 struct MyPageClient {
     var fetchMypage: @Sendable () async throws -> UserInfo
+    var updateUserInfo: @Sendable (UserUpdateRequest) async throws -> UserInfo
 }
 
 // 실제 통신 전 테스트
@@ -28,6 +37,9 @@ extension MyPageClient: TestDependencyKey {
     // 여기서의 Self는 TmpClient
     static let previewValue = Self(
         fetchMypage: {
+            return UserInfo.mockUserInf
+        },
+        updateUserInfo: { request in
             return UserInfo.mockUserInf
         }
     )
@@ -44,13 +56,31 @@ extension DependencyValues {
 
 extension MyPageClient: DependencyKey {
     static let liveValue = MyPageClient(
+        
         fetchMypage: {
-            let url = "http://211.49.26.51:8080/api/v1/pepperoni"
             
-//            return try await fetch(url: url, model: [Trophy].self, method: .get)
+            let url = "https://c71b-118-42-124-3.ngrok-free.app/api/v1/members/profile/1"
             
-            return UserInfo.mockUserInf
+            return try await fetch(url: url, model: UserInfo.self, method: .get)
             }
+        ,
+       
+        updateUserInfo: { request in
+            
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/update"
+                        
+            let jsonEncoder = JSONEncoder()
+                let jsonData = try jsonEncoder.encode(request)
+            
+                   
+                    return try await fetch(
+                       url: url,
+                       model: UserInfo.self,
+                       method: .post,
+                       body: jsonData
+                   )
+               }
+        
     )
 }
 
