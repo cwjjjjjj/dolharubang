@@ -1,7 +1,5 @@
 package com.dolharubang.mongo.controller;
 
-import com.dolharubang.exception.CustomException;
-import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.mongo.dto.ItemDto;
 import com.dolharubang.mongo.entity.Item;
 import com.dolharubang.mongo.service.ItemService;
@@ -50,9 +48,7 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDto> getItem(@PathVariable String itemId) {
         return ResponseEntity.ok(ItemDto.fromEntity(
-            itemService.findByItemId(itemId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ITEM_NOT_FOUND))
-        ));
+            itemService.findByItemId(itemId)));
     }
 
     @Operation(summary = "아이템 수정하기", description = "하나의 아이템을 수정한다.")

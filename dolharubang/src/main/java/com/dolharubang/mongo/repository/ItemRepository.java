@@ -1,12 +1,14 @@
 package com.dolharubang.mongo.repository;
 
 import com.dolharubang.mongo.entity.Item;
-import java.util.Optional;
+import com.dolharubang.mongo.enumTypes.ItemType;
+import java.util.List;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ItemRepository extends MongoRepository<Item, String> {
+public interface ItemRepository extends MongoRepository<Item, ObjectId> {
 
-    Optional<Item> findByItemId(Object itemId);
+    Item findByItemId(Object itemId);
+
+    List<Item> findByItemType(ItemType itemType);
 }
