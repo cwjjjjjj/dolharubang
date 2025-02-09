@@ -29,4 +29,16 @@ public class Item {
 
     @Field
     private LocalDateTime modifiedAt;
+
+    public Item update(ItemType itemType, String itemName, String imageUrl, Long price) {
+        return Item.builder()
+            .itemId(this.itemId)
+            .itemType(itemType)
+            .itemName(itemName)
+            .imageUrl(imageUrl)
+            .price(price)
+            .createdAt(this.createdAt)
+            .modifiedAt(LocalDateTime.now())
+            .build();
+    }
 }
