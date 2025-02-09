@@ -85,15 +85,18 @@ public class Member extends BaseEntity {
         this.refreshToken = null;
     }
 
-    public void update(String nickname, String profilePicture, String spaceName) {
+    public void update(String nickname, String spaceName) {
         this.nickname = nickname;
-        this.profilePicture = profilePicture;
         this.spaceName = spaceName;
         this.modifiedAt = LocalDateTime.now();
     }
 
     public void deductSands(Long price) {
         this.sands -= price;
+    }
+
+    public void updateProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     //엔티티가 영속성 컨텍스트에 저장되기 전에 호출

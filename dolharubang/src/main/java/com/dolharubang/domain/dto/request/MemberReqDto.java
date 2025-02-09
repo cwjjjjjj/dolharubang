@@ -11,7 +11,7 @@ public class MemberReqDto {
     private String birthday;
     private Long sands;
     private Long totalLoginDays;
-    private String profilePicture;
+    private String imageBase64;
     private String spaceName;
 
     public static Member toEntity(MemberReqDto dto) {
@@ -20,7 +20,6 @@ public class MemberReqDto {
             .nickname(dto.getNickname())
             .birthday(dto.getBirthday())
             .sands(dto.getSands())
-            .profilePicture(dto.getProfilePicture())
             .totalLoginDays(dto.getTotalLoginDays())
             .spaceName(dto.getSpaceName())
             .build();
