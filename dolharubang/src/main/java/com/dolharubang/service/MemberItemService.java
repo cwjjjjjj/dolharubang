@@ -1,12 +1,14 @@
 package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.MemberItemReqDto;
+import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
 import com.dolharubang.domain.dto.response.memberItem.MemberItemResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.mongo.entity.Item;
+import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.mongo.repository.ItemRepository;
 import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberItemRepository;
@@ -34,15 +36,14 @@ public class MemberItemService {
         this.itemService = itemService;
     }
 
-    // TODO 새로운 아이템이 추가될 경우 모든 멤버에 대해 실행해야 하는 메서드
+    // TODO createMember에 넣기
     @Transactional
     public MemberItemResDto createMemberItem(MemberItemReqDto memberItemReqDto) {
         Member member = memberRepository.findById(memberItemReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //멤버를 잘 찾았다면
-        Item item = itemRepository.findByItemId(memberItemReqDto.getItemId())
-            .orElseThrow(() -> new CustomException(ErrorCode.ITEM_NOT_FOUND));
+        Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
         //아이템도 잘 찾았다면
         boolean exists = memberItemRepository.existsByMemberAndItemId(member, item.getItemId().toString());
@@ -65,8 +66,7 @@ public class MemberItemService {
         MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
 
-        Item item = itemService.findByItemId(memberItem.getItemId())
-            .orElseThrow(() -> new CustomException(ErrorCode.ITEM_NOT_FOUND));
+        Item item = itemService.findByItemId(memberItem.getItemId());
 
         if(memberItem.isWhetherHasItem()) {
             throw new CustomException(ErrorCode.ALREADY_BOUGHT);
@@ -83,25 +83,35 @@ public class MemberItemService {
         return MemberItemResDto.fromEntity(memberItem);
     }
 
-    //착용 아이템 변경
-
-    /*
-    현재상태, 구매, 착용 반환 타입
-    1. 아이템 구매/변경
-    2. 해당 아이템의 카테고리 확인
-    3. 카테고리 아이템 List 반환
-    - 해당하는 아이템 카테고리 -> 그 카테고리의 아이템 list 로직 구현
-     */
-
-    @Transactional
-    public List<MemberItemResDto> getMemberItem(Long memberItemId) {
-        Member member = memberRepository.findById(memberItemId)
+    //카테고리별 조회
+    @Transactional(readOnly = true)
+    public List<CustomItemResDto> findItemsByType(Long memberId, ItemType itemType) {
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MemberItem> response = memberItemRepository.findAllByMember(member);
+        List<Item> items = itemRepository.findByItemType(itemType);
+        List<MemberItem> memberItems = memberItemRepository.findAllByMember(member);
 
-        return response.stream()
-            .map(MemberItemResDto::fromEntity)
+        return items.stream()
+            .map(item -> {
+                MemberItem memberItem = memberItems.stream()
+                    .filter(mi -> mi.getItemId().equals(item.getItemId().toString()))
+                    .findFirst()
+                    .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
+
+                return CustomItemResDto.fromEntity(memberItem, item);
+            })
             .collect(Collectors.toList());
     }
+
+    //착용 아이템 변경
+    /*
+    보유했으면서 착용하지 않은 아이템인 경우
+     */
+
+
+    /*
+    보유하지 않은 아이템인 경우
+     */
+
 }
