@@ -1,7 +1,6 @@
 package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
-import com.dolharubang.domain.dto.response.memberItem.MemberItemResDto;
 import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.service.MemberItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,14 +29,14 @@ public class MemberItemController {
 
     @Operation(summary = "아이템 구매하기", description = "memberId와 아이템을 사용하여 아이템을 구매상태로 변경한다.")
     @PostMapping("/buy/{memberId}")
-    public ResponseEntity<MemberItemResDto> buyMemberItem(@PathVariable Long memberId,
+    public ResponseEntity<List<CustomItemResDto>> buyMemberItem(@PathVariable Long memberId,
         @RequestParam String itemId) {
-        MemberItemResDto response = memberItemService.updateItemOwnership(memberId, itemId);
+        List<CustomItemResDto> response = memberItemService.updateItemOwnership(memberId, itemId);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "아이템 조회하기", description = "memberId를 사용하여 아이템 구매/착용 여부, 가격, id, 이름, url을 조회한다.")
-    @GetMapping
+    @GetMapping("/customs/{memberId}/{itemType}")
     public ResponseEntity<List<CustomItemResDto>> getItemByType(@PathVariable ItemType itemType,
         @PathVariable Long memberId) {
         return ResponseEntity.ok(memberItemService.findItemsByType(memberId, itemType));
