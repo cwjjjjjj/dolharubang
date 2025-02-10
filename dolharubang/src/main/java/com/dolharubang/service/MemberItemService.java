@@ -2,7 +2,6 @@ package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.MemberItemReqDto;
 import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
-import com.dolharubang.domain.dto.response.memberItem.MemberItemResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
@@ -38,7 +37,7 @@ public class MemberItemService {
 
     // TODO createMember에 넣기
     @Transactional
-    public MemberItemResDto createMemberItem(MemberItemReqDto memberItemReqDto) {
+    public List<CustomItemResDto> createMemberItem(MemberItemReqDto memberItemReqDto) {
         Member member = memberRepository.findById(memberItemReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -53,12 +52,15 @@ public class MemberItemService {
 
         MemberItem memberItem = MemberItemReqDto.toEntity(memberItemReqDto, member);
         MemberItem savedMemberItem = memberItemRepository.save(memberItem);
-        return MemberItemResDto.fromEntity(savedMemberItem);
+
+        //TODO 반환타입 수정 List<CustomItemResDto> findItemsByType
+        ItemType itemType = item.getItemType();
+        return findItemsByType(member.getMemberId(), itemType);
     }
 
     //아이템 구매
     @Transactional
-    public MemberItemResDto updateItemOwnership(Long memberId, String itemId) {
+    public List<CustomItemResDto> updateItemOwnership(Long memberId, String itemId) {
 
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -77,10 +79,11 @@ public class MemberItemService {
         }
 
         member.deductSands(item.getPrice());
-        memberItem.updateWhetherHasItem();
+        memberItem.buyItem();
         memberRepository.save(member);
 
-        return MemberItemResDto.fromEntity(memberItem);
+        ItemType itemType = item.getItemType();
+        return findItemsByType(memberId, itemType);
     }
 
     //카테고리별 조회
@@ -108,10 +111,8 @@ public class MemberItemService {
     /*
     보유했으면서 착용하지 않은 아이템인 경우
      */
-
-
-    /*
-    보유하지 않은 아이템인 경우
-     */
+//    public List<CustomItemResDto> wearItem() {
+//
+//    }
 
 }
