@@ -46,12 +46,12 @@ public class MemberItem extends BaseEntity {
     }
 
     //보유 상태를 true로 변경 = 구매
-    public void updateWhetherHasItem() {
+    public void buyItem() {
         this.whetherHasItem = true;
     }
 
     //true로 바꾼 후 같은 타입의 다른 모든 item의 isSelected는 false로 변경
-    public void updateIsSelected(boolean isSelected) {
+    public void wearItem(boolean isSelected) {
         this.isSelected = isSelected;
     }
 
