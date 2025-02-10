@@ -38,13 +38,9 @@ public class MemberItemService {
     // TODO createMember에 넣기
     @Transactional
     public List<CustomItemResDto> createMemberItem(MemberItemReqDto memberItemReqDto) {
-        Member member = memberRepository.findById(memberItemReqDto.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        //멤버를 잘 찾았다면
+        Member member = getMember(memberItemReqDto.getMemberId());
         Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
-        //아이템도 잘 찾았다면
         boolean exists = memberItemRepository.existsByMemberAndItemId(member, item.getItemId().toString());
         if(exists) {
             throw new CustomException(ErrorCode.DUPLICATE_ITEM);
@@ -55,19 +51,15 @@ public class MemberItemService {
 
         //TODO 반환타입 수정 List<CustomItemResDto> findItemsByType
         ItemType itemType = item.getItemType();
-        return findItemsByType(member.getMemberId(), itemType);
+        return findCustomsByType(member.getMemberId(), itemType);
     }
 
     //아이템 구매
     @Transactional
     public List<CustomItemResDto> updateItemOwnership(Long memberId, String itemId) {
 
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
-
+        Member member = getMember(memberId);
+        MemberItem memberItem = getMemberItem(itemId, member);
         Item item = itemService.findByItemId(memberItem.getItemId());
 
         if(memberItem.isWhetherHasItem()) {
@@ -83,14 +75,13 @@ public class MemberItemService {
         memberRepository.save(member);
 
         ItemType itemType = item.getItemType();
-        return findItemsByType(memberId, itemType);
+        return findCustomsByType(memberId, itemType);
     }
 
     //카테고리별 조회
     @Transactional(readOnly = true)
-    public List<CustomItemResDto> findItemsByType(Long memberId, ItemType itemType) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    public List<CustomItemResDto> findCustomsByType(Long memberId, ItemType itemType) {
+        Member member = getMember(memberId);
 
         List<Item> items = itemRepository.findByItemType(itemType);
         List<MemberItem> memberItems = memberItemRepository.findAllByMember(member);
@@ -108,11 +99,47 @@ public class MemberItemService {
     }
 
     //착용 아이템 변경
-    /*
-    보유했으면서 착용하지 않은 아이템인 경우
-     */
-//    public List<CustomItemResDto> wearItem() {
-//
-//    }
+    @Transactional
+    public List<CustomItemResDto> wearItem(Long memberId, String itemId) {
+        Member member = getMember(memberId);
+        MemberItem targetMemberItem = getMemberItem(itemId, member);
 
+        if (targetMemberItem.isSelected()) {
+            Item targetItem = itemService.findByItemId(itemId);
+            return findCustomsByType(memberId, targetItem.getItemType());
+        }
+
+        if (!targetMemberItem.isWhetherHasItem()) {
+            updateItemOwnership(memberId, itemId);
+        }
+
+        Item targetItem = itemService.findByItemId(itemId);
+        ItemType itemType = targetItem.getItemType();
+
+        List<MemberItem> memberItems = memberItemRepository.findAllByMember(member);
+
+        // 같은 타입의 모든 아이템 착용 해제
+        memberItems.stream()
+                .filter(memberItem -> {
+                    Item item = itemService.findByItemId(memberItem.getItemId());
+                    return item.getItemType() == itemType;
+                })
+                .forEach(memberItem -> memberItem.wearItem(false));
+
+        targetMemberItem.wearItem(true);
+
+        return findCustomsByType(memberId, itemType);
+    }
+
+    private MemberItem getMemberItem(String itemId, Member member) {
+        MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
+        return memberItem;
+    }
+
+    private Member getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        return member;
+    }
 }

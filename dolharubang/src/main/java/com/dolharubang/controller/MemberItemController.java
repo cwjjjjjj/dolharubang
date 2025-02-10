@@ -39,6 +39,15 @@ public class MemberItemController {
     @GetMapping("/customs/{memberId}/{itemType}")
     public ResponseEntity<List<CustomItemResDto>> getItemByType(@PathVariable ItemType itemType,
         @PathVariable Long memberId) {
-        return ResponseEntity.ok(memberItemService.findItemsByType(memberId, itemType));
+        return ResponseEntity.ok(memberItemService.findCustomsByType(memberId, itemType));
+    }
+
+    @Operation(summary = "아이템 착용하기", description = "memberId와 아이템을 사용하여 아이템을 착용 상태로 변경한다.")
+    @PostMapping("/wear/{memberId}")
+    public ResponseEntity<List<CustomItemResDto>> wearMemberItem(
+            @PathVariable Long memberId,
+            @RequestParam String itemId) {
+        List<CustomItemResDto> response = memberItemService.wearItem(memberId, itemId);
+        return ResponseEntity.ok(response);
     }
 }
