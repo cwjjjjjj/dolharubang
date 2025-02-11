@@ -59,13 +59,6 @@ public class MemberMissionController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "모든 회원 미션 조회", description = "모든 회원 미션을 조회합니다.")
-    @GetMapping
-    public ResponseEntity<List<MemberMissionResDto>> getAllMemberMissions() {
-        List<MemberMissionResDto> response = memberMissionService.getAllMemberMissions();
-        return ResponseEntity.ok(response);
-    }
-
     @Operation(summary = "회원 미션 삭제", description = "회원 미션 ID를 통해 특정 회원 미션을 삭제합니다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMemberMission(@PathVariable Long id) {

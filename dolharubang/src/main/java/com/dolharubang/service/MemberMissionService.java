@@ -94,13 +94,6 @@ public class MemberMissionService {
         return MemberMissionResDto.fromEntity(memberMission);
     }
 
-    @Transactional(readOnly = true)
-    public List<MemberMissionResDto> getAllMemberMissions() {
-        return memberMissionRepository.findAll().stream()
-            .map(MemberMissionResDto::fromEntity)
-            .collect(Collectors.toList());
-    }
-
     @Transactional
     public void deleteMemberMission(Long id) {
         MemberMission memberMission = memberMissionRepository.findById(id)
