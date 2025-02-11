@@ -20,13 +20,14 @@ public class MissionResDto {
     private long id;
     private String name;
     private String description;
+    private String missionImgUrl;
     private MissionType missionType;
     private boolean isHidden;
     private boolean isDaily;
     private ConditionDetail conditionDetail;
     private RewardType rewardType;
     private int rewardQuantity;
-    private long rewardItemNo;
+    private String rewardItemNo;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -35,6 +36,7 @@ public class MissionResDto {
             .id(mission.getId())
             .name(mission.getName())
             .description(mission.getDescription())
+            .missionImgUrl(mission.getMissionImgUrl())
             .missionType(mission.getMissionType())
             .conditionDetail(mission.getConditionDetail())
             .rewardType(mission.getRewardType())

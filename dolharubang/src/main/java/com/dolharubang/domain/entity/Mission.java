@@ -33,6 +33,9 @@ public class Mission extends BaseEntity {
     @Column(name = "mission_name", nullable = false)
     private String name;
 
+    @Column(name = "mission_img_url", nullable = false)
+    private String missionImgUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MissionType missionType;
@@ -57,14 +60,15 @@ public class Mission extends BaseEntity {
 
     private int rewardQuantity;
 
-    private long rewardItemNo;
+    private String rewardItemNo;
 
-
-    public void updateMission(String name, String description, MissionType missionType,
+    public void updateMission(String name, String description, String missionImgUrl,
+        MissionType missionType,
         boolean isHidden, boolean isDaily, ConditionDetail conditionDetail, RewardType rewardType,
-        int rewardQuantity, long rewardItemNo) {
+        int rewardQuantity, String rewardItemNo) {
         this.name = name;
         this.description = description;
+        this.missionImgUrl = missionImgUrl;
         this.missionType = missionType;
         this.isHidden = isHidden;
         this.isDaily = isDaily;

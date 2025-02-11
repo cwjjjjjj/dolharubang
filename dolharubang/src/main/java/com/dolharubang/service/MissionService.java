@@ -39,6 +39,7 @@ public class MissionService {
         Mission mission = Mission.builder()
             .name(requestDto.getName())
             .description(requestDto.getDescription())
+            .missionImgUrl(requestDto.getMissionImgUrl())
             .missionType(requestDto.getMissionType())
             .isHidden(requestDto.isHidden())
             .isDaily(requestDto.isDaily())
@@ -61,6 +62,7 @@ public class MissionService {
         mission.updateMission(
             requestDto.getName(),
             requestDto.getDescription(),
+            requestDto.getMissionImgUrl(),
             requestDto.getMissionType(),
             requestDto.isHidden(),
             requestDto.isDaily(),

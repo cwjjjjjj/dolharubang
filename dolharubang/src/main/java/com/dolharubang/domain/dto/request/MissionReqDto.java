@@ -15,18 +15,20 @@ public class MissionReqDto {
 
     private String name;
     private String description;
+    private String missionImgUrl;
     private MissionType missionType;
     private boolean isHidden;
     private boolean isDaily;
     private ConditionDetail conditionDetail;
     private RewardType rewardType;
     private int rewardQuantity;
-    private long rewardItemNo;
+    private String rewardItemNo;
 
     public Mission toEntity() {
         return Mission.builder()
             .name(this.name)
             .description(this.description)
+            .missionImgUrl(this.missionImgUrl)
             .missionType(this.missionType)
             .conditionDetail(this.conditionDetail)
             .rewardType(this.rewardType)
