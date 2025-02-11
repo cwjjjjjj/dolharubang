@@ -1,4 +1,4 @@
-package com.dolharubang.domain.dto.response;
+package com.dolharubang.domain.dto.response.memberItem;
 
 import com.dolharubang.domain.entity.MemberItem;
 import java.time.LocalDateTime;

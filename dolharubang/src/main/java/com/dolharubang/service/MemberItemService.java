@@ -1,12 +1,13 @@
 package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.MemberItemReqDto;
-import com.dolharubang.domain.dto.response.MemberItemResDto;
+import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.mongo.entity.Item;
+import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.mongo.repository.ItemRepository;
 import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberItemRepository;
@@ -34,15 +35,14 @@ public class MemberItemService {
         this.itemService = itemService;
     }
 
-    //새로운 아이템이 추가될 경우 모든 멤버에 대해 실행하는 메서드
+    // TODO createMember에 넣기
     @Transactional
-    public MemberItemResDto createMemberItem(MemberItemReqDto memberItemReqDto) {
+    public List<CustomItemResDto> createMemberItem(MemberItemReqDto memberItemReqDto) {
         Member member = memberRepository.findById(memberItemReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //멤버를 잘 찾았다면
-        Item item = itemRepository.findByItemId(memberItemReqDto.getItemId())
-            .orElseThrow(() -> new CustomException(ErrorCode.ITEM_NOT_FOUND));
+        Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
         //아이템도 잘 찾았다면
         boolean exists = memberItemRepository.existsByMemberAndItemId(member, item.getItemId().toString());
@@ -52,21 +52,23 @@ public class MemberItemService {
 
         MemberItem memberItem = MemberItemReqDto.toEntity(memberItemReqDto, member);
         MemberItem savedMemberItem = memberItemRepository.save(memberItem);
-        return MemberItemResDto.fromEntity(savedMemberItem);
+
+        //TODO 반환타입 수정 List<CustomItemResDto> findItemsByType
+        ItemType itemType = item.getItemType();
+        return findItemsByType(member.getMemberId(), itemType);
     }
 
     //아이템 구매
     @Transactional
-    public MemberItemResDto updateItemOwnership(Long memberItemId) {
-        MemberItem memberItem = memberItemRepository.findById(memberItemId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
-        System.out.println(memberItem.getItemId());
+    public List<CustomItemResDto> updateItemOwnership(Long memberId, String itemId) {
 
-        Member member = memberRepository.findById(memberItem.getMember().getMemberId())
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Item item = itemService.findByItemId(memberItem.getItemId())
-            .orElseThrow(() -> new CustomException(ErrorCode.ITEM_NOT_FOUND));
+        MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
+
+        Item item = itemService.findByItemId(memberItem.getItemId());
 
         if(memberItem.isWhetherHasItem()) {
             throw new CustomException(ErrorCode.ALREADY_BOUGHT);
@@ -75,28 +77,42 @@ public class MemberItemService {
         if(member.getSands() < item.getPrice()) {
             throw new CustomException(ErrorCode.LACK_OF_SAND);
         }
+
         member.deductSands(item.getPrice());
-
-        memberItem.update(
-            member,
-            memberItem.getItemId(),
-            true
-        );
-
+        memberItem.buyItem();
         memberRepository.save(member);
 
-        return MemberItemResDto.fromEntity(memberItem);
+        ItemType itemType = item.getItemType();
+        return findItemsByType(memberId, itemType);
     }
 
-    @Transactional
-    public List<MemberItemResDto> getMemberItem(Long memberItemId) {
-        Member member = memberRepository.findById(memberItemId)
+    //카테고리별 조회
+    @Transactional(readOnly = true)
+    public List<CustomItemResDto> findItemsByType(Long memberId, ItemType itemType) {
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MemberItem> response = memberItemRepository.findAllByMember(member);
+        List<Item> items = itemRepository.findByItemType(itemType);
+        List<MemberItem> memberItems = memberItemRepository.findAllByMember(member);
 
-        return response.stream()
-            .map(MemberItemResDto::fromEntity)
+        return items.stream()
+            .map(item -> {
+                MemberItem memberItem = memberItems.stream()
+                    .filter(mi -> mi.getItemId().equals(item.getItemId().toString()))
+                    .findFirst()
+                    .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
+
+                return CustomItemResDto.fromEntity(memberItem, item);
+            })
             .collect(Collectors.toList());
     }
+
+    //착용 아이템 변경
+    /*
+    보유했으면서 착용하지 않은 아이템인 경우
+     */
+//    public List<CustomItemResDto> wearItem() {
+//
+//    }
+
 }

@@ -1,6 +1,7 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.stone.StoneReqDto;
+import com.dolharubang.domain.dto.common.StoneTextUpdateReqDto;
+import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
@@ -11,6 +12,10 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.SpeciesRepository;
 import com.dolharubang.repository.StoneRepository;
+import com.dolharubang.type.AbilityType;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,14 +39,22 @@ public class StoneService {
         Member member = memberRepository.findById(stoneReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
+        Species species = speciesRepository.findById(stoneReqDto.getSpeciesId())
+            .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
+
+        Map<AbilityType, Boolean> abilityMap = Arrays.stream(AbilityType.values()).collect(
+            Collectors.toMap(
+                ability -> ability,
+                ability -> ability == species.getBaseAbility()
+            ));
+
         Stone stone = Stone.builder()
             .member(member)
             .speciesId(stoneReqDto.getSpeciesId())
             .stoneName(stoneReqDto.getStoneName())
             .closeness(stoneReqDto.getCloseness())
-            .abilityAble(stoneReqDto.getAbilityAble())
+            .abilityAble(abilityMap)
             .signText(stoneReqDto.getSignText())
-            .custom(stoneReqDto.getCustom())
             .build();
 
         Stone adoptedStone = stoneRepository.save(stone);
@@ -55,7 +68,7 @@ public class StoneService {
 
         String signText = "";
         signText = stoneRepository.findSignTextByMember(member);
-        if(signText == null) {
+        if (signText == null) {
             throw new CustomException(ErrorCode.SIGNTEXT_NOT_FOUND);
         }
         return signText;
@@ -63,11 +76,7 @@ public class StoneService {
 
     @Transactional(readOnly = true)
     public StoneProfileResDto getStoneProfile(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        Stone stone = stoneRepository.findByMember(member)
-            .orElseThrow(() -> new CustomException(ErrorCode.STONE_NOT_FOUND));
+        Stone stone = findStoneByMemberId(memberId);
 
         Species species = speciesRepository.findById(stone.getSpeciesId())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
@@ -76,26 +85,35 @@ public class StoneService {
     }
 
     @Transactional
-    public String updateStoneName(Long memberId, String newStoneName) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        Stone stone = stoneRepository.findByMember(member)
-            .orElseThrow(() -> new CustomException(ErrorCode.STONE_NOT_FOUND));
-
-        stone.updateStoneName(newStoneName);
-        return stone.getStoneName();
+    public String updateStoneName(Long memberId, StoneTextUpdateReqDto dto) {
+        Stone stone = findStoneByMemberId(memberId);
+        return dto.updateStoneName(stone);
     }
 
     @Transactional
-    public String updateSignText(Long memberId, String newSignText) {
+    public String updateSignText(Long memberId, StoneTextUpdateReqDto dto) {
+        Stone stone = findStoneByMemberId(memberId);
+        return dto.updateSignText(stone);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<AbilityType, Boolean> readAbilityAble(Long memberId) {
+        Stone stone = findStoneByMemberId(memberId);
+        return stone.getAbilityAble();
+    }
+
+    @Transactional
+    public Map<AbilityType, Boolean> updateAbilityAble(Long memberId, AbilityType abilityType) {
+        Stone stone = findStoneByMemberId(memberId);
+        stone.updateAbilityAble(abilityType);
+        return stone.getAbilityAble();
+    }
+
+    private Stone findStoneByMemberId(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Stone stone = stoneRepository.findByMember(member)
+        return stoneRepository.findByMember(member)
             .orElseThrow(() -> new CustomException(ErrorCode.STONE_NOT_FOUND));
-
-        stone.updateSignText(newSignText);
-        return stone.getSignText();
     }
 }

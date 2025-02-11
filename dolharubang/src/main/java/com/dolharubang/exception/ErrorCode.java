@@ -19,6 +19,7 @@ public enum ErrorCode {
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
     SIGNTEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
+    ABILITY_ALREADY_ACTIVATED(HttpStatus.CONFLICT,"이미 활성화된 능력입니다."),
 
     //돌 종류 관련 오류
     SPECIES_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 돌 종류를 찾을 수 없습니다."),

@@ -15,9 +15,7 @@ public class MemberProfileResDto {
     private String memberEmail;
     @JsonProperty("userName")
     private String nickname;
-    @JsonProperty("birthDay")
     private String birthday;
-    @JsonProperty("birthStone")
     private String birthStone;
     @JsonProperty("roomName")
     private String spaceName;

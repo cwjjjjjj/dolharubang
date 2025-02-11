@@ -2,6 +2,8 @@ package com.dolharubang.domain.entity;
 
 import com.dolharubang.type.AbilityType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class Species extends BaseEntity {
 
     private String characteristic;
 
+    @Enumerated(EnumType.STRING)
     private AbilityType baseAbility;
 
     @Builder

@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Item {
 
     @Id
+    @Field(name = "_id")
     private ObjectId itemId;
 
     private ItemType itemType;
@@ -28,4 +29,16 @@ public class Item {
 
     @Field
     private LocalDateTime modifiedAt;
+
+    public Item update(ItemType itemType, String itemName, String imageUrl, Long price) {
+        return Item.builder()
+            .itemId(this.itemId)
+            .itemType(itemType)
+            .itemName(itemName)
+            .imageUrl(imageUrl)
+            .price(price)
+            .createdAt(this.createdAt)
+            .modifiedAt(LocalDateTime.now())
+            .build();
+    }
 }

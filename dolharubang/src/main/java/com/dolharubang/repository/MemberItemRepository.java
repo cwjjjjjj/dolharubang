@@ -10,5 +10,7 @@ public interface MemberItemRepository extends JpaRepository<MemberItem, Long> {
 
     boolean existsByMemberAndItemId(Member member, String itemId);
 
+    Optional<MemberItem> findByMemberAndItemId(Member member, String itemId);
+
     List<MemberItem> findAllByMember(Member member);
 }

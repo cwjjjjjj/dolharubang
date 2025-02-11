@@ -57,12 +57,27 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "프로필 회원 정보 수정하기", description = "닉네임, 공간 이름, 프로필 사진 수정 가능")
-    @PostMapping("/update/{id}")
-    public ResponseEntity<MemberResDto> updateMember(@PathVariable Long id,
+    @Operation(summary = "프로필 회원 정보 수정하기", description = "닉네임, 공간 이름 수정한다.")
+    @PostMapping("/profile/{id}")
+    public ResponseEntity<MemberProfileResDto> updateMember(@PathVariable Long id,
         @RequestBody MemberProfileReqDto memberReqDto) {
-        MemberResDto response = memberService.updateMemberProfile(id, memberReqDto);
+        MemberProfileResDto response = memberService.updateMemberProfile(id, memberReqDto);
 
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "프로필 사진 수정하기", description = "base64 string으로 프로필 사진을 수정한다.")
+    @PostMapping("/profile-picture/{id}")
+    public ResponseEntity<MemberProfileResDto> updateProfilePicture(@PathVariable Long id,
+        @RequestBody String imageBase64) {
+        MemberProfileResDto response = memberService.updateMemberProfilePicture(id, imageBase64);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "회원 모래알 조회하기", description = "모래알을 조회한다.")
+    @GetMapping("/sands/{memberId}")
+    public Long getSands(@PathVariable Long memberId) {
+        return memberService.getSands(memberId);
     }
 }
