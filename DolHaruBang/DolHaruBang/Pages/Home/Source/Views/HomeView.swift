@@ -1,3 +1,4 @@
+
 //
 //  HomeView.swift
 //  DolHaruBang
@@ -142,6 +143,7 @@ struct HomeView : View {
                                             dolView.rollDol()
                                        })
                                     {
+                                        // 구르기추가
                                         VStack{
                                             Text("구르기")
                                                 .font(Font.customFont(Font.caption1))
@@ -361,3 +363,4 @@ struct CommonTextFieldStyle: TextFieldStyle {
         .padding(.horizontal, 8) // Add horizontal padding for the whole ZStack
     }
 }
+
