@@ -1,3 +1,4 @@
+
 //
 //  HomeView.swift
 //  DolHaruBang
@@ -114,23 +115,24 @@ struct HomeView : View {
                         Spacer().background(Color.red)
                         
                         // MARK: 3D 돌 뷰
-                        DolView(
-                            selectedFace: $store.selectedFace,
-                            selectedFaceShape: $store.selectedFaceShape,
-                            selectedAccessory: $store.selectedAccessory,
-                            selectedSign: $store.selectedSign,
-                            selectedMail: $store.selectedMail,
-                            selectedNest: $store.selectedNest,
-                            signText: $store.message,
-                            sign : $store.sign,
-                            profile: $store.profile,
-                            mail: $store.mail,
-                            enable: $store.enable,
-                            onImagePicked: { image in
-                                store.send(.captureDol(image)) // 이미지를 캡처하고 store로 전달
-                            },
-                            hasRendered: $store.needCapture
-                        )
+                        let dolView = DolView(
+                                        selectedFace: $store.selectedFace,
+                                        selectedFaceShape: $store.selectedFaceShape,
+                                        selectedAccessory: $store.selectedAccessory,
+                                        selectedSign: $store.selectedSign,
+                                        selectedMail: $store.selectedMail,
+                                        selectedNest: $store.selectedNest,
+                                        signText: $store.message,
+                                        sign: $store.sign,
+                                        profile: $store.profile,
+                                        mail: $store.mail,
+                                        enable: $store.enable,
+                                        onImagePicked: { image in
+                                            store.send(.captureDol(image))
+                                        },
+                                        hasRendered: $store.needCapture
+                                    )
+                        dolView
                         
                         Spacer().background(Color.red)
                         VStack{
@@ -138,10 +140,12 @@ struct HomeView : View {
                             if store.ability{
                                 HStack{
                                     Button(action: {
-                                        
-                                    }){
+                                            dolView.rollDol()
+                                       })
+                                    {
+                                        // 구르기추가
                                         VStack{
-                                            Text("능력")
+                                            Text("구르기")
                                                 .font(Font.customFont(Font.caption1))
                                                 .foregroundColor(store.ability ? .black: .white)
                                                 .padding()// Text
@@ -167,6 +171,7 @@ struct HomeView : View {
                                         Image(store.ability ? "Star2" : "Star")
                                                     .resizable()
                                                     .scaledToFit()
+                                        
                                         
                                         Text("능력")
                                             .font(Font.customFont(Font.caption1))
@@ -358,3 +363,4 @@ struct CommonTextFieldStyle: TextFieldStyle {
         .padding(.horizontal, 8) // Add horizontal padding for the whole ZStack
     }
 }
+
