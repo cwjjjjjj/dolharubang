@@ -17,7 +17,7 @@ public class CustomItemResDto {
     @JsonProperty("isOwned")
     private boolean whetherHasItem;
     private boolean isSelected;
-    private Long price;
+    private int price;
     private String imageUrl;
     private String itemId;
 

@@ -12,7 +12,7 @@ public class ItemDto {
     private ItemType itemType;
     private String itemName;
     private String imageUrl;
-    private Long price;
+    private int price;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 

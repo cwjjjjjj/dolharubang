@@ -40,12 +40,12 @@ public class Member extends BaseEntity {
     private String birthday;
 
     @ColumnDefault("0")
-    private Long sands;
+    private int sands;
 
     private LocalDateTime lastLoginAt;
 
     @ColumnDefault("0")
-    private Long totalLoginDays;
+    private int totalLoginDays;
 
     private String profilePicture;
 
@@ -53,8 +53,8 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(SocialType socialType, String socialId, String memberEmail,
-        String nickname, String birthday, Long sands, LocalDateTime lastLoginAt,
-        Long totalLoginDays, String profilePicture, String spaceName) {
+        String nickname, String birthday, int sands, LocalDateTime lastLoginAt,
+        int totalLoginDays, String profilePicture, String spaceName) {
         this.socialType = socialType;
         this.socialId = socialId;
         this.memberEmail = memberEmail;
@@ -68,7 +68,7 @@ public class Member extends BaseEntity {
     }
 
     //로그인 일수 증가
-    public void incrementTotalLoginDays(Long totalLoginDays) {
+    public void incrementTotalLoginDays(int totalLoginDays) {
         this.totalLoginDays = totalLoginDays + 1;
     }
 
@@ -91,11 +91,11 @@ public class Member extends BaseEntity {
         this.modifiedAt = LocalDateTime.now();
     }
 
-    public void decreaseSands(Long price) {
+    public void decreaseSands(int price) {
         this.sands -= price;
     }
 
-    public Long increaseSands(Long increasingAmount) {
+    public int increaseSands(int increasingAmount) {
         this.sands += increasingAmount;
         return this.sands;
     }
