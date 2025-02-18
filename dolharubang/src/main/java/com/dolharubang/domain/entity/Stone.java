@@ -79,6 +79,11 @@ public class Stone extends BaseEntity {
         this.signText = signText;
     }
 
+    public Long increaseCloseness(Long increasingAmount) {
+        this.closeness += increasingAmount;
+        return closeness;
+    }
+
     public void updateStoneName(String newStoneName) {
         this.stoneName = newStoneName;
     }
