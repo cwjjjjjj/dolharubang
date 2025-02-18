@@ -70,7 +70,7 @@ public class MemberItemService {
             throw new CustomException(ErrorCode.LACK_OF_SAND);
         }
 
-        member.deductSands(item.getPrice());
+        member.decreaseSands(item.getPrice());
         memberItem.buyItem();
         memberRepository.save(member);
 
