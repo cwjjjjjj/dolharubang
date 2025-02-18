@@ -22,7 +22,7 @@ public class Item {
 
     private String imageUrl;
 
-    private Long price;
+    private int price;
 
     @Field
     private LocalDateTime createdAt;
@@ -30,7 +30,7 @@ public class Item {
     @Field
     private LocalDateTime modifiedAt;
 
-    public Item update(ItemType itemType, String itemName, String imageUrl, Long price) {
+    public Item update(ItemType itemType, String itemName, String imageUrl, int price) {
         return Item.builder()
             .itemId(this.itemId)
             .itemType(itemType)
