@@ -15,9 +15,9 @@ public class MemberResDto {
     private String memberEmail;
     private String nickname;
     private String birthday;
-    private Long sands;
+    private int sands;
     private LocalDateTime lastLoginAt;
-    private Long totalLoginDays;
+    private int totalLoginDays;
     private String profilePicture;
     private String spaceName;
 

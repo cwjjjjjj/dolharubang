@@ -116,7 +116,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Long getSands(Long memberId) {
+    public int getSands(Long memberId) {
         Member member = findMember(memberId);
         return member.getSands();
     }

@@ -9,8 +9,8 @@ public class MemberReqDto {
     private String memberEmail;
     private String nickname;
     private String birthday;
-    private Long sands;
-    private Long totalLoginDays;
+    private int sands;
+    private int totalLoginDays;
     private String imageBase64;
     private String spaceName;
 
