@@ -91,8 +91,13 @@ public class Member extends BaseEntity {
         this.modifiedAt = LocalDateTime.now();
     }
 
-    public void deductSands(Long price) {
+    public void decreaseSands(Long price) {
         this.sands -= price;
+    }
+
+    public Long increaseSands(Long increasingAmount) {
+        this.sands += increasingAmount;
+        return this.sands;
     }
 
     public void updateProfilePicture(String profilePicture) {
