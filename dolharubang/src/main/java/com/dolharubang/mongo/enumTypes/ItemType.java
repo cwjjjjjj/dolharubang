@@ -1,24 +1,32 @@
 package com.dolharubang.mongo.enumTypes;
 
 public enum ItemType {
+
+    //돌받침
+    NEST,
+
+    //악세사리
+    ACCSESORY,
+
     //배경
     BACKGROUND,
 
     //배경 소품
-    BACKPROP,
+//    BACKPROP,
 
-    //돌받침
-    SUPPORT,
+    //이목구비 (표정)
+    FACE,
 
-    //악세사리
-    ACCS,
+    //우체통 (임시)
+    MAIL,
 
-    //이목구비
-    FACIALFEATURES,
+    //얼굴형
+    SHAPE,
 
     //팻말
     SIGN,
 
     //특수아이템
-    SPECIALITEM
+//    SPECIALITEM,
+
 }
