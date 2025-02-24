@@ -6,6 +6,7 @@ import com.dolharubang.domain.entity.Mission;
 import com.dolharubang.service.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,8 @@ public class MissionController {
 
     @Operation(summary = "새로운 미션 생성", description = "새로운 미션을 생성합니다.")
     @PostMapping
-    public ResponseEntity<MissionResDto> createMission(@RequestBody MissionReqDto requestDto) {
+    public ResponseEntity<MissionResDto> createMission(
+        @Valid @RequestBody MissionReqDto requestDto) {
         MissionResDto response = missionService.createMission(requestDto);
         return ResponseEntity.ok(response);
     }
@@ -39,7 +41,7 @@ public class MissionController {
     @PatchMapping("/{id}")
     public ResponseEntity<MissionResDto> updateMission(
         @PathVariable Long id,
-        @RequestBody MissionReqDto requestDto) {
+        @Valid @RequestBody MissionReqDto requestDto) {
         MissionResDto response = missionService.updateMission(id, requestDto);
         return ResponseEntity.ok(response);
     }
