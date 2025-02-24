@@ -12,22 +12,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class DailyMissionScheduler {
+public class MemberMissionScheduler {
 
-    private static final Logger logger = LoggerFactory.getLogger(DailyMissionScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(MemberMissionScheduler.class);
     private final MemberMissionRepository memberMissionRepository;
 
-    public DailyMissionScheduler(MemberMissionRepository memberMissionRepository) {
+    public MemberMissionScheduler(MemberMissionRepository memberMissionRepository) {
         this.memberMissionRepository = memberMissionRepository;
     }
 
     @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+//    @Scheduled(cron = "0 * * * * ?")  // 매 분 0초에 실행
     @Transactional
     public void resetDailyMissions() {
         List<MemberMission> dailyMissions = memberMissionRepository.findDailyMissions();
 
         for (MemberMission memberMission : dailyMissions) {
-            memberMission.updateStatus(MissionStatusType.NOT_STARTED, null);
+            memberMission.updateStatus(MissionStatusType.NOT_STARTED, 0.0);
         }
         logger.info("{} - 데일리 미션 초기화", LocalDateTime.now());
     }
