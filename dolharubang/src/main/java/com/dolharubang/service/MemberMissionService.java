@@ -1,6 +1,6 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.MemberMissionReqDto;
+import com.dolharubang.domain.dto.request.MemberMissionProgressUpdateReqDto;
 import com.dolharubang.domain.dto.response.MemberMissionResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberMission;
@@ -10,7 +10,6 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.MissionRepository;
-import com.dolharubang.type.MissionStatusType;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -22,55 +21,48 @@ public class MemberMissionService {
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
+    private final RewardService rewardService;
 
     public MemberMissionService(MemberMissionRepository memberMissionRepository,
-        MemberRepository memberRepository, MissionRepository missionRepository) {
+        MemberRepository memberRepository, MissionRepository missionRepository,
+        RewardService rewardService) {
         this.memberMissionRepository = memberMissionRepository;
         this.memberRepository = memberRepository;
         this.missionRepository = missionRepository;
+        this.rewardService = rewardService;
     }
 
     @Transactional
-    public MemberMissionResDto createMemberMission(MemberMissionReqDto requestDto) {
-        // 1. 멤버 검증
-        Member member = memberRepository.findById(requestDto.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        // 2. 미션 검증
-        Mission mission = missionRepository.findById(requestDto.getMissionId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MISSION_NOT_FOUND));
-
-        // 3. 이미 해당 멤버가 이 미션을 가지고 있는지 검증
-        boolean exists = memberMissionRepository.existsByMemberAndMission(member, mission);
-        if (exists) {
-            throw new CustomException(ErrorCode.DUPLICATE_MEMBER_MISSION);
-        }
-
-        MemberMission memberMission = MemberMissionReqDto.toEntity(requestDto, member, mission);
-        MemberMission savedMemberMission = memberMissionRepository.save(memberMission);
-        return MemberMissionResDto.fromEntity(savedMemberMission);
-    }
-
-    @Transactional
-    public MemberMissionResDto updateMemberMission(Long id, MemberMissionReqDto requestDto) {
-        // 1. 멤버 미션 검증 및 해당 멤버인지 검증
+    public MemberMissionResDto updateMissionProgress(Long id,
+        MemberMissionProgressUpdateReqDto requestDto) {
         MemberMission memberMission = memberMissionRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
 
-        if (!memberMission.getMember().getMemberId().equals(requestDto.getMemberId())) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        memberMission.updateProgress(requestDto.getCurrentValue(), requestDto.getEventType());
+        return MemberMissionResDto.fromEntity(memberMission);
+    }
+
+    @Transactional
+    public MemberMissionResDto claimReward(Long memberMissionId) {
+        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
+
+        // 보상 지급 가능 여부 확인
+        if (!memberMission.canReceiveReward()) {
+            throw new CustomException(ErrorCode.INVALID_REWARD_CLAIM);
         }
 
-        // 2. 상태와 진행도가 100%가 되면 상태 변경 로직
-        MissionStatusType status = requestDto.getStatus();
-        double progress = requestDto.getProgress();
+        // 보상 지급
+        Mission mission = memberMission.getMission();
+        rewardService.giveReward(
+            memberMission.getMember(),
+            mission.getReward().getType(),
+            mission.getReward().getQuantity(),
+            mission.getReward().getItemNo()
+        );
 
-        if ((status == MissionStatusType.PROGRESSING || status == MissionStatusType.NOT_STARTED)
-            && Double.compare(progress, 100.0) == 0) {
-            status = MissionStatusType.COMPLETED;
-        }
-
-        memberMission.updateStatus(status, progress);
+        // 보상 지급 완료 표시
+        memberMission.markAsRewarded();
 
         return MemberMissionResDto.fromEntity(memberMission);
     }
@@ -95,10 +87,20 @@ public class MemberMissionService {
     }
 
     @Transactional
-    public void deleteMemberMission(Long id) {
-        MemberMission memberMission = memberMissionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
-        memberMissionRepository.delete(memberMission);
+    public void assignDailyMissionsToMember(Member member) {
+        // isDaily가 true인 미션 목록 조회
+        List<Mission> dailyMissions = missionRepository.findByIsDaily(true);
+
+        // 회원에게 데일리 미션 할당
+        for (Mission mission : dailyMissions) {
+            if (!memberMissionRepository.existsByMemberAndMission(member, mission)) {
+                MemberMission memberMission = MemberMission.builder()
+                    .member(member)
+                    .mission(mission)
+                    .build();
+                memberMissionRepository.save(memberMission);
+            }
+        }
     }
 
 }
