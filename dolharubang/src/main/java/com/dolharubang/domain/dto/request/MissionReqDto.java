@@ -1,9 +1,14 @@
 package com.dolharubang.domain.dto.request;
 
-import com.dolharubang.domain.dto.common.ConditionDetail;
 import com.dolharubang.domain.entity.Mission;
-import com.dolharubang.type.MissionType;
+import com.dolharubang.domain.entity.MissionCondition;
+import com.dolharubang.domain.entity.MissionReward;
+import com.dolharubang.type.ConditionType;
+import com.dolharubang.type.MissionCategory;
 import com.dolharubang.type.RewardType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,11 +20,21 @@ public class MissionReqDto {
 
     private String name;
     private String description;
-    private String missionImgUrl;
-    private MissionType missionType;
+
+    @JsonProperty("isHidden")
     private boolean isHidden;
+
+    @JsonProperty("isDaily")
     private boolean isDaily;
-    private ConditionDetail conditionDetail;
+
+    // MissionCondition 관련
+    private MissionCategory category;
+    private ConditionType conditionType;
+    private int requiredValue;
+    private Integer periodDays;
+    private Map<String, Object> conditionDetails;
+
+    // MissionReward 관련
     private RewardType rewardType;
     private int rewardQuantity;
     private String rewardItemNo;
@@ -28,14 +43,20 @@ public class MissionReqDto {
         return Mission.builder()
             .name(this.name)
             .description(this.description)
-            .missionImgUrl(this.missionImgUrl)
-            .missionType(this.missionType)
-            .conditionDetail(this.conditionDetail)
-            .rewardType(this.rewardType)
-            .rewardQuantity(this.rewardQuantity)
-            .rewardItemNo(this.rewardItemNo)
             .isHidden(this.isHidden)
             .isDaily(this.isDaily)
+            .condition(MissionCondition.builder()
+                .category(this.category)
+                .conditionType(this.conditionType)
+                .requiredValue(this.requiredValue)
+                .periodDays(this.periodDays)
+                .details(this.conditionDetails != null ? this.conditionDetails : new HashMap<>())
+                .build())
+            .reward(MissionReward.builder()
+                .type(this.rewardType)
+                .quantity(this.rewardQuantity)
+                .itemNo(this.rewardItemNo)
+                .build())
             .build();
     }
 }
