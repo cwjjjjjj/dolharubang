@@ -3,85 +3,130 @@ package com.dolharubang.service;
 import com.dolharubang.domain.dto.request.MissionReqDto;
 import com.dolharubang.domain.dto.response.MissionResDto;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.Mission;
+import com.dolharubang.domain.entity.MissionCondition;
+import com.dolharubang.domain.entity.MissionReward;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.MissionRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class MissionService {
 
     private final MissionRepository missionRepository;
+    private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
 
-    public MissionService(MissionRepository missionRepository, MemberRepository memberRepository) {
+    public MissionService(MissionRepository missionRepository,
+        MemberMissionRepository memberMissionRepository, MemberRepository memberRepository) {
         this.missionRepository = missionRepository;
+        this.memberMissionRepository = memberMissionRepository;
         this.memberRepository = memberRepository;
     }
 
-    @Transactional(readOnly = true)
     public List<Mission> getUnassignedMissionsForMember(Long memberId) {
-        // 멤버의 유효성 체크
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        // 미션 조회
         return missionRepository.findMissionsNotAssignedToMember(member);
     }
 
     @Transactional
     public MissionResDto createMission(MissionReqDto requestDto) {
-        // Mission 엔티티 생성 및 저장
-        Mission mission = Mission.builder()
-            .name(requestDto.getName())
-            .description(requestDto.getDescription())
-            .missionImgUrl(requestDto.getMissionImgUrl())
-            .missionType(requestDto.getMissionType())
-            .isHidden(requestDto.isHidden())
-            .isDaily(requestDto.isDaily())
-            .conditionDetail(requestDto.getConditionDetail())
-            .rewardType(requestDto.getRewardType())
-            .rewardQuantity(requestDto.getRewardQuantity())
-            .rewardItemNo(requestDto.getRewardItemNo())
-            .build();
-
+        Mission mission = requestDto.toEntity();
         Mission savedMission = missionRepository.save(mission);
+
+        // 모든 회원에게 미션 할당
+        List<Member> allMembers = memberRepository.findAll();
+        List<MemberMission> memberMissions = allMembers.stream()
+            .map(member -> MemberMission.builder()
+                .member(member)
+                .mission(savedMission)
+                .build())
+            .collect(Collectors.toList());
+        memberMissionRepository.saveAll(memberMissions);
+
         return MissionResDto.fromEntity(savedMission);
     }
 
     @Transactional
     public MissionResDto updateMission(Long id, MissionReqDto requestDto) {
-        // 존재하는 미션 조회 및 업데이트
         Mission mission = missionRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.MISSION_NOT_FOUND));
 
-        mission.updateMission(
+        boolean wasDaily = mission.isDaily();
+
+        mission.update(
             requestDto.getName(),
             requestDto.getDescription(),
-            requestDto.getMissionImgUrl(),
-            requestDto.getMissionType(),
             requestDto.isHidden(),
             requestDto.isDaily(),
-            requestDto.getConditionDetail(),
-            requestDto.getRewardType(),
-            requestDto.getRewardQuantity(),
-            requestDto.getRewardItemNo()
+            MissionCondition.builder()
+                .category(requestDto.getCategory())
+                .conditionType(requestDto.getConditionType())
+                .requiredValue(requestDto.getRequiredValue())
+                .periodDays(requestDto.getPeriodDays())
+                .details(requestDto.getConditionDetails())
+                .build(),
+            MissionReward.builder()
+                .type(requestDto.getRewardType())
+                .quantity(requestDto.getRewardQuantity())
+                .itemNo(requestDto.getRewardItemNo())
+                .build()
         );
 
-        Mission updatedMission = missionRepository.save(mission);
-        return MissionResDto.fromEntity(updatedMission);
-    }
-
-    @Transactional(readOnly = true)
-    public MissionResDto getMission(Long id) {
-        // 미션 조회
-        Mission mission = missionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ErrorCode.MISSION_NOT_FOUND));
+        if (!wasDaily && mission.isDaily()) {
+            updateDailyMissionsForAllMembers();
+        }
 
         return MissionResDto.fromEntity(mission);
     }
+
+    public MissionResDto getMission(Long id) {
+        Mission mission = missionRepository.findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MISSION_NOT_FOUND));
+        return MissionResDto.fromEntity(mission);
+    }
+
+    @Transactional
+    public void updateDailyMissionsForAllMembers() {
+        List<Member> allMembers = memberRepository.findAll();
+        List<Mission> dailyMissions = missionRepository.findByIsDaily(true);
+
+        for (Member member : allMembers) {
+            // 기존 데일리 미션 중 더 이상 데일리가 아닌 미션 삭제
+            memberMissionRepository.deleteByMemberAndMissionNotIn(member, dailyMissions);
+
+            // 새로운 데일리 미션 할당
+            for (Mission mission : dailyMissions) {
+                if (!memberMissionRepository.existsByMemberAndMission(member, mission)) {
+                    MemberMission memberMission = MemberMission.builder()
+                        .member(member)
+                        .mission(mission)
+                        .build();
+                    memberMissionRepository.save(memberMission);
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void assignAllMissionsToNewMember(Member member) {
+        List<Mission> allMissions = missionRepository.findAll();
+        List<MemberMission> memberMissions = allMissions.stream()
+            .map(mission -> MemberMission.builder()
+                .member(member)
+                .mission(mission)
+                .build())
+            .collect(Collectors.toList());
+        memberMissionRepository.saveAll(memberMissions);
+    }
+
 }
