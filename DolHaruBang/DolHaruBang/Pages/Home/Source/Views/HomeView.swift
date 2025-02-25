@@ -314,7 +314,16 @@ struct HomeView : View {
                 .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
                 .frame(height: geometry.size.height)
                 .keyboardResponder(isKeyboardVisible: $store.isKeyboardVisible)
-                .onAppear (perform : UIApplication.shared.hideKeyboard)
+                .onAppear (
+                    perform : UIApplication.shared.hideKeyboard
+                )
+                .onAppear{
+                    store.send(.fetchBackground)
+                    store.send(.fetchFace)
+                    store.send(.fetchFaceShape)
+                    store.send(.fetchAccessory)
+                    store.send(.fetchNest)
+                }
                 .onTapGesture {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }

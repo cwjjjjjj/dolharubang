@@ -12,8 +12,25 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
     let store: StoreOf<HomeFeature>
     
     @State private var selectedItem : T?
-    // 추가 0
     @State private var showPurchaseAlert = false
+    
+    // 타입별로 다른 변수 받아오는 로직 구현
+    private var items: [CustomizeItem] {
+           switch T.self {
+           case is Background.Type:
+               return store.backItems
+           case is Face.Type:
+               return store.faceItems
+           case is FaceShape.Type:
+               return store.faceShapeItems
+           case is Nest.Type:
+               return store.nestItems
+           case is Accessory.Type:
+               return store.accessoryItems
+           default:
+               return []
+           }
+       }
       
     private let columns = [
         GridItem(.flexible()),
@@ -26,7 +43,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: columns, spacing: 14) {
                         ForEach(T.allCases, id: \.self) { item in
-                            let matchedItem = store.customizeInfo.first { $0.name == item.description }
+                            let matchedItem = items.first { $0.name == item.description }
                                                        
                             
                             Button(action: {
@@ -89,7 +106,14 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                   
                                 }
                                 Button("구매", role: .none) {
-                                    // 여기에 구매 로직 추가
+//                                    // 여기에 구매 로직 추가
+                                    // 현재 너무 복잡한 타입검사가 들어간다고 실행불가
+//                                    if let id = matchedItem?.itemId {
+//                                        store.send(.purchaseItem(id, type: T))
+//                                    }
+//                                    if let itemId = matchedItem?.itemId {
+//                                        store.send(.purchaseItem(itemId, type: T.self))
+//                                    }
                                 }
                             } message: {
                                 if let price = matchedItem?.price {
@@ -109,18 +133,18 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
             .frame(maxWidth: .infinity, maxHeight: .infinity) // VStack의 최대 크기를 무한대로 설정
             .padding(.bottom, 30) 
         }
-        .onAppear {
-            switch T.self {
-                        case is Background.Type:
-                            store.send(.fetchBackground)
-                            // Background 타입에 대한 처리
-                        case is Face.Type:
-                            store.send(.fetchFace)
-                        case is FaceShape.Type:
-                            store.send(.fetchFaceShape)
-                        default:
-                            print("Unknown type")
-                        }
-        }// onAppear
+//        .onAppear {
+//            switch T.self {
+//                        case is Background.Type:
+//                            store.send(.fetchBackground)
+//                            // Background 타입에 대한 처리
+//                        case is Face.Type:
+//                            store.send(.fetchFace)
+//                        case is FaceShape.Type:
+//                            store.send(.fetchFaceShape)
+//                        default:
+//                            print("Unknown type")
+//                        }
+//        }
     }
 }
