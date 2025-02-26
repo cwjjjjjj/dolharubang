@@ -10,10 +10,12 @@ import Alamofire
 
 
 struct CustomizeItem: Hashable, Codable {
+    let price : Int
+    let imageUrl : String
+    let itemId : String
     let name: String
     let isOwned: Bool
     let isSelected: Bool
-    let price : Int
 }
 
 
@@ -22,6 +24,9 @@ struct HomeClient {
     var background: @Sendable () async throws -> [CustomizeItem]
     var face : @Sendable () async throws -> [CustomizeItem]
     var faceShape : @Sendable () async throws -> [CustomizeItem]
+    var nest: @Sendable () async throws -> [CustomizeItem]
+    var accessory : @Sendable () async throws -> [CustomizeItem]
+    var purchaseItem : @Sendable (String) async throws -> [CustomizeItem]
 }
 
 // 실제 통신 전 테스트
@@ -41,53 +46,166 @@ extension DependencyValues {
 extension HomeClient: DependencyKey {
     static let liveValue = HomeClient(
         background: {
-            
-            let url = "http://211.49.26.51:8080/api/v1/pepperoni"
-            
-            
-//            return try await fetch(url: url, model: Background.self, method: .get)
-            
-            return CustomizeItem.mockBackItem
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/BACKGROUND"
+                do {
+                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                } catch {
+                    print("Background items fetch error:", error)
+                    return CustomizeItem.mockBackItem
+                }
         },
         face: {
-            let url = "http://211.49.26.51:8080/api/v1/pepperoni"
-            
-            
-//            return try await fetch(url: url, model: Background.self, method: .get)
-            
-            return CustomizeItem.mockFaceItem
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/FACE"
+                do {
+                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                } catch {
+                    print("Background items fetch error:", error)
+                    return CustomizeItem.mockBackItem
+                }
         },
         faceShape: {
-            let url = "http://211.49.26.51:8080/api/v1/pepperoni"
-            
-            
-//            return try await fetch(url: url, model: Background.self, method: .get)
-            
-            return CustomizeItem.mockFaceItem
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/SHAPE"
+                do {
+                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                } catch {
+                    print("Background items fetch error:", error)
+                    return CustomizeItem.mockBackItem
+                }
+        },
+        nest: {
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/NEST"
+                do {
+                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                } catch {
+                    print("Background items fetch error:", error)
+                    return CustomizeItem.mockBackItem
+                }
+        },
+        accessory: {
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/ACCESORY"
+                do {
+                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                } catch {
+                    print("Background items fetch error:", error)
+                    return CustomizeItem.mockBackItem
+                }
+        },
+        purchaseItem : { itemId in
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/wear/15?itemId=\(itemId)"
+                do {
+                        return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                    } catch {
+                        print("아이템 구매 실패:", error)
+                        return CustomizeItem.mockBackItem
+                    }
         }
+        
     )
 }
 
 
 extension CustomizeItem {
-    static let mockBackItem: [CustomizeItem] = [
-        CustomizeItem(name: "7월의 푸른 잔디", isOwned: true, isSelected: false, price: 50),
-        CustomizeItem(name: "4월의 분홍빛 노을", isOwned: false, isSelected: true, price: 53),
-        CustomizeItem(name: "12월의 하얀 잔디", isOwned: true, isSelected: false, price: 54)
-    ]
-    
-    static let mockFaceItem : [CustomizeItem] = [
-        CustomizeItem(name: Face.sparkle.description, isOwned: true, isSelected: false, price: 50),
-              CustomizeItem(name: Face.sosim.description, isOwned: false, isSelected: false, price: 50),
-              CustomizeItem(name: Face.saechim.description, isOwned: true, isSelected: false, price: 24),
-              CustomizeItem(name: Face.nareun.description, isOwned: false, isSelected: false, price: 15),
-              CustomizeItem(name: Face.meong.description, isOwned: true, isSelected: false, price: 27),
-              CustomizeItem(name: Face.cupid.description, isOwned: false, isSelected: false, price: 84),
-              CustomizeItem(name: Face.bboombboom.description, isOwned: true, isSelected: false, price: 23),
-              CustomizeItem(name: Face.balral.description, isOwned: false, isSelected: true, price: 12),
-              CustomizeItem(name: Face.chic.description, isOwned: true, isSelected: false, price: 50)
-         
-    ]
+   static let mockBackItem: [CustomizeItem] = [
+       CustomizeItem(
+           price: 50,
+           imageUrl: "https://cdn.pixabay.com/photo/2023/11/30/10/52/bears-8421343_1280.jpg",
+           itemId: "67bb2c0605072c0c7c37a3f1",
+           name: "7월의 푸른 잔디",
+           isOwned: true,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 53,
+           imageUrl: "https://cdn.pixabay.com/photo/2023/11/30/10/52/bears-8421343_1280.jpg",
+           itemId: "67bb2c0605072c0c7c37a3f2",
+           name: "4월의 분홍빛 노을",
+           isOwned: true,
+           isSelected: true
+       ),
+       CustomizeItem(
+           price: 54,
+           imageUrl: "https://cdn.pixabay.com/photo/2023/11/30/10/52/bears-8421343_1280.jpg",
+           itemId: "67bb2c0605072c0c7c37a3f3",
+           name: "12월의 하얀 잔디",
+           isOwned: true,
+           isSelected: false
+       )
+   ]
+   
+   static let mockFaceItem: [CustomizeItem] = [
+       CustomizeItem(
+           price: 50,
+           imageUrl: "face_sparkle_url",
+           itemId: "face_sparkle_id",
+           name: Face.sparkle.description,
+           isOwned: true,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 50,
+           imageUrl: "face_sosim_url",
+           itemId: "face_sosim_id",
+           name: Face.sosim.description,
+           isOwned: false,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 24,
+           imageUrl: "face_saechim_url",
+           itemId: "face_saechim_id",
+           name: Face.saechim.description,
+           isOwned: true,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 15,
+           imageUrl: "face_nareun_url",
+           itemId: "face_nareun_id",
+           name: Face.nareun.description,
+           isOwned: false,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 27,
+           imageUrl: "face_meong_url",
+           itemId: "face_meong_id",
+           name: Face.meong.description,
+           isOwned: true,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 84,
+           imageUrl: "face_cupid_url",
+           itemId: "face_cupid_id",
+           name: Face.cupid.description,
+           isOwned: false,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 23,
+           imageUrl: "face_bboombboom_url",
+           itemId: "face_bboombboom_id",
+           name: Face.bboombboom.description,
+           isOwned: true,
+           isSelected: false
+       ),
+       CustomizeItem(
+           price: 12,
+           imageUrl: "face_balral_url",
+           itemId: "face_balral_id",
+           name: Face.balral.description,
+           isOwned: false,
+           isSelected: true
+       ),
+       CustomizeItem(
+           price: 50,
+           imageUrl: "face_chic_url",
+           itemId: "face_chic_id",
+           name: Face.chic.description,
+           isOwned: true,
+           isSelected: false
+       )
+   ]
 }
 
 private let jsonDecoder: JSONDecoder = {
