@@ -26,11 +26,6 @@
 		657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780F72C84AFC400DC08C2 /* DBTIFeature.swift */; };
 		657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F952C7452B7002FFA69 /* hideKeyboard.swift */; };
 		657E5F982C745356002FFA69 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E5F972C745356002FFA69 /* View.swift */; };
-		658216AC2CA55DE200C5CD37 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A82CA55DE200C5CD37 /* Dols.scnassets */; };
-		658216AD2CA55DE200C5CD37 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A92CA55DE200C5CD37 /* Mails.scnassets */; };
-		658216AE2CA55DE200C5CD37 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216AA2CA55DE200C5CD37 /* Nests.scnassets */; };
-		658216AF2CA55DE200C5CD37 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216A72CA55DE200C5CD37 /* Accessorys.scnassets */; };
-		658216B02CA55DE200C5CD37 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216AB2CA55DE200C5CD37 /* Signs.scnassets */; };
 		658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 658216B52CA56B0400C5CD37 /* Profile.xcassets */; };
 		658216BE2CA5795C00C5CD37 /* MailEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658216BD2CA5795500C5CD37 /* MailEnviroment.swift */; };
 		658216C02CA5798400C5CD37 /* MailFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658216BF2CA5796100C5CD37 /* MailFeature.swift */; };
@@ -83,8 +78,14 @@
 		DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */; };
 		DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */; };
 		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
-		DA7FE5832C88231100843462 /* CalendarFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5822C88231100843462 /* CalendarFeature.swift */; };
-		DA7FE5852C8826A200843462 /* RecordPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5842C8826A200843462 /* RecordPopupView.swift */; };
+		DA7431582D6EFB0700C2C148 /* CalendarFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7431572D6EFB0700C2C148 /* CalendarFeature.swift */; };
+		DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7431592D6EFB0E00C2C148 /* CalendarEnvironment.swift */; };
+		DA794FA32D69B331006EF213 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794F9E2D69B331006EF213 /* Accessorys.scnassets */; };
+		DA794FA42D69B331006EF213 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA02D69B331006EF213 /* Mails.scnassets */; };
+		DA794FA52D69B331006EF213 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794F9F2D69B331006EF213 /* Dols.scnassets */; };
+		DA794FA62D69B331006EF213 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA22D69B331006EF213 /* Signs.scnassets */; };
+		DA794FA72D69B331006EF213 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA12D69B331006EF213 /* Nests.scnassets */; };
+		DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5842C8826A200843462 /* SchedulePopupView.swift */; };
 		DA91E0B72C91562200CD41A4 /* TalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B62C91562200CD41A4 /* TalkView.swift */; };
 		DA91E0B92C91566000CD41A4 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */; };
 		DA91E0C52C916AAE00CD41A4 /* TalkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C42C916AAE00CD41A4 /* TalkFeature.swift */; };
@@ -157,11 +158,6 @@
 		657780F72C84AFC400DC08C2 /* DBTIFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIFeature.swift; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		657E5F972C745356002FFA69 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		658216A72CA55DE200C5CD37 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
-		658216A82CA55DE200C5CD37 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
-		658216A92CA55DE200C5CD37 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
-		658216AA2CA55DE200C5CD37 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
-		658216AB2CA55DE200C5CD37 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
 		658216B52CA56B0400C5CD37 /* Profile.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Profile.xcassets; sourceTree = "<group>"; };
 		658216BD2CA5795500C5CD37 /* MailEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailEnviroment.swift; sourceTree = "<group>"; };
 		658216BF2CA5796100C5CD37 /* MailFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailFeature.swift; sourceTree = "<group>"; };
@@ -214,8 +210,14 @@
 		DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIResultView.swift; sourceTree = "<group>"; };
 		DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardGuardian.swift; path = DolHaruBang/Pages/DBTI/Source/Views/KeyboardGuardian.swift; sourceTree = SOURCE_ROOT; };
 		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
-		DA7FE5822C88231100843462 /* CalendarFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarFeature.swift; path = DolHaruBang/Pages/Calendar/Source/CalendarFeature.swift; sourceTree = SOURCE_ROOT; };
-		DA7FE5842C8826A200843462 /* RecordPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPopupView.swift; sourceTree = "<group>"; };
+		DA7431572D6EFB0700C2C148 /* CalendarFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFeature.swift; sourceTree = "<group>"; };
+		DA7431592D6EFB0E00C2C148 /* CalendarEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEnvironment.swift; sourceTree = "<group>"; };
+		DA794F9E2D69B331006EF213 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		DA794F9F2D69B331006EF213 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
+		DA794FA02D69B331006EF213 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
+		DA794FA12D69B331006EF213 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
+		DA794FA22D69B331006EF213 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
+		DA7FE5842C8826A200843462 /* SchedulePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePopupView.swift; sourceTree = "<group>"; };
 		DA91E0B62C91562200CD41A4 /* TalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkView.swift; sourceTree = "<group>"; };
 		DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		DA91E0BA2C91580E00CD41A4 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageView.swift; path = DolHaruBang/Pages/Calendar/Source/View/MyPageView.swift; sourceTree = SOURCE_ROOT; };
@@ -406,17 +408,17 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA794F9E2D69B331006EF213 /* Accessorys.scnassets */,
+				DA794F9F2D69B331006EF213 /* Dols.scnassets */,
+				DA794FA02D69B331006EF213 /* Mails.scnassets */,
+				DA794FA12D69B331006EF213 /* Nests.scnassets */,
+				DA794FA22D69B331006EF213 /* Signs.scnassets */,
 				DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
 				DAAEFC2C2C57436B00D1F87B /* Fonts */,
 				65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */,
-				658216A72CA55DE200C5CD37 /* Accessorys.scnassets */,
-				658216A82CA55DE200C5CD37 /* Dols.scnassets */,
-				658216A92CA55DE200C5CD37 /* Mails.scnassets */,
-				658216AA2CA55DE200C5CD37 /* Nests.scnassets */,
-				658216AB2CA55DE200C5CD37 /* Signs.scnassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -752,7 +754,7 @@
 		DA461F6C2C81608D00270CDE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				DA6904332CB3D4B400A557A1 /* Core */,
+				DA7431562D6EFAF000C2C148 /* Core */,
 				DA461F6D2C81609300270CDE /* View */,
 			);
 			path = Source;
@@ -762,7 +764,7 @@
 			isa = PBXGroup;
 			children = (
 				DA461F712C81958E00270CDE /* CalendarView.swift */,
-				DA7FE5842C8826A200843462 /* RecordPopupView.swift */,
+				DA7FE5842C8826A200843462 /* SchedulePopupView.swift */,
 				DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */,
 			);
 			path = View;
@@ -816,14 +818,6 @@
 			path = ProfileImage;
 			sourceTree = "<group>";
 		};
-		DA6904332CB3D4B400A557A1 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				DA7FE5822C88231100843462 /* CalendarFeature.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		DA6E576B2C58609B0088A7A7 /* BGM */ = {
 			isa = PBXGroup;
 			children = (
@@ -858,6 +852,15 @@
 				DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */,
 			);
 			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		DA7431562D6EFAF000C2C148 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				DA7431592D6EFB0E00C2C148 /* CalendarEnvironment.swift */,
+				DA7431572D6EFB0700C2C148 /* CalendarFeature.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		DA91E0B32C9154CF00CD41A4 /* Core */ = {
@@ -1218,12 +1221,12 @@
 				DAA4C9FD2C8B7C6900409D4B /* Background.xcassets in Resources */,
 				DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
-				658216AC2CA55DE200C5CD37 /* Dols.scnassets in Resources */,
-				658216AD2CA55DE200C5CD37 /* Mails.scnassets in Resources */,
 				658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */,
-				658216AE2CA55DE200C5CD37 /* Nests.scnassets in Resources */,
-				658216AF2CA55DE200C5CD37 /* Accessorys.scnassets in Resources */,
-				658216B02CA55DE200C5CD37 /* Signs.scnassets in Resources */,
+				DA794FA32D69B331006EF213 /* Accessorys.scnassets in Resources */,
+				DA794FA42D69B331006EF213 /* Mails.scnassets in Resources */,
+				DA794FA52D69B331006EF213 /* Dols.scnassets in Resources */,
+				DA794FA62D69B331006EF213 /* Signs.scnassets in Resources */,
+				DA794FA72D69B331006EF213 /* Nests.scnassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				65AFAD832CA0A26B00B565D1 /* lythwood_field_4k.hdr in Resources */,
@@ -1300,6 +1303,7 @@
 				DA461F742C81E45C00270CDE /* CalendarUtil.swift in Sources */,
 				658216C02CA5798400C5CD37 /* MailFeature.swift in Sources */,
 				6597920B2C9E1CE400E2B51D /* SettingFeature.swift in Sources */,
+				DA7431582D6EFB0700C2C148 /* CalendarFeature.swift in Sources */,
 				657E5F962C7452B7002FFA69 /* hideKeyboard.swift in Sources */,
 				65AFAD892CA0B85100B565D1 /* SignView.swift in Sources */,
 				DAA4C9DB2C8B7A7700409D4B /* MakeCameraUtil.swift in Sources */,
@@ -1318,7 +1322,6 @@
 				DAA4C9DA2C8B7A7700409D4B /* LoadNodeUtil.swift in Sources */,
 				65AFAD922CA18CA400B565D1 /* TrophyListView.swift in Sources */,
 				DA6E57822C5B25170088A7A7 /* Text.swift in Sources */,
-				DA7FE5832C88231100843462 /* CalendarFeature.swift in Sources */,
 				DA69041F2CAFBF2B00A557A1 /* DoljanchiFeature.swift in Sources */,
 				65382E722CA28E21003F130B /* MyPageEnviroment.swift in Sources */,
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
@@ -1326,9 +1329,10 @@
 				65382E822CA326F9003F130B /* ProfileFeature.swift in Sources */,
 				DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
+				DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */,
 				65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */,
 				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
-				DA7FE5852C8826A200843462 /* RecordPopupView.swift in Sources */,
+				DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */,
 				DAA4CA042C8B7C6900409D4B /* CustomizeView.swift in Sources */,
 				656BB3362C9DB9A90034AA2A /* Nest.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,

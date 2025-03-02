@@ -85,10 +85,19 @@ struct DBTIGuideView: View {
                         .padding()
                         // 애플로그인 테스트 종료
                         HStack {
-                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View(DBTIFeature.State())){
+//                            NavigationLink(state : NavigationFeature.Path.State.DBTIQuestion1View(DBTIFeature.State())){
+//                                HStack {
+//                                    Spacer()
+//                                    Text("테스트 시작")
+//                                        .font(.customFont(Font.button1))
+//                                        .foregroundColor(.mainWhite)
+//                                    Spacer()
+//                                }
+//                            }
+                            NavigationLink(state: NavigationFeature.Path.State.home(HomeFeature.State())) {
                                 HStack {
                                     Spacer()
-                                    Text("테스트 시작")
+                                    Text("함께 시작하기!")
                                         .font(.customFont(Font.button1))
                                         .foregroundColor(.mainWhite)
                                     Spacer()

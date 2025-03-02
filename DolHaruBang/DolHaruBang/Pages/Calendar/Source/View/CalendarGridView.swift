@@ -11,7 +11,7 @@ struct CalendarGridView: View {
     // 달력 표시 날짜 배열
     let daysInMonth: [Date?]
     // 달력 표시 일정 - 날짜별 문자열
-    @Binding var records: [Date: [String]]
+    @Binding var schedules: [Date: [Schedule]]
     // 선택된 날짜
     @Binding var selectedDate: Date?
     // 일정 팝업 표시 여부
@@ -23,8 +23,8 @@ struct CalendarGridView: View {
         VStack(spacing: 0) {
             // 일~토 요일 표시
             HStack(spacing: 0) {
-                ForEach(0..<days.count, id: \.self) { index in
-                    Text(days[index])
+                ForEach(0..<daysOfTheWeek.count, id: \.self) { index in
+                    Text(daysOfTheWeek[index])
                         .font(.customFont(Font.body3Bold))
                         .frame(maxWidth: .infinity)
                         .foregroundColor(index == 0 ? Color(hex:"E16631") : .coreDisabled)
@@ -64,7 +64,7 @@ struct CalendarGridView: View {
                                     
                                     // 기록 동그라미
                                     HStack {
-                                        if let dayRecords = records[date] {
+                                        if let dayRecords = schedules[date] {
                                             ForEach(0..<dayRecords.count, id: \.self) { recordIndex in
                                                 Circle()
                                                     .fill(circleColors[recordIndex])
@@ -96,7 +96,7 @@ struct CalendarGridView: View {
         } // end of VStack
         .padding(.vertical, 0)
         .onAppear {
-            print("Days in month: \(daysInMonth)")
+//            print("Days in month: \(daysInMonth)")
         }
     }
 }

@@ -34,7 +34,7 @@ let dateFormatterWeekday: DateFormatter = {
     return formatter
 }()
 
-let days = ["일", "월", "화", "수", "목", "금", "토"]
+let daysOfTheWeek = ["일", "월", "화", "수", "목", "금", "토"]
 
 // 현재 월의 날짜 배열을 반환
 func daysInMonth(calendar: Calendar, store: StoreOf<CalendarFeature>) -> [Date?] {

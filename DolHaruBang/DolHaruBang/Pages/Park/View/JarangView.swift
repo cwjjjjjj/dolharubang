@@ -9,7 +9,8 @@ struct JarangView: View {
         GeometryReader { geo in
             VStack {
                     
-                if isLoading {Rectangle()
+                if isLoading {
+                    Rectangle()
                         .fill(.coreGray)
                         .frame(width: geo.size.width, height: geo.size.height * 17/22)
                         .cornerRadius(15)
@@ -55,16 +56,6 @@ struct JarangView: View {
             }
             .background(.ffffff)
             .cornerRadius(15)
-        }
-    }
-}
-
-// Preview를 위한 예시
-struct JarangView_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            JarangView(isLoading: true, nickname: "", roomName: "")
-            JarangView(isLoading: false, nickname: "사용자", roomName: "우리 방")
         }
     }
 }
