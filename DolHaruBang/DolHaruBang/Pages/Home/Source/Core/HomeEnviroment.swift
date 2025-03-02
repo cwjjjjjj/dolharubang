@@ -27,6 +27,7 @@ struct HomeClient {
     var nest: @Sendable () async throws -> [CustomizeItem]
     var accessory : @Sendable () async throws -> [CustomizeItem]
     var purchaseItem : @Sendable (String) async throws -> [CustomizeItem]
+    var selectItem : @Sendable (String) async throws -> [CustomizeItem]
 }
 
 // 실제 통신 전 테스트
@@ -91,11 +92,21 @@ extension HomeClient: DependencyKey {
                 }
         },
         purchaseItem : { itemId in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/wear/15?itemId=\(itemId)"
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/buy/15?itemId=\(itemId)"
                 do {
-                        return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
+                        return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
                     } catch {
                         print("아이템 구매 실패:", error)
+                        return CustomizeItem.mockBackItem
+                    }
+        },
+        selectItem : { itemId in
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/wear/15?itemId=\(itemId)"
+                print("입는 아이템 아이디 \(itemId)")
+                do {
+                        return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
+                    } catch {
+                        print("아이템 입기 실패:", error)
                         return CustomizeItem.mockBackItem
                     }
         }

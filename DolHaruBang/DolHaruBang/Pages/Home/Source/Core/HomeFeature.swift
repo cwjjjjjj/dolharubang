@@ -98,7 +98,10 @@ struct HomeFeature {
         case nestItemsResponse(Result<[CustomizeItem], Error>)
         
         // 아이템 구매
-        case purchaseItem(String, asType: Any.Type)
+        indirect case purchaseItem(String, refreshAction: Action)
+        
+        // 아이템 선택
+        indirect case selectItem(String, refreshAction: Action)
         
         case captureDol(UIImage)
     }
@@ -218,8 +221,10 @@ struct HomeFeature {
                 
             // MARK: 얼굴 표정 아이템 조회
             case .fetchFace:
+                print("패치 표정")
                 return .run { send in
                     do {
+                        print("1")
                         let customizeInfo = try await homeClient.face()
                         await send(.faceItemsResponse(.success(customizeInfo)))
                     } catch {
@@ -228,6 +233,7 @@ struct HomeFeature {
                 }
                 
             case let .faceItemsResponse(.success(customizeInfo)):
+                print("2")
                 state.faceItems = customizeInfo
                     if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                         if let face = Face.allCases.first(where: { $0.description == selectedItem.name }) {
@@ -310,32 +316,35 @@ struct HomeFeature {
                 return .none
                 
             // MARK: 아이템 구매
-            case let .purchaseItem(itemId, type):
-                return .run { [itemId, type] send in
+            case let .purchaseItem(itemId, refreshAction):
+                return .run { [itemId] send in
                     do {
-                        let updatedItems = try await homeClient.purchaseItem(itemId)
+                        // 아이템 구매 API 호출 - 여기서는 타입 정보 필요 없음
+                        let result = try await homeClient.purchaseItem(itemId)
                         
-                        // 타입에 따라 다른 응답 액션 호출
-                        switch type {
-                        case is Background.Type:
-                            await send(.backItemsResponse(.success(updatedItems)))
-                        case is Face.Type:
-                            await send(.faceItemsResponse(.success(updatedItems)))
-                        case is FaceShape.Type:
-                            await send(.faceShapeItemsResponse(.success(updatedItems)))
-                        case is Nest.Type:
-                            await send(.nestItemsResponse(.success(updatedItems)))
-                        case is Accessory.Type:
-                            await send(.accessoryItemsResponse(.success(updatedItems)))
-                        default:
-                            break
-                        }
+//                         구매 성공 후 해당 타입의 아이템 리스트를 새로고침하는 액션 전송
+                        await send(refreshAction)
                     } catch {
                         // 오류 처리
                         print("모래알부족")
                     }
                 }
                 
+            // MARK: 아이템 선택
+            case let .selectItem(itemId, refreshAction):
+                return .run { [itemId] send in
+                    do {
+                        // 아이템 구매 API 호출 - 여기서는 타입 정보 필요 없음
+                        let result = try await homeClient.selectItem(itemId)
+                        
+//                         구매 성공 후 해당 타입의 아이템 리스트를 새로고침하는 액션 전송
+                        await send(refreshAction)
+                    } catch {
+                        // 오류 처리
+                        print("옷입기실패")
+                    }
+                }
+
            
             }
         }

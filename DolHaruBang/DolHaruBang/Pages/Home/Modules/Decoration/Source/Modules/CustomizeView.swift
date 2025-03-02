@@ -13,6 +13,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
     
     @State private var selectedItem : T?
     @State private var showPurchaseAlert = false
+    @State private var currentItemId: String? = nil
     
     // 타입별로 다른 변수 받아오는 로직 구현
     private var items: [CustomizeItem] {
@@ -31,6 +32,23 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                return []
            }
        }
+    
+    private var refreshAction: HomeFeature.Action {
+            switch T.self {
+            case is Background.Type:
+                return .fetchBackground
+            case is Face.Type:
+                return .fetchFace
+            case is FaceShape.Type:
+                return .fetchFaceShape
+            case is Nest.Type:
+                return .fetchNest
+            case is Accessory.Type:
+                return .fetchAccessory
+            default:
+                fatalError("지원하지 않는 타입입니다")
+            }
+        }
       
     private let columns = [
         GridItem(.flexible()),
@@ -47,13 +65,15 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                                        
                             
                             Button(action: {
-                                // if문 추가 1
+                                // if문 추가
                                 if matchedItem?.isOwned == false {
+                                    currentItemId = matchedItem?.itemId
                                     showPurchaseAlert = true
                                 } else {
                                     // 기존 동작
                                     selectedItem = item
                                     item.performAction(with: store)
+                                    // 선택했다는 api 연결
                                 }
                             }) {
                                 VStack(spacing: 4) {
@@ -106,14 +126,11 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                   
                                 }
                                 Button("구매", role: .none) {
-//                                    // 여기에 구매 로직 추가
-                                    // 현재 너무 복잡한 타입검사가 들어간다고 실행불가
-//                                    if let id = matchedItem?.itemId {
-//                                        store.send(.purchaseItem(id, type: T))
-//                                    }
-//                                    if let itemId = matchedItem?.itemId {
-//                                        store.send(.purchaseItem(itemId, type: T.self))
-//                                    }
+                                    if let itemId = currentItemId {
+                                               // 아이템 ID와 함께 현재 타입에 맞는 새로고침 액션 전달
+                                               store.send(.purchaseItem(itemId, refreshAction: refreshAction))
+                                           }
+                                           currentItemId = nil
                                 }
                             } message: {
                                 if let price = matchedItem?.price {
