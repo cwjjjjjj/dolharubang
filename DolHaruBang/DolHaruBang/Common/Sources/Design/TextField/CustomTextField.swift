@@ -217,6 +217,8 @@ struct SimpleCustomTextField: UIViewRepresentable {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.setContentHuggingPriority(.required, for: .vertical)
         textField.setContentCompressionResistancePriority(.required, for: .vertical)
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
 
         if let placeholderColor = placeholderColor {
             textField.attributedPlaceholder = NSAttributedString(

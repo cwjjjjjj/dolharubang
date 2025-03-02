@@ -70,38 +70,31 @@ struct DBTIQuestion1View: View {
 //                        }
                         
                         NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(DBTIFeature.State())){
-                            VStack{
-                                CustomButton(
-                                    title: "속 괜찮아?",
-                                    font: .customFont(Font.button1),
-                                    textColor: .coreWhite,
-                                    isSelected: selectedButton == 1,
-                                    selectedTextColor: .coreWhite,
-                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                                    action: {
-                                        selectedButton = 1
-                                        tag = 1
-                                    }
-                                )
-                                .frame(width: 320, height: 48)
-                                .cornerRadius(24)
-                                
-                                CustomButton(
-                                    title: "상한 거 같은데 왜 먹어봤어?",
-                                    font: .customFont(Font.button1),
-                                    textColor: .coreWhite,
-                                    isSelected: selectedButton == 2,
-                                    selectedTextColor: .coreWhite,
-                                    selectedBackgroundColor: UIColor(Color.mainDarkGreen),
-                                    action: {
-                                        selectedButton = 2
-                                        tag = 2
-                                    }
-                                )
-                                .frame(width: 320, height: 48)
-                                .cornerRadius(24)
+                            HStack {
+                                Spacer()
+                                Text("속 괜찮아?")
+                                    .font(.customFont(Font.button1))
+                                    .foregroundColor(.mainWhite)
+                                Spacer()
                             }
+                        }
+                        .frame(width: 320, height: 48)
+                        .background(Color.mainGreen)
+                        .cornerRadius(24)
+                        
+                        NavigationLink(state : NavigationFeature.Path.State.DBTIResultView(DBTIFeature.State())){
+                            HStack {
+                                Spacer()
+                                Text("상한 거 같은데 왜 먹어봤어?")
+                                    .font(.customFont(Font.button1))
+                                    .foregroundColor(.mainWhite)
+                                Spacer()
                             }
+                        }
+                        .frame(width: 320, height: 48)
+                        .background(Color.mainGreen)
+                        .cornerRadius(24)
+                        
                     }
                     
                     Spacer().frame(height: geometry.size.height * 0.2892)
