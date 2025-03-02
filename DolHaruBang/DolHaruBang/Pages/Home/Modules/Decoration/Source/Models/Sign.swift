@@ -16,7 +16,7 @@ enum Sign : String, Customizable {
     }
     
     case none = "없음"
-    case woodensign = "나무 우체통"
+    case woodensign = "기본 우체통"
     
     var description: String {
             return self.rawValue

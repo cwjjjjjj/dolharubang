@@ -66,14 +66,18 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                             
                             Button(action: {
                                 // if문 추가
+                                currentItemId = matchedItem?.itemId
                                 if matchedItem?.isOwned == false {
-                                    currentItemId = matchedItem?.itemId
                                     showPurchaseAlert = true
                                 } else {
                                     // 기존 동작
                                     selectedItem = item
                                     item.performAction(with: store)
                                     // 선택했다는 api 연결
+                                    if let itemId = currentItemId {
+                                               store.send(.selectItem(itemId, refreshAction: refreshAction))
+                                           }
+                                           currentItemId = nil
                                 }
                             }) {
                                 VStack(spacing: 4) {

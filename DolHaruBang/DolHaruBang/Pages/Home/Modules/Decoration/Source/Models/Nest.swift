@@ -17,6 +17,7 @@ enum Nest : String,Customizable {
     case flowerpot = "꽃받침"
     case nest = "둥지"
     case woodstool = "나무"
+    case none = "없음"
     
     var description: String {
             return self.rawValue
