@@ -13,8 +13,9 @@ enum Accessory : String, Customizable {
         store.send(.selectAccessory(self))
     }
     
-    case none = "없음"
+    
     case black_glasses = "검은 안경"
+    case none = "없음"
     
     var description: String {
             return self.rawValue

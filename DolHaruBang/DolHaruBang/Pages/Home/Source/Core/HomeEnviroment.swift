@@ -60,7 +60,7 @@ extension HomeClient: DependencyKey {
                 do {
                     return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
                 } catch {
-                    print("Background items fetch error:", error)
+                    print("Face items fetch error:", error)
                     return CustomizeItem.mockBackItem
                 }
         },
@@ -69,7 +69,7 @@ extension HomeClient: DependencyKey {
                 do {
                     return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
                 } catch {
-                    print("Background items fetch error:", error)
+                    print("faceShape items fetch error:", error)
                     return CustomizeItem.mockBackItem
                 }
         },
@@ -78,16 +78,16 @@ extension HomeClient: DependencyKey {
                 do {
                     return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
                 } catch {
-                    print("Background items fetch error:", error)
+                    print("Nest items fetch error:", error)
                     return CustomizeItem.mockBackItem
                 }
         },
         accessory: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/ACCESORY"
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/ACCSESORY"
                 do {
                     return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
                 } catch {
-                    print("Background items fetch error:", error)
+                    print("accessory items fetch error:", error)
                     return CustomizeItem.mockBackItem
                 }
         },
