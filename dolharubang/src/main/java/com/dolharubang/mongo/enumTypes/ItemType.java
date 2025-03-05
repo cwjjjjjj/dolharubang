@@ -6,7 +6,7 @@ public enum ItemType {
     NEST,
 
     //악세사리
-    ACCSESORY,
+    ACCESSORY,
 
     //배경
     BACKGROUND,
