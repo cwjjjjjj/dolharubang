@@ -16,7 +16,6 @@ struct CalendarGridView: View {
     @Binding var selectedDate: Date?
     // 일정 팝업 표시 여부
     @Binding var showPopup: Bool
-
     private let calendar = Calendar.current
 
     var body: some View {
@@ -64,10 +63,10 @@ struct CalendarGridView: View {
                                     
                                     // 기록 동그라미
                                     HStack {
-                                        if let dayRecords = schedules[date] {
-                                            ForEach(0..<dayRecords.count, id: \.self) { recordIndex in
+                                        if let dailySchedules = schedules[date] {
+                                            ForEach(0..<dailySchedules.count, id: \.self) { scheduleIndex in
                                                 Circle()
-                                                    .fill(circleColors[recordIndex])
+                                                    .fill(circleColors[scheduleIndex])
                                                     .frame(width: 10, height: 10)
                                             }
                                         }
@@ -95,8 +94,5 @@ struct CalendarGridView: View {
             }
         } // end of VStack
         .padding(.vertical, 0)
-        .onAppear {
-//            print("Days in month: \(daysInMonth)")
-        }
     }
 }

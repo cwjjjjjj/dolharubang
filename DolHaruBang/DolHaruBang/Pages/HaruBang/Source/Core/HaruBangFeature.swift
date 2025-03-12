@@ -6,10 +6,7 @@ struct HaruBangFeature {
   
     @ObservableState
     struct State: Equatable {
-        // 선택된 배경을 관리하는 @Shared 속성
         @Shared(.inMemory("background")) var selectedBackground: Background = .December
-        
-        // TalkFeature와 관련된 상태를 포함
         var talkFeatureState: TalkFeature.State = TalkFeature.State()
     }
 
@@ -33,9 +30,7 @@ struct HaruBangFeature {
             switch action {
             case .binding:
                 return .none
-
             case .talkFeatureAction:
-                // TalkFeature 액션 처리 (필요 시 추가 로직 작성)
                 return .none
             }
         }

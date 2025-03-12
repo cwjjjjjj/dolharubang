@@ -86,6 +86,7 @@
 		DA794FA62D69B331006EF213 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA22D69B331006EF213 /* Signs.scnassets */; };
 		DA794FA72D69B331006EF213 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA12D69B331006EF213 /* Nests.scnassets */; };
 		DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5842C8826A200843462 /* SchedulePopupView.swift */; };
+		DA89DF082D77578A00F04C93 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA89DF072D77578A00F04C93 /* ImageUtil.swift */; };
 		DA91E0B72C91562200CD41A4 /* TalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B62C91562200CD41A4 /* TalkView.swift */; };
 		DA91E0B92C91566000CD41A4 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */; };
 		DA91E0C52C916AAE00CD41A4 /* TalkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0C42C916AAE00CD41A4 /* TalkFeature.swift */; };
@@ -218,6 +219,7 @@
 		DA794FA12D69B331006EF213 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
 		DA794FA22D69B331006EF213 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
 		DA7FE5842C8826A200843462 /* SchedulePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePopupView.swift; sourceTree = "<group>"; };
+		DA89DF072D77578A00F04C93 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		DA91E0B62C91562200CD41A4 /* TalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkView.swift; sourceTree = "<group>"; };
 		DA91E0B82C91566000CD41A4 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		DA91E0BA2C91580E00CD41A4 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageView.swift; path = DolHaruBang/Pages/Calendar/Source/View/MyPageView.swift; sourceTree = SOURCE_ROOT; };
@@ -401,6 +403,7 @@
 				657E5F952C7452B7002FFA69 /* hideKeyboard.swift */,
 				657E5F972C745356002FFA69 /* View.swift */,
 				DA461F732C81E45C00270CDE /* CalendarUtil.swift */,
+				DA89DF072D77578A00F04C93 /* ImageUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1328,6 +1331,7 @@
 				DAA4C9FF2C8B7C6900409D4B /* Background.swift in Sources */,
 				65382E822CA326F9003F130B /* ProfileFeature.swift in Sources */,
 				DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */,
+				DA89DF082D77578A00F04C93 /* ImageUtil.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */,
 				65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */,

@@ -47,7 +47,7 @@ struct CalendarView: View {
                         VStack {
                             Spacer().frame(height: 16)
                             
-                            Text(dateFormatterYear.string(from: store.currentDate))
+                            Text("\(dateFormatterYear.string(from: store.currentDate))년")
                                 .font(.customFont(Font.body3Regular))
                                 .overlay(
                                     ShadowView(
@@ -62,7 +62,7 @@ struct CalendarView: View {
                                     .compositingGroup()
                                 )
                             
-                            Text(dateFormatterMonth.string(from: store.currentDate))
+                            Text("\(dateFormatterMonth.string(from: store.currentDate))월")
                                 .font(.customFont(Font.h6))
                                 .overlay(
                                     ShadowView(
@@ -177,9 +177,12 @@ struct CalendarView: View {
                     .frame(height: calendarHeight) // 남은 공간을 요일 및 날짜 부분으로 설정
                     .background(Color.coreWhite.gradient.shadow(.drop(color: Color(hex: "CECECE").opacity(0.5), radius: 10, x: 0, y: 4)))
                     .cornerRadius(15, corners: [.bottomLeft, .bottomRight])
-                    .onAppear() {
-                        store.send(.fetchSchedulesForMonth(year: 2025, month: 2, memberId: 1))
+                    .onAppear {
+                        print("Schedules on appear: \(store.schedules)")
+                        let components = calendar.dateComponents([.year, .month], from: store.currentDate)
+                        store.send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 3, memberId: 1))
                     }
+
                     
                     Spacer().frame(minHeight: totalHeight * 64 / 804)
                 }

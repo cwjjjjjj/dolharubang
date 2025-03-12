@@ -11,7 +11,7 @@ import Foundation
 func fetch<T: Decodable>(
     url: String,
     model: T.Type,
-    method: HTTPMethod,
+    method: Alamofire.HTTPMethod,
     queryParameters: [String: String]? = nil,
     headers: HTTPHeaders? = nil,
     body: Data? = nil
@@ -56,5 +56,25 @@ func fetch<T: Decodable>(
                     continuation.resume(throwing: error)
                 }
             }
+    }
+}
+
+enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case patch = "PATCH"
+    case put = "PUT"
+    case delete = "DELETE"
+}
+
+extension HTTPMethod {
+    var alamofireMethod: Alamofire.HTTPMethod {
+        switch self {
+        case .get: return .get
+        case .post: return .post
+        case .patch: return .patch
+        case .put: return .put
+        case .delete: return .delete
+        }
     }
 }

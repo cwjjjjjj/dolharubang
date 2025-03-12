@@ -9,7 +9,7 @@ struct HaruBangView: View {
             let totalHeight = geometry.size.height
             
             ZStack {
-                Image(Background(rawValue: store.state.selectedBackground.rawValue)!.fileName) // store.state 사용
+                Image(Background(rawValue: store.state.selectedBackground.rawValue)!.fileName)
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -29,7 +29,6 @@ struct HaruBangView: View {
                     
                     Spacer()
                     
-                    // TalkView에 store의 talkFeatureState 전달
                     TalkView(store: store.scope(state: \.talkFeatureState, action: \.talkFeatureAction))
                         .background(.clear)
                         .frame(height: totalHeight * 680 / 852)

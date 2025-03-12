@@ -8,14 +8,6 @@ struct SchedulePopupView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
     @State private var newScheduleContent: String = "" // 작성 중 일정
     @FocusState private var isTextFieldFocused: Bool // 텍스트 필드 포커스 상태 관리
-
-    // 일정 작성 관련 시작/종료 시간 및 오전/오후
-//    @State private var startHour: Int = Calendar.current.component(.hour, from: Date()) % 12
-//    @State private var startMinute: Int = Calendar.current.component(.minute, from: Date())
-//    @State private var endHour: Int = Calendar.current.component(.hour, from: Date()) % 12
-//    @State private var endMinute: Int = Calendar.current.component(.minute, from: Date())
-//    @State private var startPeriod: String = Calendar.current.component(.hour, from: Date()) < 12 ? "오전" : "오후"
-//    @State private var endPeriod: String = Calendar.current.component(.hour, from: Date()) < 12 ? "오전" : "오후"
     
     @State private var startHour: Int
     @State private var startMinute: Int
@@ -50,15 +42,6 @@ struct SchedulePopupView: View {
         self._endMinute = State(initialValue: calendar.component(.minute, from: now))
         self._endPeriod = State(initialValue: calendar.component(.hour, from: now) < 12 ? "오전" : "오후")
     }
-
-    var formattedDate: String {
-        let year = dateFormatterYear.string(from: date)
-        let month = dateFormatterMonth.string(from: date)
-        let day = dateFormatterDay.string(from: date)
-        let weekday = dateFormatterWeekday.string(from: date)
-
-        return "\(year) \(month) \(day)일 \(weekday)"
-    }
     
     // 사용자가 수정한 시간이 시작 시간인지 종료 시간인지에 따라 알맞게 조정해주는 함수
     private func correctTime(isStartTimeEdited: Bool) {
@@ -87,7 +70,7 @@ struct SchedulePopupView: View {
             Spacer().frame(height: 24)
             
             HStack {
-                Text(formattedDate)
+                Text(formattedDate(date, true))
                     .font(Font.customFont(Font.subtitle3))
                     .foregroundColor(.decoSheetGreen)
                     .padding(.leading, 24)
@@ -141,19 +124,19 @@ struct SchedulePopupView: View {
                     )
                     .presentationDetents([.medium])
                 }
-                .sheet(isPresented: $showEndPicker) {
-                    TimePickerSheetView(
-                        hour: $endHour,
-                        minute: $endMinute,
-                        period: $endPeriod,
-                        title: "종료 시간",
-                        onConfirm: {
-                            showEndPicker = false
-                            correctTime(isStartTimeEdited: false) // 종료 시간 편집
-                        }
-                    )
-                    .presentationDetents([.medium])
+        .sheet(isPresented: $showEndPicker) {
+            TimePickerSheetView(
+                hour: $endHour,
+                minute: $endMinute,
+                period: $endPeriod,
+                title: "종료 시간",
+                onConfirm: {
+                    showEndPicker = false
+                    correctTime(isStartTimeEdited: false) // 종료 시간 편집
                 }
+            )
+            .presentationDetents([.medium])
+        }
     }
     
     // 일정 추가용 뷰
@@ -199,49 +182,6 @@ struct SchedulePopupView: View {
         }
     }
     
-    // 일정 편집용 뷰
-//    private func editScheduleView() -> some View {
-//        VStack {
-//            Spacer().frame(height: 20)
-//            HStack {
-//                Circle()
-//                    .fill(circleColors[editingScheduleIndex ?? 0])
-//                    .frame(width: 18, height: 18)
-//                
-//                SimpleCustomTextField(
-//                    text: $newScheduleContent,
-//                    placeholder: "일정 수정",
-//                    placeholderColor: Color.placeHolder.toUIColor(),
-//                    textColor: Color.decoSheetTextColor.toUIColor(),
-//                    font: Font.uiFont(for: Font.body1Bold)!,
-//                    maxLength: 14,
-//                    onEditingChanged: { editing in
-//                        isTextFieldFocused = editing
-//                    }
-//                )
-//                .focused($isTextFieldFocused)
-//                
-//                if isTextFieldFocused {
-//                    Button(action: {
-//                        if let index = editingScheduleIndex {
-//                            enterEditMode(for: index)
-//                        }
-//                        isTextFieldFocused = false
-//                    }) {
-//                        Image("completeIcon")
-//                            .resizable()
-//                            .frame(width: 20, height: 20)
-//                    }
-//                    .padding(.trailing, 24)
-//                }
-//            }
-//            .padding(.leading, 24)
-//            
-//            if isTextFieldFocused {
-//                timePickerView()
-//            }
-//        }
-//    }
     private func editScheduleView() -> some View {
         VStack {
             Spacer().frame(height: 20)
@@ -267,6 +207,7 @@ struct SchedulePopupView: View {
                     Button(action: {
                         if let index = editingScheduleIndex {
                             editSchedule(at: index)
+                            isTextFieldFocused = false
                         }
                     }) {
                         Image("completeIcon")
@@ -282,47 +223,17 @@ struct SchedulePopupView: View {
         }
     }
     
-    // 일정 목록을 보여주는 뷰
     private func showRecordsView() -> some View {
         LazyVStack {
             if let scheduleList = schedules[date], !scheduleList.isEmpty {
                 ForEach(Array(scheduleList.enumerated()), id: \.offset) { (index, schedule) in
-                    VStack {
-                        Spacer().frame(height: 20)
-                        HStack {
-                            VStack(alignment: .leading, spacing: 0) {
-                                HStack(alignment: .top) {
-                                    Circle()
-                                        .fill(circleColors[index % circleColors.count])
-                                        .frame(width: 20, height: 20)
-                                    Text(schedule.contents)
-                                        .font(Font.customFont(Font.body1Bold))
-                                        .foregroundColor(.decoSheetTextColor)
-                                }
-                                HStack {
-                                    Circle()
-                                        .fill(.clear)
-                                        .frame(width: 20, height: 20)
-                                    Text("\(formatTime(schedule.startScheduleDate)) - \(formatTime(schedule.endScheduleDate))")
-                                        .font(Font.customFont(Font.body2Bold))
-                                        .foregroundColor(.calendarCover)
-                                }
-                            }
-                            Spacer()
-                            VStack {
-                                Button(action: {
-                                    enterEditMode(for: index)
-                                }) {
-                                    Image("editIcon")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                }
-                                Spacer()
-                            }
-                        }
-                        .padding(.leading, 24)
-                        .padding(.trailing, 24)
-                    }
+                    SwipeableScheduleView(
+                        schedule: schedule,
+                        index: index,
+                        circleColors: circleColors,
+                        onEdit: { enterEditMode(for: index) },
+                        onDelete: { store.send(.deleteSchedule(schedule)) }
+                    )
                 }
             } else {
                 Text("아직 일정이 없습니다.")
@@ -330,14 +241,130 @@ struct SchedulePopupView: View {
                     .foregroundColor(.gray)
             }
         }
+        .onTapGesture {
+            if isEditingSchedule {
+                isEditingSchedule = false
+                resetFields()
+            }
+        }
     }
 
-    // 날짜 포맷팅 헬퍼 함수
-    private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "a h:mm"
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: date)
+    // SwipeableScheduleView 커스텀 뷰
+    struct SwipeableScheduleView: View {
+        let schedule: Schedule
+        let index: Int
+        let circleColors: [Color]
+        let onEdit: () -> Void
+        let onDelete: () -> Void
+        
+        @State private var offset: CGFloat = 0
+        @State private var isSwiping = false
+        
+        var body: some View {
+            ZStack(alignment: .trailing) {
+                // 삭제 버튼 배경
+                Color.white
+                    .frame(width: offset < 0 ? -offset : 0)
+                
+                // 일정 내용
+                VStack {
+                    Spacer().frame(height: 20)
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack(alignment: .top) {
+                                Circle()
+                                    .fill(circleColors[index % circleColors.count])
+                                    .frame(width: 20, height: 20)
+                                Text(schedule.contents)
+                                    .font(Font.customFont(Font.body1Bold))
+                                    .foregroundColor(.decoSheetTextColor)
+                            }
+                            HStack {
+                                Spacer()
+                                    .frame(width: 28)
+                                Text("\(formatTime(schedule.startScheduleDate)) - \(formatTime(schedule.endScheduleDate))")
+                                    .font(Font.customFont(Font.body2Bold))
+                                    .foregroundColor(.calendarCover)
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        VStack {
+                            Button(action: onEdit) {
+                                Image("editIcon")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                            }
+                            Spacer()
+                        }
+                    }
+                    .padding(.leading, 24)
+                    .padding(.trailing, 24)
+                }
+                .background(Color.white)
+                .offset(x: offset)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            if value.translation.width < 0 { // 오른쪽에서 왼쪽으로만 슬라이드 허용
+                                offset = max(value.translation.width, -40) // 최대치
+                                isSwiping = true
+                            }
+                        }
+                        // 중간 지점을 기준으로 어느 한 쪽으로 되게끔함
+                        .onEnded { value in
+                            if value.translation.width < -20 {
+                                withAnimation {
+                                    offset = -40
+                                }
+                            } else { // 임계값 미만이면 원래 위치로 복귀
+                                withAnimation {
+                                    offset = 0
+                                }
+                            }
+                            isSwiping = false
+                        }
+                )
+            }
+            .frame(maxWidth: .infinity)
+            .overlay(
+                Group {
+                    if offset < 0 { // 스와이프 중일 때만 삭제 버튼 표시
+                        Button(action: {
+                            onDelete()
+                            withAnimation {
+                                offset = 0 // 삭제 후 원래 위치로 복귀
+                            }
+                        }) {
+                            Image(systemName: "minus.circle.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 5)
+                        }
+                        .foregroundColor(.red)
+                        .cornerRadius(5)
+                    }
+                },
+                alignment: .trailing
+            )
+            .onTapGesture {
+                if isSwiping && offset < 0 {
+                    withAnimation {
+                        offset = 0
+                    }
+                    isSwiping = false
+                }
+            }
+        }
+        
+        private func formatTime(_ date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "a h:mm"
+            formatter.locale = Locale(identifier: "ko_KR")
+            return formatter.string(from: date)
+        }
     }
     
     // 시간 선택용 뷰
@@ -405,17 +432,39 @@ struct SchedulePopupView: View {
     private func addSchedule() {
         if !newScheduleContent.isEmpty {
             let calendar = Calendar.current
-            var startComponents = calendar.dateComponents([.year, .month, .day], from: date)
-            startComponents.hour = startPeriod == "오후" ? (startHour % 12) + 12 : (startHour % 12)
-            startComponents.minute = startMinute
+
+            let kstFormatter = DateFormatter()
+            kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+            let kstDate = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: date, matchingPolicy: .nextTime) ?? date
             
-            var endComponents = calendar.dateComponents([.year, .month, .day], from: date)
-            endComponents.hour = endPeriod == "오후" ? (endHour % 12) + 12 : (endHour % 12)
+            // 시작 시간
+            var startComponents = calendar.dateComponents([.year, .month, .day], from: kstDate)
+            print("startPeriod: \(startPeriod), startHour: \(startHour), startMinute: \(startMinute)")
+            
+            // 종료 시간
+            var endComponents = calendar.dateComponents([.year, .month, .day], from: kstDate)
+            print("endPeriod: \(endPeriod), endHour: \(endHour), endMinute: \(endMinute)")
+            
+            // 12시간제에서 24시간제로 변환 (오후 11시 -> 23시)
+            let startHour24 = startPeriod == "오후" ? (startHour % 12) + 12 : (startHour % 12)
+            startComponents.hour = startHour24
+            startComponents.minute = startMinute
+            let endHour24 = endPeriod == "오후" ? (endHour % 12) + 12 : (endHour % 12)
+            endComponents.hour = endHour24
             endComponents.minute = endMinute
             
-            let startDate = calendar.date(from: startComponents) ?? Date()
-            let endDate = calendar.date(from: endComponents) ?? Date()
+            // 객체 생성 및 디버깅
+            guard let startDate = calendar.date(from: startComponents),
+                  let endDate = calendar.date(from: endComponents) else {
+                print("Date 생성 실패")
+                return
+            }
             
+            print("생성된 startComponents: \(startComponents)")
+            print("생성된 endComponents: \(endComponents)")
+            
+            // Schedule 객체 생성 (alarmTime도 KST로 설정)
             let newSchedule = Schedule(
                 id: 1,
                 contents: newScheduleContent,
@@ -425,6 +474,14 @@ struct SchedulePopupView: View {
                 alarmTime: startDate
             )
             
+            print("----------<<새로운 스케쥴 정보>>----------")
+            print("KST 기준:")
+            print("startScheduleDate: \(kstFormatter.string(from: newSchedule.startScheduleDate))")
+            print("endScheduleDate: \(kstFormatter.string(from: newSchedule.endScheduleDate))")
+            print("alarmTime: \(kstFormatter.string(from: newSchedule.alarmTime))")
+            dump(newSchedule)
+            
+            // Store에 새로운 일정 추가
             store.send(.addSchedule(newSchedule))
             resetFields()
         }
@@ -476,10 +533,7 @@ struct SchedulePopupView: View {
             alarmTime: originalSchedule.alarmTime
         )
         
-        // TCA 액션 보내기
-        print("수정 요청 보냅니다잉~!")
         store.send(.editSchedule(updatedSchedule))
-        print("수정 요청 보낸 후입니다!")
         
         // UI 상태 초기화
         resetFields()
@@ -488,6 +542,7 @@ struct SchedulePopupView: View {
     private func resetFields() {
         newScheduleContent = ""
         editingScheduleIndex = nil
+        isEditingSchedule = false
         isTextFieldFocused = false
     }
 }
@@ -524,7 +579,7 @@ struct TimePickerSheetView: View {
                 .clipped()
 
                 Picker("", selection: $minute) {
-                    ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { minute in
+                    ForEach(Array(stride(from: 0, to: 60, by: 1)), id: \.self) { minute in
                         Text(String(format: "%02d 분", minute)).tag(minute)
                     }
                 }
