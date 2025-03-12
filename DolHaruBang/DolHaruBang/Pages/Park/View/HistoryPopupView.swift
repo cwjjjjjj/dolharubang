@@ -38,7 +38,7 @@ struct HistoryPopupView: View {
                             ProfileImageView(imageURL: req.profileImg, size: 48)
                             
                             VStack (alignment: .leading, spacing: 4) {
-                                Text(formattedDate(req.modifiedAt))
+                                Text(formattedDate(req.modifiedAt, false))
                                     .font(Font.customFont(.init(customFont: .nanumSquareRoundBold, size: 7)))
                                     .foregroundStyle(Color(hex: "BAAC9B"))
                                 HStack(spacing: 0) {
@@ -101,12 +101,4 @@ struct HistoryPopupView: View {
             }
         }
     }
-}
-
-// 날짜 형식 지정 함수
-private func formattedDate(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy.M.d"
-    formatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일 설정
-    return formatter.string(from: date)
 }

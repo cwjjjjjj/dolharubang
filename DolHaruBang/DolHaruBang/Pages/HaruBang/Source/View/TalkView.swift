@@ -3,7 +3,7 @@ import ComposableArchitecture
 
 struct TalkView: View {
     
-    @State var store: StoreOf<TalkFeature> // Store로 상태 및 액션 전달
+    @State var store: StoreOf<TalkFeature>
 
     var body: some View {
         ZStack {
@@ -40,7 +40,7 @@ struct TalkView: View {
                                         )
                                     }
                                     
-                                    if let image = talk.image, !image.isEmpty {
+                                    if let image = talk.imageUrl, !image.isEmpty {
                                         SpeechBubbleView(
                                             content: image,
                                             createdAt: talk.createdAt,
@@ -69,7 +69,7 @@ struct TalkView: View {
                     }
                     .background(Color.clear)
                     .onAppear {
-                        store.send(.fetchTalks)
+                        store.send(.fetchTalks(1))
                     }
                 }
                 Spacer(minLength: 80)
@@ -81,7 +81,7 @@ struct TalkView: View {
                 // 현재 가장 아래 말풍선의 작성일
                 HStack {
                     Spacer()
-                    Text(formattedDate(store.floatingDate))
+                    Text(formattedDate(store.floatingDate, true))
                         .font(.customFont(Font.body3Bold))
                         .foregroundColor(.coreDisabled)
                         .frame(width: 146, height: 29)
@@ -99,19 +99,21 @@ struct TalkView: View {
                 
                 Spacer()
                 
+                // 이모티콘 목록 뷰
                 if store.showEmojiGrid {
                      EmojiGridView(store: store)
                         .transition(.move(edge: .leading))
                         .animation(.easeInOut(duration: 0.3))
                  }
                 
-                // 이모지 및 사진 추가 그리드 띄우기 버튼과 내용 입력 및 보내기 버튼
+                // 이모티콘 및 사진 추가 그리드 띄우기 버튼과 내용 입력 및 보내기 버튼
                 HStack(alignment: .bottom, spacing: 0) {
                     // 파일 추가 버튼
                     Button(action: {
                         store.send(.toggleEmojiGrid)
                     }) {
                         VStack (spacing: 10) {
+                            // 선택된 이모티콘가 있을 때만 해당 이모지 없애기 위한 x 버튼
                             if let selectedEmoji = store.selectedEmoji, !store.showEmojiGrid {
                                 Button(action: {
                                     store.send(.selectEmoji(nil))
@@ -130,6 +132,7 @@ struct TalkView: View {
                                 }
                             }
                             
+                            // + / x / 선택한 이모티콘 버튼
                             ZStack {
                                 Circle()
                                     .fill(Color.coreWhite)
@@ -147,6 +150,7 @@ struct TalkView: View {
                                         .foregroundColor(.coreLightGray)
                                 }
                             }
+                            
                         }
                     }
 
@@ -214,11 +218,12 @@ struct TalkView: View {
 
                     // 메시지 전송 버튼
                     Button(action: {
-                        let newTalk = Talk(
-                            diaryId: 0,
+                        let imageBase64 = store.selectedImage?.jpegData(compressionQuality: 0.8)?.base64EncodedString() // Base64로 변환
+                        var newTalk = Talk(
+                            diaryId: 1, // 서버에서 생성
                             contents: store.messageInput,
-                            emoji: "😊",
-                            image: "mockImage.png",
+                            emoji: store.selectedEmoji,
+                            imageUrl: imageBase64, // Base64 문자열로 설정
                             reply: "",
                             createdAt: Date(),
                             modifiedAt: nil
@@ -242,30 +247,16 @@ struct TalkView: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
+        // 고른 이미지 미리보기 sheet 뷰
         .sheet(isPresented: $store.showImagePreview) {
             ImagePreviewSheet(store: store)
         }
+        // 사진첩에서 이미지 고르는 sheet 뷰
         .sheet(isPresented: $store.showImagePicker) {
             ImagePicker(sourceType: .photoLibrary) { image in
                 store.send(.imagePicked(image))
             }
         }
-    }
-
-    // 날짜 형식 지정 함수
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월 d일 EEEE"
-        formatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일 설정
-        return formatter.string(from: date)
-    }
-    
-    // 오전/오후 형식의 시간 표시 함수
-    private func formattedFloatingDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "a hh시 mm분" // "a"는 오전/오후를 나타냅니다.
-        return formatter.string(from: date)
     }
 }
 
@@ -378,39 +369,3 @@ struct ImagePreviewSheet: View {
         }
     }
 }
-
-
-struct ResizableTextField: View {
-    @Binding var text: String
-    var minHeight: CGFloat = 40 // 최소 높이
-    var width: CGFloat = 200 // 고정된 너비
-
-    var body: some View {
-        
-        let additionalHeight = CGFloat((text.count / 10) * 10) // 10 단위로 증가
-               let dynamicHeight = minHeight + additionalHeight
-        
-        TextField("텍스트 필드", text: $text)
-            .padding()
-            .frame(width: width, height: dynamicHeight)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray, lineWidth: 1)
-            )
-            .animation(.easeInOut, value: text) // 애니메이션 추가
-    }
-}
-
-
-
-//public extension View {
-//    func transparentScrolling() -> some View {
-//        if #available(iOS 16.0, *) {
-//            return scrollContentBackground(.hidden)
-//        } else {
-//            return onAppear {
-//                UITextView.appearance().backgroundColor = .clear
-//            }
-//        }
-//    }
-//}

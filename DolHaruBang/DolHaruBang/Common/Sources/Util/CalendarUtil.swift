@@ -11,13 +11,13 @@ import ComposableArchitecture
 
 let dateFormatterYear: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년"
+    formatter.dateFormat = "yyyy"
     return formatter
 }()
 
 let dateFormatterMonth: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateFormat = "M월"
+    formatter.dateFormat = "M"
     return formatter
 }()
 
@@ -35,6 +35,33 @@ let dateFormatterWeekday: DateFormatter = {
 }()
 
 let daysOfTheWeek = ["일", "월", "화", "수", "목", "금", "토"]
+
+func formattedDate(_ date: Date, _ showDateComponents: Bool) -> String {
+    let year = dateFormatterYear.string(from: date)
+    let month = dateFormatterMonth.string(from: date)
+    let day = dateFormatterDay.string(from: date)
+    let weekday = dateFormatterWeekday.string(from: date)
+    
+    if showDateComponents {
+        return "\(year)년 \(month)월 \(day)일 \(weekday)"
+    } else {
+        return "\(weekday)"
+    }
+}
+
+func formattedDate(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy.M.d"
+    formatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일 설정
+    return formatter.string(from: date)
+}
+
+func formattedFloatingDate(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.dateFormat = "a hh시 mm분" // "a"는 오전/오후를 나타냅니다.
+    return formatter.string(from: date)
+}
 
 // 현재 월의 날짜 배열을 반환
 func daysInMonth(calendar: Calendar, store: StoreOf<CalendarFeature>) -> [Date?] {
@@ -58,11 +85,11 @@ func daysInMonth(calendar: Calendar, store: StoreOf<CalendarFeature>) -> [Date?]
 // 이전 월 텍스트 반환
 func previousMonthText(calendar: Calendar, store: StoreOf<CalendarFeature>) -> String {
     let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: store.currentDate)!
-    return dateFormatterMonth.string(from: previousMonthDate)
+    return dateFormatterMonth.string(from: previousMonthDate) + "월"
 }
 
 // 다음 월 텍스트 반환
 func nextMonthText(calendar: Calendar, store: StoreOf<CalendarFeature>) -> String {
     let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: store.currentDate)!
-    return dateFormatterMonth.string(from: nextMonthDate)
+    return dateFormatterMonth.string(from: nextMonthDate) + "월"
 }

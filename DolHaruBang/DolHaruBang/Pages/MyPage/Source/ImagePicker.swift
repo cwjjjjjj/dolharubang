@@ -17,7 +17,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         let picker = UIImagePickerController() // 만들고
         picker.delegate = context.coordinator // 중간자 연결하고
         picker.sourceType = sourceType // 소스타입 결정해둔거 연결하고
-        picker.allowsEditing = true // 수정가능 권한 주고
+        picker.allowsEditing = false // 수정가능 권한 
         return picker // 반환
     }
 

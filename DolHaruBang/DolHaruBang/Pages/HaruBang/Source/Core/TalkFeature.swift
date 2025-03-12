@@ -28,14 +28,14 @@ struct TalkFeature {
         case toggleImagePicker
         case imagePicked(UIImage?)
         case toggleImagePreview
-        case fetchTalk
-        case fetchTalks
+        case fetchTalk(Int) // diaryId로 단일 대화 가져오기
         case fetchTalkResponse(Result<Talk, Error>)
+        case fetchTalks(Int) // memberId로 대화 목록 가져오기
         case fetchTalksResponse(Result<[Talk], Error>)
         case registTalk(Talk)
         case registTalkResponse(Result<(NetworkMessage, Talk), Error>)
-        case editTalk(Talk)
-        case editTalkResponse(Result<(NetworkMessage, Talk), Error>)
+//        case editTalk(Talk)
+//        case editTalkResponse(Result<(NetworkMessage, Talk), Error>)
         case deleteTalk(Int) // diaryId로 삭제
         case deleteTalkResponse(Result<(NetworkMessage, Int), Error>)
         case binding( BindingAction < State >)
@@ -89,11 +89,12 @@ struct TalkFeature {
                 return .none
                     
             // [GET] 대화 한 개 가져오기
-            case .fetchTalk:
+            case let .fetchTalk(diaryId):
                 state.isLoading = true
+                state.errorMessage = nil
                 return .run { send in
                     do {
-                        let talk = try await talkClient.fetchTalk()
+                        let talk = try await talkClient.fetchTalk(diaryId)
                         await send(.fetchTalkResponse(.success(talk)))
                     } catch {
                         await send(.fetchTalkResponse(.failure(error)))
@@ -106,15 +107,16 @@ struct TalkFeature {
                 return .none
             case let .fetchTalkResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = error.localizedDescription
+                state.errorMessage = "대화를 불러오지 못했습니다: \(error.localizedDescription)"
                 return .none
                     
             // [GET] 대화 전체 가져오기
-            case .fetchTalks:
+            case let .fetchTalks(memberId):
                 state.isLoading = true
+                state.errorMessage = nil
                 return .run { send in
                     do {
-                        let talks = try await talkClient.fetchTalks()
+                        let talks = try await talkClient.fetchTalks(memberId)
                         await send(.fetchTalksResponse(.success(talks)))
                     } catch {
                         await send(.fetchTalksResponse(.failure(error)))
@@ -130,71 +132,79 @@ struct TalkFeature {
 
             case let .fetchTalksResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = error.localizedDescription
+                    state.errorMessage = "대화 목록을 불러오지 못했습니다: \(error.localizedDescription)"
                 return .none
 
             // [POST] 대화 등록하기
             case let .registTalk(talk):
+                print("----------------등록할 talk의 정보----------------")
+                dump(talk)
+                print("----------------등록할 talk의 정보----------------")
                 state.isLoading = true
-                    return .run { send in
-                        do {
-                            let response = try await talkClient.registTalk(talk)
-                            await send(.registTalkResponse(.success((response, talk))))
-                        } catch {
-                            await send(.registTalkResponse(.failure(error)))
-                        }
+                state.errorMessage = nil
+                return .run { send in
+                    do {
+                        let response = try await talkClient.registTalk(talk)
+                        await send(.registTalkResponse(.success((response, talk))))
+                    } catch {
+                        await send(.registTalkResponse(.failure(error)))
                     }
+                }
             case let .registTalkResponse(.success(_, talk)):
                 state.isLoading = false
-                state.talks?.append(talk) // 등록 성공 시, 로컬에서 바로 추가
+                state.talks?.append(talk) // 등록 성공 시 추가
+                state.messageInput = "" // 입력 필드 초기화
+                state.selectedEmoji = nil // 선택된 이모지 초기화
+                state.selectedImage = nil // 선택된 이미지 초기화
                 return .none
             case let .registTalkResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = error.localizedDescription
+                state.errorMessage = "대화 등록에 실패했습니다: \(error.localizedDescription)"
                 return .none
 
             // [UPDATE] 대화 수정하기
-            case let .editTalk(talk):
-                state.isLoading = true
-                return .run { send in
-                    do {
-                        let response = try await talkClient.editTalk(talk)
-                        await send(.editTalkResponse(.success((response, talk))))
-                    } catch {
-                        await send(.editTalkResponse(.failure(error)))
-                    }
-                }
-                case let .editTalkResponse(.success(_, updatedTalk)):
-                    state.isLoading = false
-                    if let index = state.talks?.firstIndex(where: { $0.diaryId == updatedTalk.diaryId }) {
-                        state.talks?[index] = updatedTalk // 옵셔널 배열이므로 안전하게 접근
-                    }
-                return .none
-            case let .editTalkResponse(.failure(error)):
-                state.isLoading = false
-                state.errorMessage = error.localizedDescription
-                return .none
+//            case let .editTalk(talk):
+//                state.isLoading = true
+//                return .run { send in
+//                    do {
+//                        let response = try await talkClient.editTalk(talk)
+//                        await send(.editTalkResponse(.success((response, talk))))
+//                    } catch {
+//                        await send(.editTalkResponse(.failure(error)))
+//                    }
+//                }
+//                case let .editTalkResponse(.success(_, updatedTalk)):
+//                    state.isLoading = false
+//                    if let index = state.talks?.firstIndex(where: { $0.diaryId == updatedTalk.diaryId }) {
+//                        state.talks?[index] = updatedTalk // 옵셔널 배열이므로 안전하게 접근
+//                    }
+//                return .none
+//            case let .editTalkResponse(.failure(error)):
+//                state.isLoading = false
+//                state.errorMessage = error.localizedDescription
+//                return .none
 
             // [Delete] 대화 삭제하기
             case let .deleteTalk(diaryId):
                 state.isLoading = true
+                state.errorMessage = nil
                 return .run { send in
                     do {
                         let response = try await talkClient.deleteTalk(diaryId)
-                        await send(.deleteTalkResponse(.success((response, diaryId))))// 삭제 성공 시 응답과 diaryId 전달
+                        await send(.deleteTalkResponse(.success((response, diaryId))))
                     } catch {
                         await send(.deleteTalkResponse(.failure(error)))
                     }
                 }
-            case let .deleteTalkResponse(.success((response, diaryId))):
+            case let .deleteTalkResponse(.success((_, diaryId))):
                 state.isLoading = false
-                if let talks = state.talks, let index = talks.firstIndex(where: { $0.diaryId == diaryId }) {
+                if let index = state.talks?.firstIndex(where: { $0.diaryId == diaryId }) {
                     state.talks?.remove(at: index)
                 }
                 return .none
             case let .deleteTalkResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = error.localizedDescription
+                state.errorMessage = "대화 삭제에 실패했습니다: \(error.localizedDescription)"
                 return .none
             }
         }

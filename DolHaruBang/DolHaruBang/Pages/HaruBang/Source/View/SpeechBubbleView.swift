@@ -2,19 +2,18 @@ import SwiftUI
 
 struct SpeechBubbleView: View {
     var content: String
-    var createdAt: Date // createdAt을 Date 타입으로 변경
-    var isResponse: Bool // 답장 여부
-    var onEdit: (() -> Void)? // 수정 버튼 액션
-    var onDelete: (() -> Void)? // 삭제 버튼 액션
-    var isEmoji: Bool // 이모지인지 여부
+    var createdAt: Date
+    var isResponse: Bool
+    var onEdit: (() -> Void)?
+    var onDelete: (() -> Void)?
+    var isEmoji: Bool
     
     var body: some View {
-        HStack (alignment: .top, spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if !isResponse {
                 Spacer()
-            }
-            else {
-                HStack (alignment: .top, spacing: 1){
+            } else {
+                HStack(alignment: .top, spacing: 1) {
                     Circle()
                         .frame(width: 48, height: 48)
                         .overlay(
@@ -36,12 +35,11 @@ struct SpeechBubbleView: View {
             }
 
             VStack(alignment: .leading, spacing: 0) {
-                // 내용 표시 부분
                 contentDisplay
                 
-                // 날짜와 수정/삭제 버튼
-                if (!isEmoji && !isResponse) {
-                    Divider().foregroundStyle(Color(hex: "E5DFD7"))
+                if !isEmoji && !isResponse {
+                    Divider()
+                        .foregroundStyle(Color(hex: "E5DFD7"))
                         .padding(.horizontal, 16)
                     dateAndActionButtons
                 }
@@ -53,8 +51,7 @@ struct SpeechBubbleView: View {
                         
             if isResponse {
                 Spacer()
-            }
-            else {
+            } else {
                 Triangle()
                     .fill(Color.coreWhite)
                     .frame(width: 10, height: 16)
@@ -65,7 +62,7 @@ struct SpeechBubbleView: View {
         .padding(.horizontal, 16)
     }
     
-    // 내용 표시 부분 (이모지 또는 텍스트)
+    // 내용 표시 부분 (이모지, 텍스트, 이미지)
     private var contentDisplay: some View {
         Group {
             if isEmoji, let emojiImage = UIImage(named: content) {
@@ -74,6 +71,36 @@ struct SpeechBubbleView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 48, height: 48)
                     .padding(8)
+            } else if content.hasPrefix("http"), let url = URL(string: content) { // URL인지 확인
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView() // 로딩 중
+                            .frame(width: 48, height: 48)
+                            .padding(8)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: UIScreen.main.bounds.width * (256 / 393) - 32, maxHeight: 200) // 최대 너비와 높이 제한
+                            .cornerRadius(10)
+                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 14))
+                    case .failure:
+                        Text("\(content) 사진을 띄울 수 없습니다")
+                            .font(.customFont(Font.body3Regular))
+                            .foregroundColor(.coreBlack)
+                            .lineLimit(nil)
+                            .multilineTextAlignment(.leading)
+                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 14))
+                    @unknown default:
+                        Text("\(content) 사진을 띄울 수 없습니다")
+                            .font(.customFont(Font.body3Regular))
+                            .foregroundColor(.coreBlack)
+                            .lineLimit(nil)
+                            .multilineTextAlignment(.leading)
+                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 14))
+                    }
+                }
             } else {
                 Text(content)
                     .font(.customFont(Font.body3Regular))
@@ -85,14 +112,12 @@ struct SpeechBubbleView: View {
         }
     }
     
-    // 날짜 및 액션 버튼 표시 부분
     private var dateAndActionButtons: some View {
         HStack {
-            Text(formattedFloatingDate(createdAt)) // 시간만 표시
+            Text(formattedFloatingDate(createdAt))
                 .font(.customFont(Font.body4Regular))
                 .foregroundColor(.coreGreen)
             
-            // 답장이 아닌 경우 수정 및 삭제 버튼 표시
             if !isResponse {
                 Spacer()
                 Button(action: { onEdit?() }) {
@@ -111,7 +136,6 @@ struct SpeechBubbleView: View {
         .padding(EdgeInsets(top: 14, leading: 16, bottom: 16, trailing: 16))
     }
     
-    // 오전/오후 형식의 시간 표시 함수
     private func formattedFloatingDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -123,25 +147,14 @@ struct SpeechBubbleView: View {
 struct Triangle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
-        // 삼각형의 왼쪽 꼭짓점
         path.move(to: CGPoint(x: 0, y: 0))
-        
-        // 삼각형의 오른쪽 곡선 꼭짓점
         path.addLine(to: CGPoint(x: rect.width - 5, y: rect.height / 2 - 5))
-        
-        // 오른쪽 꼭짓점에 곡선 추가
         path.addQuadCurve(
             to: CGPoint(x: rect.width - 5, y: rect.height / 2 + 5),
-            control: CGPoint(x: rect.width + 4, y: rect.height / 2) // 곡선 컨트롤 여기서!
+            control: CGPoint(x: rect.width + 4, y: rect.height / 2)
         )
-        
-        // 삼각형의 아래쪽 꼭짓점
         path.addLine(to: CGPoint(x: 0, y: rect.height))
-        
-        // 시작점으로 돌아가서 닫기
         path.closeSubpath()
-        
         return path
     }
 }

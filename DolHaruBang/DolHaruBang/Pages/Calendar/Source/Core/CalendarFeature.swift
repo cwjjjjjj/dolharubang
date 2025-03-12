@@ -23,7 +23,7 @@ struct CalendarFeature {
         case schedulesReceived(Result<[Schedule], Error>, isFullUpdate: Bool)  // 수정된 부분
         case addSchedule(Schedule)
         case editSchedule(Schedule)
-        case deleteSchedule(Date, Int)
+        case deleteSchedule(Schedule)
         case binding(BindingAction<State>)
     }
     
@@ -34,6 +34,10 @@ struct CalendarFeature {
             case let .changeMonth(value):
                 if let newDate = Calendar.current.date(byAdding: .month, value: value, to: state.currentDate) {
                     state.currentDate = newDate
+                    let components = Calendar.current.dateComponents([.year, .month], from: newDate)
+                    return .run { send in
+                        await send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 2, memberId: 1))
+                    }
                 }
                 return .none
                 
@@ -45,20 +49,26 @@ struct CalendarFeature {
                 state.showPopup = show
                 return .none
                 
-            case let .fetchSchedulesForMonth(year, month, memberId):
-                state.isLoading = true
-                return .run { send in
-                    do {
-                        let schedules = try await scheduleClient.fetchSchedulesById(year, month, memberId)
-                        print("성공 - \(schedules.count)개의 일정 가져옴:")
-                        schedules.forEach { schedule in
-                            print("ID: \(schedule.id), 내용: \(schedule.contents), 시작: \(schedule.startScheduleDate)")
+                case let .fetchSchedulesForMonth(year, month, memberId):
+                    state.isLoading = true
+                    return .run { send in
+                        do {
+                            let schedules = try await scheduleClient.fetchSchedulesById(year, month, memberId)
+                            print("<<성공 - \(schedules.count)개의 일정 가져옴>>")
+                            schedules.forEach { schedule in
+                                // KST로 포맷팅된 시작일 출력
+                                let kstFormatter = DateFormatter()
+                                kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                                kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+                                let kstStartDate = kstFormatter.string(from: schedule.startScheduleDate)
+                                
+                                print("ID: \(schedule.id), 내용: \(schedule.contents), 시작일: \(kstStartDate)")
+                            }
+                            await send(.schedulesReceived(.success(schedules), isFullUpdate: true))  // 전체 업데이트
+                        } catch {
+                            await send(.schedulesReceived(.failure(error), isFullUpdate: true))
                         }
-                        await send(.schedulesReceived(.success(schedules), isFullUpdate: true))  // 전체 업데이트
-                    } catch {
-                        await send(.schedulesReceived(.failure(error), isFullUpdate: true))
                     }
-                }
                 
             case .addSchedule(let schedule):
                 state.isLoading = true
@@ -73,30 +83,74 @@ struct CalendarFeature {
                 
             case .editSchedule(let schedule):
                 state.isLoading = true
-                return .run { send in
-                    do {
-                        let updatedSchedule = try await scheduleClient.editSchedule(schedule)
-                        await send(.schedulesReceived(.success([updatedSchedule]), isFullUpdate: false))
-                    } catch {
-                        await send(.schedulesReceived(.failure(error), isFullUpdate: false))
+                    return .run { send in
+                        do {
+                            let updatedSchedule = try await scheduleClient.editSchedule(schedule)
+                            await send(.schedulesReceived(.success([updatedSchedule]), isFullUpdate: false))
+                        } catch {
+                            await send(.schedulesReceived(.failure(error), isFullUpdate: false))
+                        }
                     }
+                    
+//            case .deleteSchedule(let schedule):
+//                return .run { send in
+//                    try await scheduleClient.deleteSchedule(schedule.id)
+//                } catch: { error, send in
+//                    print("Failed to delete schedule: \(error)")
+//                }
+            case let .deleteSchedule(schedule):
+                return .run { [state] send in
+                    try await scheduleClient.deleteSchedule(schedule.id)
+                    
+                    var kstCalendar = Calendar.current
+                    kstCalendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+                    
+                    // 삭제한 일정의 날짜
+                    let deletionDate = kstCalendar.startOfDay(for: schedule.startScheduleDate)
+                    
+                    var newSchedules = state.schedules
+                    if var schedulesForDate = newSchedules[deletionDate] {
+                        schedulesForDate.removeAll { $0.id == schedule.id }
+                        if schedulesForDate.isEmpty {
+                            newSchedules[deletionDate] = nil // 날짜에 일정이 없으면 제거
+                        } else {
+                            newSchedules[deletionDate] = schedulesForDate // 업데이트
+                        }
+                        print("ID \(schedule.id)번 일정 삭제 후 상태 업데이트: \(newSchedules)")
+                        
+                        // 상태를 업데이트하기 위해 새로운 상태를 생성하거나 binding 액션 전송
+                        await send(.binding(.set(\.schedules, newSchedules)))
+                    }
+                } catch: { error, send in
+                    print("Failed to delete schedule: \(error)")
+                    await send(.schedulesReceived(.failure(error), isFullUpdate: false))
                 }
-                
+
             case .schedulesReceived(.success(let schedules), let isFullUpdate):
                 state.isLoading = false
                 if isFullUpdate {
-                    state.schedules = [:]  // 전체 업데이트 시 초기화
+                    print("Full update: Clearing schedules")
+                    state.schedules = [:]
                 }
+                    
+//                // KST 기준 캘린더 설정
+                var kstCalendar = Calendar.current
+                kstCalendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+                    
                 for schedule in schedules {
-                    let date = Calendar.current.startOfDay(for: schedule.startScheduleDate)
+                    let date = kstCalendar.startOfDay(for: schedule.startScheduleDate)
+                    
                     if var existingSchedules = state.schedules[date] {
                         if let index = existingSchedules.firstIndex(where: { $0.id == schedule.id }) {
+                            print("\(date)의 \(index)번째 스케쥴인 \(schedule.id)번 스케쥴 수정")
                             existingSchedules[index] = schedule
                         } else {
+                            print("\(date)에 \(schedule.id)번 스케쥴 추가")
                             existingSchedules.append(schedule)
                         }
                         state.schedules[date] = existingSchedules
                     } else {
+                        print("\(date)에 첫 번째 스케쥴로 \(schedule.id)번 스케쥴 추가")
                         state.schedules[date] = [schedule]
                     }
                 }
@@ -105,12 +159,6 @@ struct CalendarFeature {
             case .schedulesReceived(.failure(let error), _):
                 state.isLoading = false
                 print("Failed to process schedules: \(error)")
-                return .none
-                
-            case .deleteSchedule(let date, let index):
-                if state.schedules[date] != nil && index < state.schedules[date]!.count {
-                    state.schedules[date]?.remove(at: index)
-                }
                 return .none
                 
             case .binding:
