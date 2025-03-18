@@ -7,6 +7,20 @@
 
 import SwiftUI
 import AVFoundation
+import KakaoSDKAuth
+import KakaoSDKCommon
+
+
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
+    }
+}
 
 @main
 struct DolHaruBangApp: App {
@@ -54,4 +68,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    // kakao
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        KakaoSDK.initSDK(appKey: "${c832bd074680db1fc7762e70fbed9f65}")
+
+        
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            return AuthController.handleOpenUrl(url: url)
+        }
+
+        return false
+    }
+    
+  
 }
+
