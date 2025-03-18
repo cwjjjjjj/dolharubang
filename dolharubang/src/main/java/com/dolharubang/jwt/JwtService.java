@@ -1,0 +1,59 @@
+package com.dolharubang.jwt;
+
+import com.dolharubang.domain.dto.oauth.ApiResponse;
+import com.dolharubang.domain.dto.oauth.OAuth2LoginResDto;
+import com.dolharubang.domain.dto.oauth.SuccessStatus;
+import com.dolharubang.domain.dto.oauth.TokenDto;
+import com.dolharubang.domain.entity.oauth.PrincipalDetails;
+import com.dolharubang.domain.entity.oauth.RefreshToken;
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.repository.RefreshTokenRepository;
+import com.dolharubang.type.Authority;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class JwtService {
+    private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
+
+    @Transactional
+    public ResponseEntity<ApiResponse<?>> reissue(String accessToken, String refreshToken){
+        // 1. Refresh Token 검증
+        if (!tokenProvider.validateToken(refreshToken))
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+
+        // 2. Access Token 에서 Member ID 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
+
+        //오류날지도...
+        long memberId = Long.parseLong(principalDetails.getUsername());
+
+        RefreshToken existRefreshToken = refreshTokenRepository.findByMemberId(memberId).orElse(null);
+        if(existRefreshToken == null)
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        // 3. DB에 매핑 되어있는 Member ID(key)와 Vaule값이 같지않으면 에러 리턴
+        if(!refreshToken.equals(existRefreshToken.getValue()))
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+
+        // 4. Vaule값이 같다면 토큰 재발급 진행
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+        OAuth2LoginResDto oAuth2LoginResDto = OAuth2LoginResDto.builder()
+            .accessToken(tokenDto.getAccessToken())
+            .refreshToken(refreshToken)
+            .isGuest(principalDetails.getMember().getAuthority().equals(Authority.ROLE_GUEST)?true:false)
+            .build();
+
+        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessStatus._OK, oAuth2LoginResDto));
+    }
+}
