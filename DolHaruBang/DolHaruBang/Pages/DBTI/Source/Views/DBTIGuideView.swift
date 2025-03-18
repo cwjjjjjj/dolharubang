@@ -79,10 +79,10 @@ struct DBTIGuideView: View {
                                         print(error)
                                     }
                                     else {
-                                        print("loginWithKakaoTalk() success.")
+                                        print("ㅎㅇ loginWithKakaoTalk() success.")
 
                                         // 성공 시 동작 구현
-                                        _ = oauthToken
+//                                        _ = oauthToken
                                     }
                                 }
                             }
