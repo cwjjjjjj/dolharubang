@@ -243,6 +243,7 @@
 		DAA4C9F52C8B7C6800409D4B /* SignPopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignPopUpView.swift; sourceTree = "<group>"; };
 		DAA4C9F82C8B7C6800409D4B /* HomeIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HomeIcon.xcassets; sourceTree = "<group>"; };
 		DAA4CA092C8B7D5E00409D4B /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldPadding.swift; sourceTree = "<group>"; };
+		DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DolHaruBang.app; path = "/Users/ht/Desktop/dol/dolharubang/DolHaruBang/build/Debug-iphoneos/DolHaruBang.app"; sourceTree = "<absolute>"; };
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
 		DAAEFC122C56941A00D1F87B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };

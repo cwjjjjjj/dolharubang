@@ -28,6 +28,7 @@ struct HomeClient {
     var accessory : @Sendable () async throws -> [CustomizeItem]
     var purchaseItem : @Sendable (String) async throws -> [CustomizeItem]
     var selectItem : @Sendable (String) async throws -> [CustomizeItem]
+    var sand : @Sendable () async throws -> Int
 }
 
 // 실제 통신 전 테스트
@@ -109,6 +110,15 @@ extension HomeClient: DependencyKey {
                         print("아이템 입기 실패:", error)
                         return CustomizeItem.mockBackItem
                     }
+        },
+        sand : {
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/sands/15"
+            do {
+                return try await fetch(url: url, model: Int.self, method: .get)
+                } catch {
+                    print("모래불러오기 실패:", error)
+                    return 5
+                }
         }
         
     )
