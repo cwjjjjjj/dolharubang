@@ -56,6 +56,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
     implementation("com.nimbusds:nimbus-jose-jwt:9.23")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation ("org.bouncycastle:bcpkix-jdk18on:1.72")
 
     configurations.all {
         exclude(group = "commons-logging")
