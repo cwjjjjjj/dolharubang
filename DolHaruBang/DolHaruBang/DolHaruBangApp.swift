@@ -12,15 +12,18 @@ import KakaoSDKCommon
 
 
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                _ = AuthController.handleOpenUrl(url: url)
-            }
-        }
-    }
-}
+//class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+//    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+//        
+//        KakaoSDK.initSDK(appKey: "${c832bd074680db1fc7762e70fbed9f65}")
+//        
+//        if let url = URLContexts.first?.url {
+//            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//                _ = AuthController.handleOpenUrl(url: url)
+//            }
+//        }
+//    }
+//}
 
 @main
 struct DolHaruBangApp: App {
@@ -28,6 +31,9 @@ struct DolHaruBangApp: App {
     @StateObject private var userManager = UserManager()
 //    let persistenceController = PersistenceController.shared
 
+    init() {
+        KakaoSDK.initSDK(appKey: "${c832bd074680db1fc7762e70fbed9f65}")
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -70,17 +76,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // kakao
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        KakaoSDK.initSDK(appKey: "${c832bd074680db1fc7762e70fbed9f65}")
-
-        
-        if (AuthApi.isKakaoTalkLoginUrl(url)) {
-            return AuthController.handleOpenUrl(url: url)
-        }
-
-        return false
-    }
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+//        
+//        KakaoSDK.initSDK(appKey: "${c832bd074680db1fc7762e70fbed9f65}")
+//
+//        
+//        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//            return AuthController.handleOpenUrl(url: url)
+//        }
+//
+//        return false
+//    }
     
   
 }
