@@ -57,11 +57,12 @@ public class MemberService {
             .build();
 
         Member savedMember = memberRepository.save(member);
+
+        s3UploadService.deleteImageIfExist("dolharubang/memberProfile/", savedMember.getMemberId().toString());
         String imageUrl = s3UploadService.saveImage(requestDto.getImageBase64(),
             "dolharubang/memberProfile/", savedMember.getMemberId());
-
+        //TODO 프로필 사진 지정 안 했을 경우 기본 프사 지정
         savedMember.updateProfilePicture(imageUrl);
-        //TODO 기존 사진 삭제 로직
 
         //회원 가입 시 mongoDB의 모든 아이템 목록에 대해 false로 memberItem 생성
         List<Item> items = itemRepository.findAll();

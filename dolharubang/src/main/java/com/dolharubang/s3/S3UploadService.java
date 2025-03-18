@@ -2,6 +2,8 @@ package com.dolharubang.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +35,7 @@ public class S3UploadService {
         return amazonS3Client.getUrl(bucket, filenameWithPath).toString();
     }
 
-    public String deleteImage(String imgUrl, String filePath) {
-        String result = "Delete success.";
-
+    public void deleteImage(String imgUrl, String filePath) {
         try {
             // URL에서 마지막 부분을 추출하여 keyName을 생성
             String[] parts = imgUrl.split("/");
@@ -46,13 +46,26 @@ public class S3UploadService {
             if (isObjectExist) {
                 amazonS3Client.deleteObject(bucket, keyName);
             } else {
-                result = "file not found";
+                throw new CustomException(ErrorCode.MEMBER_PROFILE_IMAGE_NOT_FOUND);
             }
         } catch (Exception e) {
             log.debug("Delete File failed", e);
-            result = "Error in deleting file";
         }
+    }
 
-        return result;
+    /*
+    기존 프로필 이미지 없어도 (=기본 프로필이라도) 오류 터지지 않게 간소화한 메서드
+     */
+    public void deleteImageIfExist(String imgUrl, String filePath) {
+
+        // URL에서 마지막 부분을 추출하여 keyName을 생성
+        String[] parts = imgUrl.split("/");
+        String keyName = filePath + parts[parts.length - 1];
+
+        // S3 버킷에서 해당 객체 존재 여부 확인
+        boolean isObjectExist = amazonS3Client.doesObjectExist(bucket, keyName);
+        if (isObjectExist) {
+            amazonS3Client.deleteObject(bucket, keyName);
+        }
     }
 }

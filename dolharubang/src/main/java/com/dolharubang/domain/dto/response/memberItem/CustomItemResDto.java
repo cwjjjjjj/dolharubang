@@ -16,7 +16,8 @@ public class CustomItemResDto {
     private String itemName;
     @JsonProperty("isOwned")
     private boolean whetherHasItem;
-    private boolean isSelected;
+    @JsonProperty("isSelected")
+    private boolean selected;
     private int price;
     private String imageUrl;
     private String itemId;
@@ -25,7 +26,7 @@ public class CustomItemResDto {
         return CustomItemResDto.builder()
             .itemName(item.getItemName())
             .whetherHasItem(memberItem.isWhetherHasItem())
-            .isSelected(memberItem.isSelected())
+            .selected(memberItem.isSelected())
             .price(item.getPrice())
             .imageUrl(item.getImageUrl())
             .itemId(item.getItemId().toString())
