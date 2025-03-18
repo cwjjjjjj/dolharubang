@@ -1,6 +1,7 @@
 package com.dolharubang.domain.entity;
 
-import com.dolharubang.type.SocialType;
+import com.dolharubang.type.Authority;
+import com.dolharubang.type.Provider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -25,12 +25,13 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Enumerated(value = EnumType.STRING)
-    private SocialType socialType;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
-    private String socialId;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
-    private String refreshToken;
+    private String providerId;
 
     private String memberEmail;
 
@@ -39,50 +40,27 @@ public class Member extends BaseEntity {
     //TODO birthStone 필요함
     private String birthday;
 
-    @ColumnDefault("0")
     private int sands;
-
-    private LocalDateTime lastLoginAt;
-
-    @ColumnDefault("0")
-    private int totalLoginDays;
 
     private String profilePicture;
 
     private String spaceName;
 
     @Builder
-    public Member(SocialType socialType, String socialId, String memberEmail,
-        String nickname, String birthday, int sands, LocalDateTime lastLoginAt,
-        int totalLoginDays, String profilePicture, String spaceName) {
-        this.socialType = socialType;
-        this.socialId = socialId;
+    public Member(Long memberId, Authority authority, Provider provider, String providerId,
+        String memberEmail, String nickname, String birthday,
+        int sands, String profilePicture,
+        String spaceName) {
+        this.memberId = memberId;
+        this.authority = authority;
+        this.provider = provider;
+        this.providerId = providerId;
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.birthday = birthday;
         this.sands = sands;
-        this.lastLoginAt = lastLoginAt;
-        this.totalLoginDays = totalLoginDays;
         this.profilePicture = profilePicture;
         this.spaceName = spaceName;
-    }
-
-    //로그인 일수 증가
-    public void incrementTotalLoginDays(int totalLoginDays) {
-        this.totalLoginDays = totalLoginDays + 1;
-    }
-
-    // 마지막 로그인 시간 업데이트
-    public void updateLastLoginAt() {
-        this.lastLoginAt = LocalDateTime.now();
-    }
-
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void resetRefreshToken() {
-        this.refreshToken = null;
     }
 
     public void update(String nickname, String spaceName) {
@@ -108,7 +86,6 @@ public class Member extends BaseEntity {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.lastLoginAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
     }
 
