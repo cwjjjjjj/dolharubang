@@ -7,15 +7,13 @@ import com.dolharubang.domain.dto.oauth.ApiResponse;
 import com.dolharubang.domain.dto.oauth.OAuth2LoginResDto;
 import com.dolharubang.domain.dto.oauth.SuccessStatus;
 import com.dolharubang.domain.dto.oauth.TokenDto;
-import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
-import com.dolharubang.domain.entity.oauth.RefreshToken;
 import com.dolharubang.jwt.JwtAccessDeniedHandler;
 import com.dolharubang.jwt.JwtAuthenticationEntryPoint;
 import com.dolharubang.jwt.TokenProvider;
-import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.RefreshTokenRepository;
 import com.dolharubang.service.oauth.PrincipalOauth2UserService;
+import com.dolharubang.service.oauth.RefreshTokenService;
 import com.dolharubang.type.Authority;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.PrintWriter;
@@ -41,13 +39,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
+
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
     private final AppleProperties appleProperties;
-    private final MemberRepository memberRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -55,7 +54,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient(CustomRequestEntityConverter customRequestEntityConverter) {
+    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient(
+        CustomRequestEntityConverter customRequestEntityConverter) {
         DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
         accessTokenResponseClient.setRequestEntityConverter(customRequestEntityConverter);
 
@@ -73,23 +73,28 @@ public class SecurityConfig {
         http
             .csrf((auth) -> auth.disable())
             .headers(h -> h.frameOptions(f -> f.sameOrigin()))
-            .cors((co)->co.configurationSource(configurationSource()))
+            .cors((co) -> co.configurationSource(configurationSource()))
             .formLogin((auth) -> auth.disable())
-            .httpBasic((auth)->auth.disable())
+            .httpBasic((auth) -> auth.disable())
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs",
+                    "/api-docs/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/login/oauth2/code/**", "/api/v1/login/oauth2/code/**").permitAll() // 이 줄 추가
+                .requestMatchers("/login/oauth2/code/**", "/api/v1/login/oauth2/code/**")
+                .permitAll() // 이 줄 추가
                 .requestMatchers("/test.html").permitAll()
                 .anyRequest().authenticated())
             .oauth2Login(oauth2Login -> oauth2Login
-                .tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig.accessTokenResponseClient(accessTokenResponseClient(customRequestEntityConverter())))
-                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(principalOauth2UserService))
+                .tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig.accessTokenResponseClient(
+                    accessTokenResponseClient(customRequestEntityConverter())))
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(
+                    principalOauth2UserService))
                 .successHandler(successHandler()))
-            .exceptionHandling((auth)->
-                auth.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler))
-            .with(new JwtSecurityConfig(tokenProvider), c-> c.getClass())
-            .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .exceptionHandling((auth) ->
+                auth.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .accessDeniedHandler(jwtAccessDeniedHandler))
+            .with(new JwtSecurityConfig(tokenProvider), c -> c.getClass())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
@@ -101,26 +106,16 @@ public class SecurityConfig {
             PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
             boolean isGuest = false;
-            if(principal.getMember().getAuthority().equals(Authority.ROLE_GUEST))
+            if (principal.getMember().getAuthority().equals(Authority.ROLE_GUEST)) {
                 isGuest = true;
+            }
             // jwt token 발행을 시작한다.
             TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-            Member freshMember = memberRepository.findById(principal.getMember().getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-
-            RefreshToken existRefreshToken = refreshTokenRepository.findByMemberId(freshMember.getMemberId()).orElse(null);
-
-            if(existRefreshToken == null) {
-                RefreshToken refreshToken = RefreshToken.builder()
-                    .member(freshMember)
-                    .value(tokenDto.getRefreshToken())
-                    .build();
-                refreshTokenRepository.save(refreshToken);
-            } else {
-                existRefreshToken.updateValue(tokenDto.getRefreshToken());
-                refreshTokenRepository.saveAndFlush(existRefreshToken); // saveAndFlush 사용
-            }
+            refreshTokenService.saveOrUpdateRefreshToken(
+                principal.getMember().getMemberId(),
+                tokenDto.getRefreshToken()
+            );
 
             OAuth2LoginResDto oAuth2LoginResDto = OAuth2LoginResDto.builder()
                 .accessToken(tokenDto.getAccessToken())
@@ -129,7 +124,8 @@ public class SecurityConfig {
                 .build();
 
             ObjectMapper objectMapper = new ObjectMapper();
-            ApiResponse<OAuth2LoginResDto> apiResponse = ApiResponse.onSuccess(SuccessStatus._OK, oAuth2LoginResDto);
+            ApiResponse<OAuth2LoginResDto> apiResponse = ApiResponse.onSuccess(SuccessStatus._OK,
+                oAuth2LoginResDto);
             // JSON 직렬화
             String jsonResponse = objectMapper.writeValueAsString(apiResponse);
 
