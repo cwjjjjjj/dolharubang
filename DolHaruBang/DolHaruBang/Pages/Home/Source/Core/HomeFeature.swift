@@ -25,9 +25,9 @@ struct HomeFeature {
         @Shared(.inMemory("background")) var selectedBackground: Background = {
             if let selectedItem = CustomizeItem.mockFaceItem.first(where: { $0.isSelected }) {
             return Background.allCases.first { $0.description == selectedItem.name } ?? .December
-        }
-        return .December
-    }()
+            }
+            return .December
+        }()
     
         var selectedAccessory : Accessory = .black_glasses
         var selectedSign : Sign = .woodensign
@@ -35,6 +35,7 @@ struct HomeFeature {
         var selectedNest : Nest = .nest
         
         var needCapture : Bool = false
+        var sand : Int = 0
         
         var message: String = "" // 텍스트필드 메시지
         
@@ -103,6 +104,9 @@ struct HomeFeature {
         // 아이템 선택
         indirect case selectItem(String, refreshAction: Action)
         
+        case fetchSand
+        case sandLoaded(Int)
+        
         case captureDol(UIImage)
     }
     
@@ -158,6 +162,16 @@ struct HomeFeature {
                 return .none
             case .clickMessage:
                 state.message = ""
+                return .none
+                
+            case .fetchSand:
+                return .run { send in
+                    let sandAmount = try await homeClient.sand()
+                    await send(.sandLoaded(sandAmount))
+                }
+                
+            case .sandLoaded(let amount):
+                state.sand = amount
                 return .none
                
             case .openDecoration:

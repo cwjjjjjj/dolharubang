@@ -39,7 +39,7 @@ struct HomeView : View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 12, height: 12)
-                                        Text("20")
+                                        Text("\(store.sand)")
                                             .font(Font.customFont(Font.caption1))
                                             .foregroundColor(.white)
                                     }

@@ -45,10 +45,14 @@ struct MyPageFeature {
         case roomNameChanged(String)
         
         
+        
+        
         case fetchUserInfo
+        case changeUserInfo(String,String)
+        case changeUserPhoto(String)
         case fetchUserInfoResponse(Result<UserInfo, Error>)
         
-        case changeUserInfo
+        
         
     }
     
@@ -64,11 +68,7 @@ struct MyPageFeature {
             case .binding:
                 return .none
                                
-            case .binding(\.userInfo):
-                    return .none
                 
-            case .binding( _ ):
-               return .none
                 
             // 이미지 추가 버튼 클릭
             case .clickPlusButton:
@@ -109,7 +109,8 @@ struct MyPageFeature {
             case let .roomNameChanged(name):
                 state.roomName = name
               return .none
-                
+            
+            // 처음 조회하기
             case .fetchUserInfo:
                 return .run { send in
                     do {
@@ -120,22 +121,29 @@ struct MyPageFeature {
                     }
                 }
                 
-            case .changeUserInfo:
-                
-                let userName = state.userName  // 상태 값을 미리 복사
-                let roomName = state.roomName  // 상태 값을 미리 복사
-                
+            // 수정하기
+            case let .changeUserInfo(userName, roomName):
                 return .run { send in
                     do {
-                        let userinfo = try await myPageClient.updateUserInfo(
-                            UserUpdateRequest(nickname: userName, profilePicture: "dd", spaceName: roomName)
-                        )
+                        let userinfo = try await myPageClient.updateUserInfo(userName, roomName)
+                        await send(.fetchUserInfoResponse(.success(userinfo)))
+                    } catch {
+                        await send(.fetchUserInfoResponse(.failure(error)))
+                    }
+                }
+            
+            case let .changeUserPhoto(photo):
+                return .run { send in
+                    do {
+                        let userinfo = try await myPageClient.updateUserPhoto(photo)
                         await send(.fetchUserInfoResponse(.success(userinfo)))
                     } catch {
                         await send(.fetchUserInfoResponse(.failure(error)))
                     }
                 }
                 
+            
+            // 조회,수정 결과 적용하기
             case let .fetchUserInfoResponse(.success(userinfo)):
                 state.isLoading = false
                 state.userInfo = userinfo // 업적 목록 갱신
