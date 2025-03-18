@@ -164,6 +164,7 @@
 		659792052C9E13BD00E2B51D /* TrophyIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TrophyIcon.xcassets; sourceTree = "<group>"; };
 		659792082C9E1CA000E2B51D /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		6597920A2C9E1CE400E2B51D /* SettingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFeature.swift; sourceTree = "<group>"; };
+		65A5E1792D89DC65006EAA24 /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolHaruBang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = lythwood_field_4k.hdr; sourceTree = "<group>"; };
 		65AFAD862CA0A77500B565D1 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		65AFAD882CA0B84A00B565D1 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
@@ -1052,6 +1053,7 @@
 			children = (
 				DAAEFC0D2C56941800D1F87B /* DolHaruBang */,
 				DAC94BF92C9E2EA400112DA7 /* DolHaruBangTest */,
+				65A5E1792D89DC65006EAA24 /* DolHaruBang.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1105,7 +1107,7 @@
 				655FC4FC2D8595E600AED11E /* KakaoSDK */,
 			);
 			productName = DolHaruBang;
-			productReference = DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */;
+			productReference = 65A5E1792D89DC65006EAA24 /* DolHaruBang.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DAC94BF72C9E2EA400112DA7 /* DolHaruBangTest */ = {
@@ -1467,11 +1469,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "돌하루방";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1502,11 +1505,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "돌하루방";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
