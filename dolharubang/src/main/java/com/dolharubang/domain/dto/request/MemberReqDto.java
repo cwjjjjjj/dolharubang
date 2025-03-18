@@ -10,7 +10,6 @@ public class MemberReqDto {
     private String nickname;
     private String birthday;
     private int sands;
-    private int totalLoginDays;
     private String imageBase64;
     private String spaceName;
 
@@ -20,7 +19,6 @@ public class MemberReqDto {
             .nickname(dto.getNickname())
             .birthday(dto.getBirthday())
             .sands(dto.getSands())
-            .totalLoginDays(dto.getTotalLoginDays())
             .spaceName(dto.getSpaceName())
             .build();
     }

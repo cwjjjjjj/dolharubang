@@ -53,7 +53,6 @@ public class MemberService {
             .nickname(requestDto.getNickname())
             .birthday(requestDto.getBirthday())
             .sands(requestDto.getSands())
-            .totalLoginDays(requestDto.getTotalLoginDays())
             .spaceName(requestDto.getSpaceName())
             .build();
 
@@ -124,7 +123,6 @@ public class MemberService {
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND,
-                "Member not found with ID: " + memberId));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

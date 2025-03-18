@@ -1,4 +1,4 @@
-package com.dolharubang.domain.dto.common;
+package com.dolharubang.domain.dto.request;
 
 import com.dolharubang.domain.entity.Stone;
 import lombok.Getter;

@@ -1,14 +1,14 @@
 package com.dolharubang.repository;
 
 import com.dolharubang.domain.entity.Member;
-import com.dolharubang.type.SocialType;
+import com.dolharubang.type.Provider;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    //TODO 친구 검색 기능
     List<Member> findByNicknameContaining(String keyword);
 
-    Optional<Member> findBySocialTypeAndSocialId(SocialType socialType,String socialId);
+    Member findByProviderAndProviderId(Provider provider, String providerId);
 }

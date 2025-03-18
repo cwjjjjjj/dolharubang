@@ -24,6 +24,7 @@ application-prod.yml
 application-aws.yml
 logback.xml
 log4jdbc.log4j2.properties
+AuthKey_KVMW4DN9VZ.p8
 
 .idea
 *.iws
@@ -42,3 +43,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Apple Resources ###
+dolharubang/src/main/resources/static/apple

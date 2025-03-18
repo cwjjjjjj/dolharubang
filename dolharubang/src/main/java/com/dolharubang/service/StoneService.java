@@ -1,6 +1,6 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.common.StoneTextUpdateReqDto;
+import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
