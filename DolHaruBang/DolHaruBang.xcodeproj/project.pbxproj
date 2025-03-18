@@ -20,6 +20,7 @@
 		65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65463D012CEDB96000079A4E /* SignEnviroment.swift */; };
 		65463D042CEDB9ED00079A4E /* SignFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65463D032CEDB9EA00079A4E /* SignFeature.swift */; };
 		6550AA492C59EA35000A264E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6550AA482C59EA35000A264E /* SplashView.swift */; };
+		655FC4FD2D8595E600AED11E /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 655FC4FC2D8595E600AED11E /* KakaoSDK */; };
 		656953522C76891D007B4DA1 /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 656953512C76891D007B4DA1 /* Background.xcassets */; };
 		656BB3362C9DB9A90034AA2A /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656BB3352C9DB9A90034AA2A /* Nest.swift */; };
 		657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657780E02C83427000DC08C2 /* NavigationFeature.swift */; };
@@ -278,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65054FE42C9DD63B00A14601 /* Nuke in Frameworks */,
+				655FC4FD2D8595E600AED11E /* KakaoSDK in Frameworks */,
 				652175052C60F77900128734 /* ComposableArchitecture in Frameworks */,
 				659469752C7DC022004D487C /* Alamofire in Frameworks */,
 			);
@@ -1143,6 +1145,7 @@
 				652175042C60F77900128734 /* ComposableArchitecture */,
 				659469742C7DC022004D487C /* Alamofire */,
 				65054FE32C9DD63B00A14601 /* Nuke */,
+				655FC4FC2D8595E600AED11E /* KakaoSDK */,
 			);
 			productName = DolHaruBang;
 			productReference = DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */;
@@ -1203,6 +1206,7 @@
 				652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				659469732C7DC022004D487C /* XCRemoteSwiftPackageReference "Alamofire" */,
 				65054FE22C9DD63B00A14601 /* XCRemoteSwiftPackageReference "Nuke" */,
+				655FC4FB2D8595E600AED11E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = DAAEFC0C2C56941800D1F87B /* Products */;
 			projectDirPath = "";
@@ -1659,6 +1663,15 @@
 				minimumVersion = 1.12.1;
 			};
 		};
+		655FC4FB2D8595E600AED11E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 3.0.0;
+				minimumVersion = 2.2.0;
+			};
+		};
 		659469732C7DC022004D487C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1680,6 +1693,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 652175032C60F77900128734 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		655FC4FC2D8595E600AED11E /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 655FC4FB2D8595E600AED11E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
 		};
 		659469742C7DC022004D487C /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

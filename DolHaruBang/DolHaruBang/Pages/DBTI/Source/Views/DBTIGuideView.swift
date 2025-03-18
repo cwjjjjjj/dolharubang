@@ -8,6 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 import AuthenticationServices
+import KakaoSDKUser
 
 // MARK: NavigationStack Start (임시 위치 추후에는 로그인 화면)
 struct DBTIGuideView: View {
@@ -70,6 +71,24 @@ struct DBTIGuideView: View {
                         }.padding(.bottom, 16)
                         
                         Spacer().frame(height: 30)
+                        
+                        Button(action: {
+                            if (UserApi.isKakaoTalkLoginAvailable()) {
+                                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                                    if let error = error {
+                                        print(error)
+                                    }
+                                    else {
+                                        print("loginWithKakaoTalk() success.")
+
+                                        // 성공 시 동작 구현
+                                        _ = oauthToken
+                                    }
+                                }
+                            }
+                        }){
+                            Text("카카오")
+                        }
                         
                         // 애플로그인 테스트
                         SignInWithAppleButton(
