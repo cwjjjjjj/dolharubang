@@ -45,6 +45,11 @@
 		65C8B1E72D40135C006D9317 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1E62D401356006D9317 /* AppSetting.swift */; };
 		65C8B1E92D401450006D9317 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1E82D40144C006D9317 /* AudioManager.swift */; };
 		65C8B1EB2D401712006D9317 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8B1EA2D40170E006D9317 /* Button.swift */; };
+		65DC8D8C2DAD3E8700B0BF3D /* DBTIEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D8B2DAD3E7D00B0BF3D /* DBTIEnviroment.swift */; };
+		65DC8D8E2DAD4CAB00B0BF3D /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D8D2DAD4CA600B0BF3D /* TokenManager.swift */; };
+		65DC8D902DAD4CF000B0BF3D /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D8F2DAD4CEA00B0BF3D /* AuthInterceptor.swift */; };
+		65DC8D922DAD4E2200B0BF3D /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D912DAD4E1D00B0BF3D /* KeyChainService.swift */; };
+		65DC8D942DAD520600B0BF3D /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D932DAD520500B0BF3D /* APIConstants.swift */; };
 		65E1C50A2C6F7DE700A2E419 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E1C5092C6F7DE700A2E419 /* ColorHex.swift */; };
 		DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */; };
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
@@ -174,6 +179,12 @@
 		65C8B1E62D401356006D9317 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		65C8B1E82D40144C006D9317 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		65C8B1EA2D40170E006D9317 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		65DC8D882DAD38E400B0BF3D /* DolHaruBangTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DolHaruBangTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DC8D8B2DAD3E7D00B0BF3D /* DBTIEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIEnviroment.swift; sourceTree = "<group>"; };
+		65DC8D8D2DAD4CA600B0BF3D /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		65DC8D8F2DAD4CEA00B0BF3D /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
+		65DC8D912DAD4E1D00B0BF3D /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
+		65DC8D932DAD520500B0BF3D /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		65E1C5092C6F7DE700A2E419 /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
 		65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DolHaruBangDebug.entitlements; sourceTree = "<group>"; };
 		DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MyPageIcon.xcassets; sourceTree = "<group>"; };
@@ -243,7 +254,6 @@
 		DAA4C9F52C8B7C6800409D4B /* SignPopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignPopUpView.swift; sourceTree = "<group>"; };
 		DAA4C9F82C8B7C6800409D4B /* HomeIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HomeIcon.xcassets; sourceTree = "<group>"; };
 		DAA4CA092C8B7D5E00409D4B /* UITextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldPadding.swift; sourceTree = "<group>"; };
-		DAAEFC0B2C56941800D1F87B /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DolHaruBang.app; path = "/Users/ht/Desktop/dol/dolharubang/DolHaruBang/build/Debug-iphoneos/DolHaruBang.app"; sourceTree = "<absolute>"; };
 		DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolHaruBangApp.swift; sourceTree = "<group>"; };
 		DAAEFC102C56941800D1F87B /* EntryPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPointView.swift; sourceTree = "<group>"; };
 		DAAEFC122C56941A00D1F87B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -257,7 +267,6 @@
 		DAAEFC372C5755E600D1F87B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAEFC392C575B8900D1F87B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DAC94BC02C9D43B800112DA7 /* TalkEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkEnvironment.swift; sourceTree = "<group>"; };
-		DAC94BF82C9E2EA400112DA7 /* DolHaruBangTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = DolHaruBangTest.xctest; path = "/Users/ht/Desktop/dol/dolharubang/DolHaruBang/build/Debug-iphoneos/DolHaruBang.app/PlugIns/DolHaruBangTest.xctest"; sourceTree = "<absolute>"; };
 		DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = je_gray_02_4k.hdr; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -535,6 +544,7 @@
 		657780F62C84AFB000DC08C2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				65DC8D8B2DAD3E7D00B0BF3D /* DBTIEnviroment.swift */,
 				657780F72C84AFC400DC08C2 /* DBTIFeature.swift */,
 			);
 			path = Core;
@@ -893,7 +903,11 @@
 		DAA4C9CF2C8B79DA00409D4B /* AF */ = {
 			isa = PBXGroup;
 			children = (
+				65DC8D932DAD520500B0BF3D /* APIConstants.swift */,
+				65DC8D912DAD4E1D00B0BF3D /* KeyChainService.swift */,
 				DAA4C9CE2C8B79DA00409D4B /* apiFetch.swift */,
+				65DC8D8D2DAD4CA600B0BF3D /* TokenManager.swift */,
+				65DC8D8F2DAD4CEA00B0BF3D /* AuthInterceptor.swift */,
 			);
 			path = AF;
 			sourceTree = "<group>";
@@ -1054,6 +1068,7 @@
 				DAAEFC0D2C56941800D1F87B /* DolHaruBang */,
 				DAC94BF92C9E2EA400112DA7 /* DolHaruBangTest */,
 				65A5E1792D89DC65006EAA24 /* DolHaruBang.app */,
+				65DC8D882DAD38E400B0BF3D /* DolHaruBangTest.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1130,7 +1145,7 @@
 			packageProductDependencies = (
 			);
 			productName = DolHaruBangTest;
-			productReference = DAC94BF82C9E2EA400112DA7 /* DolHaruBangTest.xctest */;
+			productReference = 65DC8D882DAD38E400B0BF3D /* DolHaruBangTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1235,6 +1250,7 @@
 				DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */,
 				65C8B1EB2D401712006D9317 /* Button.swift in Sources */,
 				65AFAD872CA0A77900B565D1 /* ShareView.swift in Sources */,
+				65DC8D922DAD4E2200B0BF3D /* KeyChainService.swift in Sources */,
 				658216CD2CA58FA000C5CD37 /* MailUtil.swift in Sources */,
 				DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */,
 				DAA4C9FA2C8B7C6900409D4B /* HomeEnviroment.swift in Sources */,
@@ -1250,6 +1266,7 @@
 				DAC94BC12C9D43C400112DA7 /* TalkEnvironment.swift in Sources */,
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				65C8B1E72D40135C006D9317 /* AppSetting.swift in Sources */,
+				65DC8D8C2DAD3E8700B0BF3D /* DBTIEnviroment.swift in Sources */,
 				DAA4CA012C8B7C6900409D4B /* Mail.swift in Sources */,
 				65382E802CA32266003F130B /* MailView.swift in Sources */,
 				657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */,
@@ -1258,7 +1275,10 @@
 				DAAEFC2E2C5743BA00D1F87B /* Font.swift in Sources */,
 				DA6904292CAFC15300A557A1 /* FriendListView..swift in Sources */,
 				658962822C856D3600F27FB4 /* Demo.swift in Sources */,
+				65DC8D8E2DAD4CAB00B0BF3D /* TokenManager.swift in Sources */,
+				65DC8D902DAD4CF000B0BF3D /* AuthInterceptor.swift in Sources */,
 				DAA4C9D02C8B79DB00409D4B /* apiFetch.swift in Sources */,
+				65DC8D942DAD520600B0BF3D /* APIConstants.swift in Sources */,
 				DA6904232CAFBF4500A557A1 /* FriendListFeature.swift in Sources */,
 				657780E12C83427000DC08C2 /* NavigationFeature.swift in Sources */,
 				65382E842CA3276A003F130B /* ProfileEnviroment.swift in Sources */,

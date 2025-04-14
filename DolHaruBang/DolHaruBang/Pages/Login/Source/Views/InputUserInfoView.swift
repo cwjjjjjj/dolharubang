@@ -192,7 +192,7 @@ struct InputUserInfoView: View {
                     
                     HStack {
                         NavigationLink(destination: Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
-                            DBTIGuideView( nav: nav)
+                            DBTIGuideView( nav: nav, store: Store(initialState: DBTIFeature.State()) { DBTIFeature() })
                         }) {
                             ZStack {
                                 HStack {

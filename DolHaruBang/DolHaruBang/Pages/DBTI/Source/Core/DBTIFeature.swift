@@ -13,14 +13,20 @@ import ComposableArchitecture
 struct DBTIFeature {
   @ObservableState
   struct State: Equatable {
-      
+      var kakaoToken: String?
   }
 
   enum Action {
 //    case calendarButtonTapped
     case homeButtonTapped
     case goBack
+      
+    case kakaoLoginRequested(String)
+    case kakaoLoginResponse(Result<KakaoLoginResponse, Error>)
+
   }
+    
+  @Dependency(\.dBTIClient) var dBTIClient
 
   var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -32,6 +38,23 @@ struct DBTIFeature {
       case .goBack:
         return .none
         
+      case let .kakaoLoginRequested(oauthToken):
+          return .run { send in
+              do {
+                  let tokens = try await dBTIClient.kakaoLogin(oauthToken)
+                  await send(.kakaoLoginResponse(.success(tokens)))
+              } catch {
+                  await send(.kakaoLoginResponse(.failure(error)))
+              }
+          }
+          
+      case let .kakaoLoginResponse(.success(tokens)):
+          print("백에보내는거성공")
+          print(tokens)
+          return .none
+          
+      case let .kakaoLoginResponse(.failure(error)):
+          return .none
       }
     }
   }

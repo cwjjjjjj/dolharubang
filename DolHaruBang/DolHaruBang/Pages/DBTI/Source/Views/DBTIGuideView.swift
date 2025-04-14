@@ -17,6 +17,8 @@ struct DBTIGuideView: View {
     @Bindable var nav: StoreOf<NavigationFeature>
     @StateObject private var signInViewModel = SignInViewModel()
     
+    @State var store: StoreOf<DBTIFeature>
+    
     var body: some View {
         
         // path : 이동하는 경로들을 전부 선언해줌
@@ -76,13 +78,19 @@ struct DBTIGuideView: View {
                             if (UserApi.isKakaoTalkLoginAvailable()) {
                                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                                     if let error = error {
+                                        print("에러")
                                         print(error)
                                     }
                                     else {
-                                        print("ㅎㅇ loginWithKakaoTalk() success.")
-
+                                        print("loginWithKakaoTalk() success.")
                                         // 성공 시 동작 구현
-//                                        _ = oauthToken
+                                        guard let token = oauthToken else {
+                                            // Handle the nil case
+                                            return
+                                        }
+                                        
+                                        let accessToken = token.accessToken
+                                        store.send(.kakaoLoginRequested(accessToken))
                                     }
                                 }
                             }
