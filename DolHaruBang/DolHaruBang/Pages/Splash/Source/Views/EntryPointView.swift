@@ -11,7 +11,7 @@ struct EntryPointView: View {
         ZStack{
             if showMainView {
                     Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
-                        DBTIGuideView( nav: nav)
+                        DBTIGuideView( nav: nav, store: Store(initialState: DBTIFeature.State()) { DBTIFeature() })
                     }
 
 //                    DBTIGuideView()
