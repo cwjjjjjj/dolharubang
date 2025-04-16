@@ -22,10 +22,10 @@ struct TrophyListView : View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     if let trophys = store.state.trophys {
-                        ForEach(Array(trophys.enumerated()), id: \.element.title) { index, trophy in
+                        ForEach(Array(trophys.enumerated()), id: \.element.missionName) { index, trophy in
                             VStack(alignment: .center){
                                 ZStack{
-                                    if trophy.isclear == true{
+                                    if trophy.rewarded == true{
                                         Image("goldTrophy")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
@@ -42,12 +42,12 @@ struct TrophyListView : View {
                                 
                                 // 업적명, 업적 과제
                                 VStack(spacing: 12) {
-                                    Text("\(trophy.title)")
+                                    Text("\(trophy.missionName)")
                                         .font(Font.customFont(Font.body1Bold))
                                         .lineSpacing(28.80)
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
                                     
-                                    Text("\(trophy.subtitle)")
+                                    Text("\(trophy.missionDescription)")
                                         .font(Font.customFont(Font.body4Regular))
                                         .lineSpacing(19.80)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
@@ -61,14 +61,14 @@ struct TrophyListView : View {
                                 //  보상 표시
                                 HStack(spacing: 8) {
                                     
-                                    if let uiImage = UIImage(data: trophy.rewardImage) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 48, height: 48)
-                                    } else {
-                                        Text("이미지 로드 실패")
-                                    }
+//                                    if let uiImage = UIImage(data: trophy.rewardImage) {
+//                                        Image(uiImage: uiImage)
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(width: 48, height: 48)
+//                                    } else {
+//                                        Text("이미지 로드 실패")
+//                                    }
                                     
                                     Text("\(trophy.rewardName)")  .font(Font.customFont(Font.body5Bold))
                                         .lineSpacing(18)

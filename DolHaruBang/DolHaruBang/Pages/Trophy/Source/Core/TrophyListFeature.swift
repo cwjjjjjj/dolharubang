@@ -14,7 +14,7 @@ struct TrophyListFeature {
     
     @ObservableState
     struct State : Equatable {
-        var trophys: [Trophy]? = []
+        var trophys: [Trophy]? = Trophy.mockTrophies
         var isLoading : Bool = false
         var errorMessage: String? = nil
        
@@ -31,6 +31,7 @@ struct TrophyListFeature {
                 
             case .fetchTrophys:
                 state.isLoading = true
+                print("트로피 불러오기 시작")
                 return .run { send in
                     do {
                         let trophies = try await trophyClient.fetchTrophy()
@@ -43,9 +44,11 @@ struct TrophyListFeature {
             case let .fetchTrophysResponse(.success(trophies)):
                 state.isLoading = false
                 state.trophys = trophies // 업적 목록 갱신
+                print("받기성공")
                 return .none
                 
             case let .fetchTrophysResponse(.failure(error)):
+                print(error)
                 state.isLoading = false
                 state.errorMessage = error.localizedDescription
                 return .none

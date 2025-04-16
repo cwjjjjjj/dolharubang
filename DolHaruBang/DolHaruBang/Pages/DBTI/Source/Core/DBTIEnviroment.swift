@@ -35,13 +35,13 @@ extension DBTIClient: TestDependencyKey {
 extension DBTIClient: DependencyKey {
     static let liveValue = DBTIClient(
         kakaoLogin: { token in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/auth/kakao-login"
+            let url = "auth/kakao-login"
             do {
                 let headers: HTTPHeaders = [
                             "Oauth-Token": "Bearer \(token)"
                         ]
                 print(token)
-                return try await fetch(url: url, model: KakaoLoginResponse.self, method: .post, headers: headers)
+                return try await fetch(url: url, model: KakaoLoginResponse.self, method: .post, headers: headers,skipAuth: true)
                 } catch {
                     print("로그인 실패 :", error)
                     return KakaoLoginResponse(accessToken: "no", refreshToken: "no")
