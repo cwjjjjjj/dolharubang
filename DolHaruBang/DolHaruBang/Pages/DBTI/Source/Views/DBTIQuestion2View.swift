@@ -1,7 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DBTIQuestion1View: View {
+struct DBTIQuestion2View: View {
     
     @State var store : StoreOf<DBTIFeature>
     
@@ -36,7 +36,7 @@ struct DBTIQuestion1View: View {
                     HStack {
                         Spacer()
                         
-                        CustomText(text: "Q1.",
+                        CustomText(text: "Q2.",
                                    font: Font.uiFont(for: Font.subtitle2)!,
                                    textColor: .coreGreen,
                                    letterSpacingPercentage: -2.5,

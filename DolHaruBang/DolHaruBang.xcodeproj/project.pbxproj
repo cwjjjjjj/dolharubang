@@ -55,6 +55,8 @@
 		DA461F762C81E50300270CDE /* FigmaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F752C81E50300270CDE /* FigmaEffects.swift */; };
 		DA461F7D2C840C7200270CDE /* HaruBangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F7C2C840C7200270CDE /* HaruBangView.swift */; };
 		DA461F7F2C840C8900270CDE /* HaruBangFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F7E2C840C8900270CDE /* HaruBangFeature.swift */; };
+		DA4D7C312D8544C00041FFE8 /* DBTIQuestion2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D7C302D8544C00041FFE8 /* DBTIQuestion2View.swift */; };
+		DA4D7C332D854B8B0041FFE8 /* DBTIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D7C322D854B7F0041FFE8 /* DBTIEnvironment.swift */; };
 		DA69041D2CAFBEC400A557A1 /* ParkFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */; };
 		DA69041F2CAFBF2B00A557A1 /* DoljanchiFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */; };
 		DA6904232CAFBF4500A557A1 /* FriendListFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */; };
@@ -74,7 +76,7 @@
 		DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */; };
 		DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */; };
 		DA6E57822C5B25170088A7A7 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57812C5B25170088A7A7 /* Text.swift */; };
-		DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */; };
+		DA6E57842C5C5EFF0088A7A7 /* DBTIQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57832C5C5EFF0088A7A7 /* DBTIQuestionView.swift */; };
 		DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */; };
 		DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */; };
 		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
@@ -188,6 +190,8 @@
 		DA461F752C81E50300270CDE /* FigmaEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaEffects.swift; sourceTree = "<group>"; };
 		DA461F7C2C840C7200270CDE /* HaruBangView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HaruBangView.swift; sourceTree = "<group>"; };
 		DA461F7E2C840C8900270CDE /* HaruBangFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HaruBangFeature.swift; sourceTree = "<group>"; };
+		DA4D7C302D8544C00041FFE8 /* DBTIQuestion2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestion2View.swift; sourceTree = "<group>"; };
+		DA4D7C322D854B7F0041FFE8 /* DBTIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIEnvironment.swift; sourceTree = "<group>"; };
 		DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkFeature.swift; sourceTree = "<group>"; };
 		DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoljanchiFeature.swift; sourceTree = "<group>"; };
 		DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListFeature.swift; sourceTree = "<group>"; };
@@ -207,7 +211,7 @@
 		DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDayButton.swift; sourceTree = "<group>"; };
 		DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIGuideView.swift; sourceTree = "<group>"; };
 		DA6E57812C5B25170088A7A7 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
-		DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestion1View.swift; sourceTree = "<group>"; };
+		DA6E57832C5C5EFF0088A7A7 /* DBTIQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestionView.swift; sourceTree = "<group>"; };
 		DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIResultView.swift; sourceTree = "<group>"; };
 		DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardGuardian.swift; path = DolHaruBang/Pages/DBTI/Source/Views/KeyboardGuardian.swift; sourceTree = SOURCE_ROOT; };
 		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -473,8 +477,9 @@
 			isa = PBXGroup;
 			children = (
 				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
-				DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */,
+				DA6E57832C5C5EFF0088A7A7 /* DBTIQuestionView.swift */,
 				DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */,
+				DA4D7C302D8544C00041FFE8 /* DBTIQuestion2View.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -555,6 +560,7 @@
 		657780F62C84AFB000DC08C2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DA4D7C322D854B7F0041FFE8 /* DBTIEnvironment.swift */,
 				657780F72C84AFC400DC08C2 /* DBTIFeature.swift */,
 			);
 			path = Core;
@@ -1335,9 +1341,10 @@
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */,
 				65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */,
-				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
+				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestionView.swift in Sources */,
 				DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */,
 				DAA4CA042C8B7C6900409D4B /* CustomizeView.swift in Sources */,
+				DA4D7C332D854B8B0041FFE8 /* DBTIEnvironment.swift in Sources */,
 				656BB3362C9DB9A90034AA2A /* Nest.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
 				DA91E0C72C916B6D00CD41A4 /* SpeechBubbleView.swift in Sources */,
@@ -1345,6 +1352,7 @@
 				DAAEFC2A2C57425000D1F87B /* Color.swift in Sources */,
 				DA69042B2CAFC1A700A557A1 /* ParkView.swift in Sources */,
 				658216BE2CA5795C00C5CD37 /* MailEnviroment.swift in Sources */,
+				DA4D7C312D8544C00041FFE8 /* DBTIQuestion2View.swift in Sources */,
 				DAA4C9FC2C8B7C6900409D4B /* HomeView.swift in Sources */,
 				65C8B1E92D401450006D9317 /* AudioManager.swift in Sources */,
 				DAA4CA062C8B7C6900409D4B /* FloatingMenuView.swift in Sources */,

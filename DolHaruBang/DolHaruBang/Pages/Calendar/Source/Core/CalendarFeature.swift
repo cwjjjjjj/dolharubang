@@ -49,26 +49,26 @@ struct CalendarFeature {
                 state.showPopup = show
                 return .none
                 
-                case let .fetchSchedulesForMonth(year, month, memberId):
-                    state.isLoading = true
-                    return .run { send in
-                        do {
-                            let schedules = try await scheduleClient.fetchSchedulesById(year, month, memberId)
-                            print("<<성공 - \(schedules.count)개의 일정 가져옴>>")
-                            schedules.forEach { schedule in
-                                // KST로 포맷팅된 시작일 출력
-                                let kstFormatter = DateFormatter()
-                                kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                                kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-                                let kstStartDate = kstFormatter.string(from: schedule.startScheduleDate)
-                                
-                                print("ID: \(schedule.id), 내용: \(schedule.contents), 시작일: \(kstStartDate)")
-                            }
-                            await send(.schedulesReceived(.success(schedules), isFullUpdate: true))  // 전체 업데이트
-                        } catch {
-                            await send(.schedulesReceived(.failure(error), isFullUpdate: true))
+            case let .fetchSchedulesForMonth(year, month, memberId):
+                state.isLoading = true
+                return .run { send in
+                    do {
+                        let schedules = try await scheduleClient.fetchSchedulesById(year, month, memberId)
+                        print("<<성공 - \(schedules.count)개의 일정 가져옴>>")
+                        schedules.forEach { schedule in
+                            // KST로 포맷팅된 시작일 출력
+                            let kstFormatter = DateFormatter()
+                            kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                            kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+                            let kstStartDate = kstFormatter.string(from: schedule.startScheduleDate)
+                            
+                            print("ID: \(schedule.id), 내용: \(schedule.contents), 시작일: \(kstStartDate)")
                         }
+                        await send(.schedulesReceived(.success(schedules), isFullUpdate: true))  // 전체 업데이트
+                    } catch {
+                        await send(.schedulesReceived(.failure(error), isFullUpdate: true))
                     }
+                }
                 
             case .addSchedule(let schedule):
                 state.isLoading = true
