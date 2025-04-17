@@ -35,10 +35,12 @@ extension DBTIClient: TestDependencyKey {
 extension DBTIClient: DependencyKey {
     static let liveValue = DBTIClient(
         kakaoLogin: { token in
-            let url = "auth/kakao-login"
+            let url = "/auth/kakao-login"
             do {
                 let headers: HTTPHeaders = [
-                            "Oauth-Token": "Bearer \(token)"
+                            "Authorization": "Bearer \(token)",
+                            "Content-Type" : "applications/json"
+                            
                         ]
                 print(token)
                 return try await fetch(url: url, model: KakaoLoginResponse.self, method: .post, headers: headers,skipAuth: true)

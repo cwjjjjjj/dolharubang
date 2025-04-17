@@ -1,21 +1,15 @@
 import SwiftUI
 import ComposableArchitecture
+import AuthenticationServices
+import KakaoSDKUser
 
 struct LoginView: View {
-    
-    
-    
     var body: some View {
-      
-            
             ZStack {
             Color.mainGreen
                 .edgesIgnoringSafeArea(.all)
             
             VStack(alignment: .leading) {
-                //                Spacer().frame(height: UIScreen.main.bounds.height * 0.09154)
-                //                Spacer().frame(height: 78).fixedSize()
-                
                 HStack {
                     Spacer()
                     
@@ -44,6 +38,43 @@ struct LoginView: View {
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
+                            
+//                            Button(action: {
+//                                if (UserApi.isKakaoTalkLoginAvailable()) {
+//                                    UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+//                                        if let error = error {
+//                                            print("에러")
+//                                            print(error)
+//                                        }
+//                                        else {
+//                                            print("loginWithKakaoTalk() success.")
+//                                            // 성공 시 동작 구현
+//                                            guard let token = oauthToken else {
+//                                                // Handle the nil case
+//                                                return
+//                                            }
+//                                            
+//                                            let accessToken = token.accessToken
+//                                            store.send(.kakaoLoginRequested(accessToken))
+//                                        }
+//                                    }
+//                                }
+//                            }){
+//                                Text("카카오")
+//                            }
+//                            
+//                            // 애플로그인 테스트
+//                            SignInWithAppleButton(
+//                                .signIn,
+//                                onRequest: { request in
+//                                    request.requestedScopes = [.fullName, .email]
+//                                },
+//                                onCompletion: { result in
+//                                    signInViewModel.handleSignInWithAppleResult(result)
+//                                }
+//                            )
+//                            .frame(width: 280, height: 45)
+//                            .padding()
                             
                             NavigationLink(destination: InputUserInfoView()) {
                                 ZStack {
