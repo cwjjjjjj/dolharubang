@@ -12,9 +12,9 @@ import Alamofire
 
 struct UserInfo: Decodable, Equatable, Sendable {
     var userName: String
-    var roomName: String
+    var roomName: String?
     var birthStone: String
-    var birthDay: String
+    var birthDay: String?
     var emailAddress: String
 }
 
@@ -41,7 +41,7 @@ struct MyPageClient {
 extension MyPageClient: TestDependencyKey {
     static let previewValue = Self(
         fetchMypage: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/15"
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/30"
             do {
                 return try await fetch(url: url, model: UserInfo.self, method: .get)
             } catch {
@@ -79,14 +79,12 @@ extension DependencyValues {
 extension MyPageClient: DependencyKey {
     static let liveValue = MyPageClient(
         fetchMypage: {
-            let url = "https://c71b-118-42-124-3.ngrok-free.app/api/v1/members/profile/1"
-            do {
-                return try await fetch(url: url, model: UserInfo.self, method: .get)
-            } catch {
-                print("회원정보 불러오기 실패:", error)
-                return UserInfo.mockUserInf
-            }
-        },
+            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/30"
+            
+            return try await fetch(url: url, model: UserInfo.self, method: .get)
+            
+        }
+        ,
         updateUserInfo: { nickName, spaceName in
             let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/15"
             

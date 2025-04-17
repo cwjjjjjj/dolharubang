@@ -136,10 +136,10 @@ struct MyPageView : View {
                                     .padding(6)
                                     .background(Color(red: 0.79, green: 0.32, blue: 0.17))
                                     .cornerRadius(20)
-                                    Text("\(userinfo.birthDay)")
-                                        .font(Font.customFont(Font.body3Bold))
-                                        .lineSpacing(25.20)
-                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+//                                    Text("\(userinfo.birthDay)")
+//                                        .font(Font.customFont(Font.body3Bold))
+//                                        .lineSpacing(25.20)
+//                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
                                 .frame(width: 152, height: 21)
                                 
@@ -192,7 +192,7 @@ struct MyPageView : View {
                             
                             
                             Button(action: {
-                                store.send(.trophyButtonTapped)
+                                TokenManager.shared.clearTokens()
                             }){
                                 HStack{
                                     Text("로그아웃")

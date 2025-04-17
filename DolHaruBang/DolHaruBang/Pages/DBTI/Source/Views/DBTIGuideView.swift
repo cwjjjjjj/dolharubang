@@ -74,6 +74,7 @@ struct DBTIGuideView: View {
                         
                         Spacer().frame(height: 30)
                         
+                        // 입장화면 정해지면 아래 지우기
                         Button(action: {
                             if (UserApi.isKakaoTalkLoginAvailable()) {
                                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in

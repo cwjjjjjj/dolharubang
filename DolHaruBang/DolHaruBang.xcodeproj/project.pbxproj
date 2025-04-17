@@ -36,6 +36,8 @@
 		659792062C9E13BD00E2B51D /* TrophyIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 659792052C9E13BD00E2B51D /* TrophyIcon.xcassets */; };
 		659792092C9E1CA000E2B51D /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659792082C9E1CA000E2B51D /* SettingView.swift */; };
 		6597920B2C9E1CE400E2B51D /* SettingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6597920A2C9E1CE400E2B51D /* SettingFeature.swift */; };
+		65A5B31D2DB0D04900E51A3F /* LoginEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A5B31C2DB0D03F00E51A3F /* LoginEnviroment.swift */; };
+		65A5B31F2DB0D07B00E51A3F /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A5B31E2DB0D07700E51A3F /* LoginFeature.swift */; };
 		65AFAD832CA0A26B00B565D1 /* lythwood_field_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = 65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */; };
 		65AFAD872CA0A77900B565D1 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD862CA0A77500B565D1 /* ShareView.swift */; };
 		65AFAD892CA0B85100B565D1 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFAD882CA0B84A00B565D1 /* SignView.swift */; };
@@ -169,6 +171,8 @@
 		659792052C9E13BD00E2B51D /* TrophyIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TrophyIcon.xcassets; sourceTree = "<group>"; };
 		659792082C9E1CA000E2B51D /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		6597920A2C9E1CE400E2B51D /* SettingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFeature.swift; sourceTree = "<group>"; };
+		65A5B31C2DB0D03F00E51A3F /* LoginEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEnviroment.swift; sourceTree = "<group>"; };
+		65A5B31E2DB0D07700E51A3F /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
 		65A5E1792D89DC65006EAA24 /* DolHaruBang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolHaruBang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = lythwood_field_4k.hdr; sourceTree = "<group>"; };
 		65AFAD862CA0A77500B565D1 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
@@ -484,6 +488,7 @@
 		6550AA442C59E8B8000A264E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				65A5B31B2DB0CFE600E51A3F /* Core */,
 				6550AA452C59E8BF000A264E /* Views */,
 			);
 			path = Source;
@@ -653,6 +658,15 @@
 				6597920A2C9E1CE400E2B51D /* SettingFeature.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		65A5B31B2DB0CFE600E51A3F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				65A5B31E2DB0D07700E51A3F /* LoginFeature.swift */,
+				65A5B31C2DB0D03F00E51A3F /* LoginEnviroment.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		65AFAD842CA0A76300B565D1 /* Share */ = {
@@ -1251,6 +1265,7 @@
 				65C8B1EB2D401712006D9317 /* Button.swift in Sources */,
 				65AFAD872CA0A77900B565D1 /* ShareView.swift in Sources */,
 				65DC8D922DAD4E2200B0BF3D /* KeyChainService.swift in Sources */,
+				65A5B31D2DB0D04900E51A3F /* LoginEnviroment.swift in Sources */,
 				658216CD2CA58FA000C5CD37 /* MailUtil.swift in Sources */,
 				DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */,
 				DAA4C9FA2C8B7C6900409D4B /* HomeEnviroment.swift in Sources */,
@@ -1296,6 +1311,7 @@
 				DA6E57772C5908420088A7A7 /* CustomYearButton.swift in Sources */,
 				DAA4C9FB2C8B7C6900409D4B /* HomeFeature.swift in Sources */,
 				DAA4CA002C8B7C6900409D4B /* Face.swift in Sources */,
+				65A5B31F2DB0D07B00E51A3F /* LoginFeature.swift in Sources */,
 				DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */,
 				DAAEFC0F2C56941800D1F87B /* DolHaruBangApp.swift in Sources */,
 				DA461F762C81E50300270CDE /* FigmaEffects.swift in Sources */,
@@ -1482,10 +1498,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DolHaruBang/DolHaruBangDebug.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = X83LNW6267;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = X83LNW6267;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
@@ -1504,6 +1522,8 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = www.dolharubang.DolHaruBang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = 2025;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1518,10 +1538,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DolHaruBang/Preview Content\"";
-				DEVELOPMENT_TEAM = X83LNW6267;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = X83LNW6267;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DolHaruBang/Info.plist;
@@ -1539,6 +1561,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = www.dolharubang.DolHaruBang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = 2025;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;

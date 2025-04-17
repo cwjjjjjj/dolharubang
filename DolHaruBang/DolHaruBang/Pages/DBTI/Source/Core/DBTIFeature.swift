@@ -49,8 +49,9 @@ struct DBTIFeature {
           }
           
       case let .kakaoLoginResponse(.success(tokens)):
-          print("백에보내는거성공")
-          print(tokens)
+          print("백에보내는거성공 토큰 : \(tokens.accessToken) , \(tokens.refreshToken)")
+        
+          TokenManager.shared.saveTokens(accessToken:tokens.accessToken, refreshToken: tokens.refreshToken)
           return .none
           
       case let .kakaoLoginResponse(.failure(error)):
