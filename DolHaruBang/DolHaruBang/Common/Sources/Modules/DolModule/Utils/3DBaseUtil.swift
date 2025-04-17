@@ -33,11 +33,11 @@ func showAllNodes(rootNode: SCNNode) {
 func printNodeDetails(node: SCNNode, depth: Int = 0) {
     // 현재 노드의 이름과 깊이를 출력합니다.
     let indentation = String(repeating: "  ", count: depth)
-    print("\(indentation)Node name: \(node.name ?? "Unnamed")")
-    print("\(indentation)  IsHidden: \(node.isHidden)")
+//    print("\(indentation)Node name: \(node.name ?? "Unnamed")")
+//    print("\(indentation)  IsHidden: \(node.isHidden)")
     // 노드의 지오메트리가 있으면 지오메트리의 정보를 출력합니다.
     if let geometry = node.geometry {
-        print("\(indentation)  Geometry: \(geometry.name ?? "Unnamed")")
+//        print("\(indentation)  Geometry: \(geometry.name ?? "Unnamed")")
         for material in geometry.materials {
             if let color = material.diffuse.contents as? UIColor {
 //                print("\(indentation)    Material color: \(color)")

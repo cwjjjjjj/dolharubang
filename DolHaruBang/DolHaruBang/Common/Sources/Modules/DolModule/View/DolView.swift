@@ -253,7 +253,7 @@ struct DolView : UIViewRepresentable {
         if let accessoryNode = scene.rootNode.childNode(withName: "Face" , recursively: true){
             if let childAccessoryNode = accessoryNode.childNode(withName: "\(selectedAccessory) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-                print("출력 \(selectedAccessory) reference")
+//                print("출력 \(selectedAccessory) reference")
                 showAllNodes(rootNode: accessoryNode)
                 hideAllNodesExcept(node: childAccessoryNode, rootNode: accessoryNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childAccessoryNode, x: 0.0, y: 0.0, z: 0.1) // x, y, z 값은 원하는 위치로 설정
@@ -266,7 +266,7 @@ struct DolView : UIViewRepresentable {
         if let signNode = scene.rootNode.childNode(withName: "Sign" , recursively: true){
             if let childSignNode = signNode.childNode(withName: "\(selectedSign) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-                print("출력 \(selectedSign) reference")
+//                print("출력 \(selectedSign) reference")
                 showAllNodes(rootNode: signNode)
                 hideAllNodesExcept(node: childSignNode, rootNode: signNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childSignNode, x: -1.1, y: 0.4, z: -0.15) // x, y, z 값은 원하는 위치로 설정
@@ -289,7 +289,7 @@ struct DolView : UIViewRepresentable {
         if let nestNode = scene.rootNode.childNode(withName: "Nest" , recursively: true){
             if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만 black_glasses reference
-                print("출력 \(selectedNest) reference")
+//                print("출력 \(selectedNest) reference")
                 showAllNodes(rootNode: nestNode)
                 hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.8, z: 0.0) // x, y, z 값은 원하는 위치로 설정
@@ -304,7 +304,7 @@ struct DolView : UIViewRepresentable {
         if let mailNode = scene.rootNode.childNode(withName: "Mail" , recursively: true){
             if let childMailNode = mailNode.childNode(withName: "\(selectedMail) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-                print("출력 \(selectedMail) reference")
+//                print("출력 \(selectedMail) reference")
                 showAllNodes(rootNode: mailNode)
                 hideAllNodesExcept(node: childMailNode, rootNode: mailNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childMailNode, x: 4.0, y: 1.0, z: -0.6) // x, y, z 값은 원하는 위치로 설정

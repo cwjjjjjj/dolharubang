@@ -30,17 +30,13 @@ struct ProfileFeature {
         Reduce { state, action in
         
             switch action {
-//            case .binding(\.message):
-//               // 여기서 사용자 이름 관찰
-//               print ("toDolMessage" , state.message)
-//               return .none
             case .binding( _ ):
                return .none
                 
             case .fetchProfile:
                 return .run { send in
                     do {
-                        let dolProfile = try await profileClient.fetchProfile()
+                        let dolProfile = try await profileClient.dolprofile()
                         await send(.fetchProfileResponse(.success(dolProfile)))
                     } catch {
                         await send(.fetchProfileResponse(.failure(error)))
@@ -48,7 +44,7 @@ struct ProfileFeature {
                 }
                 
             case let .fetchProfileResponse(.success(dolProfile)):
-                state.profile = dolProfile // 업적 목록 갱신
+                state.profile = dolProfile 
                 return .none
                 
             case let .fetchProfileResponse(.failure(error)):

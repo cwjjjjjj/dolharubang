@@ -12,13 +12,17 @@ import Alamofire
 
 struct SignInfo: Hashable, Codable {
     // 백엔드와 동일한 키값으로 설정해주어야함
-    let message : String
+    let signText : String
 }
 
+struct SignRequestBody: Encodable {
+        let text: String
+    }
 
 @DependencyClient
 struct SignClient {
     var fetchSign : @Sendable () async throws -> SignInfo
+    var applySign : @Sendable (String) async throws -> SignInfo
 }
 
 // 실제 통신 전 테스트
@@ -39,11 +43,19 @@ extension SignClient: DependencyKey {
     static let liveValue = SignClient(
         fetchSign: {
             
-//            let url = "https://dolharubang.store/api/v1/pepperoni"
-            let url = "https://b74c-118-42-124-3.ngrok-free.app/api/v1/pepperoni"
+            let url = APIConstants.Endpoints.sign
+            
             return try await fetch(url: url, model: SignInfo.self, method: .get)
             
-//            return SignInfo.mockSignInfo
+        },
+        applySign:{ text in
+            let url = APIConstants.Endpoints.sign
+           
+            let requestBody = SignRequestBody(text: text)
+
+            let bodyData = try JSONEncoder().encode(requestBody)
+
+            return try await fetch(url: url, model: SignInfo.self, method: .post,body: bodyData)
         }
    
     )
@@ -51,7 +63,7 @@ extension SignClient: DependencyKey {
 
 extension SignInfo {
     static let mockSignInfo = SignInfo(
-        message : "찬이"
+        signText : "찬이"
     )
 }
 

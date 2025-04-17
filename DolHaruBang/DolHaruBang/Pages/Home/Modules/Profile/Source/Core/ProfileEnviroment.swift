@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Alamofire
 
 
+
 struct ProfileInfo: Hashable, Codable {
     let dolName: String
     let personality: String
@@ -23,7 +24,7 @@ struct ProfileInfo: Hashable, Codable {
 
 @DependencyClient
 struct ProfileClient {
-    var fetchProfile: @Sendable () async throws -> ProfileInfo
+    var dolprofile: @Sendable () async throws -> ProfileInfo
 }
 
 // 실제 통신 전 테스트
@@ -42,14 +43,10 @@ extension DependencyValues {
 
 extension ProfileClient: DependencyKey {
     static let liveValue = ProfileClient(
-        fetchProfile: {
+        dolprofile : {
+            let url = APIConstants.Endpoints.dolprofile
             
-            let url = "http://211.49.26.51:8080/api/v1/pepperoni"
-            
-            
-//            return try await fetch(url: url, model: Background.self, method: .get)
-            
-            return ProfileInfo.mockProfileInfo
+            return try await fetch(url: url, model: ProfileInfo.self, method: .get)
         }
    
     )

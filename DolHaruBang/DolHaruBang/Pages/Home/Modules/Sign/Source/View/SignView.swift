@@ -16,7 +16,7 @@ struct SignView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            Spacer().frame(height: 24)
+            Spacer().frame(height: 19)
             
             HStack {
                 Text("펫말")
@@ -25,6 +25,18 @@ struct SignView: View {
                     .padding(.leading, 24)
                 
                 Spacer()
+                    Button(action: {
+                        store.send(.applySign(store.signInfo))
+                       })
+                    {
+                            Text("등록")
+                                .font(Font.customFont(Font.caption1))
+                                .foregroundColor(.white)
+                                .padding()// Text
+                                .frame(height: 28)
+                                .background(Color.commit).cornerRadius(20)
+                    }
+                
                 
                 Button(action: {
                     showPopup = false
@@ -37,22 +49,24 @@ struct SignView: View {
                 .padding(.trailing, 24)
             }
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 15)
             
             Divider()
-            
-            if let signInfo = store.signInfo {
-                Text(signInfo.message)
-                    .foregroundColor(.black) // 입력된 텍스트 색상
-            }
+            HStack{
+                SignTextView(text: $store.signInfo, placeholder: "펫말에 등록할 문구를 입력해주세요.(최대 50자)", maxTextWidth: UIScreen.main.bounds.width * 150/393)
+                    .font(Font.customFont(Font.button3))
+                    .background(.white)
+                    .transparentScrolling()
+                    .foregroundColor(.coreBlack)
+                
+            }.padding(.horizontal)
+                
 
             
-            TextField("", text: $message)
-                .foregroundColor(.black) // 입력된 텍스트 색상
             
             Spacer()
         }
-        .frame(width: 320, height: 200)
+        .frame(width: 320, height: 170)
         .background(Color.white)
         .cornerRadius(25)
         .shadow(radius: 10)

@@ -48,77 +48,42 @@ extension DependencyValues {
 extension HomeClient: DependencyKey {
     static let liveValue = HomeClient(
         background: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/BACKGROUND"
-                do {
-                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-                } catch {
-                    print("Background items fetch error:", error)
-                    return CustomizeItem.mockBackItem
-                }
+            let url = APIConstants.Endpoints.background
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         face: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/FACE"
-                do {
-                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-                } catch {
-                    print("Face items fetch error:", error)
-                    return CustomizeItem.mockBackItem
-                }
+            let url = APIConstants.Endpoints.face
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         faceShape: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/SHAPE"
-                do {
-                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-                } catch {
-                    print("faceShape items fetch error:", error)
-                    return CustomizeItem.mockBackItem
-                }
+            let url = APIConstants.Endpoints.faceShape
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         nest: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/NEST"
-                do {
-                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-                } catch {
-                    print("Nest items fetch error:", error)
-                    return CustomizeItem.mockBackItem
-                }
+            let url = APIConstants.Endpoints.nest
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         accessory: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/customs/15/ACCSESORY"
-                do {
-                    return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-                } catch {
-                    print("accessory items fetch error:", error)
-                    return CustomizeItem.mockBackItem
-                }
+            let url = APIConstants.Endpoints.accessory
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         purchaseItem : { itemId in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/buy/15?itemId=\(itemId)"
-                do {
-                        return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
-                    } catch {
-                        print("아이템 구매 실패:", error)
-                        return CustomizeItem.mockBackItem
-                    }
+            let url = "/memberItems/buy/30?itemId=\(itemId)"
+            
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
         },
         selectItem : { itemId in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/memberItems/wear/15?itemId=\(itemId)"
-                print("입는 아이템 아이디 \(itemId)")
-                do {
-                        return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
-                    } catch {
-                        print("아이템 입기 실패:", error)
-                        return CustomizeItem.mockBackItem
-                    }
+            let url = "/memberItems/wear/30?itemId=\(itemId)"
+            
+            return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
+                   
         },
         sand : {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/sands/15"
-            do {
-                return try await fetch(url: url, model: Int.self, method: .get)
-                } catch {
-                    print("모래불러오기 실패:", error)
-                    return 5
-                }
+            let url = APIConstants.Endpoints.sand
+            
+            return try await fetch(url: url, model: Int.self, method: .get)
+              
+        
         }
         
     )

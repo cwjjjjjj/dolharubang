@@ -14,6 +14,7 @@ import KakaoSDKUser
 struct DBTIGuideView: View {
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
+    @State private var logoutObserver: NSObjectProtocol?
     @Bindable var nav: StoreOf<NavigationFeature>
     @StateObject private var signInViewModel = SignInViewModel()
     
@@ -164,6 +165,15 @@ struct DBTIGuideView: View {
             case let .SettingView(store):
                 SettingView(store : store)
             }
+        }
+        .onAppear{
+            logoutObserver = NotificationCenter.default.addObserver(
+                           forName: NSNotification.Name("LogoutRequired"),
+                           object: nil,
+                           queue: .main
+                       ) { _ in
+                           nav.send(.popToRoot)
+                       }
         }
         // MARK: FloatingMenuView Start
         .safeAreaInset(edge: .bottom) {
