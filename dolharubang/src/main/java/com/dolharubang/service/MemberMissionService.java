@@ -7,6 +7,7 @@ import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.Mission;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.MissionRepository;
@@ -22,14 +23,16 @@ public class MemberMissionService {
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
     private final RewardService rewardService;
+    private final ItemService itemService;
 
     public MemberMissionService(MemberMissionRepository memberMissionRepository,
         MemberRepository memberRepository, MissionRepository missionRepository,
-        RewardService rewardService) {
+        RewardService rewardService, ItemService itemService) {
         this.memberMissionRepository = memberMissionRepository;
         this.memberRepository = memberRepository;
         this.missionRepository = missionRepository;
         this.rewardService = rewardService;
+        this.itemService = itemService;
     }
 
     @Transactional
@@ -39,7 +42,7 @@ public class MemberMissionService {
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
 
         memberMission.updateProgress(requestDto.getCurrentValue(), requestDto.getEventType());
-        return MemberMissionResDto.fromEntity(memberMission);
+        return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
     @Transactional
@@ -64,7 +67,7 @@ public class MemberMissionService {
         // 보상 지급 완료 표시
         memberMission.markAsRewarded();
 
-        return MemberMissionResDto.fromEntity(memberMission);
+        return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
     @Transactional(readOnly = true)
@@ -75,15 +78,16 @@ public class MemberMissionService {
         List<MemberMission> memberMissions = memberMissionRepository.findByMember(member);
 
         return memberMissions.stream()
-            .map(MemberMissionResDto::fromEntity)
+            .map(mission -> MemberMissionResDto.fromEntity(mission, itemService))
             .collect(Collectors.toList());
     }
+
 
     @Transactional(readOnly = true)
     public MemberMissionResDto getMemberMission(Long id) {
         MemberMission memberMission = memberMissionRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
-        return MemberMissionResDto.fromEntity(memberMission);
+        return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
     @Transactional
