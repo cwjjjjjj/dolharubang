@@ -13,12 +13,14 @@ struct SignFeature {
     
     @ObservableState
     struct State: Equatable {
-        var signInfo : SignInfo? = nil
+        var signInfo : String = ""
     }
     
     enum Action: BindableAction {
         case fetchSign
         case fetchSignResponse(Result<SignInfo, Error>)
+        case applySign(String)
+        
         case binding( BindingAction < State >)
     }
     
@@ -42,12 +44,25 @@ struct SignFeature {
                     }
                 }
                 
+            case let .applySign(text):
+                return .run { send in
+                    do {
+                        let signText = try await signClient.applySign(text)
+                        await send(.fetchSignResponse(.success(signText)))
+                    } catch {
+                        await send(.fetchSignResponse(.failure(error)))
+                    }
+                }
+                
             case let .fetchSignResponse(.success(signText)):
-                state.signInfo = signText // 업적 목록 갱신
+                state.signInfo = signText.signText
                 return .none
                 
             case let .fetchSignResponse(.failure(error)):
+                print("Sign \(error)")
                 return .none
+                
+            
        
             }
         }

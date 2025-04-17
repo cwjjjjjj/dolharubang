@@ -102,7 +102,7 @@ struct ProfileView: View {
                                             .font(Font.customFont(Font.body4Bold))
                                         .lineSpacing(19.80)
                                         .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                                      Text("2024년 7월 10일")
+                                        Text("\(profile.dolBirth)")
                                             .font(Font.customFont(Font.body4Bold))
                                         .lineSpacing(19.80)
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))

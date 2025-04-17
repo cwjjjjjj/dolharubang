@@ -60,6 +60,7 @@ struct HomeFeature {
         var faceShapeItems : [CustomizeItem] = CustomizeItem.mockFaceItem
         var nestItems : [CustomizeItem] = CustomizeItem.mockBackItem
         var accessoryItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        
     }
     
     enum Action: BindableAction {
@@ -107,6 +108,7 @@ struct HomeFeature {
         case fetchSand
         case sandLoaded(Int)
         
+        // 돌 프로필
         case captureDol(UIImage)
     }
     
@@ -364,6 +366,9 @@ struct HomeFeature {
                         print("옷입기실패")
                     }
                 }
+                
+            
+                
             }
         }
     }

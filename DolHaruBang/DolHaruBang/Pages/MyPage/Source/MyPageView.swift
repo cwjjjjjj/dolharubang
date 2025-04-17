@@ -193,6 +193,8 @@ struct MyPageView : View {
                             
                             Button(action: {
                                 TokenManager.shared.clearTokens()
+                                NotificationCenter.default.post(name: NSNotification.Name("LogoutRequired"), object: nil)
+                                
                             }){
                                 HStack{
                                     Text("로그아웃")

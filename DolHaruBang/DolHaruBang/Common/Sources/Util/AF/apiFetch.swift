@@ -40,6 +40,8 @@ func fetch<T: Decodable>(
         finalHeaders.add(.authorization(bearerToken: accessToken))
     }
     
+    finalHeaders.add(name: "Content-Type", value: "application/json")
+    
     // 요청 준비
     var request = URLRequest(url: URL(string: fullURL)!)
     request.httpMethod = method.rawValue
