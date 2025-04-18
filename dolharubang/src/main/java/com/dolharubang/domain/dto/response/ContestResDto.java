@@ -14,7 +14,7 @@ import lombok.ToString;
 public class ContestResDto {
 
     private Long contestNo;
-    private Long memberId;
+    private String nickname;
     private Boolean isPublic;
     private String profileImgUrl;
     private String stoneName;
@@ -24,7 +24,7 @@ public class ContestResDto {
     public static ContestResDto fromEntity(Contest contest) {
         return ContestResDto.builder()
             .contestNo(contest.getId())
-            .memberId(contest.getMember().getMemberId())
+            .nickname(contest.getMember().getMemberEmail())
             .isPublic(contest.getIsPublic())
             .profileImgUrl(contest.getProfileImgUrl())
             .stoneName(contest.getStoneName())
