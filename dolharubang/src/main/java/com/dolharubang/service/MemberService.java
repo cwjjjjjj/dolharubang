@@ -1,7 +1,7 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.MemberProfileReqDto;
-import com.dolharubang.domain.dto.request.MemberReqDto;
+import com.dolharubang.domain.dto.request.member.MemberInfoReqDto;
+import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
 import com.dolharubang.domain.entity.Member;
@@ -14,7 +14,6 @@ import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,46 +36,18 @@ public class MemberService {
         this.s3UploadService = s3UploadService;
     }
 
-    @Transactional(readOnly = true)
-    public List<MemberResDto> getAllMembers() {
-        List<Member> members = memberRepository.findAll();
-
-        return members.stream()
-            .map(MemberResDto::fromEntity)
-            .collect(Collectors.toList());
-    }
-
     @Transactional
-    public MemberResDto createMember(MemberReqDto requestDto) {
-        Member member = Member.builder()
-            .memberEmail(requestDto.getMemberEmail())
-            .nickname(requestDto.getNickname())
-            .birthday(requestDto.getBirthday())
-            .sands(requestDto.getSands())
-            .spaceName(requestDto.getSpaceName())
-            .build();
-
-        Member savedMember = memberRepository.save(member);
-
-        s3UploadService.deleteImageIfExist("dolharubang/memberProfile/", savedMember.getMemberId().toString());
-        String imageUrl = s3UploadService.saveImage(requestDto.getImageBase64(),
-            "dolharubang/memberProfile/", savedMember.getMemberId());
-        //TODO 프로필 사진 지정 안 했을 경우 기본 프사 지정
-        savedMember.updateProfilePicture(imageUrl);
-
-        //회원 가입 시 mongoDB의 모든 아이템 목록에 대해 false로 memberItem 생성
+    public void initializeItems(Member member) {
         List<Item> items = itemRepository.findAll();
 
         for (Item item : items) {
             MemberItem memberItem = MemberItem.builder()
-                .member(savedMember)
+                .member(member)
                 .itemId(item.getItemId().toString())
                 .whetherHasItem(false)
                 .build();
             memberItemRepository.save(memberItem);
         }
-
-        return MemberResDto.fromEntity(savedMember);
     }
 
     @Transactional
@@ -99,6 +70,18 @@ public class MemberService {
         String imageUrl = s3UploadService.saveImage(imageBase64,
             "dolharubang/memberProfile/", memberId);
         member.updateProfilePicture(imageUrl);
+
+        return MemberProfileResDto.fromEntity(member);
+    }
+
+    @Transactional
+    public MemberProfileResDto addMemberInfo(Long memberId, MemberInfoReqDto requestDto) {
+        Member member = findMember(memberId);
+
+        member.addInfo(
+            requestDto.getNickname(),
+            requestDto.getBirthday()
+        );
 
         return MemberProfileResDto.fromEntity(member);
     }
