@@ -1,4 +1,4 @@
-package com.dolharubang.domain.dto.request;
+package com.dolharubang.domain.dto.request.member;
 
 import com.dolharubang.domain.entity.Member;
 import lombok.Getter;
