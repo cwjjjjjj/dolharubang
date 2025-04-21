@@ -1,8 +1,6 @@
 package com.dolharubang.jwt;
 
-import com.dolharubang.domain.dto.oauth.ApiResponse;
 import com.dolharubang.domain.dto.oauth.OAuth2LoginResDto;
-import com.dolharubang.domain.dto.oauth.SuccessStatus;
 import com.dolharubang.domain.dto.oauth.TokenDto;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.domain.entity.oauth.RefreshToken;
@@ -10,7 +8,6 @@ import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.RefreshTokenRepository;
-import com.dolharubang.type.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,7 +23,7 @@ public class JwtService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public ResponseEntity<ApiResponse<?>> reissue(String accessToken, String refreshToken){
+    public ResponseEntity<?> reissue(String accessToken, String refreshToken){
         // 1. Refresh Token 검증
         if (!tokenProvider.validateToken(refreshToken))
             throw new CustomException(ErrorCode.UNAUTHORIZED);
@@ -51,9 +48,8 @@ public class JwtService {
         OAuth2LoginResDto oAuth2LoginResDto = OAuth2LoginResDto.builder()
             .accessToken(tokenDto.getAccessToken())
             .refreshToken(refreshToken)
-            .isGuest(principalDetails.getMember().getAuthority().equals(Authority.ROLE_GUEST)?true:false)
             .build();
 
-        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessStatus._OK, oAuth2LoginResDto));
+        return ResponseEntity.ok(oAuth2LoginResDto);
     }
 }

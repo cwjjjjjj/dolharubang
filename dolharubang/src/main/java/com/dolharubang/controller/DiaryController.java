@@ -2,6 +2,7 @@ package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.request.DiaryReqDto;
 import com.dolharubang.domain.dto.response.DiaryResDto;
+import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.DiaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +10,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +56,11 @@ public class DiaryController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "유저의 모든 일기 조회하기", description = "member_id를 사용해 유저의 모든 일기를 조회한다.")
+    @Operation(summary = "유저의 모든 일기 조회하기", description = "헤더 토큰 기반으로 유저의 모든 일기를 조회한다.")
     @GetMapping("/member-harubang/{id}")
-    public ResponseEntity<List<DiaryResDto>> getDiaryByMemberId(@PathVariable Long id) {
-        List<DiaryResDto> response = diaryService.getDiaryListByMemberId(id);
+    public ResponseEntity<List<DiaryResDto>> getDiaryByMemberId(@AuthenticationPrincipal PrincipalDetails principal) {
+        Long memberId = principal.getMember().getMemberId();
+        List<DiaryResDto> response = diaryService.getDiaryListByMemberId(memberId);
 
         return ResponseEntity.ok(response);
     }

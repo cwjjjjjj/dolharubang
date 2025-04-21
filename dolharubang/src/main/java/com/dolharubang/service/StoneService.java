@@ -1,7 +1,7 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.request.StoneReqDto;
+import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
@@ -35,7 +35,7 @@ public class StoneService {
     }
 
     @Transactional
-    public StoneResDto adoptStone(StoneReqDto stoneReqDto) {
+    public StoneResDto adoptStone(StoneReqDto stoneReqDto, String spaceName) {
         Member member = memberRepository.findById(stoneReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -57,6 +57,7 @@ public class StoneService {
             .signText(stoneReqDto.getSignText())
             .build();
 
+        member.updateSpaceName(spaceName);
         Stone adoptedStone = stoneRepository.save(stone);
         return StoneResDto.fromEntity(adoptedStone);
     }

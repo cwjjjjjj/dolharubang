@@ -37,4 +37,10 @@ public class KakaoUserInfo implements OAuth2UserInfo {
         return Optional.ofNullable(properties)
             .map(props -> (String) props.get("profile_image"));
     }
+
+    public Optional<String> getNickname() {
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        return Optional.ofNullable(properties)
+            .map(props -> (String) props.get("nickname"));
+}
 }

@@ -34,8 +34,11 @@ public class TokenProvider {
     private final MemberRepository memberRepository;
 
     private static final String AUTHORITIES_KEY = "auth";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+
+    @Value("${jwt.access.expiration}")
+    private long ACCESS_TOKEN_EXPIRE_TIME;
+    @Value("${jwt.refresh.expiration}")
+    private long REFRESH_TOKEN_EXPIRE_TIME;
     private final Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey,
@@ -72,6 +75,7 @@ public class TokenProvider {
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
+            .setIssuedAt(new Date(now))
             .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();

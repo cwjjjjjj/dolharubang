@@ -39,6 +39,9 @@ public enum ErrorCode {
 
     // 권한 관련 오류
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증에 실패하였습니다."),
+    NO_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다."),
+    NO_ID_TOKEN(HttpStatus.UNAUTHORIZED, "id token이 제공되지 않았습니다."),
+    INVALID_APPLE_ID(HttpStatus.UNAUTHORIZED, "애플 사용자 ID를 추출할 수 없습니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     // 서버 오류

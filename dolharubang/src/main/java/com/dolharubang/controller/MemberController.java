@@ -1,13 +1,12 @@
 package com.dolharubang.controller;
 
-import com.dolharubang.domain.dto.request.MemberProfileReqDto;
-import com.dolharubang.domain.dto.request.MemberReqDto;
+import com.dolharubang.domain.dto.request.member.MemberInfoReqDto;
+import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
 import com.dolharubang.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +28,6 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @Operation(summary = "모든 회원 조회하기")
-    @GetMapping("/all-members")
-    public ResponseEntity<List<MemberResDto>> getAllMembers() {
-        List<MemberResDto> response = memberService.getAllMembers();
-        return ResponseEntity.ok(response);
-    }
-
     @Operation(summary = "회원 조회하기")
     @GetMapping("/{id}")
     public ResponseEntity<MemberResDto> getMember(@PathVariable Long id) {
@@ -50,18 +42,20 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "회원 가입하기 (소셜로그인 아닌, 임시 방식)", description = "회원을 생성한다.")
-    @PostMapping
-    public ResponseEntity<MemberResDto> createMember(@RequestBody MemberReqDto memberReqDto) {
-        MemberResDto response = memberService.createMember(memberReqDto);
-        return ResponseEntity.ok(response);
-    }
-
     @Operation(summary = "프로필 회원 정보 수정하기", description = "닉네임, 공간 이름 수정한다.")
     @PostMapping("/profile/{id}")
     public ResponseEntity<MemberProfileResDto> updateMember(@PathVariable Long id,
         @RequestBody MemberProfileReqDto memberReqDto) {
         MemberProfileResDto response = memberService.updateMemberProfile(id, memberReqDto);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "회원가입 시 정보 입력하기", description = "닉네임, 생일 입력한다.")
+    @PostMapping("/memberInfo/{id}")
+    public ResponseEntity<MemberProfileResDto> addMemberInfo(@PathVariable Long id,
+        @RequestBody MemberInfoReqDto memberReqDto) {
+        MemberProfileResDto response = memberService.addMemberInfo(id, memberReqDto);
 
         return ResponseEntity.ok(response);
     }
