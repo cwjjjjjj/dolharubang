@@ -1,0 +1,191 @@
+package com.dolharubang.controller.oauth;
+
+import com.dolharubang.domain.dto.oauth.KakaoDTO;
+import com.dolharubang.domain.dto.oauth.OAuth2LoginResDto;
+import com.dolharubang.domain.dto.oauth.TokenDto;
+import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.oauth.PrincipalDetails;
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.jwt.TokenProvider;
+import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.service.MemberService;
+import com.dolharubang.service.oauth.AppleService;
+import com.dolharubang.service.oauth.KakaoService;
+import com.dolharubang.service.oauth.RefreshTokenService;
+import com.dolharubang.type.Authority;
+import com.dolharubang.type.Provider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@Tag(name = "소셜 로그인 API", description = "소셜 로그인 API")
+@RestController
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final KakaoService kakaoService;
+    private final AppleService appleService;
+    private final TokenProvider tokenProvider;
+    private final RefreshTokenService refreshTokenService;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+
+    @Operation(summary = "카카오 로그인", description = "카카오 로그인")
+    @PostMapping("/kakao-login")
+    public ResponseEntity<OAuth2LoginResDto> kakaoLogin(
+        @RequestHeader(value = "Authorization") String accessToken) {
+        accessToken = accessToken.substring(7);
+
+        if (accessToken == null || accessToken.isEmpty()) {
+            throw new CustomException(ErrorCode.NO_TOKEN);
+        }
+
+        KakaoDTO kakaoInfo = kakaoService.getUserInfoWithToken(accessToken);
+
+        String provider = "KAKAO";
+        String providerId = String.valueOf(kakaoInfo.getId());
+
+        Member member = memberRepository.findByProviderAndProviderId(
+            Provider.valueOf(provider), providerId);
+
+        if (member == null) {
+            String authority = "ROLE_GUEST";
+
+            member = Member.builder()
+                .authority(Authority.valueOf(authority))
+                .provider(Provider.valueOf(provider))
+                .providerId(providerId)
+                .memberEmail(kakaoInfo.getEmail())
+                .nickname(kakaoInfo.getNickname())
+                .profilePicture(kakaoInfo.getProfileImageUrl())
+                .sands(0)
+                .build();
+
+            memberRepository.save(member);
+            memberService.initializeItems(member);
+        }
+
+        // PrincipalDetails 생성 (인증 객체 생성)
+        PrincipalDetails principalDetails = new PrincipalDetails(member, new HashMap<>());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            principalDetails, null, principalDetails.getAuthorities());
+
+        // 토큰 생성
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+        // 리프레시 토큰 저장
+        refreshTokenService.saveOrUpdateRefreshToken(
+            member.getMemberId(),
+            tokenDto.getRefreshToken()
+        );
+
+        // 응답 생성
+        OAuth2LoginResDto oAuth2LoginResDto = OAuth2LoginResDto.builder()
+            .accessToken(tokenDto.getAccessToken())
+            .refreshToken(tokenDto.getRefreshToken())
+            .build();
+
+        return ResponseEntity.ok(oAuth2LoginResDto);
+
+    }
+
+    @PostMapping("/apple-login")
+    public ResponseEntity<OAuth2LoginResDto> appleLogin(
+        @RequestHeader Map<String, String> request) {
+        // 애플은 idToken을 사용합니다 (카카오의 accessToken과 유사한 역할)
+        String idToken = request.get("id_token");
+
+        if (idToken == null || idToken.isEmpty()) {
+            throw new CustomException(ErrorCode.NO_ID_TOKEN);
+        }
+
+        // 애플 ID 토큰을 검증하고 사용자 정보 가져오기
+        Map<String, Object> appleUserInfo = appleService.validateAndGetUserInfo(idToken);
+
+        // 애플 고유 ID (sub 클레임) 추출
+        String providerId = (String) appleUserInfo.get("sub");
+        if (providerId == null || providerId.isEmpty()) {
+            throw new CustomException(ErrorCode.INVALID_APPLE_ID);
+        }
+
+        // 이메일 (선택적)
+        String email = (String) appleUserInfo.get("email");
+
+        // 이름 (선택적 - 첫 로그인시에만 제공될 수 있음)
+        String name = request.get("user");
+        if (name != null && !name.isEmpty()) {
+            // 사용자 정보가 JSON 문자열 형태로 올 수 있음
+            try {
+                // JSON 파싱 로직 구현 필요 - 간단한 예시
+                // 실제로는 JSON 라이브러리를 사용하여 파싱해야 함
+                if (name.contains("\"name\"")) {
+                    // JSON에서 이름 추출 로직
+                }
+            } catch (Exception e) {
+                // JSON 파싱 실패 처리
+            }
+        }
+
+        // 닉네임 설정 - 이메일에서 추출하거나 기본값 사용
+        String nickname = email != null ?
+            email.substring(0, email.indexOf('@')) :
+            "Apple" + providerId.substring(0, 8);
+
+        // 회원 조회
+        Member member = memberRepository.findByProviderAndProviderId(
+            Provider.APPLE, providerId);
+
+        if (member == null) {
+            // 신규 회원가입
+            String authority = "ROLE_GUEST";
+
+            member = Member.builder()
+                .authority(Authority.valueOf(authority))
+                .provider(Provider.APPLE)
+                .providerId(providerId)
+                .memberEmail(email)
+                .nickname(nickname)
+                .sands(0)
+                .build();
+
+            memberRepository.save(member);
+        }
+
+        // PrincipalDetails 생성 (인증 객체 생성)
+        PrincipalDetails principalDetails = new PrincipalDetails(member, new HashMap<>());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            principalDetails, null, principalDetails.getAuthorities());
+
+        // 토큰 생성
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+        // 리프레시 토큰 저장
+        refreshTokenService.saveOrUpdateRefreshToken(
+            member.getMemberId(),
+            tokenDto.getRefreshToken()
+        );
+
+        // 응답 생성
+        boolean isGuest = member.getAuthority().equals(Authority.ROLE_GUEST);
+        OAuth2LoginResDto oAuth2LoginResDto = OAuth2LoginResDto.builder()
+            .accessToken(tokenDto.getAccessToken())
+            .refreshToken(tokenDto.getRefreshToken())
+            .build();
+
+        return ResponseEntity.ok(oAuth2LoginResDto);
+
+    }
+}
