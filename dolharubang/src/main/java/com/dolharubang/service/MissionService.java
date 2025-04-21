@@ -32,11 +32,10 @@ public class MissionService {
         this.memberRepository = memberRepository;
     }
 
-    public List<Mission> getUnassignedMissionsForMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    public List<Mission> getUnassignedMissionsForMember(Member member) {
         return missionRepository.findMissionsNotAssignedToMember(member);
     }
+
 
     @Transactional
     public MissionResDto createMission(MissionReqDto requestDto) {
