@@ -11,17 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@JsonPropertyOrder({"isGuest", "accessToken", "refreshToken"})
+@JsonPropertyOrder({"accessToken", "refreshToken"})
 @Builder
 public class OAuth2LoginResDto {
     private String accessToken;
     private String refreshToken;
-    private boolean isGuest;
 
-    @JsonProperty("isGuest")
-    public boolean isGuest(){
-        return isGuest;
-    }
     @JsonProperty("accessToken")
     public String getAccessToken(){
         return accessToken;
