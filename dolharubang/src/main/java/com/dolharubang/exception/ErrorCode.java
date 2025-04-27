@@ -16,11 +16,11 @@ public enum ErrorCode {
 
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),
-    DIARY_ALREADY_EXISTS(HttpStatus.NOT_FOUND, "오늘의 일기를 이미 작성했습니다."),
+    DIARY_ALREADY_EXISTS(HttpStatus.CONFLICT, "오늘의 일기를 이미 작성했습니다."),
 
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
-    SIGNTEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
+    SIGN_TEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
     ABILITY_ALREADY_ACTIVATED(HttpStatus.CONFLICT,"이미 활성화된 능력입니다."),
 
     //돌 종류 관련 오류
@@ -30,7 +30,7 @@ public enum ErrorCode {
     MEMBERITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 멤버아이템을 찾을 수 없습니다."),
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 아이템을 찾을 수 없습니다."),
     DUPLICATE_ITEM(HttpStatus.CONFLICT, "중복된 아이템이 존재합니다."),
-    LACK_OF_SAND(HttpStatus.CONFLICT, "모래알이 부족합니다."),
+    LACK_OF_SAND(HttpStatus.BAD_REQUEST, "모래알이 부족합니다."),
     ALREADY_BOUGHT(HttpStatus.CONFLICT, "이미 구매한 아이템입니다."),
 
     // 입력값 관련 오류
@@ -42,7 +42,7 @@ public enum ErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증에 실패하였습니다."),
     NO_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다."),
     NO_ID_TOKEN(HttpStatus.UNAUTHORIZED, "id token이 제공되지 않았습니다."),
-    INVALID_APPLE_ID(HttpStatus.UNAUTHORIZED, "애플 사용자 ID를 추출할 수 없습니다."),
+    INVALID_APPLE_ID(HttpStatus.NOT_FOUND, "애플 사용자 ID를 추출할 수 없습니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     // 서버 오류
