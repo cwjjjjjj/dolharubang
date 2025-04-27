@@ -16,6 +16,7 @@ public enum ErrorCode {
 
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),
+    DIARY_ALREADY_EXISTS(HttpStatus.NOT_FOUND, "오늘의 일기를 이미 작성했습니다."),
 
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
