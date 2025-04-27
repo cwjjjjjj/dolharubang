@@ -51,7 +51,7 @@ extension TrophyClient: DependencyKey {
             
             print("업적입장")
 //            return try await fetch(url: url, model: [Trophy].self, method: .get)
-            return try await fetch(url: url, model: [Trophy].self, method: .get, skipAuth: true)
+            return try await fetch(url: url, model: [Trophy].self, method: .get)
             }
     )
 }

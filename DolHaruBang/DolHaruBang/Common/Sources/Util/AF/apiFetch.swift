@@ -14,6 +14,14 @@ enum APIError: Error {
     case networkError
 }
 
+func customJSONDecoder() -> JSONDecoder {
+    let decoder = JSONDecoder()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+    decoder.dateDecodingStrategy = .formatted(dateFormatter)
+    return decoder
+}
+
 // 수정된 fetch 함수 (baseURL 자동 합체 및 토큰 관리 추가)
 func fetch<T: Decodable>(
     url: String,
@@ -93,19 +101,28 @@ func fetch<T: Decodable>(
 private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
     return try await withCheckedThrowingContinuation { continuation in
         AF.request(request)
-            .validate()
             .responseData { response in
                 switch response.result {
                 case .success(let data):
                     do {
                         let jsonDecoder = JSONDecoder()
+                        // 날짜 형식 처리 추가
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                        jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
+                        
                         let decodedModel = try jsonDecoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedModel)
                     } catch {
+                        print("디코딩 오류: \(error)")
+                        if let dataString = String(data: data, encoding: .utf8) {
+                            print("응답 데이터: \(dataString)")
+                        }
                         continuation.resume(throwing: error)
                     }
                     
                 case .failure(let error):
+                    print("네트워크 오류: \(error)")
                     continuation.resume(throwing: error)
                 }
             }

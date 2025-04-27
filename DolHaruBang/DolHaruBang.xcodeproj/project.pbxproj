@@ -87,11 +87,6 @@
 		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
 		DA7431582D6EFB0700C2C148 /* CalendarFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7431572D6EFB0700C2C148 /* CalendarFeature.swift */; };
 		DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7431592D6EFB0E00C2C148 /* CalendarEnvironment.swift */; };
-		DA794FA32D69B331006EF213 /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794F9E2D69B331006EF213 /* Accessorys.scnassets */; };
-		DA794FA42D69B331006EF213 /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA02D69B331006EF213 /* Mails.scnassets */; };
-		DA794FA52D69B331006EF213 /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794F9F2D69B331006EF213 /* Dols.scnassets */; };
-		DA794FA62D69B331006EF213 /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA22D69B331006EF213 /* Signs.scnassets */; };
-		DA794FA72D69B331006EF213 /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA794FA12D69B331006EF213 /* Nests.scnassets */; };
 		DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FE5842C8826A200843462 /* SchedulePopupView.swift */; };
 		DA89DF082D77578A00F04C93 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA89DF072D77578A00F04C93 /* ImageUtil.swift */; };
 		DA91E0B72C91562200CD41A4 /* TalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91E0B62C91562200CD41A4 /* TalkView.swift */; };
@@ -133,6 +128,12 @@
 		DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC392C575B8900D1F87B /* LoginView.swift */; };
 		DAC94BC12C9D43C400112DA7 /* TalkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC94BC02C9D43B800112DA7 /* TalkEnvironment.swift */; };
 		DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */; };
+		DAF92ECB2DB0D6FF00BD2B3C /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92EC72DB0D6FF00BD2B3C /* Dols.scnassets */; };
+		DAF92ECC2DB0D6FF00BD2B3C /* Accessorys.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92EC62DB0D6FF00BD2B3C /* Accessorys.scnassets */; };
+		DAF92ECD2DB0D6FF00BD2B3C /* Nests.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92EC92DB0D6FF00BD2B3C /* Nests.scnassets */; };
+		DAF92ECE2DB0D6FF00BD2B3C /* Signs.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92ECA2DB0D6FF00BD2B3C /* Signs.scnassets */; };
+		DAF92ECF2DB0D6FF00BD2B3C /* Mails.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92EC82DB0D6FF00BD2B3C /* Mails.scnassets */; };
+		DAF92ED52DB0DDF400BD2B3C /* ParkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF92ED42DB0DDF400BD2B3C /* ParkEnvironment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -225,11 +226,6 @@
 		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		DA7431572D6EFB0700C2C148 /* CalendarFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFeature.swift; sourceTree = "<group>"; };
 		DA7431592D6EFB0E00C2C148 /* CalendarEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEnvironment.swift; sourceTree = "<group>"; };
-		DA794F9E2D69B331006EF213 /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
-		DA794F9F2D69B331006EF213 /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
-		DA794FA02D69B331006EF213 /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
-		DA794FA12D69B331006EF213 /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
-		DA794FA22D69B331006EF213 /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
 		DA7FE5842C8826A200843462 /* SchedulePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePopupView.swift; sourceTree = "<group>"; };
 		DA89DF072D77578A00F04C93 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		DA91E0B62C91562200CD41A4 /* TalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkView.swift; sourceTree = "<group>"; };
@@ -272,6 +268,12 @@
 		DAAEFC392C575B8900D1F87B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DAC94BC02C9D43B800112DA7 /* TalkEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkEnvironment.swift; sourceTree = "<group>"; };
 		DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = je_gray_02_4k.hdr; sourceTree = "<group>"; };
+		DAF92EC62DB0D6FF00BD2B3C /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
+		DAF92EC72DB0D6FF00BD2B3C /* Dols.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Dols.scnassets; sourceTree = "<group>"; };
+		DAF92EC82DB0D6FF00BD2B3C /* Mails.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Mails.scnassets; sourceTree = "<group>"; };
+		DAF92EC92DB0D6FF00BD2B3C /* Nests.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Nests.scnassets; sourceTree = "<group>"; };
+		DAF92ECA2DB0D6FF00BD2B3C /* Signs.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Signs.scnassets; sourceTree = "<group>"; };
+		DAF92ED42DB0DDF400BD2B3C /* ParkEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkEnvironment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -417,17 +419,17 @@
 		6550AA3D2C59E72B000A264E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DA794F9E2D69B331006EF213 /* Accessorys.scnassets */,
-				DA794F9F2D69B331006EF213 /* Dols.scnassets */,
-				DA794FA02D69B331006EF213 /* Mails.scnassets */,
-				DA794FA12D69B331006EF213 /* Nests.scnassets */,
-				DA794FA22D69B331006EF213 /* Signs.scnassets */,
 				DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */,
 				DAAEFC122C56941A00D1F87B /* Assets.xcassets */,
 				DAAEFC292C57425000D1F87B /* Color.swift */,
 				DA6E576B2C58609B0088A7A7 /* BGM */,
 				DAAEFC2C2C57436B00D1F87B /* Fonts */,
 				65AFAD822CA0A26B00B565D1 /* lythwood_field_4k.hdr */,
+				DAF92EC62DB0D6FF00BD2B3C /* Accessorys.scnassets */,
+				DAF92EC72DB0D6FF00BD2B3C /* Dols.scnassets */,
+				DAF92EC82DB0D6FF00BD2B3C /* Mails.scnassets */,
+				DAF92EC92DB0D6FF00BD2B3C /* Nests.scnassets */,
+				DAF92ECA2DB0D6FF00BD2B3C /* Signs.scnassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -789,8 +791,8 @@
 		DA6904182CAFBD7600A557A1 /* Park */ = {
 			isa = PBXGroup;
 			children = (
-				DA69041B2CAFBD8800A557A1 /* View */,
 				DA6904192CAFBD7B00A557A1 /* Core */,
+				DA69041B2CAFBD8800A557A1 /* View */,
 			);
 			path = Park;
 			sourceTree = "<group>";
@@ -801,6 +803,7 @@
 				DA6904222CAFBF3400A557A1 /* FriendListFeature.swift */,
 				DA69041E2CAFBF1200A557A1 /* DoljanchiFeature.swift */,
 				DA69041C2CAFBEBA00A557A1 /* ParkFeature.swift */,
+				DAF92ED42DB0DDF400BD2B3C /* ParkEnvironment.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1217,12 +1220,12 @@
 				DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */,
-				DA794FA32D69B331006EF213 /* Accessorys.scnassets in Resources */,
-				DA794FA42D69B331006EF213 /* Mails.scnassets in Resources */,
-				DA794FA52D69B331006EF213 /* Dols.scnassets in Resources */,
-				DA794FA62D69B331006EF213 /* Signs.scnassets in Resources */,
-				DA794FA72D69B331006EF213 /* Nests.scnassets in Resources */,
 				DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */,
+				DAF92ECB2DB0D6FF00BD2B3C /* Dols.scnassets in Resources */,
+				DAF92ECC2DB0D6FF00BD2B3C /* Accessorys.scnassets in Resources */,
+				DAF92ECD2DB0D6FF00BD2B3C /* Nests.scnassets in Resources */,
+				DAF92ECE2DB0D6FF00BD2B3C /* Signs.scnassets in Resources */,
+				DAF92ECF2DB0D6FF00BD2B3C /* Mails.scnassets in Resources */,
 				DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */,
 				65AFAD832CA0A26B00B565D1 /* lythwood_field_4k.hdr in Resources */,
 				659792062C9E13BD00E2B51D /* TrophyIcon.xcassets in Resources */,
@@ -1335,6 +1338,7 @@
 				65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */,
 				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
 				DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */,
+				DAF92ED52DB0DDF400BD2B3C /* ParkEnvironment.swift in Sources */,
 				DAA4CA042C8B7C6900409D4B /* CustomizeView.swift in Sources */,
 				656BB3362C9DB9A90034AA2A /* Nest.swift in Sources */,
 				DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */,
