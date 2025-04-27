@@ -4,10 +4,12 @@ import com.dolharubang.domain.dto.request.member.MemberInfoReqDto;
 import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
+import com.dolharubang.domain.dto.response.member.MemberSearchResDto;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -82,5 +84,12 @@ public class MemberController {
     public int getSands(@AuthenticationPrincipal PrincipalDetails principal) {
         Long memberId = principal.getMember().getMemberId();
         return memberService.getSands(memberId);
+    }
+
+    @Operation(summary = "회원 검색하기", description = "닉네임 기준으로 회원을 검색한다.")
+    @GetMapping("/search")
+    public ResponseEntity<List<MemberSearchResDto>> searchMember(String keyword) {
+        List<MemberSearchResDto> response = memberService.searchMember(keyword);
+        return ResponseEntity.ok(response);
     }
 }

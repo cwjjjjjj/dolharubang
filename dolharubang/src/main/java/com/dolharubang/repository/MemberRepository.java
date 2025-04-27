@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    //TODO 친구 검색 기능
     List<Member> findByNicknameContaining(String keyword);
 
     Member findByProviderAndProviderId(Provider provider, String providerId);

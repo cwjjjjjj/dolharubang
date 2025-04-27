@@ -4,11 +4,14 @@ import com.dolharubang.domain.dto.request.member.MemberInfoReqDto;
 import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
+import com.dolharubang.domain.dto.response.member.MemberSearchResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +81,13 @@ public class MemberService {
     public int getSands(Long memberId) {
         Member member = findMember(memberId);
         return member.getSands();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberSearchResDto> searchMember(String keyword) {
+        List<Member> members = memberRepository.findByNicknameContaining(keyword);
+        return members.stream().map(MemberSearchResDto::fromEntity)
+            .collect(Collectors.toList());
     }
 
     private Member findMember(Long memberId) {
