@@ -141,8 +141,10 @@ struct HomeFeature {
                 state.needCapture = false
                 return .none
             case let .selectBackground(selectedBackground) :
-                state.$selectedBackground.withLock { shared in
-                    shared = selectedBackground
+                MainActor.assumeIsolated {
+                    state.$selectedBackground.withLock { shared in
+                        shared = selectedBackground
+                    }
                 }
                 return .none
             case let .selectAccessory(selectedAccessory) :
@@ -188,8 +190,10 @@ struct HomeFeature {
                 return .none
                 
             case let .captureDol(image):
-                state.$captureDol.withLock { shared in
-                    shared = image
+                MainActor.assumeIsolated {
+                    state.$captureDol.withLock { shared in
+                        shared = image
+                    }
                 }
                 return .none
             case .openShare:
@@ -278,8 +282,10 @@ struct HomeFeature {
                 state.backItems = customizeInfo         // 선택된 배경 업데이트
                     if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                         if let background = Background.allCases.first(where: { $0.description == selectedItem.name }) {
-                            state.$selectedBackground.withLock { shared in
-                                shared = background
+                            MainActor.assumeIsolated {
+                                state.$selectedBackground.withLock { shared in
+                                    shared = background
+                                }
                             }
                         }
                     }
