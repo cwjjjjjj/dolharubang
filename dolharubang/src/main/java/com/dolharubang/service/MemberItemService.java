@@ -35,9 +35,9 @@ public class MemberItemService {
         this.itemService = itemService;
     }
 
-    // TODO createMember에 넣기
+    // TODO createItem에 넣기
     @Transactional
-    public List<CustomItemResDto> createMemberItem(MemberItemReqDto memberItemReqDto) {
+    public void createMemberItem(MemberItemReqDto memberItemReqDto) {
         Member member = getMember(memberItemReqDto.getMemberId());
         Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
@@ -47,11 +47,21 @@ public class MemberItemService {
         }
 
         MemberItem memberItem = MemberItemReqDto.toEntity(memberItemReqDto, member);
-        MemberItem savedMemberItem = memberItemRepository.save(memberItem);
+        memberItemRepository.save(memberItem);
+    }
 
-        //TODO 반환타입 수정 List<CustomItemResDto> findItemsByType
-        ItemType itemType = item.getItemType();
-        return findCustomsByType(member.getMemberId(), itemType);
+    @Transactional
+    public void initializeItems(Member member) {
+        List<Item> items = itemRepository.findAll();
+
+        for (Item item : items) {
+            MemberItem memberItem = MemberItem.builder()
+                .member(member)
+                .itemId(item.getItemId().toString())
+                .whetherHasItem(false)
+                .build();
+            memberItemRepository.save(memberItem);
+        }
     }
 
     //아이템 구매
