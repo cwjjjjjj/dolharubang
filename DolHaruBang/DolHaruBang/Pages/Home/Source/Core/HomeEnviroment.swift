@@ -68,12 +68,12 @@ extension HomeClient: DependencyKey {
             return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
         },
         purchaseItem : { itemId in
-            let url = "/memberItems/buy/30?itemId=\(itemId)"
+            let url = "/memberItems/buy?itemId=\(itemId)"
             
             return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
         },
         selectItem : { itemId in
-            let url = "/memberItems/wear/30?itemId=\(itemId)"
+            let url = "/memberItems/wear?itemId=\(itemId)"
             
             return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
                    
@@ -82,8 +82,6 @@ extension HomeClient: DependencyKey {
             let url = APIConstants.Endpoints.sand
             
             return try await fetch(url: url, model: Int.self, method: .get)
-              
-        
         }
         
     )
@@ -104,7 +102,7 @@ extension CustomizeItem {
            price: 53,
            imageUrl: "https://cdn.pixabay.com/photo/2023/11/30/10/52/bears-8421343_1280.jpg",
            itemId: "67bb2c0605072c0c7c37a3f2",
-           name: "4월의 분홍빛 노을",
+           name: "4월의 분홍빛 노응",
            isOwned: true,
            isSelected: true
        ),

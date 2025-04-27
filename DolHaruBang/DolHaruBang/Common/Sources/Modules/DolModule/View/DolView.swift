@@ -280,7 +280,7 @@ struct DolView : UIViewRepresentable {
         if let textNode = scene.rootNode.childNode(withName: "text" , recursively: true){
             print("textNode : ",textNode)
             updateTextNode(textNode, newText: signText)
-            moveNodeToPosition(node: textNode, x: -1.3, y: 0.2, z: 0.5) // x, y, z 값은 원하는 위치로 설정
+            moveNodeToPosition(node: textNode, x: -1.3, y: -0.1, z: 0.5) // x, y, z 값은 원하는 위치로 설정
             
         }
         

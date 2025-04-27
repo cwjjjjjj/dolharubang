@@ -16,6 +16,7 @@ struct UserInfo: Decodable, Equatable, Sendable {
     var birthStone: String
     var birthDay: String?
     var emailAddress: String
+    var closeness : Int
 }
 
 struct ChangeInfo: Codable, Equatable, Sendable {
@@ -24,11 +25,15 @@ struct ChangeInfo: Codable, Equatable, Sendable {
 }
 
 // 프로필 수정용
-struct UserUpdateRequest: Codable {
+struct InfoRequestBody: Encodable {
     let nickname: String
-    let profilePicture: String
     let spaceName: String
 }
+
+
+struct photoRequestBody: Encodable {
+    let photo : String
+    }
 
 @DependencyClient
 struct MyPageClient {
@@ -41,7 +46,7 @@ struct MyPageClient {
 extension MyPageClient: TestDependencyKey {
     static let previewValue = Self(
         fetchMypage: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/30"
+            let url = APIConstants.Endpoints.info
             do {
                 return try await fetch(url: url, model: UserInfo.self, method: .get)
             } catch {
@@ -79,36 +84,27 @@ extension DependencyValues {
 extension MyPageClient: DependencyKey {
     static let liveValue = MyPageClient(
         fetchMypage: {
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/30"
+            let url = APIConstants.Endpoints.info
             
             return try await fetch(url: url, model: UserInfo.self, method: .get)
-            
-        }
-        ,
+        },
         updateUserInfo: { nickName, spaceName in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile/15"
+            let url = APIConstants.Endpoints.info
             
-            do {
-                // ChangeInfo 객체 생성 및 인코딩
-                let changeInfo = ChangeInfo(nickname: nickName, spaceName: spaceName)
-                let body = try JSONEncoder().encode(changeInfo)
-                
-                return try await fetch(url: url, model: UserInfo.self, method: .post, body: body)
-            } catch {
-                print("회원수정 실패:", error)
-                return UserInfo.mockUserInf
-            }
+            let requestBody = InfoRequestBody(nickname: nickName, spaceName: spaceName)
+            let bodyData = try JSONEncoder().encode(requestBody)
+
+            return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
         },
         updateUserPhoto: { photoName in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile-picture/15"
-            do {
-                // photoName을 어떻게 보낼지 처리 필요
-                let body = try JSONEncoder().encode(["profilePicture": photoName])
-                return try await fetch(url: url, model: UserInfo.self, method: .post, body: body)
-            } catch {
-                print("사진수정 실패:", error)
-                return UserInfo.mockUserInf
-            }
+            let url = APIConstants.Endpoints.photo
+            
+            // 백에서는 그냥 String을 담아서 보냄
+            let requestBody = photoRequestBody(photo: photoName)
+
+            let bodyData = try JSONEncoder().encode(requestBody)
+
+            return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
         }
     )
 }
@@ -126,6 +122,7 @@ extension UserInfo {
          roomName: "돌돌이방",
          birthStone: "가넷",
          birthDay: "2023년 10월 31일",
-         emailAddress: "smyang0220@naver.com"
+         emailAddress: "smyang0220@naver.com",
+         closeness: 5
     )
 }

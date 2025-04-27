@@ -48,6 +48,7 @@ struct HomeFeature {
         var profile: Bool = false // 돌 프로필 온 오프
         var sign : Bool = false // 펫말 온 오프
         var mail : Bool = false // 펫말 온 오프
+        var signText : String = ""
         
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
@@ -55,15 +56,22 @@ struct HomeFeature {
         var shareButton : Bool = false
        
         // 배경, 돌굴, 돌굴형 따로따로 담는 변수 생성
-        var backItems : [CustomizeItem] = CustomizeItem.mockBackItem
-        var faceItems : [CustomizeItem] = CustomizeItem.mockFaceItem
-        var faceShapeItems : [CustomizeItem] = CustomizeItem.mockFaceItem
-        var nestItems : [CustomizeItem] = CustomizeItem.mockBackItem
-        var accessoryItems : [CustomizeItem] = CustomizeItem.mockBackItem
+        var backItems : [CustomizeItem] = []
+        var faceItems : [CustomizeItem] = []
+        var faceShapeItems : [CustomizeItem] = []
+        var nestItems : [CustomizeItem] = []
+        var accessoryItems : [CustomizeItem] = []
+        
+        var isLoading : Bool = false
+        @Presents var alert: AlertState<Action.Alert>?
         
     }
     
     enum Action: BindableAction {
+        case alert(PresentationAction<Alert>)
+        enum Alert {
+                case confirm
+            }
         case clickAbility
         case clickMessage
         case openDecoration
@@ -101,39 +109,44 @@ struct HomeFeature {
         
         // 아이템 구매
         indirect case purchaseItem(String, refreshAction: Action)
-        
+        case purchaseItemResponse(Result<String, Error>)
         // 아이템 선택
         indirect case selectItem(String, refreshAction: Action)
         
         case fetchSand
-        case sandLoaded(Int)
+        case sandLoaded(Result<Int, Error>)
         
         // 돌 프로필
         case captureDol(UIImage)
+        
+        // 팻말
+        case fetchSign
+        case fetchSignResponse(Result<SignInfo, Error>)
     }
     
     @Dependency(\.homeClient) var homeClient
+    @Dependency(\.signClient) var signClient
     
     var body : some ReducerOf <Self> {
         BindingReducer ()
         Reduce { state, action in
-        
+            
             switch action {
             case .binding(\.message):
-               // 여기서 사용자 이름 관찰
-               print ("toDolMessage" , state.message)
-               return .none
+                // 여기서 사용자 이름 관찰
+                print ("toDolMessage" , state.message)
+                return .none
             case .binding(\.selectedFace) :
                 print("changed Face : ", state.selectedFace)
                 return .none
-             case .binding(\.selectedAccessory) :
-                 print("changed Accessory : ", state.selectedAccessory)
-                 return .none
+            case .binding(\.selectedAccessory) :
+                print("changed Accessory : ", state.selectedAccessory)
+                return .none
             case .binding(\.decoration) :
                 print("click deco : ", state.decoration)
                 return .none
             case .binding( _ ):
-               return .none
+                return .none
             case let .selectFace(selectedFace) :
                 state.selectedFace = selectedFace
                 state.needCapture = false
@@ -168,14 +181,21 @@ struct HomeFeature {
                 
             case .fetchSand:
                 return .run { send in
-                    let sandAmount = try await homeClient.sand()
-                    await send(.sandLoaded(sandAmount))
+                    do {
+                        let sandAmount = try await homeClient.sand()
+                        await send(.sandLoaded(.success(sandAmount)))
+                    } catch {
+                        await send(.sandLoaded(.failure(error)))
+                    }
                 }
                 
-            case .sandLoaded(let amount):
-                state.sand = amount
+            case let .sandLoaded(.success(sandAmount)):
+                state.sand = sandAmount
                 return .none
-               
+                
+            case let .sandLoaded(.failure(error)):
+                return .none
+                
             case .openDecoration:
                 state.decoration = true
                 return .none
@@ -201,22 +221,22 @@ struct HomeFeature {
                 state.shareButton = false
                 return .none
                 
-            // 펫말 팝업 닫기
+                // 펫말 팝업 닫기
             case .closeSign:
                 state.sign = false
                 return .none
                 
-            // 프로필 팝업 닫기
+                // 프로필 팝업 닫기
             case .closeProfile:
-                    state.profile = false
-                    return .none
+                state.profile = false
+                return .none
                 
-            // 우편함 팝업 닫기
+                // 우편함 팝업 닫기
             case .closeMail:
-                    state.mail = false
-                    return .none
-            
-            // MARK: 얼굴형 아이템 조회
+                state.mail = false
+                return .none
+                
+                // MARK: 얼굴형 아이템 조회
             case .fetchFaceShape:
                 return .run { send in
                     do {
@@ -229,22 +249,20 @@ struct HomeFeature {
                 
             case let .faceShapeItemsResponse(.success(customizeInfo)):
                 state.faceShapeItems = customizeInfo
-                    if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
-                        if let faceShape = FaceShape.allCases.first(where: { $0.description == selectedItem.name }) {
-                            state.selectedFaceShape = faceShape
-                        }
+                if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
+                    if let faceShape = FaceShape.allCases.first(where: { $0.description == selectedItem.name }) {
+                        state.selectedFaceShape = faceShape
                     }
+                }
                 return .none
                 
             case let .faceShapeItemsResponse(.failure(error)):
                 return .none
                 
-            // MARK: 얼굴 표정 아이템 조회
+                // MARK: 얼굴 표정 아이템 조회
             case .fetchFace:
-                print("패치 표정")
                 return .run { send in
                     do {
-                        print("1")
                         let customizeInfo = try await homeClient.face()
                         await send(.faceItemsResponse(.success(customizeInfo)))
                     } catch {
@@ -253,19 +271,18 @@ struct HomeFeature {
                 }
                 
             case let .faceItemsResponse(.success(customizeInfo)):
-                print("2")
                 state.faceItems = customizeInfo
-                    if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
-                        if let face = Face.allCases.first(where: { $0.description == selectedItem.name }) {
-                            state.selectedFace = face
-                        }
+                if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
+                    if let face = Face.allCases.first(where: { $0.description == selectedItem.name }) {
+                        state.selectedFace = face
                     }
+                }
                 return .none
                 
             case let .faceItemsResponse(.failure(error)):
                 return .none
                 
-            // MARK: 백그라운드 아이템 조회
+                // MARK: 백그라운드 아이템 조회
             case .fetchBackground:
                 return .run { send in
                     do {
@@ -278,30 +295,30 @@ struct HomeFeature {
                 
             case let .backItemsResponse(.success(customizeInfo)):
                 state.backItems = customizeInfo         // 선택된 배경 업데이트
-                    if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
-                        if let background = Background.allCases.first(where: { $0.description == selectedItem.name }) {
-                            state.$selectedBackground.withLock { shared in
-                                shared = background
-                            }
+                if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
+                    if let background = Background.allCases.first(where: { $0.description == selectedItem.name }) {
+                        state.$selectedBackground.withLock { shared in
+                            shared = background
                         }
                     }
+                }
                 
                 return .none
                 
             case let .backItemsResponse(.failure(error)):
                 return .none
                 
-            // MARK: 액세서리 아이템 조회
+                // MARK: 액세서리 아이템 조회
             case .fetchAccessory:
                 return .run { send in
                     do {
-                            let customizeInfo = try await homeClient.accessory()
-                            await send(.accessoryItemsResponse(.success(customizeInfo)))
-                        } catch {
-                            await send(.accessoryItemsResponse(.failure(error)))
-                        }
+                        let customizeInfo = try await homeClient.accessory()
+                        await send(.accessoryItemsResponse(.success(customizeInfo)))
+                    } catch {
+                        await send(.accessoryItemsResponse(.failure(error)))
                     }
-                    
+                }
+                
             case let .accessoryItemsResponse(.success(customizeInfo)):
                 state.accessoryItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
@@ -309,12 +326,12 @@ struct HomeFeature {
                         state.selectedAccessory = accessory
                     }
                 }
-            return .none
-                    
+                return .none
+                
             case let .accessoryItemsResponse(.failure(error)):
                 return .none
-
-            // MARK: 둥지 아이템 조회
+                
+                // MARK: 둥지 아이템 조회
             case .fetchNest:
                 return .run { send in
                     do {
@@ -324,7 +341,7 @@ struct HomeFeature {
                         await send(.nestItemsResponse(.failure(error)))
                     }
                 }
-                    
+                
             case let .nestItemsResponse(.success(customizeInfo)):
                 state.nestItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
@@ -333,41 +350,115 @@ struct HomeFeature {
                     }
                 }
                 return .none
-                    
+                
             case let .nestItemsResponse(.failure(error)):
                 return .none
                 
-            // MARK: 아이템 구매
+                
+                
+                
+                // MARK: 아이템 구매
             case let .purchaseItem(itemId, refreshAction):
                 return .run { [itemId] send in
                     do {
                         // 아이템 구매 API 호출 - 여기서는 타입 정보 필요 없음
-                        let result = try await homeClient.purchaseItem(itemId)
+                        let updatedItems = try await homeClient.purchaseItem(itemId)
                         
-//                         구매 성공 후 해당 타입의 아이템 리스트를 새로고침하는 액션 전송
-                        await send(refreshAction)
+                        await send(.fetchSand)
+                        
+                        switch refreshAction {
+                        case .fetchFace:
+                            await send(.faceItemsResponse(.success(updatedItems)))
+                        case .fetchFaceShape:
+                            await send(.faceShapeItemsResponse(.success(updatedItems)))
+                        case .fetchBackground:
+                            await send(.backItemsResponse(.success(updatedItems)))
+                        case .fetchAccessory:
+                            await send(.accessoryItemsResponse(.success(updatedItems)))
+                        case .fetchNest:
+                            await send(.nestItemsResponse(.success(updatedItems)))
+                        default:
+                            await send(refreshAction) // 기본 동작 유지
+                        }
+                        await send(.purchaseItemResponse(.success("")))
                     } catch {
-                        // 오류 처리
-                        print("모래알부족")
+                        await send(.purchaseItemResponse(.failure(error)))
                     }
                 }
                 
-            // MARK: 아이템 선택
+            case let .purchaseItemResponse(.success(text)):
+                state.isLoading = false
+                state.alert = AlertState {
+                        TextState("구매 완료")
+                    } actions: {
+                        ButtonState(role: .cancel, action: .confirm) {
+                            TextState("확인")
+                        }
+                    }
+                return .none
+                
+            case let .purchaseItemResponse(.failure(error)):
+                state.isLoading = false
+                state.alert = AlertState {
+                        TextState("모래알이 부족합니다.")
+                    } actions: {
+                        ButtonState(role: .cancel, action: .confirm) {
+                            TextState("확인")
+                        }
+                    }
+                return .none
+            
+            case .alert(.presented(.confirm)):
+                state.alert = nil
+                return .none
+            
+            case .alert(.dismiss):
+                return .none
+                
+                // MARK: 아이템 선택
             case let .selectItem(itemId, refreshAction):
                 return .run { [itemId] send in
                     do {
-                        // 아이템 구매 API 호출 - 여기서는 타입 정보 필요 없음
-                        let result = try await homeClient.selectItem(itemId)
+                        let updatedItems = try await homeClient.selectItem(itemId)
                         
-//                         구매 성공 후 해당 타입의 아이템 리스트를 새로고침하는 액션 전송
-                        await send(refreshAction)
+                        //                         구매 성공 후 해당 타입의 아이템 리스트를 새로고침하는 액션 전송
+                        switch refreshAction {
+                        case .fetchFace:
+                            await send(.faceItemsResponse(.success(updatedItems)))
+                        case .fetchFaceShape:
+                            await send(.faceShapeItemsResponse(.success(updatedItems)))
+                        case .fetchBackground:
+                            await send(.backItemsResponse(.success(updatedItems)))
+                        case .fetchAccessory:
+                            await send(.accessoryItemsResponse(.success(updatedItems)))
+                        case .fetchNest:
+                            await send(.nestItemsResponse(.success(updatedItems)))
+                        default:
+                            await send(refreshAction) // 기본 동작 유지
+                        }
                     } catch {
-                        // 오류 처리
                         print("옷입기실패")
                     }
                 }
                 
-            
+                // MARK: 팻말
+            case .fetchSign:
+                return .run { send in
+                    do {
+                        let signText = try await signClient.fetchSign()
+                        await send(.fetchSignResponse(.success(signText)))
+                    } catch {
+                        await send(.fetchSignResponse(.failure(error)))
+                    }
+                }
+                
+            case let .fetchSignResponse(.success(signText)):
+                state.signText = signText.signText
+                return .none
+                
+            case let .fetchSignResponse(.failure(error)):
+                print("Sign \(error)")
+                return .none
                 
             }
         }

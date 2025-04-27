@@ -17,7 +17,7 @@ struct SignFeature {
     }
     
     enum Action: BindableAction {
-        case fetchSign
+        case fetchSign(String)
         case fetchSignResponse(Result<SignInfo, Error>)
         case applySign(String)
         
@@ -34,15 +34,9 @@ struct SignFeature {
             case .binding( _ ):
                return .none
                 
-            case .fetchSign:
-                return .run { send in
-                    do {
-                        let signText = try await signClient.fetchSign()
-                        await send(.fetchSignResponse(.success(signText)))
-                    } catch {
-                        await send(.fetchSignResponse(.failure(error)))
-                    }
-                }
+            case let .fetchSign(text):
+                state.signInfo = text
+                return .none
                 
             case let .applySign(text):
                 return .run { send in

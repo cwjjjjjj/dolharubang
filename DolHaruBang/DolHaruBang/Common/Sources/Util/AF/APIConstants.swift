@@ -20,17 +20,23 @@ struct APIConstants {
         static let refresh = "/auth/reissue"
         
         // MARK: Customize
-        static let background = "/memberItems/customs/30/BACKGROUND"
-        static let face = "/memberItems/customs/30/FACE"
-        static let faceShape = "/memberItems/customs/7/SHAPE"
-        static let nest = "/memberItems/customs/30/NEST"
-        static let accessory = "/memberItems/customs/30/ACCSESORY"
+        static let background = "/memberItems/customs/BACKGROUND"
+        static let face = "/memberItems/customs/FACE"
+        static let faceShape = "/memberItems/customs/SHAPE"
+        static let nest = "/memberItems/customs/NEST"
+        static let accessory = "/memberItems/customs/ACCESSORY"
+        static let wear = "/memberItems/wear"
+        static let buy = "/memberItems/buy"
         
         // MARK: Members
-        static let sand = "/members/sands/30"
+        static let sand = "/members/sands"
+        static let info = "/members/profile"
+        static let photo = "/members/profile-picture"
         
         // MARK: stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
+        
+        
     }
 }
