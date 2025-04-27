@@ -2,20 +2,22 @@ package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.request.MissionReqDto;
 import com.dolharubang.domain.dto.response.MissionResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Mission;
+import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Missions", description = "APIs for managing missions")
@@ -55,8 +57,10 @@ public class MissionController {
 
     @Operation(summary = "할당 받지 못한 미션 검색", description = "특정 회원이 할당 받지 못한 미션을 가져옵니다.")
     @GetMapping("/unassigned-missions")
-    public ResponseEntity<List<Mission>> getUnassignedMissions(@RequestParam Long memberId) {
-        List<Mission> unassignedMissions = missionService.getUnassignedMissionsForMember(memberId);
+    public ResponseEntity<List<Mission>> getUnassignedMissions(@AuthenticationPrincipal
+    PrincipalDetails principal) {
+        Member member = principal.getMember();
+        List<Mission> unassignedMissions = missionService.getUnassignedMissionsForMember(member);
         return ResponseEntity.ok(unassignedMissions);
     }
 }

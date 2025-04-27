@@ -26,8 +26,10 @@ public class MemberMissionService {
     private final ItemService itemService;
 
     public MemberMissionService(MemberMissionRepository memberMissionRepository,
-        MemberRepository memberRepository, MissionRepository missionRepository,
-        RewardService rewardService, ItemService itemService) {
+        MemberRepository memberRepository,
+        MissionRepository missionRepository,
+        RewardService rewardService,
+        ItemService itemService) {
         this.memberMissionRepository = memberMissionRepository;
         this.memberRepository = memberRepository;
         this.missionRepository = missionRepository;
@@ -36,26 +38,21 @@ public class MemberMissionService {
     }
 
     @Transactional
-    public MemberMissionResDto updateMissionProgress(Long id,
+    public MemberMissionResDto updateMissionProgress(Long id, Long memberId,
         MemberMissionProgressUpdateReqDto requestDto) {
-        MemberMission memberMission = memberMissionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
-
+        MemberMission memberMission = getOwnedMission(id, memberId);
         memberMission.updateProgress(requestDto.getCurrentValue(), requestDto.getEventType());
         return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
     @Transactional
-    public MemberMissionResDto claimReward(Long memberMissionId) {
-        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
+    public MemberMissionResDto claimReward(Long memberMissionId, Long memberId) {
+        MemberMission memberMission = getOwnedMission(memberMissionId, memberId);
 
-        // 보상 지급 가능 여부 확인
         if (!memberMission.canReceiveReward()) {
             throw new CustomException(ErrorCode.INVALID_REWARD_CLAIM);
         }
 
-        // 보상 지급
         Mission mission = memberMission.getMission();
         rewardService.giveReward(
             memberMission.getMember(),
@@ -64,9 +61,7 @@ public class MemberMissionService {
             mission.getReward().getItemNo()
         );
 
-        // 보상 지급 완료 표시
         memberMission.markAsRewarded();
-
         return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
@@ -75,27 +70,20 @@ public class MemberMissionService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MemberMission> memberMissions = memberMissionRepository.findByMember(member);
-
-        return memberMissions.stream()
+        return memberMissionRepository.findByMember(member).stream()
             .map(mission -> MemberMissionResDto.fromEntity(mission, itemService))
             .collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
-    public MemberMissionResDto getMemberMission(Long id) {
-        MemberMission memberMission = memberMissionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
+    public MemberMissionResDto getMemberMission(Long id, Long memberId) {
+        MemberMission memberMission = getOwnedMission(id, memberId);
         return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
 
     @Transactional
     public void assignDailyMissionsToMember(Member member) {
-        // isDaily가 true인 미션 목록 조회
         List<Mission> dailyMissions = missionRepository.findByIsDaily(true);
-
-        // 회원에게 데일리 미션 할당
         for (Mission mission : dailyMissions) {
             if (!memberMissionRepository.existsByMemberAndMission(member, mission)) {
                 MemberMission memberMission = MemberMission.builder()
@@ -107,4 +95,16 @@ public class MemberMissionService {
         }
     }
 
+    // 권한 확인 메서드
+    private MemberMission getOwnedMission(Long missionId, Long memberId) {
+        MemberMission mission = memberMissionRepository.findById(missionId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_MISSION_NOT_FOUND));
+
+        if (!mission.getMember().getMemberId().equals(memberId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
+        return mission;
+    }
 }
+
