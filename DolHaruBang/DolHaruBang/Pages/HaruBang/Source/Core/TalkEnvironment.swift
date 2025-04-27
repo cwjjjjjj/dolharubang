@@ -71,8 +71,6 @@ struct UploadResponse: Decodable {
     let imageUrl: String
 }
 
-// 기존 AFRequest 함수 유지 (생략)
-
 private func AFRequest<T: Decodable>(
     url: String,
     model: T.Type,

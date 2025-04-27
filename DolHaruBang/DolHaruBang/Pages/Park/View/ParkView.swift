@@ -27,6 +27,7 @@ struct ParkView: View {
                             Spacer()
                         }
                         
+                        // 친구 일 때 친구 신청 내역
                         if (store.selectedTap == 1) {
                             HStack {
                                 Spacer()
@@ -64,7 +65,6 @@ struct ParkView: View {
                     Spacer()
                     
                     VStack(spacing: 0) {
-                        // Custom tab bar
                         HStack(spacing: 0) {
                             TabBarButton(title: "돌잔치", isSelected: store.selectedTap == 0) {
                                 store.send(.tapDoljanchi)
@@ -94,6 +94,7 @@ struct ParkView: View {
 
                 }
                 
+                // 친구 신청 내역 보여주는 팝업
                 if store.showHistory {
                     Color.black.opacity(0.3)
                         .ignoresSafeArea()

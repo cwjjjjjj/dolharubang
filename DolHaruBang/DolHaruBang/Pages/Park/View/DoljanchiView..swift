@@ -2,20 +2,24 @@ import SwiftUI
 import ComposableArchitecture
 
 struct DoljanchiView: View {
-    let store: StoreOf<DoljanchiFeature>
-    @State private var currentPage = 0
+    @State var store: StoreOf<DoljanchiFeature>
     
     var body: some View {
         VStack(spacing: 16) {
-            TabView(selection: $currentPage) {
-                ForEach(0..<4) { pageIndex in
-                    GridView(rowNums: 2, colNums: 2)
-                        .tag(pageIndex)
+            TabView(selection: $store.state.currentPage) {
+                ForEach(0..<store.state.maxPage, id: \.self) { pageIndex in
+                    GridView(
+                        rowNums: $store.rowNum,
+                        colNums: $store.colNum,
+                        jarangs: $store.jarangs,
+                        currentPage: $store.state.currentPage
+                    )
+                    .tag(pageIndex)
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             
-            CustomPageIndicator(numberOfPages: 4, currentPage: $currentPage)
+            CustomPageIndicator(numberOfPages: store.state.maxPage, currentPage: $store.state.currentPage)
             
             Button(action: {
                 print("돌 자랑하기 버튼이 눌렸습니다.")
@@ -34,9 +38,13 @@ struct DoljanchiView: View {
         }
         .background(.coreWhite)
         .cornerRadius(15, corners: [.bottomLeft, .bottomRight])
+        .onAppear {
+            store.send(.fetchFeed(1, nil, "LATEST", 16))
+        }
     }
 }
 
+// 몇 페이지인지 나타내는 표시
 struct CustomPageIndicator: View {
     let numberOfPages: Int
     @Binding var currentPage: Int
@@ -54,26 +62,53 @@ struct CustomPageIndicator: View {
 }
 
 struct GridView: View {
-    let rowNums: Int
-    let colNums: Int
-    @State private var isLoading = true
+    @Binding var rowNums: Int
+    @Binding var colNums: Int
+    @Binding var jarangs: [Jarang]
+    @Binding var currentPage: Int
     
     var body: some View {
-        Grid(horizontalSpacing: 16, verticalSpacing: 16) {
-            ForEach(0..<rowNums, id: \.self) { _ in
-                GridRow {
-                    ForEach(0..<colNums, id: \.self) { _ in
-                        JarangView(isLoading: isLoading, nickname: "사용자", roomName: "우리 방")
-                            .onAppear {
-                                // 데이터 로딩 시뮬레이션
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    isLoading = false
+        if !jarangs.isEmpty {
+            let itemsPerPage = rowNums * colNums
+            let startIndex = currentPage * itemsPerPage
+            let endIndex = min(startIndex + itemsPerPage, jarangs.count)
+            
+            // 현재 페이지에 표시할 데이터가 있는지 확인
+            if startIndex < jarangs.count {
+                let pageItems = Array(jarangs[startIndex..<endIndex])
+                
+                Grid(horizontalSpacing: 16, verticalSpacing: 16) {
+                    ForEach(0..<rowNums, id: \.self) { row in
+                        GridRow {
+                            ForEach(0..<colNums, id: \.self) { col in
+                                let index = row * colNums + col
+                                if index < pageItems.count {
+                                    JarangView(
+                                        isLoading: false,
+                                        jarang: pageItems[index]
+                                    )
+                                } else {
+                                    EmptyView()
                                 }
                             }
+                        }
                     }
                 }
+                .padding()
+            } else {
+                EmptyView()
             }
+        } else {
+            EmptyView()
         }
-        .padding()
     }
 }
+
+
+
+
+
+
+
+
+
