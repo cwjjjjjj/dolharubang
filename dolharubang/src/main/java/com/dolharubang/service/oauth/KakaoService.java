@@ -61,7 +61,6 @@ public class KakaoService {
 
         String profileImageUrl = properties != null && properties.containsKey("profile_image") ?
             (String) properties.get("profile_image") : null;
-        // TODO null 대신 기본 프로필 사진으로 변경
 
         // DTO 객체 생성 및 반환
         return KakaoDTO.builder()
