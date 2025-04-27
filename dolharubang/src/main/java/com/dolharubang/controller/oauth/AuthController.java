@@ -72,6 +72,7 @@ public class AuthController {
                 .nickname(kakaoInfo.getNickname())
                 .profilePicture(kakaoInfo.getProfileImageUrl())
                 .sands(0)
+                .closeness(0)
                 .build();
 
             memberRepository.save(member);
@@ -159,6 +160,7 @@ public class AuthController {
                 .memberEmail(email)
                 .nickname(nickname)
                 .sands(0)
+                .closeness(0)
                 .build();
 
             memberRepository.save(member);

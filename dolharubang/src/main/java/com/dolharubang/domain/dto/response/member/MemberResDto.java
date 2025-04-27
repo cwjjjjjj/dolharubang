@@ -22,6 +22,7 @@ public class MemberResDto {
     private int sands;
     private String profilePicture;
     private String spaceName;
+    private int closeness;
 
     public static MemberResDto fromEntity(Member member) {
         return MemberResDto.builder()
@@ -35,6 +36,7 @@ public class MemberResDto {
             .sands(member.getSands())
             .profilePicture(member.getProfilePicture())
             .spaceName(member.getSpaceName())
+            .closeness(member.getCloseness())
             .build();
     }
 }
