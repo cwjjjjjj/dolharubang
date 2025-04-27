@@ -5,15 +5,10 @@ import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
 import com.dolharubang.domain.entity.Member;
-import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.mongo.entity.Item;
-import com.dolharubang.mongo.repository.ItemRepository;
-import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,31 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final ItemRepository itemRepository;
-    private final MemberItemRepository memberItemRepository;
     private final S3UploadService s3UploadService;
 
-    public MemberService(MemberRepository memberRepository, ItemRepository itemRepository,
-        MemberItemRepository memberItemRepository,
+    public MemberService(MemberRepository memberRepository,
         S3UploadService s3UploadService) {
         this.memberRepository = memberRepository;
-        this.itemRepository = itemRepository;
-        this.memberItemRepository = memberItemRepository;
         this.s3UploadService = s3UploadService;
-    }
-
-    @Transactional
-    public void initializeItems(Member member) {
-        List<Item> items = itemRepository.findAll();
-
-        for (Item item : items) {
-            MemberItem memberItem = MemberItem.builder()
-                .member(member)
-                .itemId(item.getItemId().toString())
-                .whetherHasItem(false)
-                .build();
-            memberItemRepository.save(memberItem);
-        }
     }
 
     @Transactional
