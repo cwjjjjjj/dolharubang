@@ -1,6 +1,5 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.FriendReqDto;
 import com.dolharubang.domain.dto.response.FriendResDto;
 import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
@@ -65,10 +64,10 @@ public class FriendService {
     }
 
     // 친구 요청 보내기
-    public FriendResDto sendFriendRequest(FriendReqDto friendReqDto) {
-        Member requester = memberRepository.findById(friendReqDto.getRequesterId())
+    public FriendResDto sendFriendRequest(Long requesterId, Long receiverId) {
+        Member requester = memberRepository.findById(requesterId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        Member receiver = memberRepository.findById(friendReqDto.getReceiverId())
+        Member receiver = memberRepository.findById(receiverId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 요청자와 수신자의 관계를 양방향으로 조회 (소프트 딜리트 포함)
