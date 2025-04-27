@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SignView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
-    @Binding var message : String
+    @Binding var initMessage : String
     
     @State var store: StoreOf<SignFeature> // Store로 상태 및 액션 전달
 
@@ -25,8 +25,9 @@ struct SignView: View {
                     .padding(.leading, 24)
                 
                 Spacer()
-                    Button(action: {
-                        store.send(.applySign(store.signInfo))
+                    Button(action: { store.send(.applySign(store.signInfo))
+                        initMessage = store.signInfo
+                        showPopup = false
                        })
                     {
                             Text("등록")
@@ -71,7 +72,7 @@ struct SignView: View {
         .cornerRadius(25)
         .shadow(radius: 10)
         .onAppear{
-            store.send(.fetchSign)
+            store.send(.fetchSign(initMessage))
         }
         
     }

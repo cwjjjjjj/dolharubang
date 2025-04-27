@@ -99,7 +99,7 @@ struct MyPageFeature {
                 // 편집완료 클릭
             case .completeEditProfile:
                 state.selectedProfileEdit = false
-                return .none
+                return .send(.changeUserInfo(state.userName, state.roomName))
                 
                 
             case let .userNameChanged(name):

@@ -122,7 +122,7 @@ struct HomeView : View {
                                         selectedSign: $store.selectedSign,
                                         selectedMail: $store.selectedMail,
                                         selectedNest: $store.selectedNest,
-                                        signText: $store.message,
+                                        signText: $store.signText,
                                         sign: $store.sign,
                                         profile: $store.profile,
                                         mail: $store.mail,
@@ -260,7 +260,7 @@ struct HomeView : View {
                             .zIndex(1)
                         SignView(
                             showPopup: $store.sign,
-                            message: $store.message, store: Store(initialState: SignFeature.State()){
+                            initMessage: $store.signText, store: Store(initialState: SignFeature.State()){
                                 SignFeature()}
                         )
                             .background(Color.white)
@@ -323,6 +323,8 @@ struct HomeView : View {
                     store.send(.fetchFaceShape)
                     store.send(.fetchAccessory)
                     store.send(.fetchNest)
+                    store.send(.fetchSand)
+                    store.send(.fetchSign)
                 }
                 .onTapGesture {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

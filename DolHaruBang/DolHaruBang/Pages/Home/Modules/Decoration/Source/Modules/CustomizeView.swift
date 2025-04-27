@@ -123,7 +123,6 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                 }
                                 .frame(width: 108, height: 140)
                             }
-                            // 추가2
                             .alert("구매 확인", isPresented: $showPurchaseAlert) {
                                 Button("취소", role: .cancel) {
                                     print("취소 버튼 클릭: showPurchaseAlert = \(showPurchaseAlert)")  // 상태 확인
@@ -131,6 +130,8 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                 }
                                 Button("구매", role: .none) {
                                     if let itemId = currentItemId {
+                                        
+                                                store.isLoading = true
                                                // 아이템 ID와 함께 현재 타입에 맞는 새로고침 액션 전달
                                                store.send(.purchaseItem(itemId, refreshAction: refreshAction))
                                            }
@@ -152,20 +153,19 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                 .background(Color.white)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity) // VStack의 최대 크기를 무한대로 설정
-            .padding(.bottom, 30) 
+            .padding(.bottom, 30)
+            .alert(
+                store: store.scope(state: \.$alert, action: \.alert)
+            )
+            .overlay {
+                if store.isLoading {
+                    ProgressView("구매 처리중...")
+                        .padding()
+                        .background(Color.black)
+                        .cornerRadius(10)
+                        .shadow(radius: 4)
+                }
+            }
         }
-//        .onAppear {
-//            switch T.self {
-//                        case is Background.Type:
-//                            store.send(.fetchBackground)
-//                            // Background 타입에 대한 처리
-//                        case is Face.Type:
-//                            store.send(.fetchFace)
-//                        case is FaceShape.Type:
-//                            store.send(.fetchFaceShape)
-//                        default:
-//                            print("Unknown type")
-//                        }
-//        }
     }
 }
