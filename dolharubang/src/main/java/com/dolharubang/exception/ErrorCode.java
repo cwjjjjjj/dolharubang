@@ -49,9 +49,6 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 오류가 발생했습니다."),
 
-    // 인증 관련 오류
-    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패하였습니다."),
-
     // Json 변환 에러
     JSON_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 변환 과정에서 오류가 발생했습니다."),
 
