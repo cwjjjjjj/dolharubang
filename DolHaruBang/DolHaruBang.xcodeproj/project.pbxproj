@@ -311,6 +311,33 @@
 			path = Trophy;
 			sourceTree = "<group>";
 		};
+		6520EB242DBF6D6000BECA1D /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */,
+				65382E712CA28E19003F130B /* MyPageEnviroment.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		6520EB252DBF6D7500BECA1D /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		6520EB262DBF6DA400BECA1D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6520EB242DBF6D6000BECA1D /* Core */,
+				6520EB252DBF6D7500BECA1D /* Util */,
+				DA0E9EF52C9F390A00A3CD39 /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		65382E7B2CA32232003F130B /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +510,7 @@
 				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
 				DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */,
 				DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */,
+				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -500,7 +528,6 @@
 			isa = PBXGroup;
 			children = (
 				DAAEFC392C575B8900D1F87B /* LoginView.swift */,
-				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -732,22 +759,19 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		DA0E9EF52C9F390A00A3CD39 /* Source */ = {
+		DA0E9EF52C9F390A00A3CD39 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				65382E712CA28E19003F130B /* MyPageEnviroment.swift */,
-				DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */,
-				DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */,
 				DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */,
 			);
-			path = Source;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		DA0E9EF62C9F390A00A3CD39 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				6520EB262DBF6DA400BECA1D /* Source */,
 				DA0E9EF12C9F390A00A3CD39 /* Resource */,
-				DA0E9EF52C9F390A00A3CD39 /* Source */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";

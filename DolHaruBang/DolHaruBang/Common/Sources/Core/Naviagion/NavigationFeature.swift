@@ -22,10 +22,12 @@ struct NavigationFeature {
     case park(ParkFeature)
     case mypage(MyPageFeature)
     case home(HomeFeature)
+    case DBTIGuideView(DBTIFeature)
     case DBTIQuestion1View(DBTIFeature)
     case DBTIResultView(DBTIFeature)
     case TrophyView(TrophyFeature)
     case SettingView(SettingFeature)
+    case input(DBTIFeature)
   }
     
   // path - NavigationStack 에서 사용하는 Stack
@@ -40,6 +42,8 @@ struct NavigationFeature {
 //    case goBackToScreen(id: StackElementID)
     case path(StackActionOf<Path>) // 경로를 인식해서 패턴매칭 ex) 같은 리듀서를 참조하고 있지만 경로에 따라 다른 행동, 이렇게 사용하면 NavigationFeature을 불러오지 않아도 이동가능
     case popToRoot
+    case goToHome
+    case goToInput
     case goToScreen(Path) // 이동하는 경로를 매개변수로 받고 switch case 로 패턴매칭
     case clickButtonEnable
 //    case goBack(StackActionOf<Path>)
@@ -49,11 +53,6 @@ struct NavigationFeature {
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
-          
-//      case let .goBackToScreen(id):
-//        state.path.pop(to: id)
-//        return .none
-          
       case .clickButtonEnable:
           state.enableClick = true
           return .none
@@ -62,10 +61,15 @@ struct NavigationFeature {
         state.path.removeAll()
         return .none
 
+      case .goToHome:
+        state.path.append(.home(HomeFeature.State()))
+        return .none
           
+      case .goToInput:
+        state.path.removeAll()
+        return .none
           
       case let .goToScreen(action):
-                
                 // 홈까지 지워주는 함수
                 func clearPathToHomeIfNeeded() {
                   while let last = state.path.last {
@@ -96,6 +100,11 @@ struct NavigationFeature {
                   state.enableClick = false
                   state.path.append(.calendar(CalendarFeature.State()))
                   return createAsyncEnableClickEffect()
+                  
+                  
+              case .input:
+                  state.path.append(.input(DBTIFeature.State()))
+                  return .none
                       
               case .harubang(_):
                   clearPathToHomeIfNeeded()
@@ -119,6 +128,11 @@ struct NavigationFeature {
                   clearPathToHomeIfNeeded()
                   state.enableClick = false
                   return createAsyncEnableClickEffect()
+                  
+                  
+              case .DBTIGuideView:
+                  state.path.append(.DBTIQuestion1View(DBTIFeature.State()))
+                  return .none
                   
               case .DBTIQuestion1View:
                   state.path.append(.DBTIQuestion1View(DBTIFeature.State()))
@@ -170,11 +184,6 @@ struct NavigationFeature {
           default:
             return .none
           }
-          
-        
-     
-     
-     
       }
     }
     // Navigation 선언부 destination 패턴매칭
