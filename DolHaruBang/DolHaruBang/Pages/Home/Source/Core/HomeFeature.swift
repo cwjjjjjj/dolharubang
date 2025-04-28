@@ -43,6 +43,8 @@ struct HomeFeature {
         var ability: Bool = false // 잠재능력 버튼 온 오프
         var decoration: Bool = false // 꾸미기 탭 온 오프
         var enable : Bool = true // 버그 방지 Bool값
+        var shareButton : Bool = false
+        var sandButton : Bool = false
         
         // 3D 터치 state
         var profile: Bool = false // 돌 프로필 온 오프
@@ -53,7 +55,6 @@ struct HomeFeature {
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
         
-        var shareButton : Bool = false
        
         // 배경, 돌굴, 돌굴형 따로따로 담는 변수 생성
         var backItems : [CustomizeItem] = []
@@ -88,6 +89,8 @@ struct HomeFeature {
         case binding( BindingAction < State >)
         
         // 팝업 열고 닫기
+        case openSand
+        case closeSand
         case openShare
         case closeShare
         case closeSign
@@ -223,6 +226,13 @@ struct HomeFeature {
                 return .none
             case .closeShare:
                 state.shareButton = false
+                return .none
+                
+            case .openSand:
+                state.sandButton.toggle()
+                return .none
+            case .closeSand:
+                state.sandButton = false
                 return .none
                 
                 // 펫말 팝업 닫기

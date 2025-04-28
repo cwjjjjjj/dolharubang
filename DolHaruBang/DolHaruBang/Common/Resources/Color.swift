@@ -29,6 +29,7 @@ extension Color {
     static let ability1 = Color(hex:"FFFA80")
     static let ability2 = Color(hex:"FF9900")
     static let commit = Color(hex:"A5CD3B")
+    static let semigray = Color(hex:"F2eee7")
     
     static let mainTop = Color(hex: "D2FAFF")
     static let decoSheetTabbar = Color(hex: "837C74")
