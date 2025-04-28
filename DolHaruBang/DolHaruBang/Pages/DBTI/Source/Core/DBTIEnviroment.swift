@@ -9,15 +9,15 @@ import Foundation
 import ComposableArchitecture
 import Alamofire
 
-struct KakaoLoginResponse: Codable, Equatable {
-    var accessToken: String
-    var refreshToken: String
-}
-
-// 카카오 토큰 요청 모델
-struct KakaoTokenRequest: Codable, Equatable, Sendable {
-    var oauthToken: String
-}
+//struct KakaoLoginResponse: Codable, Equatable {
+//    var accessToken: String
+//    var refreshToken: String
+//}
+//
+//// 카카오 토큰 요청 모델
+//struct KakaoTokenRequest: Codable, Equatable, Sendable {
+//    var oauthToken: String
+//}
 
 @DependencyClient
 struct DBTIClient {
