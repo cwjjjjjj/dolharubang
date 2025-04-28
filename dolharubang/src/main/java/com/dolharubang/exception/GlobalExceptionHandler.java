@@ -1,5 +1,6 @@
 package com.dolharubang.exception;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException e) {
-        return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+    public ResponseEntity<?> handleResponseStatusException(ResponseStatusException e) {
+
+        String message = e.getReason() != null ? e.getReason() : "";
+        String errorCode = e.getStatusCode() != null ? e.getStatusCode().toString() : "";
+
+        return ResponseEntity
+            .status(e.getStatusCode())
+            .body(Map.of(
+                "message", message,
+                "errorCode", errorCode
+            ));
     }
 
     @ExceptionHandler(Exception.class)
