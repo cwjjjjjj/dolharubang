@@ -70,7 +70,7 @@ public class StoneService {
         String signText = "";
         signText = stoneRepository.findSignTextByMember(member);
         if (signText == null) {
-            throw new CustomException(ErrorCode.SIGNTEXT_NOT_FOUND);
+            throw new CustomException(ErrorCode.SIGN_TEXT_NOT_FOUND);
         }
         return signText;
     }

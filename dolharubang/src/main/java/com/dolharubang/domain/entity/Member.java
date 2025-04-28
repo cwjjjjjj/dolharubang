@@ -45,11 +45,13 @@ public class Member extends BaseEntity {
 
     private String spaceName;
 
+    private int closeness;
+
     @Builder
     public Member(Long memberId, Authority authority, Provider provider, String providerId,
         String memberEmail, String nickname, String birthday,
         int sands, String profilePicture,
-        String spaceName) {
+        String spaceName, int closeness) {
         this.memberId = memberId;
         this.authority = authority;
         this.provider = provider;
@@ -60,6 +62,7 @@ public class Member extends BaseEntity {
         this.sands = sands;
         this.profilePicture = profilePicture;
         this.spaceName = spaceName;
+        this.closeness = closeness;
     }
 
     public void update(String nickname, String spaceName) {
@@ -86,6 +89,10 @@ public class Member extends BaseEntity {
     public int increaseSands(int increasingAmount) {
         this.sands += increasingAmount;
         return this.sands;
+    }
+
+    public void increaseCloseness(int increasingAmount) {
+        this.closeness += increasingAmount;
     }
 
     public void updateProfilePicture(String profilePicture) {

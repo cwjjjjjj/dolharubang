@@ -9,7 +9,10 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,14 @@ public class DiaryService {
     public DiaryResDto createDiary(DiaryReqDto diaryReqDto) {
         Member member = memberRepository.findById(diaryReqDto.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+
+        Optional<Diary> todayDiary = diaryRepository.findByMemberAndCreatedAtBetween(member, startOfDay, endOfDay);
+        if(todayDiary.isPresent()) {
+            throw new CustomException(ErrorCode.DIARY_ALREADY_EXISTS);
+        }
 
         Diary diary = Diary.builder()
             .member(member)
