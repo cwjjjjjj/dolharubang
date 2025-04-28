@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +21,19 @@ public class JwtFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
 
     private final TokenProvider tokenProvider;
+    private static final Set<String> EXCLUDE_URLS = Set.of(
+        "/api/v1/auth/reissue"
+    );
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+
+        String path = request.getRequestURI();
+        if (EXCLUDE_URLS.contains(path)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // 1. Request Header 에서 토큰을 꺼냄
         String jwt = resolveToken(request);
