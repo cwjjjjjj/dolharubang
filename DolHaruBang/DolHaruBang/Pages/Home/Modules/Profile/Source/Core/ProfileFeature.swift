@@ -15,11 +15,18 @@ struct ProfileFeature {
     struct State: Equatable {
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
         var profile : ProfileInfo? = nil
+        
+        var selectedProfileEdit : Bool = false
+        var dolName = ""
     }
     
     enum Action: BindableAction {
+        case dolNameChanged(String)
         case fetchProfile
         case fetchProfileResponse(Result<ProfileInfo, Error>)
+        case clickEditProfile
+        case completeEditProfile
+        case changeDolInfo(String)
         case binding( BindingAction < State >)
     }
     
@@ -32,6 +39,30 @@ struct ProfileFeature {
             switch action {
             case .binding( _ ):
                return .none
+                
+            case let .dolNameChanged(name):
+                state.dolName = name
+              return .none
+                
+                // 프로필 편집 클릭
+            case .clickEditProfile:
+                state.selectedProfileEdit = true
+                return .none
+                
+                // 편집완료 클릭
+            case .completeEditProfile:
+                state.selectedProfileEdit = false
+                return .send(.changeDolInfo(state.dolName))
+                
+            case let .changeDolInfo(dolName):
+                return .run { send in
+                    do {
+                        let dolinfo = try await profileClient.editdolname(dolName)
+                        await send(.fetchProfileResponse(.success(dolinfo)))
+                    } catch {
+                        await send(.fetchProfileResponse(.failure(error)))
+                    }
+                }
                 
             case .fetchProfile:
                 return .run { send in

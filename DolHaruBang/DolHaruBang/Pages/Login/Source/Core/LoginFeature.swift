@@ -56,6 +56,7 @@ struct LoginFeature {
           return .none
           
       case let .kakaoLoginResponse(.failure(error)):
+          print(error)
           return .none
           
       case .isFirstRequest:

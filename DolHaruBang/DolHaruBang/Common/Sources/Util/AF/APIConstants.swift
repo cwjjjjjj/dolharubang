@@ -37,6 +37,7 @@ struct APIConstants {
         // MARK: stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
+        static let dolname = "/stones/name"
         
         
     }

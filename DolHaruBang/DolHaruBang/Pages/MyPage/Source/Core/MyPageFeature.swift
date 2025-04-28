@@ -146,10 +146,9 @@ struct MyPageFeature {
             // 조회,수정 결과 적용하기
             case let .fetchUserInfoResponse(.success(userinfo)):
                 state.isLoading = false
-                state.userInfo = userinfo 
                 state.userName = userinfo.userName
 //                state.roomName = userinfo.roomName
-                state.roomName = "room"
+                state.roomName = userinfo.roomName!
                 return .none
                 
             case let .fetchUserInfoResponse(.failure(error)):
