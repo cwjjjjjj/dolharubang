@@ -7,7 +7,10 @@ import com.dolharubang.service.MemberItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,28 +34,59 @@ public class MemberItemController {
 
     @Operation(summary = "아이템 구매하기", description = "memberId와 아이템을 사용하여 아이템을 구매상태로 변경한다.")
     @PostMapping("/buy")
-    public ResponseEntity<List<CustomItemResDto>> buyMemberItem(@AuthenticationPrincipal PrincipalDetails principal,
+    public ResponseEntity<?> buyMemberItem(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestParam String itemId) {
-        Long memberId = principal.getMember().getMemberId();
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다."
+                ));
+        }
+        Long memberId = findMemberId(principal);
         List<CustomItemResDto> response = memberItemService.updateItemOwnership(memberId, itemId);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "아이템 조회하기", description = "memberId를 사용하여 아이템 구매/착용 여부, 가격, id, 이름, url을 조회한다.")
     @GetMapping("/customs/{itemType}")
-    public ResponseEntity<List<CustomItemResDto>> getItemByType(@PathVariable ItemType itemType,
+    public ResponseEntity<?> getItemByType(@PathVariable ItemType itemType,
         @AuthenticationPrincipal PrincipalDetails principal) {
-        Long memberId = principal.getMember().getMemberId();
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Long memberId = findMemberId(principal);
         return ResponseEntity.ok(memberItemService.findCustomsByType(memberId, itemType));
     }
 
     @Operation(summary = "아이템 착용하기", description = "memberId와 아이템을 사용하여 아이템을 착용 상태로 변경한다.")
     @PostMapping("/wear")
-    public ResponseEntity<List<CustomItemResDto>> wearMemberItem(
+    public ResponseEntity<?> wearMemberItem(
         @AuthenticationPrincipal PrincipalDetails principal,
             @RequestParam String itemId) {
-        Long memberId = principal.getMember().getMemberId();
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Long memberId = findMemberId(principal);
         List<CustomItemResDto> response = memberItemService.wearItem(memberId, itemId);
         return ResponseEntity.ok(response);
+    }
+
+    private static Long findMemberId(PrincipalDetails principal) {
+        return principal.getMember().getMemberId();
     }
 }
