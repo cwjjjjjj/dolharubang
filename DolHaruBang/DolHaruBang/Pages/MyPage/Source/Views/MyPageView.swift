@@ -188,7 +188,7 @@ struct MyPageView : View {
                                         .inset(by: 0.50)
                                         .stroke(Color(red: 0.51, green: 0.49, blue: 0.45), lineWidth: 0.50)
                                 )
-                            }.withHaptic()
+                            }/*withHaptic()*/
                             
                             
                             Button(action: {
