@@ -50,6 +50,7 @@ extension Font {
     static var body1Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 16) }
     static var body2Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var body3Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 12) }
+    static var body35Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 13) }
     static var body4Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 11) }
     static var body5Bold: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 10) }
     
@@ -65,15 +66,18 @@ extension Font {
     static var button1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 16) }
     static var button2: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var button3: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 14) }
+    static var button35: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 15) }
     static var button4: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 12) }
     static var caption1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 10) }
     static var caption2: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }
     static var overline: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }
-    
+    static var dolname: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 19) }
+    static var dollevel: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 17) }
+    static var signCount: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 13) }
     
     static var caption4: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 8) }
     
-    static var signtext: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 8) }
+    static var signtext: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 9) }
     
     static func uiFont(for style: FontStyle) -> UIFont? {
         return UIFont(name: style.customFont.rawValue, size: style.size)

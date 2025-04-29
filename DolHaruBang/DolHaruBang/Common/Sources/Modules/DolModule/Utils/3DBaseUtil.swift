@@ -12,7 +12,7 @@ import SceneKit
 func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
     
     for childNode in rootNode.childNodes {
-        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "areaLight" && childNode.name != "omniLight" && childNode.name != "directionLight" && childNode.name != "areaLight2" && childNode.name  != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text" && childNode.name != "nest"{
+        if childNode != node && childNode.name != "camera"  && childNode.name != "ambientLight" && childNode.name != "areaLight" && childNode.name != "omniLight" && childNode.name != "directionLight" && childNode.name != "areaLight2" && childNode.name != "areaLight3" && childNode.name != "areaLight4" && childNode.name  != "spotLight" && childNode.name != "accessory" && childNode.name != "sign" && childNode.name != "mail" && childNode.name != "text" && childNode.name != "nest"{
             childNode.isHidden = true
         }
     }
@@ -21,13 +21,23 @@ func hideAllNodesExcept(node: SCNNode, rootNode: SCNNode) {
 func showAllNodes(rootNode: SCNNode) {
     // 현재 노드의 숨김 상태를 해제합니다.
        rootNode.isHidden = false
-       
+
        // 현재 노드의 자식 노드들에 대해서도 재귀적으로 호출합니다.
        for childNode in rootNode.childNodes {
            showAllNodes(rootNode: childNode)
        }
 }
 
+func showAllNestNodes(rootNode: SCNNode) {
+    // 현재 노드의 숨김 상태를 해제합니다.
+       rootNode.isHidden = false
+       rootNode.categoryBitMask = 0b1000
+
+       // 현재 노드의 자식 노드들에 대해서도 재귀적으로 호출합니다.
+       for childNode in rootNode.childNodes {
+           showAllNestNodes(rootNode: childNode)
+       }
+}
 
 
 func printNodeDetails(node: SCNNode, depth: Int = 0) {

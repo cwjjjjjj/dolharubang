@@ -5,6 +5,7 @@ struct ProfileView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
     @State var store: StoreOf<ProfileFeature> // Store로 상태 및 액션 전달
     
+    let tmpProfile = ["DJ 돌", "고민해결사", "날씨"]
     var body: some View {
         VStack(alignment: .center) {
             Spacer().frame(height: 24)
@@ -30,7 +31,7 @@ struct ProfileView: View {
             
             Spacer().frame(height: 20)
             
-            Divider()
+            Divider().background(Color.init(hex: "E5DFD7"))
             if let profile = store.profile {
                 VStack {
                     // 상단 부분
@@ -136,7 +137,7 @@ struct ProfileView: View {
                     
                     Divider()
                         .frame(width: 272)
-                        .background(Color(red: 0.90, green: 0.87, blue: 0.84))
+                        .foregroundColor(Color.init(hex: "E5DFD7"))
                     
                     // 활성능력탭
                     VStack(spacing: 8) {
@@ -150,7 +151,7 @@ struct ProfileView: View {
                         .frame(width: 272)
                         HStack {
                             // activeAbility 반복문
-                            ForEach(profile.activeAbility, id: \.self) { ability in
+                            ForEach(tmpProfile, id: \.self) { ability in
                                 HStack {
                                     Text("\(ability)")
                                         .font(Font.customFont(Font.body5Bold))
@@ -177,7 +178,7 @@ struct ProfileView: View {
                         .background(Color(red: 0.90, green: 0.87, blue: 0.84))
                     
                     // 잠재능력탭
-                    VStack(spacing: 8) {
+                    VStack(alignment: .leading,spacing: 8) {
                         HStack {
                             Text("잠재 능력")
                                 .font(Font.customFont(Font.body3Bold))
@@ -188,7 +189,7 @@ struct ProfileView: View {
                         .frame(width: 272)
                         
                         HStack {
-                            ForEach(profile.potential, id: \.self) { ability in
+                            ForEach(tmpProfile, id: \.self) { ability in
                                 HStack(spacing: 10) {
                                     Text("🔒 \(ability)")
                                         .font(Font.customFont(Font.body5Bold))

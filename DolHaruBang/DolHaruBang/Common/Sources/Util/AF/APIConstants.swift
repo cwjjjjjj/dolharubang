@@ -44,6 +44,7 @@ struct APIConstants {
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
         static let dolname = "/stones/name"
+        static let basic = "/stones/stone-info"
         
         // MARK: Missions
         static let trophy = "/member-missions"

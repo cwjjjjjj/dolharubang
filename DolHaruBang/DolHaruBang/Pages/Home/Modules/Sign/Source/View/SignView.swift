@@ -19,7 +19,7 @@ struct SignView: View {
             Spacer().frame(height: 19)
             
             HStack {
-                Text("펫말")
+                Text("팻말")
                     .font(Font.customFont(Font.subtitle3))
                     .foregroundColor(.decoSheetGreen)
                     .padding(.leading, 24)
@@ -46,7 +46,16 @@ struct SignView: View {
                         .resizable()
                         .frame(width: 14, height: 14)
                         .foregroundColor(.placeHolder)
+                }.onAppear {
+                    // 저장된 설정값 확인 후 재생/정지
+                    let isMusicOn = UserDefaults.standard.bool(forKey: "isBGMMusicOn")
+                    if isMusicOn {
+                        AudioManager.shared.playBackgroundMusic()
+                    } else {
+                        AudioManager.shared.stopBackgroundMusic()
+                    }
                 }
+
                 .padding(.trailing, 24)
             }
             
@@ -54,8 +63,8 @@ struct SignView: View {
             
             Divider()
             HStack{
-                SignTextView(text: $store.signInfo, placeholder: "펫말에 등록할 문구를 입력해주세요.(최대 50자)", maxTextWidth: UIScreen.main.bounds.width * 150/393)
-                    .font(Font.customFont(Font.button3))
+                SignTextView(text: $store.signInfo, placeholder: "팻말에 등록할 문구를 입력해주세요.(최대 50자)", maxTextWidth: UIScreen.main.bounds.width * 150/393)
+                    .font(Font.customFont(Font.button35))
                     .background(.white)
                     .transparentScrolling()
                     .foregroundColor(.coreBlack)

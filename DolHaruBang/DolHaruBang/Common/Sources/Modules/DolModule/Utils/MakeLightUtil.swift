@@ -51,7 +51,6 @@ func makeAreaLight( intensity : CGFloat , name : String , position : SCNVector3,
     areaLight.areaType = .rectangle // 또는 .line, .polygon
     areaLight.areaExtents = areaExtents // 크기 조절 (width, height, depth)
 
-
     areaLightNode.light = areaLight
     
     areaLightNode.position = position // 적절한 위치 조정
@@ -60,7 +59,26 @@ func makeAreaLight( intensity : CGFloat , name : String , position : SCNVector3,
     return areaLightNode
 }
 
+func makeAreaLight2( intensity : CGFloat , name : String , position : SCNVector3, areaExtents : simd_float3 ) -> SCNNode {
+    let areaLightNode = SCNNode()
+    let areaLight = SCNLight()
+    areaLight.type = .area
+    areaLight.intensity = intensity // 면광원으로 부드러운 조명 효과
+//    let color = UIColor(red: 247/255.0, green: 231/255.0, blue: 198/255.0, alpha: 0.6) // 밝은 색상
+//
+//
+//    areaLight.color = color
+    areaLight.categoryBitMask = 0b1000
+    areaLight.areaType = .rectangle // 또는 .line, .polygon
+    areaLight.areaExtents = areaExtents // 크기 조절 (width, height, depth)
 
+    areaLightNode.light = areaLight
+    
+    areaLightNode.position = position // 적절한 위치 조정
+    areaLightNode.look(at: SCNVector3.init(x: 0.5, y: 0.6, z: 0.2))
+    areaLightNode.name = name
+    return areaLightNode
+}
 
 func makeSpotLight() -> SCNNode{
     let spotLightNode = SCNNode()

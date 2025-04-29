@@ -243,7 +243,6 @@ struct DolView : UIViewRepresentable {
                 showAllNodes(rootNode: parentNode)
                 // 선택한 얼굴형중 선택한 표정만
                 hideAllNodesExcept(node: childNode, rootNode: parentNode) // 선택 노드만 보이게 설정
-                
             } else {
                 print("\(selectedFace) 노드가 씬에 존재하지 않습니다.")
             }
@@ -290,9 +289,9 @@ struct DolView : UIViewRepresentable {
             if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만 black_glasses reference
 //                print("출력 \(selectedNest) reference")
-                showAllNodes(rootNode: nestNode)
+                showAllNestNodes(rootNode: nestNode)
                 hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
-                moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.8, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+                moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.65, z: 0.0) // x, y, z 값은 원하는 위치로 설정
             } else {
                 print("\(selectedNest) 노드가 씬에 존재하지 않습니다.")
             }
@@ -331,7 +330,6 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     
     //    printNodeDetails(node: scene.rootNode)
     
-    
     let accessoryNode = addAccessory()
     scene.rootNode.addChildNode(accessoryNode)
     
@@ -343,14 +341,8 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     scene.rootNode.addChildNode(mailNode)
     
     let nestNode = addNest()
+    
     scene.rootNode.addChildNode(nestNode)
-    
-//    for node in scene.rootNode.childNodes {
-//        // MARK: 모델 크기 조절
-//        node.scale = SCNVector3(x: 0.6, y: 0.6 , z: 0.6)
-//        
-//    }
-    
     
     // shading 값 설정
     updateMaterialsToPhysicallyBased(for: scene)
@@ -364,34 +356,15 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     scene.rootNode.addChildNode(cameraNode)
     
     
-    
-    // HDRI 파일의 URL을 가져옵니다.
-//    guard let hdrURL = Bundle.main.url(forResource: "straw_rolls_field_01_4k", withExtension: "hdr") else {
-//        print("HDR 이미지 파일을 찾을 수 없습니다.")
-//        return scene
-//    }
-//    
-//    scene.lightingEnvironment.contents = hdrURL
-    
-//    guard let hdrURL = Bundle.main.url(forResource: "lythwood_field_4k", withExtension: "hdr") else {
-//      print("HDR 이미지 파일을 찾을 수 없습니다.")
-//      return scene
-//    }
-//    scene.lightingEnvironment.contents = hdrURL
-//
-//    scene.lightingEnvironment.intensity = 2.0 // 강도를 2배로 설정 (기본값은 1.0)
-//    // HDRI 배경 회전 (예: Y축 기준 180도 회전)
-//    let rotationMatrix = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
-//    scene.lightingEnvironment.contentsTransform = rotationMatrix
-    
-    
-    
     // 면광원 조명 추가
     let areaLightNode = makeAreaLight(intensity: 9000, name: "areaLight", position: SCNVector3(-8, 8, 30), areaExtents: simd_float3(x: 15, y: 15, z: 1))
     scene.rootNode.addChildNode(areaLightNode)
     
     let areaLightNode2 = makeAreaLight(intensity: 6000, name: "areaLight2", position: SCNVector3(8, -8, 10), areaExtents: simd_float3(x: 7, y: 7, z: 1.0))
     scene.rootNode.addChildNode(areaLightNode2)
+    
+    let areaLightNode4 = makeAreaLight2(intensity: 6000, name: "areaLight4", position: SCNVector3(0, 15, 0), areaExtents: simd_float3(x: 7, y: 7, z: 1.0))
+    scene.rootNode.addChildNode(areaLightNode4)
 //
 //   // 점광원 조명 추가, 빼면 어두워짐
 //    let makeOmniLightNode = makeOmniLight()
