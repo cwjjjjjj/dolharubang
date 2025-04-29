@@ -37,10 +37,12 @@ public class StoneProfileResDto {
 
         stone.getAbilityAble().forEach((ability, value) -> {
             if(ability != species.getBaseAbility()) {
-                if (value)
+                if (value) {
+                    activeAbilities.add(species.getBaseAbility());
                     activeAbilities.add(ability);
-                else
+                } else {
                     potentialAbilities.add(ability);
+                }
             }
         });
 
