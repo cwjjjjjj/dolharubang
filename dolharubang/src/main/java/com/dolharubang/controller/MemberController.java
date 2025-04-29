@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -149,6 +150,13 @@ public class MemberController {
     public ResponseEntity<List<MemberSearchResDto>> searchMember(String keyword) {
         List<MemberSearchResDto> response = memberService.searchMember(keyword);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "닉네임 중복 검사하기", description = "같은 닉네임의 회원이 없다면 true 반환한다.")
+    @GetMapping("/check/{keyword}")
+    public ResponseEntity<Boolean> checkNickname(@PathVariable String keyword) {
+        boolean isUnique = memberService.checkNickname(keyword);
+        return ResponseEntity.ok(isUnique);
     }
 
     @Operation(summary = "신규 회원 여부 조회하기", description = "신규 회원이라면 true를 반환한다.")

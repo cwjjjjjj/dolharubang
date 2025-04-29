@@ -94,6 +94,11 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
+    public boolean checkNickname(String keyword) {
+        return memberRepository.findByNickname(keyword).isEmpty();
+    }
+
+    @Transactional(readOnly = true)
     public boolean isStoneEmpty(Member member) {
         return stoneRepository.findByMember(member).isEmpty();
     }
