@@ -2,11 +2,17 @@ package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.request.ScheduleReqDto;
 import com.dolharubang.domain.dto.response.ScheduleResDto;
+import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,17 +36,38 @@ public class ScheduleController {
 
     @Operation(summary = "스케줄 생성하기", description = "스케줄을 생성한다.")
     @PostMapping
-    public ResponseEntity<ScheduleResDto> createSchedule(@RequestBody ScheduleReqDto requestDto) {
-        ScheduleResDto response = scheduleService.createSchedule(requestDto);
+    public ResponseEntity<?> createSchedule(
+        @RequestBody ScheduleReqDto requestDto,
+        @AuthenticationPrincipal PrincipalDetails principal) {
+
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("code", "UNAUTHORIZED", "message", "인증안댐"));
+        }
+
+        Member member = principal.getMember();
+        ScheduleResDto response = scheduleService.createSchedule(requestDto, member);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스케줄 수정하기", description = "schedule_id를 사용하여 스케줄을 수정한다.")
     @PatchMapping("/{id}")
-    public ResponseEntity<ScheduleResDto> updateSchedule(
+    public ResponseEntity<?> updateSchedule(
         @PathVariable Long id,
-        @RequestBody ScheduleReqDto requestDto) {
-        ScheduleResDto response = scheduleService.updateSchedule(id, requestDto);
+        @RequestBody ScheduleReqDto requestDto,
+        @AuthenticationPrincipal PrincipalDetails principal) {
+
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("code", "UNAUTHORIZED", "message", "인증안댐"));
+        }
+
+        Member member = principal.getMember();
+        ScheduleResDto response = scheduleService.updateSchedule(id, requestDto, member);
         return ResponseEntity.ok(response);
     }
 
@@ -51,14 +78,22 @@ public class ScheduleController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "스케줄 조회", description = "연도, 월, 일 및 member_id로 스케줄 조회를 진행한다.")
+    @Operation(summary = "스케줄 조회", description = "연도, 월, 일 기준으로 나의 스케줄을 조회한다.")
     @GetMapping
-    public ResponseEntity<List<ScheduleResDto>> getSchedules(
+    public ResponseEntity<?> getSchedules(
         @RequestParam(required = false) Integer year,
         @RequestParam(required = false) Integer month,
         @RequestParam(required = false) Integer day,
-        @RequestParam(required = false) Long memberId) {  // email 대신 memberId 사용
+        @AuthenticationPrincipal PrincipalDetails principal) {
 
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("code", "UNAUTHORIZED", "message", "인증안댐"));
+        }
+
+        Long memberId = principal.getMember().getMemberId();
         List<ScheduleResDto> response = scheduleService.getSchedulesByCriteria(year, month, day,
             memberId);
         return ResponseEntity.ok(response);

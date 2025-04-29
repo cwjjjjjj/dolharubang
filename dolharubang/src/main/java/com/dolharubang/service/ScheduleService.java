@@ -29,10 +29,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleResDto createSchedule(ScheduleReqDto requestDto) {
-        Member member = memberRepository.findById(requestDto.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
+    public ScheduleResDto createSchedule(ScheduleReqDto requestDto, Member member) {
         Schedule schedule = Schedule.builder()
             .member(member)
             .contents(requestDto.getContents())
@@ -47,12 +44,9 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleResDto updateSchedule(Long id, ScheduleReqDto requestDto) {
+    public ScheduleResDto updateSchedule(Long id, ScheduleReqDto requestDto, Member member) {
         Schedule schedule = scheduleRepository.findById(id)
             .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
-
-        Member member = memberRepository.findById(requestDto.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         schedule.update(
             member,
