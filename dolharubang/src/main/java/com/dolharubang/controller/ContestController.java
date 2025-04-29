@@ -8,8 +8,10 @@ import com.dolharubang.type.ContestFeedSortType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,26 +34,56 @@ public class ContestController {
 
     @Operation(summary = "콘테스트 생성", description = "새로운 콘테스트를 생성합니다")
     @PostMapping
-    public ResponseEntity<ContestResDto> createContest(
+    public ResponseEntity<?> createContest(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody ContestReqDto reqDto) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
         Long memberId = principal.getMember().getMemberId();
         return ResponseEntity.ok(contestService.createContest(memberId, reqDto));
     }
 
     @Operation(summary = "멤버의 모든 콘테스트 조회", description = "특정 멤버의 모든 콘테스트를 조회합니다")
     @GetMapping("/{memberId}")
-    public ResponseEntity<List<ContestResDto>> getMyAllContestProfile(
+    public ResponseEntity<?> getMyAllContestProfile(
         @AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
         Long memberId = principal.getMember().getMemberId();
         return ResponseEntity.ok(contestService.getMyAllContestProfiles(memberId));
     }
 
     @Operation(summary = "특정 콘테스트 조회", description = "멤버의 특정 콘테스트를 조회합니다")
     @GetMapping("/{memberId}/{contestId}")
-    public ResponseEntity<ContestResDto> getContestProfile(
+    public ResponseEntity<?> getContestProfile(
         @AuthenticationPrincipal PrincipalDetails principal,
         @PathVariable Long contestId) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
         Long memberId = principal.getMember().getMemberId();
         ContestResDto contestResDto = contestService.getContestProfile(memberId, contestId);
         return ResponseEntity.ok(contestResDto);
@@ -59,10 +91,20 @@ public class ContestController {
 
     @Operation(summary = "콘테스트 공개 여부 수정", description = "콘테스트의 공개 여부를 수정합니다")
     @PatchMapping("/{contestId}/visibility")
-    public ResponseEntity<ContestResDto> updateContestVisibility(
+    public ResponseEntity<?> updateContestVisibility(
         @AuthenticationPrincipal PrincipalDetails principal,
         @PathVariable Long contestId,
         @RequestParam Boolean isPublic) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
         Long memberId = principal.getMember().getMemberId();
         return ResponseEntity.ok(
             contestService.updateContestVisibility(memberId, contestId, isPublic));
@@ -70,9 +112,19 @@ public class ContestController {
 
     @Operation(summary = "콘테스트 삭제", description = "특정 콘테스트를 삭제합니다")
     @DeleteMapping("/{contestId}")
-    public ResponseEntity<Void> deleteContest(
+    public ResponseEntity<?> deleteContest(
         @AuthenticationPrincipal PrincipalDetails principal,
         @PathVariable Long contestId) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
         Long memberId = principal.getMember().getMemberId();
         contestService.deleteContest(memberId, contestId);
         return ResponseEntity.noContent().build();
@@ -80,7 +132,7 @@ public class ContestController {
 
     @Operation(summary = "콘테스트 피드 조회", description = "콘테스트 피드를 조회합니다. 추천순 또는 최신순으로 정렬 가능합니다")
     @GetMapping("/feed")
-    public ResponseEntity<List<ContestResDto>> getFeedContests(
+    public ResponseEntity<?> getFeedContests(
         @AuthenticationPrincipal PrincipalDetails principal,
         @Parameter(description = "마지막으로 본 콘테스트 ID (페이징용)")
         @RequestParam(required = false) Long lastContestId,
@@ -88,6 +140,15 @@ public class ContestController {
         @RequestParam(defaultValue = "RECOMMENDED") ContestFeedSortType contestFeedSortType,
         @Parameter(description = "한 번에 가져올 콘테스트 개수 (기본값: 16)")
         @RequestParam(defaultValue = "16") int size) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
 
         Long memberId = principal.getMember().getMemberId();
         return ResponseEntity.ok(
