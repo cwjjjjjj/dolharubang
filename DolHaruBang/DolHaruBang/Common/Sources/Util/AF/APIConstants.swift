@@ -34,11 +34,13 @@ struct APIConstants {
         static let photo = "/members/profile-picture"
         static let isfirst = "/members/is-first"
         
-        // MARK: stones
+        // MARK: Stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
         static let dolname = "/stones/name"
         
+        // MARK: Missions
+        static let trophy = "/member-missions"
         
     }
 }

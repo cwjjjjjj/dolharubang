@@ -31,7 +31,6 @@ struct TrophyListFeature {
                 
             case .fetchTrophys:
                 state.isLoading = true
-                print("트로피 불러오기 시작")
                 return .run { send in
                     do {
                         let trophies = try await trophyClient.fetchTrophy()
@@ -44,6 +43,7 @@ struct TrophyListFeature {
             case let .fetchTrophysResponse(.success(trophies)):
                 state.isLoading = false
                 state.trophys = trophies // 업적 목록 갱신
+                print(trophies)
                 print("받기성공")
                 return .none
                 

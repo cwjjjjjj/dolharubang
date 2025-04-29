@@ -38,14 +38,11 @@ struct MyPageFeature {
         case clickEditProfile
         case completeEditProfile
         case clickPlusButton
-//        case completeSelectPhoto
+        //        case completeSelectPhoto
         case selectImage(UIImage)
         case binding( BindingAction < State >)
         case userNameChanged(String)
         case roomNameChanged(String)
-        
-        
-        
         
         case fetchUserInfo
         case changeUserInfo(String,String)
@@ -60,17 +57,10 @@ struct MyPageFeature {
         BindingReducer()
         Reduce { state, action in
             switch action {
-//            case .binding(\.showImagePicker):
-//                return .none
-                
-//            case .binding( _ ):
-//               return .none
             case .binding:
                 return .none
-                               
                 
-                
-            // 이미지 추가 버튼 클릭
+                // 이미지 추가 버튼 클릭
             case .clickPlusButton:
                 state.showImagePicker = true
                 return .none
@@ -79,10 +69,7 @@ struct MyPageFeature {
             case let .selectImage(uiimage):
                 state.selectedImage = uiimage
                 return.none
-            
-//            case .completeSelectPhoto:
-//                state.clickPlus = false
-//                return .none
+                
                 // 업적 이동
             case .trophyButtonTapped:
                 return .none
@@ -96,21 +83,23 @@ struct MyPageFeature {
                 state.selectedProfileEdit = true
                 return .none
                 
-                // 편집완료 클릭
+                // 편집 완료 클릭
             case .completeEditProfile:
                 state.selectedProfileEdit = false
+                // 수정 요청 전송
                 return .send(.changeUserInfo(state.userName, state.roomName))
                 
                 
+                // 변수 변경 감지
             case let .userNameChanged(name):
                 state.userName = name
-              return .none
+                return .none
                 
             case let .roomNameChanged(name):
                 state.roomName = name
-              return .none
-            
-            // 처음 조회하기
+                return .none
+                
+                // 처음 조회하기
             case .fetchUserInfo:
                 return .run { send in
                     do {
@@ -121,7 +110,7 @@ struct MyPageFeature {
                     }
                 }
                 
-            // 수정하기
+                // 닉네임,방 수정하기
             case let .changeUserInfo(userName, roomName):
                 return .run { send in
                     do {
@@ -131,7 +120,7 @@ struct MyPageFeature {
                         await send(.fetchUserInfoResponse(.failure(error)))
                     }
                 }
-            
+                
             case let .changeUserPhoto(photo):
                 return .run { send in
                     do {
@@ -142,12 +131,12 @@ struct MyPageFeature {
                     }
                 }
                 
-            
-            // 조회,수정 결과 적용하기
+                
+                // 조회,수정 결과 적용하기
             case let .fetchUserInfoResponse(.success(userinfo)):
                 state.isLoading = false
                 state.userName = userinfo.userName
-//                state.roomName = userinfo.roomName
+                //                state.roomName = userinfo.roomName
                 state.roomName = userinfo.roomName!
                 return .none
                 
@@ -156,7 +145,7 @@ struct MyPageFeature {
                 state.errorMessage = error.localizedDescription
                 return .none
                 
-          
+                
                 
             }
         }

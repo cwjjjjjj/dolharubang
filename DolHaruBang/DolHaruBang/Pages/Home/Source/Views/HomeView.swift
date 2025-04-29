@@ -135,36 +135,31 @@ struct HomeView : View {
                     )
                     dolView
                     
-                    Spacer().background(Color.red)
                     VStack{
-                        
-                        if store.ability{
-                            HStack{
+                        HStack{
+                            Spacer()
+                            if store.ability{
                                 Button(action: {
                                     dolView.rollDol()
                                 })
                                 {
                                     // 구르기추가
-                                    VStack{
-                                        Text("구르기")
-                                            .font(Font.customFont(Font.caption1))
-                                            .foregroundColor(store.ability ? .black: .white)
-                                            .padding()// Text
-                                    }
-                                    .frame(height: geometry.size.width * 0.1)
-                                    .background(Color.ability1).cornerRadius(20)
+                                    Text("구르기")
+                                        .font(Font.customFont(Font.caption1))
+                                        .foregroundColor(store.ability ? .black: .white)
+                                        .padding()// Text
+                                        .frame(height: geometry.size.width * 0.1)
+                                        .background(Color.ability1).cornerRadius(20)
                                 }
+                                .frame(height: geometry.size.width * 0.15)
+                                .transition(.opacity) // 애니메이션 전환 효과
+                                .animation(.easeInOut, value: store.ability)
+                            }else{
+                                Text("").frame(height: geometry.size.width * 0.15)
                             }
-                            .frame(height: geometry.size.width * 0.15)
-                            .transition(.opacity) // 애니메이션 전환 효과
-                            .animation(.easeInOut, value: store.ability)
-                        }else{
-                            Spacer().frame(height: geometry.size.width * 0.15)
+                            Spacer()
                         }
-                        
-                        
                         HStack(spacing : 5){
-                            
                             Button(action: {
                                 store.send(.clickAbility)
                             }) {
@@ -172,22 +167,21 @@ struct HomeView : View {
                                     Image(store.ability ? "Star2" : "Star")
                                         .resizable()
                                         .scaledToFit()
-                                    
-                                    
                                     Text("능력")
                                         .font(Font.customFont(Font.caption1))
                                         .foregroundColor(store.ability ? Color.ability1: Color.ability2)
                                         .padding(.bottom,2)
                                 }
                                 .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
-                                .background(store.ability ? Color.ability2 : Color.ability1)
-                                .clipShape(Circle())
-                                .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
                                 .overlay(
                                     Ellipse()
                                         .inset(by: 0.25)
                                         .stroke(.white, lineWidth: 0.25)
                                 )
+                                .background(store.ability ? Color.ability2 : Color.ability1)
+                                .clipShape(Circle())
+                                .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
+                                
                                 
                                 
                             }
