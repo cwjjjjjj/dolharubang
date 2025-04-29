@@ -9,11 +9,12 @@
 import SwiftUI
 import UIKit
 import ComposableArchitecture
+import HapticsManager
 
 
 struct HomeView : View {
     @State var store: StoreOf<HomeFeature>
-    
+    @State private var isSuccess: Bool = false
     var body : some View {
         GeometryReader { geometry in
             ZStack {
@@ -140,6 +141,7 @@ struct HomeView : View {
                             Spacer()
                             if store.ability{
                                 Button(action: {
+                                    isSuccess.toggle()
                                     dolView.rollDol()
                                 })
                                 {
@@ -151,6 +153,7 @@ struct HomeView : View {
                                         .frame(height: geometry.size.width * 0.1)
                                         .background(Color.ability1).cornerRadius(20)
                                 }
+                                .hapticFeedback(.impact(.medium), trigger: isSuccess)
                                 .frame(height: geometry.size.width * 0.15)
                                 .transition(.opacity) // 애니메이션 전환 효과
                                 .animation(.easeInOut, value: store.ability)

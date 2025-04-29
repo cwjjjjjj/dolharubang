@@ -14,12 +14,13 @@ class AudioManager {
     private init() {}  // 싱글톤 패턴을 위한 private init
     
     func playBackgroundMusic() {
-        guard let url = Bundle.main.url(forResource: "bgm", withExtension: "mp3") else { return }
+        guard let path = Bundle.main.path(forResource: "SpringHasCome", ofType: "mp3") else { return }
+        let url = URL(fileURLWithPath: path)
         
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.numberOfLoops = -1  // 무한 반복
-            audioPlayer?.volume = 1.0
+            audioPlayer?.volume = 0.6
             audioPlayer?.play()
         } catch {
             print("배경음악 재생 실패: \(error.localizedDescription)")
