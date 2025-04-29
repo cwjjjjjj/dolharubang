@@ -51,6 +51,7 @@ struct HomeFeature {
         var sign : Bool = false // 펫말 온 오프
         var mail : Bool = false // 펫말 온 오프
         var signText : String = ""
+        var basicInfo : BasicInfo?
         
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
@@ -64,6 +65,7 @@ struct HomeFeature {
         var accessoryItems : [CustomizeItem] = []
         
         var isLoading : Bool = false
+        
         @Presents var alert: AlertState<Action.Alert>?
         
     }
@@ -116,8 +118,11 @@ struct HomeFeature {
         // 아이템 선택
         indirect case selectItem(String, refreshAction: Action)
         
+        // 기본정보
         case fetchSand
         case sandLoaded(Result<Int, Error>)
+        case fetchBasic
+        case basicResponsce(Result<BasicInfo,Error>)
         
         // 돌 프로필
         case captureDol(UIImage)
@@ -199,6 +204,23 @@ struct HomeFeature {
                 return .none
                 
             case let .sandLoaded(.failure(error)):
+                return .none
+                
+            case .fetchBasic:
+                return .run { send in
+                    do {
+                        let basicInfo = try await homeClient.basicInfo()
+                        await send(.basicResponsce(.success(basicInfo)))
+                    } catch {
+                        await send(.basicResponsce(.failure(error)))
+                    }
+                }
+            
+            case let .basicResponsce(.success(basicInfo)):
+                state.basicInfo = basicInfo
+                return .none
+                
+            case let .basicResponsce(.failure(error)):
                 return .none
                 
             case .openDecoration:
