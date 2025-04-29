@@ -17,5 +17,8 @@ public enum AbilityType {
     ADVISOR,
 
     //쩝쩝박사
-    FOODEXPERT
+    FOODEXPERT,
+
+    //구르기
+    ROLLING,
 }
