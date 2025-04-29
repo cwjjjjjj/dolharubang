@@ -14,7 +14,7 @@ struct ProfileFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
-        var profile : ProfileInfo? = ProfileInfo(dolName: "착함", personality: "나쁜", baseAbility: "ㅇ", dolBirth: "2525", friendShip: 155, activeAbility: ["ㅁㄴㅇ"], potential: ["ㅁㄴㅇ"])
+        var profile : ProfileInfo?
         
         var isLoading : Bool = false
         var selectedProfileEdit : Bool = false
@@ -76,7 +76,8 @@ struct ProfileFeature {
                 }
                 
             case let .fetchProfileResponse(.success(dolProfile)):
-                state.profile = dolProfile 
+                state.profile = dolProfile
+                state.dolName = dolProfile.dolName
                 return .none
                 
             case let .fetchProfileResponse(.failure(error)):
