@@ -21,23 +21,19 @@ struct ErrorResponse: Decodable {
     let code: String
 }
 
-func customJSONDecoder() -> JSONDecoder {
-    let decoder = JSONDecoder()
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-    decoder.dateDecodingStrategy = .formatted(dateFormatter)
-    return decoder
-}
-
-// 수정된 fetch 함수 (baseURL 자동 합체 및 토큰 관리 추가)
+// MARK: fetch 함수
+// baseURL 자동 합체
+// 토큰 관리
+// 제네릭 사용으로 다양한 모델 타입 대응
+// async throws로 비동기 함수 + 에러 처리
 func fetch<T: Decodable>(
-    url: String,
+    url: String, // 요청 endpoint 주소
     model: T.Type,
     method: HTTPMethod,
-    queryParameters: [String: String]? = nil,
+    queryParameters: [String: String]? = nil, // 파라미터 있는 경우 넣기 (Optional)
     headers: HTTPHeaders? = nil,
     body: Data? = nil,
-    skipAuth: Bool = false
+    skipAuth: Bool = false // 인증 토큰 추가 여부
 ) async throws -> T {
     // baseURL과 경로 합체
     let fullURL: String
@@ -113,8 +109,13 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
             .responseData { response in
                 switch response.result {
                 case .success(let data):
-                    do {
-                        let jsonDecoder = customJSONDecoder()
+                    do {                    
+                        let jsonDecoder = JSONDecoder()
+                        let dateFormatter = DateFormatter()
+//                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+                        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+                        jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
                         let decodedModel = try jsonDecoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedModel)
                     } catch let decodingError {

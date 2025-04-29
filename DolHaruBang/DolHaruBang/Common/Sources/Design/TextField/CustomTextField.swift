@@ -252,7 +252,7 @@ struct ResizableTextView: View {
             .onAppear {
                 calculateHeight()
             }
-            .onChange(of: text) { _ in
+            .onChange(of: text) {
                 calculateHeight()
             }
     }
@@ -402,7 +402,7 @@ struct SignTextView: View {
             .padding(EdgeInsets(top: 10, leading: 16, bottom: 12, trailing: 16))
             .background(Color.clear)
             .onAppear { calculateHeight() }
-            .onChange(of: text) { _ in calculateHeight() }
+            .onChange(of: text) { calculateHeight() }
         }
     }
 

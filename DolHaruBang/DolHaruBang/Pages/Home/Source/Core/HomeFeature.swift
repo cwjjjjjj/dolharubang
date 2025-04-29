@@ -311,8 +311,10 @@ struct HomeFeature {
                 state.backItems = customizeInfo         // 선택된 배경 업데이트
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let background = Background.allCases.first(where: { $0.description == selectedItem.name }) {
-                        state.$selectedBackground.withLock { shared in
-                            shared = background
+                        MainActor.assumeIsolated {
+                            state.$selectedBackground.withLock { shared in
+                                shared = background
+                            }
                         }
                     }
                 }

@@ -120,11 +120,11 @@ struct SpeechBubbleView: View {
             
             if !isResponse {
                 Spacer()
-                Button(action: { onEdit?() }) {
-                    Text("수정")
-                        .font(.customFont(Font.body4Regular))
-                        .foregroundColor(.coreLightGray)
-                }
+//                Button(action: { onEdit?() }) {
+//                    Text("수정")
+//                        .font(.customFont(Font.body4Regular))
+//                        .foregroundColor(.coreLightGray)
+//                }
                 
                 Button(action: { onDelete?() }) {
                     Text("삭제")
