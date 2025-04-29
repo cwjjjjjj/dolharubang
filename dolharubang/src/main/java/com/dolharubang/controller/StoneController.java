@@ -4,6 +4,7 @@ import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.StoneService;
 import com.dolharubang.type.AbilityType;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,19 +38,38 @@ public class StoneController {
 
     @Operation(summary = "돌 입양하기", description = "돌을 입양한다.")
     @PostMapping("/adopt")
-    public ResponseEntity<StoneResDto> addStone(@AuthenticationPrincipal PrincipalDetails principal,
+    public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneReqDto requestDto,
         String spaceName) {
-        StoneResDto response = stoneService.adoptStone(requestDto, spaceName);
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Member member = principal.getMember();
+        StoneResDto response = stoneService.adoptStone(member, requestDto, spaceName);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "돌 프로필 조회하기", description = "보유한 돌의 정보를 조회한다.")
     @GetMapping("/profile")
-    public ResponseEntity<StoneProfileResDto> readStoneProfile(
+    public ResponseEntity<?> readStoneProfile(
         @AuthenticationPrincipal PrincipalDetails principal) {
-        Long memberId = principal.getMember().getMemberId();
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Long memberId = findMemberId(principal);
         StoneProfileResDto response = stoneService.getStoneProfile(memberId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -58,7 +79,7 @@ public class StoneController {
     @PostMapping("/name")
     public Map<String, String> updateStoneName(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneTextUpdateReqDto dto) {
-        Long memberId = principal.getMember().getMemberId();
+        Long memberId = findMemberId(principal);
         Map<String, String> response = new HashMap<>();
         response.put("stoneName", stoneService.updateStoneName(memberId, dto));
 
@@ -68,7 +89,7 @@ public class StoneController {
     @Operation(summary = "팻말 문구 조회하기", description = "팻말 문구의 내용을 조회한다.")
     @GetMapping(path = "/sign-text", produces = "application/json")
     public Map<String, String> readSignText(@AuthenticationPrincipal PrincipalDetails principal) {
-        Long memberId = principal.getMember().getMemberId();
+        Long memberId = findMemberId(principal);
         Map<String, String> response = new HashMap<>();
         response.put("signText", stoneService.readSignText(memberId));
 
@@ -79,7 +100,7 @@ public class StoneController {
     @PostMapping("/sign-text")
     public Map<String, String> updateSignText(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneTextUpdateReqDto dto) {
-        Long memberId = principal.getMember().getMemberId();
+        Long memberId = findMemberId(principal);
         Map<String, String> response = new HashMap<>();
         response.put("signText", stoneService.updateSignText(memberId, dto));
 
@@ -90,7 +111,7 @@ public class StoneController {
     @PostMapping("/ability")
     public Map<AbilityType, Boolean> readAbilityAble(
         @AuthenticationPrincipal PrincipalDetails principal) {
-        Long memberId = principal.getMember().getMemberId();
+        Long memberId = findMemberId(principal);
         return stoneService.readAbilityAble(memberId);
     }
 
@@ -99,7 +120,11 @@ public class StoneController {
     public Map<AbilityType, Boolean> getAbilityAble(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestParam AbilityType abilityType) {
-        Long memberId = principal.getMember().getMemberId();
+        Long memberId = findMemberId(principal);
         return stoneService.updateAbilityAble(memberId, abilityType);
+    }
+
+    private static Long findMemberId(PrincipalDetails principal) {
+        return principal.getMember().getMemberId();
     }
 }

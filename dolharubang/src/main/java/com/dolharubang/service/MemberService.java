@@ -9,6 +9,7 @@ import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.s3.S3UploadService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +23,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final S3UploadService s3UploadService;
+    private final StoneRepository stoneRepository;
 
     public MemberService(MemberRepository memberRepository,
-        S3UploadService s3UploadService) {
+        S3UploadService s3UploadService, StoneRepository stoneRepository) {
         this.memberRepository = memberRepository;
         this.s3UploadService = s3UploadService;
+        this.stoneRepository = stoneRepository;
     }
 
     @Transactional
@@ -88,6 +91,11 @@ public class MemberService {
         List<Member> members = memberRepository.findByNicknameContaining(keyword);
         return members.stream().map(MemberSearchResDto::fromEntity)
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isStoneEmpty(Member member) {
+        return stoneRepository.findByMember(member).isEmpty();
     }
 
     private Member findMember(Long memberId) {
