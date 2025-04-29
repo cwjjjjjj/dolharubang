@@ -4,7 +4,7 @@ import SwiftUI
 struct ProfileView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
     @State var store: StoreOf<ProfileFeature> // Store로 상태 및 액션 전달
-
+    
     var body: some View {
         VStack(alignment: .center) {
             Spacer().frame(height: 24)
@@ -47,21 +47,18 @@ struct ProfileView: View {
                         VStack {
                             HStack(spacing: 8) {
                                 if store.selectedProfileEdit {
-                                            HStack(alignment: .center) {
-                                                TextField("", text: $store.dolName.sending(\.dolNameChanged))
-                                                    .font(.customFont(Font.button2))
-                                                    .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                                                    .multilineTextAlignment(.center)
-                                                    .textFieldStyle(PlainTextFieldStyle())
-                                            }
-                                            .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
-                                            .frame(width: 128, height: 22)
-                                } else {
-                                Text(profile.dolName)
-                                        .font(Font.customFont(Font.subtitle3))
+                                    TextField("", text: $store.dolName.sending(\.dolNameChanged))
+                                        .font(.customFont(Font.button1))
                                         .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                                        .multilineTextAlignment(.leading)
+                                        .textFieldStyle(PlainTextFieldStyle())
+                                        .padding(.horizontal,10)
+                                        .frame(width: 128, height: 22)
+                                } else {
+                                    falseContent(dolName: store.dolName)
                                 }
                                 buttonView()
+                                Spacer()
                             }
                             .frame(width: 156)
                             .padding(.vertical, 8)
@@ -234,11 +231,18 @@ struct ProfileView: View {
         }
         
         Button(action: buttonAction) {
-                Image(store.selectedProfileEdit ? "complete" : "edit")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
+            Image(store.selectedProfileEdit ? "complete" : "edit")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
         }
     }
-
+    
+    @ViewBuilder
+    private func falseContent(dolName : String) -> some View {
+        // 돌 이름
+        Text(dolName)
+            .font(Font.customFont(Font.subtitle3))
+            .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+    }
 }

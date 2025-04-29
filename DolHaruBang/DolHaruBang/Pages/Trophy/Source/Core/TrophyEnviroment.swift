@@ -47,10 +47,7 @@ extension DependencyValues {
 extension TrophyClient: DependencyKey {
     static let liveValue = TrophyClient(
         fetchTrophy: {
-            let url = "https://4c84-118-37-126-132.ngrok-free.app/api/v1/member-missions/1/missions"
-            
-            print("업적입장")
-//            return try await fetch(url: url, model: [Trophy].self, method: .get)
+            let url = APIConstants.Endpoints.trophy
             return try await fetch(url: url, model: [Trophy].self, method: .get)
             }
     )
