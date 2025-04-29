@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,8 +60,18 @@ public class MissionController {
 
     @Operation(summary = "할당 받지 못한 미션 검색", description = "특정 회원이 할당 받지 못한 미션을 가져옵니다.")
     @GetMapping("/unassigned-missions")
-    public ResponseEntity<List<Mission>> getUnassignedMissions(@AuthenticationPrincipal
+    public ResponseEntity<?> getUnassignedMissions(@AuthenticationPrincipal
     PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+        
         Member member = principal.getMember();
         List<Mission> unassignedMissions = missionService.getUnassignedMissionsForMember(member);
         return ResponseEntity.ok(unassignedMissions);
