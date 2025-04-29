@@ -25,7 +25,7 @@ struct ChangeInfo: Codable, Equatable, Sendable {
 }
 
 // 프로필 수정용
-struct InfoRequestBody: Encodable {
+struct InfoRequestBody: Codable, Equatable, Sendable {
     let nickname: String
     let spaceName: String
 }
@@ -93,7 +93,6 @@ extension MyPageClient: DependencyKey {
             
             let requestBody = InfoRequestBody(nickname: nickName, spaceName: spaceName)
             let bodyData = try JSONEncoder().encode(requestBody)
-
             return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
         },
         updateUserPhoto: { photoName in

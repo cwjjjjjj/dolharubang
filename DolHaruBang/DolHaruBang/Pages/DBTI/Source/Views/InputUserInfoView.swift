@@ -5,6 +5,8 @@ struct InputUserInfoView: View {
     @EnvironmentObject var userManager: UserManager // 닉네임 전역변수로 기억
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
     
+    @State var store: StoreOf<DBTIFeature>
+    
     @State var name: String = ""
     @State private var showAlert: Bool = false
     @State private var alertTitle: String = ""
@@ -191,9 +193,7 @@ struct InputUserInfoView: View {
                     Spacer().frame(height: 40)
                     
                     HStack {
-                        NavigationLink(destination: Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
-                            DBTIGuideView( nav: nav, store: Store(initialState: DBTIFeature.State()) { DBTIFeature() })
-                        }) {
+                        NavigationLink(state : NavigationFeature.Path.State.DBTIGuideView(DBTIFeature.State())){
                             ZStack {
                                 HStack {
                                     Spacer()

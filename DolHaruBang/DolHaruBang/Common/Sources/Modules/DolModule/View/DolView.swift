@@ -69,7 +69,7 @@ struct DolView : UIViewRepresentable {
                 
                 // 액션이 완료된 후 실행할 작업 정의
                 let completionAction = SCNAction.run { node in
-                    print("액션이 완료되었습니다.")
+//                    print("액션이 완료되었습니다.")
                     // UI 업데이트는 메인 스레드에서 실행
                     DispatchQueue.main.async {
                         self.parent.enable = true
@@ -98,17 +98,17 @@ struct DolView : UIViewRepresentable {
                 
                 // 노드의 이름을 기반으로 터치된 노드를 확인합니다.
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedSign) reference" {
-                    print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
+//                    print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
                     parent.sign = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
-                    print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
+//                    print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
                     parent.mail = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
-                    print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
+//                    print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
                     
                     parent.profile = true
                     // MARK: 터치했을떄 굴러가는 액션들 정의, 함수화로 해놓아도 되는지 추후 합의 후 삭제

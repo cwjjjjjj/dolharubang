@@ -34,6 +34,7 @@ class TokenManager {
     func clearTokens() {
         KeychainHelper.standard.delete(service: "access-token", account: APIConstants.accessTokenKey)
         KeychainHelper.standard.delete(service: "refresh-token", account: APIConstants.refreshTokenKey)
+        NotificationCenter.default.post(name: NSNotification.Name("LogoutRequired"), object: nil)
         print("토큰이 성공적으로 삭제되었습니다.")
     }
 }

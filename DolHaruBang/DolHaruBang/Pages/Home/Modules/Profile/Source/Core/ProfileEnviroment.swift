@@ -21,10 +21,15 @@ struct ProfileInfo: Hashable, Codable {
     let potential : [String]
 }
 
+// 프로필 수정용
+struct dolRequestBody: Codable, Equatable, Sendable {
+    let text: String
+}
 
 @DependencyClient
 struct ProfileClient {
     var dolprofile: @Sendable () async throws -> ProfileInfo
+    var editdolname: @Sendable (String) async throws -> ProfileInfo
 }
 
 // 실제 통신 전 테스트
@@ -47,6 +52,13 @@ extension ProfileClient: DependencyKey {
             let url = APIConstants.Endpoints.dolprofile
             
             return try await fetch(url: url, model: ProfileInfo.self, method: .get)
+        },
+        editdolname : { dolName in
+            let url = APIConstants.Endpoints.dolname
+            
+            let requestBody = dolRequestBody(text:dolName)
+            let bodyData = try JSONEncoder().encode(requestBody)
+            return try await fetch(url: url, model: ProfileInfo.self, method: .post,body: bodyData)
         }
    
     )

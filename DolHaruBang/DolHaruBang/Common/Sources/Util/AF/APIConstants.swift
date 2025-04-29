@@ -38,10 +38,12 @@ struct APIConstants {
         static let sand = "/members/sands"
         static let info = "/members/profile"
         static let photo = "/members/profile-picture"
+        static let isfirst = "/members/is-first"
         
         // MARK: stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
+        static let dolname = "/stones/name"
         
         
     }

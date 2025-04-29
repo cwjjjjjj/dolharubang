@@ -9,8 +9,7 @@ import SwiftUI
 import AVFoundation
 import KakaoSDKAuth
 import KakaoSDKCommon
-
-
+import ComposableArchitecture
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -37,7 +36,7 @@ struct DolHaruBangApp: App {
 
     var body: some Scene {
         WindowGroup {
-            EntryPointView()
+            EntryPointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
                 .environmentObject(userManager)
                 .onOpenURL { url in
                     print("URL 수신됨: \(url)")

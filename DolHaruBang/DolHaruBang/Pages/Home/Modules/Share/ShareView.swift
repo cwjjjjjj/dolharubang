@@ -10,10 +10,9 @@ import SwiftUI
 struct ShareView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
     @Binding var DolImage: UIImage
-
+    
     var body: some View {
-        VStack(alignment: .center) {
-            Spacer().frame(height: 24)
+        VStack(alignment: .center,spacing: 12) {
             
             HStack {
                 Text("돌 공유하기")
@@ -32,17 +31,46 @@ struct ShareView: View {
                         .foregroundColor(.placeHolder)
                 }
                 .padding(.trailing, 24)
+            }.padding(.top, 20)
+            
+            VStack{
+                Image(uiImage: DolImage)
+                    .resizable()
+                    .scaledToFit()// 원하는 크기로 조절
             }
+            .background(Color.semigray)
+            .frame(width: 272, height: 272)
+            .cornerRadius(15)
+            .padding(10)
             
-            Spacer().frame(height: 20)
             
-            Image(uiImage: DolImage)
-                         .resizable()
-                         .scaledToFit()
-                         .frame(width: 272, height: 272) // 원하는 크기로 조절
-                         .padding(24)
-
-            
+            HStack(spacing:8){
+                Spacer()
+                Button(action: {
+                }) {
+                    Image("kakao")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                }
+                
+                Button(action: {
+                }) {
+                    Image("instagram")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                }
+                
+                Button(action: {
+                }) {
+                    Image("image_download")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                }
+                Spacer()
+            }
             Spacer()
         }
         .frame(width: 320, height: 400)
