@@ -239,84 +239,7 @@ struct HomeView : View {
                         .position(x: 110, y: 210)
                 }
                 
-                // MARK: 공유버튼
-                if store.shareButton {
-                    Color.black.opacity(0.2)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            store.send(.closeShare)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .zIndex(1)
-                    ShareView(
-                        showPopup: $store.shareButton, DolImage: $store.captureDol
-                    )
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .shadow(radius: 10)
-                    .zIndex(2)
-                }
-                
-                // MARK: 펫말
-                if store.sign {
-                    Color.black.opacity(0.2)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            store.send(.closeSign)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .zIndex(1)
-                    SignView(
-                        showPopup: $store.sign,
-                        initMessage: $store.signText, store: Store(initialState: SignFeature.State()){
-                            SignFeature()}
-                    )
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .shadow(radius: 10)
-                    .zIndex(2)
-                }
-                
-                // MARK: 프로필
-                if store.profile {
-                    Color.black.opacity(0.2)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            store.send(.closeProfile)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .zIndex(1)
-                    ProfileView(
-                        showPopup: $store.profile, store: Store(initialState: ProfileFeature.State()){
-                            ProfileFeature()
-                        }
-                    )
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .shadow(radius: 10)
-                    .zIndex(2)
-                }
-                
-                // MARK: 우체통
-                if store.mail {
-                    Color.black.opacity(0.2)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            store.send(.closeMail)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .zIndex(1)
-                    MailView(
-                        showPopup: $store.mail, store: Store(initialState: MailFeature.State()){
-                            MailFeature()
-                        }
-                    )
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .shadow(radius: 10)
-                    .zIndex(2)
-                }
-                
+                // MARK: 돌이름, 편지갯수, 친밀도
                 if let basicInfo = store.basicInfo {
                     ZStack(alignment: .center){
                         Image("Vector").resizable().scaledToFit()
@@ -366,6 +289,86 @@ struct HomeView : View {
                         )
                         
                 }
+                
+                // MARK: 공유버튼
+                ZStack {
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.send(.closeShare)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .zIndex(1)
+                    ShareView(
+                        showPopup: $store.shareButton, DolImage: $store.captureDol
+                    )
+                    .background(Color.white)
+                    .cornerRadius(25)
+                    .shadow(radius: 10)
+                    .zIndex(2)
+                }.opacity(store.shareButton ? 1 : 0)
+                
+                // MARK: 펫말
+                ZStack {
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.send(.closeSign)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .zIndex(1)
+                    SignView(
+                        showPopup: $store.sign,
+                        initMessage: $store.signText, store: Store(initialState: SignFeature.State()){
+                            SignFeature()}
+                    )
+                    .background(Color.white)
+                    .cornerRadius(25)
+                    .shadow(radius: 10)
+                    .zIndex(2)
+                }.opacity(store.sign ? 1 : 0)
+                
+                // MARK: 프로필
+                ZStack{
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.send(.closeProfile)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .zIndex(1)
+                    ProfileView(
+                        showPopup: $store.profile, store: Store(initialState: ProfileFeature.State()){
+                            ProfileFeature()
+                        }
+                    )
+                    .background(Color.white)
+                    .cornerRadius(25)
+                    .shadow(radius: 10)
+                    .zIndex(2)
+                }.opacity(store.profile ? 1 : 0)
+                
+                // MARK: 우체통
+                ZStack{
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.send(.closeMail)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .zIndex(1)
+                    MailView(
+                        showPopup: $store.mail, store: Store(initialState: MailFeature.State()){
+                            MailFeature()
+                        }
+                    )
+                    .background(Color.white)
+                    .cornerRadius(25)
+                    .shadow(radius: 10)
+                    .zIndex(2)
+                }.opacity(store.mail ? 1 : 0)
+                
+                
                 
             } // ZStack
             .edgesIgnoringSafeArea(.all)

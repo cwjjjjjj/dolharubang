@@ -136,8 +136,7 @@ struct ProfileView: View {
                     .padding(.top, 20)
                     
                     Divider()
-                        .frame(width: 272)
-                        .foregroundColor(Color.init(hex: "E5DFD7"))
+                        .frame(width: 272).background(Color(hex: "E5DFD7"))
                     
                     // 활성능력탭
                     VStack(spacing: 8) {
@@ -174,8 +173,7 @@ struct ProfileView: View {
                     .padding(.vertical, 6)
                     
                     Divider()
-                        .frame(width: 272)
-                        .background(Color(red: 0.90, green: 0.87, blue: 0.84))
+                        .frame(width: 272).background(Color(hex: "E5DFD7"))
                     
                     // 잠재능력탭
                     VStack(alignment: .leading,spacing: 8) {
