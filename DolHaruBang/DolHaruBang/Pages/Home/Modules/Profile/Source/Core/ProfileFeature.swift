@@ -15,7 +15,6 @@ struct ProfileFeature {
     struct State: Equatable {
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
         var profile : ProfileInfo?
-        
         var isLoading : Bool = false
         var selectedProfileEdit : Bool = false
         var dolName = ""
