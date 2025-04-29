@@ -2,6 +2,7 @@ package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
+import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
@@ -60,6 +61,23 @@ public class StoneService {
         return StoneResDto.fromEntity(adoptedStone);
     }
 
+    @Transactional
+    public StoneProfileResDto updateStoneName(Long memberId, StoneTextUpdateReqDto dto) {
+        Stone stone = findStoneByMemberId(memberId);
+        dto.updateStoneName(stone);
+
+        Species species = speciesRepository.findById(stone.getSpeciesId())
+            .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
+
+        return StoneProfileResDto.fromEntity(stone, species);
+    }
+
+    @Transactional
+    public String updateSignText(Long memberId, StoneTextUpdateReqDto dto) {
+        Stone stone = findStoneByMemberId(memberId);
+        return dto.updateSignText(stone);
+    }
+
     @Transactional(readOnly = true)
     public String readSignText(Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -83,16 +101,11 @@ public class StoneService {
         return StoneProfileResDto.fromEntity(stone, species);
     }
 
-    @Transactional
-    public String updateStoneName(Long memberId, StoneTextUpdateReqDto dto) {
+    @Transactional(readOnly = true)
+    public StoneHomeResDto getStoneHomeInfo(Long memberId) {
         Stone stone = findStoneByMemberId(memberId);
-        return dto.updateStoneName(stone);
-    }
 
-    @Transactional
-    public String updateSignText(Long memberId, StoneTextUpdateReqDto dto) {
-        Stone stone = findStoneByMemberId(memberId);
-        return dto.updateSignText(stone);
+        return StoneHomeResDto.fromEntity(stone);
     }
 
     @Transactional(readOnly = true)

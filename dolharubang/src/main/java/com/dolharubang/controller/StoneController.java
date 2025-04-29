@@ -2,6 +2,7 @@ package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
+import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
@@ -77,51 +78,123 @@ public class StoneController {
 
     @Operation(summary = "돌 이름 수정하기", description = "소유한 돌의 이름을 수정한다.")
     @PostMapping("/name")
-    public Map<String, String> updateStoneName(@AuthenticationPrincipal PrincipalDetails principal,
+    public ResponseEntity<?> updateStoneName(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneTextUpdateReqDto dto) {
-        Long memberId = findMemberId(principal);
-        Map<String, String> response = new HashMap<>();
-        response.put("stoneName", stoneService.updateStoneName(memberId, dto));
 
-        return response;
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Long memberId = findMemberId(principal);
+        StoneProfileResDto response = stoneService.updateStoneName(memberId, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "팻말 문구 조회하기", description = "팻말 문구의 내용을 조회한다.")
     @GetMapping(path = "/sign-text", produces = "application/json")
-    public Map<String, String> readSignText(@AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity<?> readSignText(@AuthenticationPrincipal PrincipalDetails principal) {
+
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
         Long memberId = findMemberId(principal);
         Map<String, String> response = new HashMap<>();
         response.put("signText", stoneService.readSignText(memberId));
 
-        return response;
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Operation(summary = "홈화면의 돌 정보 및 편지 수 조회하기", description = "홈화면의 돌 정보 및 편지 수 조회한다.")
+    @GetMapping(path = "/stone-info", produces = "application/json")
+    public ResponseEntity<?> getStoneHomeInfo(@AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
+        Long memberId = findMemberId(principal);
+        StoneHomeResDto response = stoneService.getStoneHomeInfo(memberId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "팻말 문구 수정하기", description = "팻말 문구을 수정한다.")
     @PostMapping("/sign-text")
-    public Map<String, String> updateSignText(@AuthenticationPrincipal PrincipalDetails principal,
+    public ResponseEntity<?> updateSignText(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneTextUpdateReqDto dto) {
+
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
         Long memberId = findMemberId(principal);
         Map<String, String> response = new HashMap<>();
         response.put("signText", stoneService.updateSignText(memberId, dto));
 
-        return response;
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "잠재능력 조회하기", description = "잠재능력의 획득/미획득 여부를 조회한다.")
-    @PostMapping("/ability")
-    public Map<AbilityType, Boolean> readAbilityAble(
+    @GetMapping("/ability")
+    public ResponseEntity<?> readAbilityAble(
         @AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
         Long memberId = findMemberId(principal);
-        return stoneService.readAbilityAble(memberId);
+        Map<AbilityType, Boolean> response = stoneService.readAbilityAble(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "잠재능력 획득하기", description = "하나의 잠재능력 획득 여부를 true로 변경한다.")
     @PostMapping("/obtain/ability")
-    public Map<AbilityType, Boolean> getAbilityAble(
+    public ResponseEntity<?> getAbilityAble(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestParam AbilityType abilityType) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
         Long memberId = findMemberId(principal);
-        return stoneService.updateAbilityAble(memberId, abilityType);
+        Map<AbilityType, Boolean> response = stoneService.readAbilityAble(memberId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     private static Long findMemberId(PrincipalDetails principal) {
