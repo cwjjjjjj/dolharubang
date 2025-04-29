@@ -34,7 +34,7 @@ struct HomeFeature {
         var selectedMail : Mail = .mailbox
         var selectedNest : Nest = .nest
         
-        var needCapture : Bool = false
+//        var needCapture : Bool = false
         var sand : Int = 0
         
         var message: String = "" // 텍스트필드 메시지
@@ -157,11 +157,11 @@ struct HomeFeature {
                 return .none
             case let .selectFace(selectedFace) :
                 state.selectedFace = selectedFace
-                state.needCapture = false
+//                state.needCapture = false
                 return .none
             case let .selectFaceShape(selectedFaceShape) :
                 state.selectedFaceShape = selectedFaceShape
-                state.needCapture = false
+//                state.needCapture = false
                 return .none
             case let .selectBackground(selectedBackground) :
                 MainActor.assumeIsolated {

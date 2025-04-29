@@ -131,8 +131,7 @@ struct HomeView : View {
                         enable: $store.enable,
                         onImagePicked: { image in
                             store.send(.captureDol(image))
-                        },
-                        hasRendered: $store.needCapture
+                        }
                     )
                     dolView
                     

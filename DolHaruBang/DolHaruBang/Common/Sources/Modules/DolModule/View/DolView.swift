@@ -30,8 +30,6 @@ struct DolView : UIViewRepresentable {
     
     var onImagePicked: (UIImage) -> Void // 클로저 추가
     
-    @Binding var hasRendered: Bool // 코드가 실행되었는지를 추적하는 변수
-    
     private static var sharedSCNView: SCNView?
     
     // 상위 뷰에서 호출해서 사용하기 위해 Delegate 패턴으로 수정
@@ -69,7 +67,7 @@ struct DolView : UIViewRepresentable {
                 
                 // 액션이 완료된 후 실행할 작업 정의
                 let completionAction = SCNAction.run { node in
-//                    print("액션이 완료되었습니다.")
+                    //                    print("액션이 완료되었습니다.")
                     // UI 업데이트는 메인 스레드에서 실행
                     DispatchQueue.main.async {
                         self.parent.enable = true
@@ -98,53 +96,53 @@ struct DolView : UIViewRepresentable {
                 
                 // 노드의 이름을 기반으로 터치된 노드를 확인합니다.
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedSign) reference" {
-//                    print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
+                    //                    print("터치된 노드의 부모 노드가 \(parent.selectedSign) reference입니다.")
                     parent.sign = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedMail) reference" {
-//                    print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
+                    //                    print("터치된 노드의 부모 노드가 \(parent.selectedMail) reference입니다.")
                     parent.mail = true
                 }
                 
                 if let parentNode = touchedNode.parent, parentNode.name == "\(parent.selectedFace)" {
-//                    print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
+                    //                    print("터치된 노드의 부모 노드가 \(parent.selectedFace) reference입니다.")
                     
                     parent.profile = true
                     // MARK: 터치했을떄 굴러가는 액션들 정의, 함수화로 해놓아도 되는지 추후 합의 후 삭제
-//                    parent.enable = false
-//                    // 돌 굴러가유
-//                    // 노드가 회전할 때의 회전과 이동 애니메이션 정의
-//                    let rotateAction1 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(0, 0, 1), duration: 3)
-//                    let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
-//                    let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
-//                    let actionGroup2 = actionGroup1.reversed()
-//                    let reverseMoveSequence = SCNAction.sequence([actionGroup1, actionGroup2])
-//                    
-//                    // 수평으로 맞추기 위한 회전 액션 정의
-//                    let rotateToHorizontal = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 0.5)
-//                    
-//                    // 전체 액션 시퀀스 정의
-//                    let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
-//                    
-//                    // 액션이 완료된 후 실행할 작업 정의
-//                    let completionAction = SCNAction.run { node in
-//                        print("액션이 완료되었습니다.")
-//                        // UI 업데이트는 메인 스레드에서 실행
-//                           DispatchQueue.main.async {
-//                               self.parent.enable = true
-//                           }  // 액션이 끝나면 꾸미기 버튼 가능하게
-//                       }
-//                    
-//                    let finalSequence = SCNAction.sequence([completeSequence, completionAction])
-//                        
-//                    
-//                    // parentNode와 accessoryNode 모두에 액션 적용
-//                    parentNode.runAction(finalSequence)
-//                    
-//                    if let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
-//                        accessoryNode.runAction(completeSequence)
-//                    }
+                    //                    parent.enable = false
+                    //                    // 돌 굴러가유
+                    //                    // 노드가 회전할 때의 회전과 이동 애니메이션 정의
+                    //                    let rotateAction1 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(0, 0, 1), duration: 3)
+                    //                    let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
+                    //                    let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
+                    //                    let actionGroup2 = actionGroup1.reversed()
+                    //                    let reverseMoveSequence = SCNAction.sequence([actionGroup1, actionGroup2])
+                    //
+                    //                    // 수평으로 맞추기 위한 회전 액션 정의
+                    //                    let rotateToHorizontal = SCNAction.rotate(toAxisAngle: SCNVector4(0, 1, 0, 0), duration: 0.5)
+                    //
+                    //                    // 전체 액션 시퀀스 정의
+                    //                    let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
+                    //
+                    //                    // 액션이 완료된 후 실행할 작업 정의
+                    //                    let completionAction = SCNAction.run { node in
+                    //                        print("액션이 완료되었습니다.")
+                    //                        // UI 업데이트는 메인 스레드에서 실행
+                    //                           DispatchQueue.main.async {
+                    //                               self.parent.enable = true
+                    //                           }  // 액션이 끝나면 꾸미기 버튼 가능하게
+                    //                       }
+                    //
+                    //                    let finalSequence = SCNAction.sequence([completeSequence, completionAction])
+                    //
+                    //
+                    //                    // parentNode와 accessoryNode 모두에 액션 적용
+                    //                    parentNode.runAction(finalSequence)
+                    //
+                    //                    if let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                    //                        accessoryNode.runAction(completeSequence)
+                    //                    }
                     // MARK: 동작끝
                 }
             }
@@ -191,7 +189,7 @@ struct DolView : UIViewRepresentable {
                 }
             }
         }
-
+        
     }
     
     func makeCoordinator() -> Coordinator {
@@ -252,7 +250,7 @@ struct DolView : UIViewRepresentable {
         if let accessoryNode = scene.rootNode.childNode(withName: "Face" , recursively: true){
             if let childAccessoryNode = accessoryNode.childNode(withName: "\(selectedAccessory) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-//                print("출력 \(selectedAccessory) reference")
+                //                print("출력 \(selectedAccessory) reference")
                 showAllNodes(rootNode: accessoryNode)
                 hideAllNodesExcept(node: childAccessoryNode, rootNode: accessoryNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childAccessoryNode, x: 0.0, y: 0.0, z: 0.1) // x, y, z 값은 원하는 위치로 설정
@@ -265,7 +263,7 @@ struct DolView : UIViewRepresentable {
         if let signNode = scene.rootNode.childNode(withName: "Sign" , recursively: true){
             if let childSignNode = signNode.childNode(withName: "\(selectedSign) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-//                print("출력 \(selectedSign) reference")
+                //                print("출력 \(selectedSign) reference")
                 showAllNodes(rootNode: signNode)
                 hideAllNodesExcept(node: childSignNode, rootNode: signNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childSignNode, x: -1.1, y: 0.4, z: -0.15) // x, y, z 값은 원하는 위치로 설정
@@ -288,7 +286,7 @@ struct DolView : UIViewRepresentable {
         if let nestNode = scene.rootNode.childNode(withName: "Nest" , recursively: true){
             if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만 black_glasses reference
-//                print("출력 \(selectedNest) reference")
+                //                print("출력 \(selectedNest) reference")
                 showAllNestNodes(rootNode: nestNode)
                 hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.65, z: 0.0) // x, y, z 값은 원하는 위치로 설정
@@ -297,13 +295,13 @@ struct DolView : UIViewRepresentable {
             }
         }
         
-       
+        
         
         // Mail Node Hide On Off
         if let mailNode = scene.rootNode.childNode(withName: "Mail" , recursively: true){
             if let childMailNode = mailNode.childNode(withName: "\(selectedMail) reference", recursively: true) {
                 // 선택한 얼굴형중 선택한 표정만black_glasses reference
-//                print("출력 \(selectedMail) reference")
+                //                print("출력 \(selectedMail) reference")
                 showAllNodes(rootNode: mailNode)
                 hideAllNodesExcept(node: childMailNode, rootNode: mailNode) // 선택 노드만 보이게 설정
                 moveNodeToPosition(node: childMailNode, x: 4.0, y: 1.0, z: -0.6) // x, y, z 값은 원하는 위치로 설정
@@ -312,12 +310,9 @@ struct DolView : UIViewRepresentable {
             }
         }
         
-        guard !hasRendered else { return }
-        
         if let image = captureSceneImage(scene: scene, size: CGSize(width: 300, height: 300) , selectedFaceShape: "\(selectedFaceShape)", selectedFace: "\(selectedFace)"){
             DispatchQueue.main.async {
-                           onImagePicked(image)
-                           hasRendered = true // 이미 렌더링 완료했음을 표시
+                onImagePicked(image)
             }
         }
     }
@@ -351,7 +346,7 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     let textNode = addTextNode()
     scene.rootNode.addChildNode(textNode)
     
-
+    
     let cameraNode = makeCamera()
     scene.rootNode.addChildNode(cameraNode)
     
@@ -365,27 +360,27 @@ func loadScene(faceShape : FaceShape) -> SCNScene {
     
     let areaLightNode4 = makeAreaLight2(intensity: 6000, name: "areaLight4", position: SCNVector3(0, 15, 0), areaExtents: simd_float3(x: 7, y: 7, z: 1.0))
     scene.rootNode.addChildNode(areaLightNode4)
-//
-//   // 점광원 조명 추가, 빼면 어두워짐
-//    let makeOmniLightNode = makeOmniLight()
-//    scene.rootNode.addChildNode(makeOmniLightNode)
-//    
-//    let ambientLightNode = makeAmbientLight()
-//    scene.rootNode.addChildNode(ambientLightNode)
-//    
-//    let directionLightNode = makeDirectionalLight(X: 10, Y: 1, Z: 150, intensity: 500, name: "directionLight")
-//    scene.rootNode.addChildNode(directionLightNode)
-//    
-//    let spotLightNode = makeSpotLight()
-//    scene.rootNode.addChildNode(spotLightNode)
+    //
+    //   // 점광원 조명 추가, 빼면 어두워짐
+    //    let makeOmniLightNode = makeOmniLight()
+    //    scene.rootNode.addChildNode(makeOmniLightNode)
+    //
+    //    let ambientLightNode = makeAmbientLight()
+    //    scene.rootNode.addChildNode(ambientLightNode)
+    //
+    //    let directionLightNode = makeDirectionalLight(X: 10, Y: 1, Z: 150, intensity: 500, name: "directionLight")
+    //    scene.rootNode.addChildNode(directionLightNode)
+    //
+    //    let spotLightNode = makeSpotLight()
+    //    scene.rootNode.addChildNode(spotLightNode)
     
     
     
     scene.rootNode.name = "model"
     
-
     
-  
+    
+    
     
     return scene
 }
