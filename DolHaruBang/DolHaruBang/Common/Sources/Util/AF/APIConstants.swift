@@ -19,6 +19,12 @@ struct APIConstants {
         static let kakaoLogin = "/auth/kakao-login"
         static let refresh = "/auth/reissue"
         
+        // MARK: HaruBang(Diary)
+        static let harubang = "/diaries"
+        
+        // MARK: Schedule(Calendar)
+        static let schedule = "/schedules"
+        
         // MARK: Customize
         static let background = "/memberItems/customs/BACKGROUND"
         static let face = "/memberItems/customs/FACE"

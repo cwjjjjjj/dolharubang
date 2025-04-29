@@ -1,6 +1,24 @@
 import ComposableArchitecture
 import SwiftUI
 
+enum DeleteTarget: Equatable {
+    case content
+    case emoji
+    case image
+    case reply
+    
+    var caseName: String { String(describing: self) }
+    
+    var displayName: String {
+        switch self {
+        case .content: return "일기 내용"
+        case .emoji: return "이모티콘"
+        case .image: return "사진"
+        case .reply: return "답장"
+        }
+    }
+}
+
 @Reducer
 struct TalkFeature {
     @Dependency(\.talkClient) var talkClient
@@ -9,6 +27,8 @@ struct TalkFeature {
     struct State: Equatable {
         var talks: [Talk]? = []
         var isLoading: Bool = false
+        var showDeleteAlert: Bool = false
+        var deleteTarget: DeleteTarget? = nil
         var errorMessage: String? = nil
         var messageInput: String = "" // 사용자 입력값
         var floatingDate: Date = Date() // 보이는 대화 날짜
@@ -21,6 +41,7 @@ struct TalkFeature {
     }
     
     enum Action: BindableAction {
+        case toggleDeleteAlert(DeleteTarget?)
         case updateMessageInput(String)
         case updateFloatingDate(Date)
         case selectEmoji(String?)
@@ -30,13 +51,15 @@ struct TalkFeature {
         case toggleImagePreview
         case fetchTalk(Int) // diaryId로 단일 대화 가져오기
         case fetchTalkResponse(Result<Talk, Error>)
-        case fetchTalks(Int) // memberId로 대화 목록 가져오기
+        case fetchTalks
         case fetchTalksResponse(Result<[Talk], Error>)
-        case registTalk(Talk)
-        case registTalkResponse(Result<(NetworkMessage, Talk), Error>)
+        case registTalk(TalkToCreate)
+        case registTalkResponse(Result<Talk, Error>)
 //        case editTalk(Talk)
 //        case editTalkResponse(Result<(NetworkMessage, Talk), Error>)
-        case deleteTalk(Int) // diaryId로 삭제
+        case deletePart(Int, DeleteTarget) // talk 일부 삭제
+        case deletePartResponse(Result<Talk, Error>)
+        case deleteTalk(Int) // talk 전체 삭제
         case deleteTalkResponse(Result<(NetworkMessage, Int), Error>)
         case binding( BindingAction < State >)
     }
@@ -58,6 +81,10 @@ struct TalkFeature {
                 return .none
             case .toggleEmojiGrid:
                 state.showEmojiGrid.toggle()
+                return .none
+            case let .toggleDeleteAlert(deleteTarget):
+                state.deleteTarget = deleteTarget
+                state.showDeleteAlert.toggle()
                 return .none
             case .selectEmoji(let emoji):
                 if let emoji = emoji {
@@ -88,7 +115,7 @@ struct TalkFeature {
                 state.showImagePreview.toggle()
                 return .none
                     
-            // [GET] 대화 한 개 가져오기
+            // MARK: [GET] 대화 한 개 가져오기
             case let .fetchTalk(diaryId):
                 state.isLoading = true
                 state.errorMessage = nil
@@ -110,13 +137,12 @@ struct TalkFeature {
                 state.errorMessage = "대화를 불러오지 못했습니다: \(error.localizedDescription)"
                 return .none
                     
-            // [GET] 대화 전체 가져오기
-            case let .fetchTalks(memberId):
+            // MARK: [GET] 대화 전체 가져오기
+            case .fetchTalks:
                 state.isLoading = true
-                state.errorMessage = nil
                 return .run { send in
                     do {
-                        let talks = try await talkClient.fetchTalks(memberId)
+                        let talks = try await talkClient.fetchTalks()
                         await send(.fetchTalksResponse(.success(talks)))
                     } catch {
                         await send(.fetchTalksResponse(.failure(error)))
@@ -145,12 +171,15 @@ struct TalkFeature {
                 return .run { send in
                     do {
                         let response = try await talkClient.registTalk(talk)
-                        await send(.registTalkResponse(.success((response, talk))))
+                        await send(.registTalkResponse(.success(response)))
                     } catch {
                         await send(.registTalkResponse(.failure(error)))
                     }
                 }
-            case let .registTalkResponse(.success(_, talk)):
+            case let .registTalkResponse(.success(talk)):
+                print("----------------등록 완료 talk의 정보----------------")
+                dump(talk)
+                print("----------------등록 완료 talk의 정보----------------")
                 state.isLoading = false
                 state.talks?.append(talk) // 등록 성공 시 추가
                 state.messageInput = "" // 입력 필드 초기화
@@ -184,7 +213,38 @@ struct TalkFeature {
 //                state.errorMessage = error.localizedDescription
 //                return .none
 
-            // [Delete] 대화 삭제하기
+            // MARK: 특정 컨텐츠(내용 / 이모지 / 사진 / 답장 중 1개) 삭제 하기
+            case let .deletePart(diaryId, deleteTarget):
+                state.isLoading = true
+                return .run { send in
+                    do {
+                        let updatedTalk = try await talkClient.deletePart(diaryId, deleteTarget)
+                        await send(.deletePartResponse(.success((updatedTalk))))
+                    }
+                    catch {
+                        await send(.deletePartResponse(.failure(error)))
+                    }
+                }
+            
+            case let .deletePartResponse(.success(updatedTalk)):
+                state.isLoading = false
+                    
+                if let idx = state.talks?.firstIndex(where: { $0.diaryId == updatedTalk.diaryId }) {
+                    state.talks?[idx] = updatedTalk
+                }
+                    
+                state.showDeleteAlert = false
+                state.deleteTarget = nil
+                return .none
+
+            case let .deletePartResponse(.failure(error)):
+                state.isLoading = false
+                state.errorMessage = "\(state.deleteTarget?.displayName ?? "타깃 없음") 삭제에 실패했습니다: \(error.localizedDescription)"
+                state.showDeleteAlert = false
+                state.deleteTarget = nil
+                return .none
+                    
+            // MARK: [Delete] 대화 삭제하기
             case let .deleteTalk(diaryId):
                 state.isLoading = true
                 state.errorMessage = nil
