@@ -34,10 +34,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryResDto createDiary(DiaryReqDto diaryReqDto) {
-        Member member = memberRepository.findById(diaryReqDto.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
+    public DiaryResDto createDiary(Member member, DiaryReqDto diaryReqDto) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
 
@@ -50,14 +47,14 @@ public class DiaryService {
             .member(member)
             .contents(diaryReqDto.getContents())
             .emoji(diaryReqDto.getEmoji())
-            .reply(diaryReqDto.getReply())
             .build();
 
         Diary savedDiary = diaryRepository.save(diary);
-        String imageUrl = s3UploadService.saveImage(diaryReqDto.getImageBase64(),
-            "dolharubang/diary/", savedDiary.getDiaryId());
-
-        savedDiary.updateImageUrl(imageUrl);
+        if(diaryReqDto.getImageBase64() != null) {
+            String imageUrl = s3UploadService.saveImage(diaryReqDto.getImageBase64(),
+                "dolharubang/diary/", savedDiary.getDiaryId());
+            savedDiary.updateImageUrl(imageUrl);
+        }
 
         return DiaryResDto.fromEntity(savedDiary);
     }
