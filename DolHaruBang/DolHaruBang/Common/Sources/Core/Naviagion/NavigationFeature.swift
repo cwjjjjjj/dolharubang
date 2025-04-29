@@ -97,6 +97,10 @@ struct NavigationFeature {
               switch action {
               case .calendar:
                   clearPathToHomeIfNeeded()
+                  guard !(state.path.last?.isCalendar ?? false) else {
+                          state.enableClick = true
+                          return .none
+                      }
                   state.enableClick = false
                   state.path.append(.calendar(CalendarFeature.State()))
                   return createAsyncEnableClickEffect()
@@ -108,24 +112,40 @@ struct NavigationFeature {
                       
               case .harubang(_):
                   clearPathToHomeIfNeeded()
+                  guard !(state.path.last?.isHarubang ?? false) else {
+                          state.enableClick = true
+                          return .none
+                      }
                   state.enableClick = false
                   state.path.append(.harubang(HaruBangFeature.State()))
                   return createAsyncEnableClickEffect()
                   
               case .park(_):
                   clearPathToHomeIfNeeded()
+                  guard !(state.path.last?.isPark ?? false) else {
+                          state.enableClick = true
+                          return .none
+                      }
                   state.enableClick = false
                   state.path.append(.park(ParkFeature.State()))
                   return createAsyncEnableClickEffect()
                   
               case .mypage(_):
                   clearPathToHomeIfNeeded()
+                  guard !(state.path.last?.isCalendar ?? false) else {
+                          state.enableClick = true
+                          return .none
+                      }
                   state.enableClick = false
                   state.path.append(.mypage(MyPageFeature.State()))
                   return createAsyncEnableClickEffect()
                   
               case .home(_):
                   clearPathToHomeIfNeeded()
+                  guard !(state.path.last?.isHome ?? false) else {
+                          state.enableClick = true
+                          return .none
+                      }
                   state.enableClick = false
                   return createAsyncEnableClickEffect()
                   
@@ -190,5 +210,29 @@ struct NavigationFeature {
     .forEach(\.path, action: \.path)
   }
     
+}
+
+
+extension NavigationFeature.Path.State {
+    var isHome: Bool {
+        guard case .home = self else { return false }
+        return true
+    }
+    var isHarubang: Bool {
+        guard case .harubang = self else { return false }
+        return true
+    }
+    var isPark: Bool {
+        guard case .park = self else { return false }
+        return true
+    }
+    var isMypage: Bool {
+        guard case .mypage = self else { return false }
+        return true
+    }
+    var isCalendar: Bool {
+        guard case .calendar = self else { return false }
+        return true
+    }
 }
 
