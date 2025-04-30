@@ -42,6 +42,7 @@ struct DBTIFeature {
         var resultAlertTitle: String = ""
         var resultAlertMessage: String = ""
         var showResultAlert: Bool = false
+        var selectedFaceShape: FaceShape = .sosim
     }
     
     enum Action {
@@ -58,7 +59,7 @@ struct DBTIFeature {
         case setShowMonthPicker(Bool)
         case setSelectedDay(Int?)
         case setShowDayPicker(Bool)
-        case checkUsername
+        case checkUsername(String)
         case checkUsernameResult(Result<Bool, Error>)
         
         // QuestionView 관련
@@ -85,6 +86,7 @@ struct DBTIFeature {
         case setResultAlertTitle(String)
         case setResultAlertMessage(String)
         case setShowResultAlert(Bool)
+        case setFaceShape(FaceShape)
     }
     
     var body: some ReducerOf<Self> {
@@ -130,6 +132,7 @@ struct DBTIFeature {
                 case .goToResult:
                     state.stoneName = state.score.character.koreanName
                     state.originalStoneName = state.score.character.koreanName
+                    state.selectedFaceShape = state.score.character.toFaceShape ?? .sosim
                     return .none
 
                 ///////////////////////////////////
@@ -203,6 +206,10 @@ struct DBTIFeature {
                     
                 case .goToHome:
                     return .none
+                    
+                case let .setFaceShape(faceShape):
+                    state.selectedFaceShape = faceShape
+                    return .none
                 
                 ///////////////////////////////////////////////
                 // InputUserInfoView 관련 //
@@ -243,8 +250,8 @@ struct DBTIFeature {
                 case .setShowDayPicker(let show):
                     state.showDayPicker = show
                     return .none
-                case .checkUsername:
-                    if state.username.isEmpty || state.username.count > 12 {
+                case let .checkUsername(username):
+                    if username.isEmpty || username.count > 12 {
                         state.inputAlertTitle = "글자 수 오류"
                         state.inputAlertMessage = "닉네임은 1~12자로 입력해주세요."
                         state.showConfirmation = false
@@ -252,11 +259,7 @@ struct DBTIFeature {
                         state.showAlert = true
                         return .none
                     }
-                    // TCA의 .run 클로저는 @escaping 클로저
-                    // 이런 클로저에서 state를 직접 참조하면,
-                    // inout 파라미터(여기선 state)를 escaping 클로저에서 캡처할 수 없기 때문에 에러 발생
-                    // 캡처 리스트로, 클로저 내부에서 inout 오류 없이 안전하게 값(복사본)을 쓰기!
-                    return .run { [username = state.username, dbtiClient = dbtiClient] send in
+                    return .run { [username = username, dbtiClient = dbtiClient] send in
                         do {
                             let isAvailable = try await dbtiClient.checkUsername(username)
                             await send(.checkUsernameResult(.success(isAvailable)))

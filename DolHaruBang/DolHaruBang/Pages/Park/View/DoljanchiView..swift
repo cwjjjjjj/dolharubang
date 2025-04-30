@@ -23,6 +23,7 @@ struct DoljanchiView: View {
             
             Button(action: {
                 print("돌 자랑하기 버튼이 눌렸습니다.")
+                store.send(.toggleJarangPopup)
             }) {
                 HStack {
                     Text("돌 자랑하기")
@@ -39,7 +40,7 @@ struct DoljanchiView: View {
         .background(.coreWhite)
         .cornerRadius(15, corners: [.bottomLeft, .bottomRight])
         .onAppear {
-            store.send(.fetchFeed(1, nil, "LATEST", 16))
+            store.send(.fetchFeed(nil, "LATEST", 16))
         }
     }
 }

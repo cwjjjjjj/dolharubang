@@ -45,18 +45,11 @@ extension TalkClient: DependencyKey {
         },
         registTalk: { talk in
             let url = APIConstants.Endpoints.harubang
-            
-            // 날짜 포맷터 미리 생성
-            let formatter = ISO8601DateFormatter()
-            
-            // 옵셔널 값들을 미리 처리
-            let formattedModifiedAt: Any
 
             let parameters: [String: Any] = [
                 "contents": talk.contents,
                 "emoji": talk.emoji ?? NSNull(),
-                "imageBase64": talk.imageBase64 ?? NSNull(),
-                "reply": talk.reply ?? NSNull()
+                "imageBase64": talk.imageBase64 ?? NSNull()
             ]
             
             print("\(url)로 요청 보냄! \n parameters: \(parameters)")
