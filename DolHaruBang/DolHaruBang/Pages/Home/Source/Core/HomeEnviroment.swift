@@ -24,6 +24,9 @@ struct BasicInfo: Hashable, Codable {
     let friendShip : Int
 }
 
+struct unReadMailCount : Codable {
+    let unreadCount : Int
+}
 
 @DependencyClient
 struct HomeClient {
@@ -36,6 +39,7 @@ struct HomeClient {
     var selectItem : @Sendable (String) async throws -> [CustomizeItem]
     var sand : @Sendable () async throws -> Int
     var basicInfo : @Sendable () async throws -> BasicInfo
+    var unread : @Sendable () async throws -> unReadMailCount
 }
 
 // 실제 통신 전 테스트
@@ -94,6 +98,11 @@ extension HomeClient: DependencyKey {
             let url = APIConstants.Endpoints.basic
             
             return try await fetch(url: url, model: BasicInfo.self, method: .get)
+        },
+        unread: {
+            let url = APIConstants.Endpoints.unread
+            
+            return try await fetch(url: url, model: unReadMailCount.self, method: .get)
         }
         
     )

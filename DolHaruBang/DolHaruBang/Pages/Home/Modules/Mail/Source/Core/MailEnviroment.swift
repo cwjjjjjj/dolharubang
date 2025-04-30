@@ -11,9 +11,9 @@ import ComposableArchitecture
 import Alamofire
 
 
-struct MailInfo: Hashable, Codable {
+struct MailInfo: Identifiable,Hashable, Codable {
     let id: Int64
-       let nickname: String
+       let nickname: String?
        let content: String
        let isRead: Bool
        let type: String

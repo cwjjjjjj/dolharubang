@@ -14,13 +14,19 @@ struct MailFeature {
     
     @ObservableState
     struct State: Equatable {
+        var selectMail : MailInfo?
         var mails : [MailInfo]?
+        var clickMail : Bool = false
     }
     
     enum Action {
         case fetchMail
         case readMail(String)
         case fetchMailResponse(Result<[MailInfo], Error>)
+        
+        
+        case selectMail(MailInfo)
+        case closeMail
     }
     
     @Dependency(\.mailClient) var mailClient
@@ -57,6 +63,16 @@ struct MailFeature {
                 
             case let .fetchMailResponse(.failure(error)):
                 print("mail ",error)
+                return .none
+                
+            case let .selectMail(mail):
+                state.selectMail = mail
+                state.clickMail = true
+                return .none
+            
+            case .closeMail:
+                state.clickMail = false
+                state.selectMail = nil
                 return .none
        
             }
