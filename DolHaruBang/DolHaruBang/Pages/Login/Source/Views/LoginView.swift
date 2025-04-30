@@ -170,7 +170,7 @@ struct LoginView: View {
             if let userInfo = notification.userInfo,
                let isFirst = userInfo["isFirst"] as? Bool {
                 // isFirst 값에 따라 분기
-                if isFirst {
+                if !isFirst {
                     nav.send(.goToScreen(.input(DBTIFeature())))
                 } else {
                     nav.send(.goToHome)

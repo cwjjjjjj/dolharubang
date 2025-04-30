@@ -29,6 +29,10 @@ struct APIConstants {
         // MARK: Schedule(Calendar)
         static let schedule = "/schedules"
         
+        // MARK: Mail
+        static let mail = "/notifications"
+        static let read = "/notifications"
+        
         // MARK: Customize
         static let background = "/memberItems/customs/BACKGROUND"
         static let face = "/memberItems/customs/FACE"
