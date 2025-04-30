@@ -86,8 +86,11 @@ public class NotificationController {
                 ));
         }
 
-        Long memberId = principal.getMember().getMemberId();
-        notificationService.markAsRead(memberId, id);
-        return ResponseEntity.ok(Map.of("message", "알림이 읽음 처리되었습니다."));
+        Member member = principal.getMember();
+        NotificationResDto updatedNotification = notificationService.markAsRead(
+            member.getMemberId(), id, member.getNickname());
+
+        return ResponseEntity.ok(updatedNotification);
     }
+
 }
