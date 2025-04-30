@@ -18,15 +18,15 @@ public class NotificationResDto {
     private String type;
     private LocalDateTime createdAt;
 
-    public static NotificationResDto from(Notification notification) {
+    public static NotificationResDto from(Notification notification, String nickname) {
         return NotificationResDto.builder()
             .id(notification.getId())
-            .nickname(notification.getReceiver() != null ? notification.getReceiver().getNickname()
-                : null)
+            .nickname(nickname)
             .content(notification.getContent())
             .isRead(notification.isRead())
             .type(notification.getType().name())
             .createdAt(notification.getCreatedAt())
             .build();
     }
+
 }

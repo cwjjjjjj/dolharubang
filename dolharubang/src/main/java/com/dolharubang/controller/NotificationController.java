@@ -1,6 +1,7 @@
 package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.response.NotificationResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,8 +46,8 @@ public class NotificationController {
                 ));
         }
 
-        Long memberId = principal.getMember().getMemberId();
-        Page<NotificationResDto> notifications = notificationService.getNotifications(memberId,
+        Member member = principal.getMember();
+        Page<NotificationResDto> notifications = notificationService.getNotifications(member,
             page, size, unreadOnly);
 
         return ResponseEntity.ok(notifications);
