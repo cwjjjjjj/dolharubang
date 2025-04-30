@@ -58,6 +58,9 @@ public class StoneService {
 
         member.updateSpaceName(spaceName);
         Stone adoptedStone = stoneRepository.save(stone);
+        System.out.println(stoneReqDto.toString());
+        System.out.println(spaceName);
+        System.out.println(adoptedStone);
         return StoneResDto.fromEntity(adoptedStone);
     }
 
