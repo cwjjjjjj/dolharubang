@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 import Alamofire
 
-struct KakaoLoginResponse: Codable, Equatable {
+struct SocialLoginResponse: Codable, Equatable {
     var accessToken: String
     var refreshToken: String
 }
@@ -21,7 +21,9 @@ struct KakaoTokenRequest: Codable, Equatable, Sendable {
 
 @DependencyClient
 struct LoginClient {
-    var kakaoLogin: @Sendable (String) async throws -> KakaoLoginResponse
+    var kakaoLogin: @Sendable (String) async throws -> SocialLoginResponse
+    var appleLogin: @Sendable (String,String) async throws -> SocialLoginResponse
+    
     var isFirst : @Sendable () async throws -> Bool
 }
 
@@ -43,10 +45,28 @@ extension LoginClient: DependencyKey {
                             
                         ]
                 print(token)
-                return try await fetch(url: url, model: KakaoLoginResponse.self, method: .post, headers: headers,skipAuth: true)
+                return try await fetch(url: url, model: SocialLoginResponse.self, method: .post, headers: headers,skipAuth: true)
                 } catch {
                     print("로그인 실패 :", error)
-                    return KakaoLoginResponse(accessToken: "no", refreshToken: "no")
+                    return SocialLoginResponse(accessToken: "no", refreshToken: "no")
+                }
+        },
+        appleLogin: { idTokenString,userIdentifier in
+            let url = APIConstants.Endpoints.appleLogin
+            do {
+                let headers: HTTPHeaders = [
+                            "id_token": "\(idTokenString)",
+                            "user" : "\(userIdentifier)"
+                        ]
+                print("백전")
+                print("idT임",idTokenString)
+                
+                print("ui임",userIdentifier)
+                
+                return try await fetch(url: url, model: SocialLoginResponse.self, method: .post, headers: headers,skipAuth: true)
+                } catch {
+                    print("로그인 실패 :", error)
+                    return SocialLoginResponse(accessToken: "no", refreshToken: "no")
                 }
         },
         isFirst: {

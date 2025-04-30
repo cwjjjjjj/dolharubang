@@ -23,7 +23,9 @@ struct LoginFeature {
     case goBack
       
     case kakaoLoginRequested(String)
-    case kakaoLoginResponse(Result<KakaoLoginResponse, Error>)
+    case appleLoginRequested(String,String)
+    case socialLoginResponse(Result<SocialLoginResponse, Error>)
+      
       
     case isFirstRequest
     case isFirstResponse(Result<Bool, Error>)
@@ -44,18 +46,28 @@ struct LoginFeature {
           return .run { send in
               do {
                   let tokens = try await loginClient.kakaoLogin(oauthToken)
-                  await send(.kakaoLoginResponse(.success(tokens)))
-                  await send(.isFirstRequest)
+                  await send(.socialLoginResponse(.success(tokens)))
               } catch {
-                  await send(.kakaoLoginResponse(.failure(error)))
+                  await send(.socialLoginResponse(.failure(error)))
+              }
+          }
+      case let .appleLoginRequested(idTokenString, userIdentifier):
+          return .run { send in
+              do {
+                  let tokens = try await loginClient.appleLogin(idTokenString,userIdentifier)
+                  await send(.socialLoginResponse(.success(tokens)))
+              } catch {
+                  await send(.socialLoginResponse(.failure(error)))
               }
           }
           
-      case let .kakaoLoginResponse(.success(tokens)):
+      case let .socialLoginResponse(.success(tokens)):
           TokenManager.shared.saveTokens(accessToken:tokens.accessToken, refreshToken: tokens.refreshToken)
-          return .none
+          return .run { send in
+              await send(.isFirstRequest)
+          }
           
-      case let .kakaoLoginResponse(.failure(error)):
+      case let .socialLoginResponse(.failure(error)):
           print(error)
           return .none
           

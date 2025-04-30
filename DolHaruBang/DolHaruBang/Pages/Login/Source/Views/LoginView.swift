@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import AuthenticationServices
+import CryptoKit
 import KakaoSDKUser
 
 struct LoginView: View {
@@ -9,8 +10,8 @@ struct LoginView: View {
     @State private var logoutObserver: NSObjectProtocol?
     @State private var loginObserver: NSObjectProtocol?
     @Bindable var nav: StoreOf<NavigationFeature>
-    @StateObject private var signInViewModel = SignInViewModel()
     @State var store: StoreOf<LoginFeature>
+    @StateObject private var signInViewModel = SignInWithAppleViewModel()
     
     var body: some View {
         
@@ -105,7 +106,24 @@ struct LoginView: View {
                                         request.requestedScopes = [.fullName, .email]
                                     },
                                     onCompletion: { result in
-                                        signInViewModel.handleSignInWithAppleResult(result)
+                                        switch result {
+                                        case .success(let authorization):
+                                            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                                                  let identityToken = credential.identityToken,
+                                                  let idTokenString = String(data: identityToken, encoding: .utf8),
+                                                  let userIdentifier = idTokenString.decodeAppleUserIdentifier() else { // ✅ 디코딩
+                                                print("토큰 파싱 실패")
+                                                return
+                                            }
+                                            
+                                            store.send(.appleLoginRequested(
+                                                idTokenString,
+                                                userIdentifier
+                                            ))
+                                            
+                                        case .failure(let error):
+                                            print("Apple 로그인 실패: \(error.localizedDescription)")
+                                        }
                                     }
                                 )
                                 .frame(width: geometry.size.width - 72, height: 48)
@@ -145,7 +163,7 @@ struct LoginView: View {
                 SettingView(store : store)
             case let .input(store):
                 InputUserInfoView(store : store)
-           
+                
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("TokenVaild"))) { notification in
@@ -161,12 +179,12 @@ struct LoginView: View {
         }
         .onAppear{
             logoutObserver = NotificationCenter.default.addObserver(
-                           forName: NSNotification.Name("LogoutRequired"),
-                           object: nil,
-                           queue: .main
-                       ) { _ in
-                           nav.send(.popToRoot)
-                       }
+                forName: NSNotification.Name("LogoutRequired"),
+                object: nil,
+                queue: .main
+            ) { _ in
+                nav.send(.popToRoot)
+            }
         }
         
         // MARK: FloatingMenuView Start
@@ -192,39 +210,70 @@ struct LoginView: View {
     }
 }
 
-class SignInViewModel: ObservableObject {
-    @Published var userInfo: UserInfoo?
+
+class SignInWithAppleViewModel: NSObject, ObservableObject {
+    // 필요하다면 @Published var 상태 추가 가능
     
+    // 로그인 결과 처리
     func handleSignInWithAppleResult(_ result: Result<ASAuthorization, Error>) {
         switch result {
         case .success(let authorization):
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                let userId = appleIDCredential.user
-                let email = appleIDCredential.email
-                let fullName = appleIDCredential.fullName
-                
-                DispatchQueue.main.async {
-                    self.userInfo = UserInfoo(
-                        id: userId,
-                        email: email,
-                        firstName: fullName?.givenName,
-                        lastName: fullName?.familyName
-                    )
-                }
-                
-                print("User ID: \(userId)")
-                print("Email: \(email ?? "N/A")")
-                print("Full Name: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
-            }
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                  let authCodeData = credential.authorizationCode,
+                  let idTokenData = credential.identityToken else { return }
+            
+            let authorizationCode = String(decoding: authCodeData, as: UTF8.self)
+            let idToken = String(decoding: idTokenData, as: UTF8.self)
+            
+            // ✅ 여기서 백엔드로 코드와 토큰을 전달
+            sendToBackend(authorizationCode: authorizationCode, idToken: idToken)
+            
         case .failure(let error):
-            print("Authorization failed: \(error.localizedDescription)")
+            print("Apple Sign-In failed: \(error.localizedDescription)")
         }
+    }
+    
+    private func sendToBackend(authorizationCode: String, idToken: String) {
+        // 실제 백엔드 API 주소로 변경
+        
+        print("ㅇㅇ",authorizationCode,idToken)
+        guard let url = URL(string: "https://your-backend.com/api/auth/apple") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "code": authorizationCode,
+            "id_token": idToken
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // 필요시 응답 처리
+        }.resume()
     }
 }
 
-struct UserInfoo {
-    let id: String
-    let email: String?
-    let firstName: String?
-    let lastName: String?
+extension String {
+    func decodeAppleUserIdentifier() -> String? {
+        let segments = self.components(separatedBy: ".")
+        guard segments.count > 1 else { return nil }
+        
+        let payload = segments[1]
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        
+        let padded = payload.padding(
+            toLength: ((payload.count + 3) / 4) * 4,
+            withPad: "=",
+            startingAt: 0
+        )
+        
+        guard let data = Data(base64Encoded: padded),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            return nil
+        }
+        
+        return json["sub"] as? String
+    }
 }
