@@ -12,7 +12,7 @@ import lombok.Getter;
 public class NotificationResDto {
 
     private Long id;
-    private String title;
+    private String nickname;
     private String content;
     private boolean isRead;
     private String type;
@@ -21,6 +21,8 @@ public class NotificationResDto {
     public static NotificationResDto from(Notification notification) {
         return NotificationResDto.builder()
             .id(notification.getId())
+            .nickname(notification.getReceiver() != null ? notification.getReceiver().getNickname()
+                : null)
             .content(notification.getContent())
             .isRead(notification.isRead())
             .type(notification.getType().name())
