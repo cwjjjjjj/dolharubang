@@ -39,6 +39,7 @@ struct DolHaruBangApp: App {
     
     var body: some Scene {
         WindowGroup {
+//            EntryPointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
             EntryPointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
                 .onAppear {
                 // 저장된 설정값 확인 후 재생/정지

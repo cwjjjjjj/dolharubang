@@ -14,6 +14,7 @@ struct DoljanchiFeature {
         var jarangs: [Jarang] = [];
         var isLoading: Bool = false
         var errorMessage: String? = nil
+        var showJarangPopup: Bool = false
     }
 
     // 액션 정의
@@ -21,8 +22,9 @@ struct DoljanchiFeature {
         case binding(BindingAction<State>)
         case nextPage
         case previousPage
-        case fetchFeed(Int, Int?, String?, Int?)
+        case fetchFeed(Int?, String?, Int?)
         case fetchFeedResponse(Result<[Jarang], Error>)
+        case toggleJarangPopup
 //        case registJarang(Jarang)
 //        case registJarangResponse(Result<(NetworkMessage, Jarang), Error>)
     }
@@ -42,12 +44,12 @@ struct DoljanchiFeature {
                         state.currentPage -= 1
                     }
                     return .none
-                case .fetchFeed(let memberId, let lastId, let sortType, let size):
+                case .fetchFeed(let lastId, let sortType, let size):
                     state.isLoading = true
                     print("자랑 피드 불러오기 시작")
                     return .run { send in
                         do {
-                            let jarangs = try await parkClient.fetchFeed(memberId, lastId, sortType, size)
+                            let jarangs = try await parkClient.fetchFeed(lastId, sortType, size)
                             await send(.fetchFeedResponse(.success(jarangs)))
                         }
                         catch {
@@ -67,6 +69,9 @@ struct DoljanchiFeature {
                     print(error)
                     state.isLoading = false
                     state.errorMessage = error.localizedDescription
+                    return .none
+                case .toggleJarangPopup:
+                    state.showJarangPopup.toggle()
                     return .none
                     
 //                case let .registJarang(jarang):

@@ -20,7 +20,6 @@ struct ParkFeature {
         var hasHistory: Bool = true
         var history: [History] = []
         var isLoading: Bool = true
-        
         var doljanchiFeatureState : DoljanchiFeature.State = DoljanchiFeature.State()
         var friendListFeatureState : FriendListFeature.State = FriendListFeature.State()
         

@@ -64,7 +64,7 @@ struct InputUserInfoView: View {
                             maxLength: 12,
                             alertTitle: "글자 수 오류",
                             alertMessage: "닉네임은 1~6자로 입력해주세요.",
-                            onSubmit: { store.send(.checkUsername) }
+                            onSubmit: { store.send(.checkUsername(store.username)) }
                         )
                         .frame(width: 210, height: 48)
                         .alert(isPresented: Binding(
@@ -99,13 +99,13 @@ struct InputUserInfoView: View {
                             title: "중복확인",
                             font: .customFont(Font.button1),
                             textColor: .coreWhite,
-                            action: { store.send(.checkUsername) }
+                            action: { store.send(.checkUsername(store.username)) }
                         )
                         .frame(width: 100, height: 48)
                         .background(store.username.isEmpty ? Color.disabled : Color.mainGreen)
                         .cornerRadius(24)
                         .disabled(store.username.isEmpty)
-                        .onTapGesture { store.send(.checkUsername) }
+                        .onTapGesture { store.send(.checkUsername(store.username)) }
                     }
                     
                     Spacer().frame(height: 16)
@@ -113,7 +113,7 @@ struct InputUserInfoView: View {
                     HStack {
                         CustomYearButton(
                             selectedYear: Binding(
-                                get: { store.selectedYear },
+                                get: { store.selectedYear},
                                 set: { store.send(.setSelectedYear($0)) }
                             ),
                             isPresented: Binding(
@@ -122,6 +122,11 @@ struct InputUserInfoView: View {
                             ),
                             font: .customFont(Font.button1)
                         )
+                        .onAppear {
+                            if store.selectedYear == nil {
+                                store.send(.setSelectedYear(2025))
+                            }
+                        }
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
@@ -141,14 +146,15 @@ struct InputUserInfoView: View {
                                 ),
                                 years: Array(1900...currentYear)
                             ) {
-                                store.send(.setSelectedMonth(nil))
-                                store.send(.setSelectedDay(nil))
+                                store.send(.setSelectedMonth(1))
+                                store.send(.setSelectedDay(1))
                             }
                         }
+
                         
                         CustomMonthButton(
                             selectedMonth: Binding(
-                                get: { store.selectedMonth },
+                                get: { store.selectedMonth},
                                 set: { store.send(.setSelectedMonth($0)) }
                             ),
                             isPresented: Binding(
@@ -157,6 +163,11 @@ struct InputUserInfoView: View {
                             ),
                             font: .customFont(Font.button1)
                         )
+                        .onAppear {
+                            if store.selectedMonth == nil {
+                                store.send(.setSelectedMonth(1))
+                            }
+                        }
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
@@ -177,9 +188,10 @@ struct InputUserInfoView: View {
                                 ),
                                 months: months
                             ) {
-                                store.send(.setSelectedDay(nil))
+                                store.send(.setSelectedDay(1))
                             }
                         }
+
                         
                         CustomDayButton(
                             selectedDay: Binding(
@@ -192,6 +204,11 @@ struct InputUserInfoView: View {
                             ),
                             font: .customFont(Font.button1)
                         )
+                        .onAppear {
+                            if store.selectedDay == nil {
+                                store.send(.setSelectedDay(1))
+                            }
+                        }
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
@@ -212,6 +229,7 @@ struct InputUserInfoView: View {
                                 days: days
                             )
                         }
+
                     }
                     
                     Spacer().frame(height: 40)

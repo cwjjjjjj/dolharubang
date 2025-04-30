@@ -1,10 +1,3 @@
-//
-//  CustomYearButton.swift
-//  DolHaruBang
-//
-//  Created by 안상준 on 7/30/24.
-//
-
 import SwiftUI
 import UIKit
 

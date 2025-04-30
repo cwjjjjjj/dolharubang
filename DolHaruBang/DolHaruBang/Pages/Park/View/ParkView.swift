@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct ParkView: View {
     @State var store: StoreOf<ParkFeature>
+    @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage()
     
     var body: some View {
         GeometryReader { geometry in
@@ -107,6 +108,73 @@ struct ParkView: View {
                         .zIndex(1)
 
                     HistoryPopupView(store: store)
+                        .zIndex(2)
+                }
+                
+                if store.state.doljanchiFeatureState.showJarangPopup {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.send(.doljanchiFeatureAction(.toggleJarangPopup))
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .zIndex(1)
+                    
+                    VStack(alignment: .center) {
+                        Spacer().frame(height: 24)
+                        
+                        HStack {
+                            Text("돌 자랑하기")
+                                .font(Font.customFont(Font.subtitle3))
+                                .foregroundColor(.decoSheetGreen)
+                                .padding(.leading, 24)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                store.send(.doljanchiFeatureAction(.toggleJarangPopup))
+                            }) {
+                                Image(systemName: "xmark")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.placeHolder)
+                            }
+                            .padding(.trailing, 24)
+                        }
+                        
+                        Spacer().frame(height: 20)
+                        
+                        Divider()
+                
+                        Image(uiImage: captureDol)
+                            .resizable()
+                            .scaledToFit()
+                        
+                        Spacer()
+                        
+                        // 최종 자랑 버튼
+                        Button(action: {
+                            print("돌 자랑 api 슈웃~!")
+//                            store.send(.)
+                        }) {
+                            HStack {
+                                Text("자랑하기")
+                                    .font(.customFont(Font.button4))
+                                    .foregroundColor(.coreWhite)
+                            }
+                            .frame(width: 82, height: 32)
+                            .background(.coreGreen)
+                            .cornerRadius(16)
+                        }
+                        .padding(.bottom, 16)
+                    }
+                    .frame(width: 320, height: 400)
+                    .background(Color.white)
+                    .cornerRadius(25)
+                    .shadow(radius: 10)
+                        .background(Color.white)
+                        .cornerRadius(25)
+                        .shadow(radius: 10)
                         .zIndex(2)
                 }
             }
