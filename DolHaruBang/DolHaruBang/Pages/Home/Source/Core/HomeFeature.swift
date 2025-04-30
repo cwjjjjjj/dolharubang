@@ -316,6 +316,7 @@ struct HomeFeature {
                 return .none
                 
             case let .faceItemsResponse(.failure(error)):
+                print("face error ",error)
                 return .none
                 
                 // MARK: 백그라운드 아이템 조회
@@ -344,6 +345,7 @@ struct HomeFeature {
                 return .none
                 
             case let .backItemsResponse(.failure(error)):
+                print("backItem error ",error)
                 return .none
                 
                 // MARK: 액세서리 아이템 조회
@@ -367,6 +369,7 @@ struct HomeFeature {
                 return .none
                 
             case let .accessoryItemsResponse(.failure(error)):
+                print("accessory error ",error)
                 return .none
                 
                 // MARK: 둥지 아이템 조회
@@ -390,6 +393,7 @@ struct HomeFeature {
                 return .none
                 
             case let .nestItemsResponse(.failure(error)):
+                print("nest error ",error)
                 return .none
                 
                 
@@ -436,6 +440,7 @@ struct HomeFeature {
                 return .none
                 
             case let .purchaseItemResponse(.failure(error)):
+                print("purchase error ",error)
                 state.isLoading = false
                 state.alert = AlertState {
                         TextState("모래알이 부족합니다.")
@@ -495,7 +500,7 @@ struct HomeFeature {
                 return .none
                 
             case let .fetchSignResponse(.failure(error)):
-                print("Sign \(error)")
+                print("fetch SignEError \(error)")
                 return .none
                 
             }

@@ -45,43 +45,45 @@ struct MailView: View {
             
             Divider()
                 ScrollView(.vertical){
-                    ForEach(store.mails, id: \.self) { mail in
-                        HStack(spacing:10) {
-                            VStack{
-                                Image(getImageName(for: mail.mailType))
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 40, height: 26)
-                                    .padding(.top, 8)
-                                
-                                Text("\(mail.dateAgo)")
-                                    .font(Font.customFont(Font.body6Bold))
-                                    .lineSpacing(10.40)
-                                    .foregroundColor(Color(red: 0.65, green: 0.61, blue: 0.57))
-                                    .padding(.top, mail.mailType == "Read" ? 2 : 1) // 조건에 따라 padding 변경
-
-                            }
-                            
-                            //body2Bold
-                            HStack{
-                                (
-                                Text(mail.nickname ?? "").foregroundColor(Color.init(hex: "618501"))
-                                
-                                +
-                                
-                                Text("\(mail.description)".splitCharacter())
-                                    .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
-                                )
-                                    .font(Font.customFont(Font.body2Bold))
-                                    .frame(width: 222, height : 48, alignment: .leading)
-                                    .lineSpacing(5)
-                                    .lineLimit(2)
-                                    .multilineTextAlignment(.leading)
-                                    .padding(.vertical, 8) // 세로 여백 추가
+                    if let mails = store.state.mails {
+                        ForEach(Array(mails.enumerated()), id:\.element.id){ index,mail in
+                            HStack(spacing:10) {
+                                VStack{
+                                    Image(getImageName(for: mail.type))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 40, height: 26)
+                                        .padding(.top, 8)
                                     
-                            }
-                            
-                        }.frame(width: 272, height: 48).padding(.bottom,10)
+                                    Text("\(mail.content)")
+                                        .font(Font.customFont(Font.body6Bold))
+                                        .lineSpacing(10.40)
+                                        .foregroundColor(Color(red: 0.65, green: 0.61, blue: 0.57))
+                                        .padding(.top, mail.isRead ? 2 : 1) // 조건에 따라 padding 변경
+
+                                }
+                                
+                                //body2Bold
+                                HStack{
+                                    (
+                                    Text(mail.nickname ?? "").foregroundColor(Color.init(hex: "618501"))
+                                    
+                                    +
+                                    
+                                    Text("\(mail.content)".splitCharacter())
+                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                    )
+                                        .font(Font.customFont(Font.body2Bold))
+                                        .frame(width: 222, height : 48, alignment: .leading)
+                                        .lineSpacing(5)
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.leading)
+                                        .padding(.vertical, 8) // 세로 여백 추가
+                                        
+                                }
+                                
+                            }.frame(width: 272, height: 48).padding(.bottom,10)
+                        }
                     }
                 }.frame(height: 304).padding(10)
             

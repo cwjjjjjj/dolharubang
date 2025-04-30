@@ -14,11 +14,12 @@ struct MailFeature {
     
     @ObservableState
     struct State: Equatable {
-        var mails : [MailInfo] = []
+        var mails : [MailInfo]?
     }
     
     enum Action {
         case fetchMail
+        case readMail(String)
         case fetchMailResponse(Result<[MailInfo], Error>)
     }
     
@@ -40,11 +41,22 @@ struct MailFeature {
                     }
                 }
                 
+            case let .readMail(id):
+                return .run { send in
+                    do {
+                        let mails = try await mailClient.readMail(id)
+                        await send(.fetchMailResponse(.success(mails)))
+                    } catch {
+                        await send(.fetchMailResponse(.failure(error)))
+                    }
+                }
+                
             case let .fetchMailResponse(.success(mails)):
                 state.mails = mails // 업적 목록 갱신
                 return .none
                 
             case let .fetchMailResponse(.failure(error)):
+                print("mail ",error)
                 return .none
        
             }

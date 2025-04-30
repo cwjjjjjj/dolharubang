@@ -31,7 +31,7 @@ struct ProfileView: View {
             
             Spacer().frame(height: 20)
             
-            Divider().background(Color.init(hex: "E5DFD7"))
+            Divider().background(Color(hex: "E5DFD7"))
             if let profile = store.profile {
                 VStack {
                     // 상단 부분
@@ -130,7 +130,7 @@ struct ProfileView: View {
                         ProgressView(value: Double(profile.friendShip % 100), total: 100)
                             .progressViewStyle(LinearProgressViewStyle())
                             .frame(width: 272)
-                            .accentColor(Color.init(hex: "A5CD3B"))
+                            .accentColor(Color(hex: "A5CD3B"))
                     }
                     .padding(.bottom, 12)
                     .padding(.top, 20)
