@@ -5,12 +5,16 @@ import com.dolharubang.domain.dto.response.MemberMissionResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.Mission;
+import com.dolharubang.domain.entity.Notification;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.MissionRepository;
+import com.dolharubang.repository.NotificationRepository;
+import com.dolharubang.type.MissionStatusType;
+import com.dolharubang.type.NotificationType;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -22,17 +26,20 @@ public class MemberMissionService {
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
+    private final NotificationRepository notificationRepository;
     private final RewardService rewardService;
     private final ItemService itemService;
 
     public MemberMissionService(MemberMissionRepository memberMissionRepository,
         MemberRepository memberRepository,
         MissionRepository missionRepository,
+        NotificationRepository notificationRepository,
         RewardService rewardService,
         ItemService itemService) {
         this.memberMissionRepository = memberMissionRepository;
         this.memberRepository = memberRepository;
         this.missionRepository = missionRepository;
+        this.notificationRepository = notificationRepository;
         this.rewardService = rewardService;
         this.itemService = itemService;
     }
@@ -41,9 +48,24 @@ public class MemberMissionService {
     public MemberMissionResDto updateMissionProgress(Long id, Long memberId,
         MemberMissionProgressUpdateReqDto requestDto) {
         MemberMission memberMission = getOwnedMission(id, memberId);
+        MissionStatusType beforeStatus = memberMission.getStatus();
+
         memberMission.updateProgress(requestDto.getCurrentValue(), requestDto.getEventType());
+
+        // 미션 완료 시 알림 전송
+        if (beforeStatus != MissionStatusType.COMPLETED &&
+            memberMission.getStatus() == MissionStatusType.COMPLETED) {
+            Notification notification = Notification.builder()
+                .receiverId(memberId)
+                .content("‘" + memberMission.getMission().getName() + "’ 미션을 완료했어요!")
+                .type(NotificationType.MISSION_COMPLETED)
+                .build();
+            notificationRepository.save(notification);
+        }
+
         return MemberMissionResDto.fromEntity(memberMission, itemService);
     }
+
 
     @Transactional
     public MemberMissionResDto claimReward(Long memberMissionId, Long memberId) {
