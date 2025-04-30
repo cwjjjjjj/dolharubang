@@ -41,7 +41,7 @@ public class StoneController {
     @PostMapping("/adopt")
     public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneReqDto requestDto,
-        String spaceName) {
+        @RequestBody String spaceName) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -192,7 +192,7 @@ public class StoneController {
                 ));
         }
         Long memberId = findMemberId(principal);
-        Map<AbilityType, Boolean> response = stoneService.readAbilityAble(memberId);
+        Map<AbilityType, Boolean> response = stoneService.updateAbilityAble(memberId, abilityType);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

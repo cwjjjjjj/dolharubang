@@ -38,7 +38,7 @@ public class StoneService {
     @Transactional
     public StoneResDto adoptStone(Member member, StoneReqDto stoneReqDto, String spaceName) {
 
-        Species species = speciesRepository.findById(stoneReqDto.getSpeciesId())
+        Species species = speciesRepository.findBySpeciesName(stoneReqDto.getSpeciesName())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
         Map<AbilityType, Boolean> abilityMap = Arrays.stream(AbilityType.values()).collect(
@@ -49,11 +49,11 @@ public class StoneService {
 
         Stone stone = Stone.builder()
             .member(member)
-            .speciesId(stoneReqDto.getSpeciesId())
+            .speciesId(species.getSpeciesId())
             .stoneName(stoneReqDto.getStoneName())
-            .closeness(stoneReqDto.getCloseness())
+            .closeness(0L)
             .abilityAble(abilityMap)
-            .signText(stoneReqDto.getSignText())
+            .signText("")
             .build();
 
         member.updateSpaceName(spaceName);
