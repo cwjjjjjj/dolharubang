@@ -60,24 +60,29 @@ public class DiaryService {
     }
 
     //TODO 일기 수정 기능에 제한 필요
-//    @Transactional
-//    public DiaryResDto updateDiary(Long id, DiaryReqDto diaryReqDto) {
-//        Diary diary = diaryRepository.findByDiaryId(id)
-//            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
-//
-//        Member member = memberRepository.findById(diaryReqDto.getMemberId())
-//            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-//
-//        diary.update(
-//            member,
-//            diaryReqDto.getContents(),
-//            diaryReqDto.getEmoji(),
-//            diaryReqDto.getImageUrl(),
-//            diaryReqDto.getReply()
-//        );
-//
-//        return DiaryResDto.fromEntity(diary);
-//    }
+    @Transactional
+    public DiaryResDto updateDiary(Long memberId, Long id, DiaryReqDto diaryReqDto) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        String imageUrl = diaryReqDto.getImageBase64();
+        if(diaryReqDto.getImageBase64() != null) {
+            s3UploadService.deleteImageIfExist("dolharubang/diary/", id.toString());
+        }
+
+        diary.update(
+            member,
+            diaryReqDto.getContents(),
+            diaryReqDto.getEmoji(),
+            imageUrl,
+            diary.getReply()
+        );
+
+        return DiaryResDto.fromEntity(diary);
+    }
 
     @Transactional(readOnly = true)
     public DiaryResDto getDiary(Long id) {
