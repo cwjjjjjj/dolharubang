@@ -20,7 +20,7 @@ struct CustomTextField: UIViewRepresentable {
     var placeholderColor: UIColor?
     var font: Font?
     var textColor: UIColor?
-    var backgroundColor: UIColor? = .gray
+    var backgroundColor: UIColor? = .coreGray
     var minLength: Int = 1
     var maxLength: Int
     var alertTitle: String?
