@@ -27,3 +27,19 @@ enum FaceShape : String,Customizable {
             return self.rawValue
         }
 }
+
+extension FaceShape {
+    var toDBTIModel: DBTIModel {
+        switch self {
+            case .sparkle:    return .banzzag
+            case .sosim:      return .sosim
+            case .saechim:    return .saechim
+            case .nareun:     return .nareun
+            case .meong:      return .meong
+            case .cupid:      return .cupid
+            case .bboombboom: return .bboombboom
+            case .balral:     return .ballal
+            case .chic:       return .chic
+        }
+    }
+}

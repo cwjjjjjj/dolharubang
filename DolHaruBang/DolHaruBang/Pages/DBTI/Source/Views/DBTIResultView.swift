@@ -35,9 +35,7 @@ struct DBTIResultView: View {
                     if keyboardGuardian.keyboardHeight == 0 {
                         HStack {
                             Spacer()
-                            Image("Logo")
-                                .resizable()
-                                .scaledToFit()
+                            ResultDolView(selectedFaceShape: store.selectedFaceShape)
                                 .frame(width: 270, height: 270)
                             Spacer()
                         }

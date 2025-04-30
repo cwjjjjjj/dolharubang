@@ -101,6 +101,22 @@ extension DBTIModel {
         case .banzzag:     return "쩝쩝박사"
         }
     }
+    
+    
+    var toFaceShape: FaceShape? {
+        switch self {
+        case .banzzag:     return .sparkle
+        case .sosim:       return .sosim
+        case .saechim:     return .saechim
+        case .nareun:      return .nareun
+        case .meong:       return .meong
+        case .cupid:       return .cupid
+        case .bboombboom:  return .bboombboom
+        case .ballal:      return .balral
+        case .chic:        return .chic
+        }
+    }
+    
 }
 
 
@@ -182,19 +198,20 @@ let questions: [Question] = [
         ]
     ),
     Question(
-        text: "어느 날 길에서 주운 낡은 시계를 자세히 살펴보니,\n날짜와 시간을 마음대로 조종할 수 있는 것처럼 보인다.\n어떻게 할까?",
+//        text: "어느 날 길에서 주운 낡은 시계를 자세히 살펴보니,\n날짜와 시간을 마음대로 조종할 수 있는 것처럼 보인다.\n어떻게 할까?",
+        text: "어느 날 길에서 낡은 시계를 주웠다.\n그런데 자세히 살펴보니,\n날짜와 시간을 마음대로 조종할 수 있을 것 같다.\n어떻게 할까?",
         about: .reality,
         options: [
-            (text: "소설에서만 보던 게 실제로 있다니!\n2시간 전으로 돌아가볼까?", score: 1),
-            (text: "장난감이겠지. 주인이나 찾아줘야지.", score: nil)
+            (text: "소설에서만 보던 게 실제로 있다니!\n일단 2시간 전으로 돌아가볼까?", score: 1),
+            (text: "장난감이겠지. 주인이나 찾아주자.", score: nil)
         ]
     ),
     Question(
-        text: "당신의 최애 영화 속 세계로 \n들어갈 수 있는 기회가 주어졌다!\n그런데 그 세계는 위험한 모험으로 가득하다는 걸 안다.\n당신의 선택은?",
+        text: "당신의 최애 영화 속 세계로 \n들어갈 수 있는 기회가 주어졌다!\n그런데 그 세계는 위험한 모험으로 가득하다.\n당신의 선택은?",
         about: .reality,
         options: [
             (text: "모험이라니, 너무 흥미진진해!\n당장 들어가서 주인공처럼 살아봐야지!", score: 1),
-            (text: "아무리 좋아도 위험한 건 싫어…\n그냥 안전하게 영화로 볼래~!", score: nil)
+            (text: "아무리 좋아도 위험한 건 싫어…\n영화는 안전하게 영화로 볼래~!", score: nil)
         ]
     ),
     Question(
@@ -239,6 +256,11 @@ let questions: [Question] = [
     )
 ]
 
+struct tmpRequestBody: Codable, Equatable, Sendable {
+    let speciesName: String
+    let stoneName: String
+}
+
 @DependencyClient
 struct DBTIClient {
     var checkUsername: @Sendable (_ username: String) async throws -> Bool
@@ -256,18 +278,16 @@ extension DBTIClient: DependencyKey {
             let queryParameters : [String: String] = [
                 "spaceName": spaceName
             ]
-            let bodyParameters: [String: String] = [
-                "speciesName": speciesName,
-                "stoneName": stoneName
-            ]
-            let body = try JSONSerialization.data(withJSONObject: bodyParameters)
-                _ = try await fetch(
-                    url: url,
-                    model: EmptyResponse.self,
-                    method: .post,
-                    queryParameters: queryParameters, // 쿼리스트링
-                    body: body                        // JSON body
-                )
+            let requestBody = tmpRequestBody(speciesName: speciesName, stoneName: stoneName)
+            let bodyData = try JSONEncoder().encode(requestBody)
+               
+            try await fetch(
+                url: url,
+                model: EmptyResponse.self,
+                method: .post,
+                queryParameters: queryParameters,
+                body: bodyData
+           )
         }
     )
 }

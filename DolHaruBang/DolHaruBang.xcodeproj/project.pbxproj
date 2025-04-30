@@ -62,6 +62,7 @@
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
 		DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */; };
 		DA0E9EFA2C9F390A00A3CD39 /* MyPageIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */; };
+		DA39E8242DC275E100D92C9D /* ResultDolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA39E8232DC275E100D92C9D /* ResultDolView.swift */; };
 		DA461F722C81958E00270CDE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F712C81958E00270CDE /* CalendarView.swift */; };
 		DA461F742C81E45C00270CDE /* CalendarUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F732C81E45C00270CDE /* CalendarUtil.swift */; };
 		DA461F762C81E50300270CDE /* FigmaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461F752C81E50300270CDE /* FigmaEffects.swift */; };
@@ -205,6 +206,7 @@
 		DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeature.swift; sourceTree = "<group>"; };
 		DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		DA39E8232DC275E100D92C9D /* ResultDolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultDolView.swift; sourceTree = "<group>"; };
 		DA461F712C81958E00270CDE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DA461F732C81E45C00270CDE /* CalendarUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtil.swift; sourceTree = "<group>"; };
 		DA461F752C81E50300270CDE /* FigmaEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaEffects.swift; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 				DAC7C3B32DC0D8F900B12FCE /* DBTIQuestionView.swift */,
 				DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */,
 				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
+				DA39E8232DC275E100D92C9D /* ResultDolView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1350,6 +1353,7 @@
 				659792092C9E1CA000E2B51D /* SettingView.swift in Sources */,
 				DA461F7D2C840C7200270CDE /* HaruBangView.swift in Sources */,
 				65463D042CEDB9ED00079A4E /* SignFeature.swift in Sources */,
+				DA39E8242DC275E100D92C9D /* ResultDolView.swift in Sources */,
 				DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */,
 				DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */,
 				DA6904272CAFC13900A557A1 /* DoljanchiView..swift in Sources */,

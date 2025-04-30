@@ -136,7 +136,8 @@ struct TalkFeature {
                 state.isLoading = false
                 state.errorMessage = "대화를 불러오지 못했습니다: \(error.localizedDescription)"
                 return .none
-                    
+
+
             // MARK: [GET] 대화 전체 가져오기
             case .fetchTalks:
                 state.isLoading = true
@@ -155,13 +156,12 @@ struct TalkFeature {
                     state.floatingDate = lastTalk.createdAt // 첫 대화의 날짜 표시
                 }
                 return .none
-
             case let .fetchTalksResponse(.failure(error)):
                 state.isLoading = false
                     state.errorMessage = "대화 목록을 불러오지 못했습니다: \(error.localizedDescription)"
                 return .none
 
-            // [POST] 대화 등록하기
+            // MARK: [POST] 대화 등록하기
             case let .registTalk(talk):
                 print("----------------등록할 talk의 정보----------------")
                 dump(talk)

@@ -25,7 +25,7 @@ struct Jarang: Codable, Equatable, Sendable {
 
 @DependencyClient
 struct ParkClient {
-    var fetchFeed: @Sendable (_ memberId: Int, _ lastContestId: Int?, _ contestFeedSortType: String?, _ size : Int?) async throws -> [Jarang]
+    var fetchFeed: @Sendable (_ lastContestId: Int?, _ contestFeedSortType: String?, _ size : Int?) async throws -> [Jarang]
 //    var registJarang: @Sendable (_ jarang: Jarang) async throws -> NetworkMessage
 }
 
@@ -38,8 +38,8 @@ extension DependencyValues {
 
 extension ParkClient: DependencyKey {
     static let liveValue = ParkClient(
-        fetchFeed: { memberId, lastContestId, contestFeedSortType, size in
-            var url = "/contests/feed/\(memberId)"
+        fetchFeed: { lastContestId, contestFeedSortType, size in
+            var url = APIConstants.Endpoints.feed
             var queryItems: [String] = []
             
             // nil이 아닌 값만 쿼리로 추가
