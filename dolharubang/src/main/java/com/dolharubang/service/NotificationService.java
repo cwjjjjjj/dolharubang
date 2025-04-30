@@ -39,11 +39,15 @@ public class NotificationService {
         return notificationRepository.countByReceiverIdAndIsReadFalse(memberId);
     }
 
-    public void markAsRead(Long memberId, Long notificationId) {
+    public NotificationResDto markAsRead(Long memberId, Long notificationId, String nickname) {
         Notification notification = notificationRepository.findByIdAndReceiverId(notificationId,
                 memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_NOT_FOUND));
+
         notification.markAsRead();
-        notificationRepository.save(notification);
+        notificationRepository.save(notification); // 변경사항 반영
+
+        return NotificationResDto.from(notification, nickname);
     }
+
 }
