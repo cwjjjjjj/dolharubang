@@ -20,6 +20,7 @@ struct APIConstants {
     // API 경로
     struct Endpoints {
         static let kakaoLogin = "/auth/kakao-login"
+        static let appleLogin = "/auth/apple-login"
         static let refresh = "/auth/reissue"
         
         // MARK: HaruBang(Diary)
