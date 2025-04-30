@@ -51,7 +51,6 @@ struct SettingView : View {
 //                            Toggle("", isOn: $flag)
 //                                .toggleStyle(SwitchToggleStyle(tint: Color(hex: "A5CD3B")))
 //                        }
-                        
                         HStack{
                             Text("햅틱 진동")
                                 .font(Font.customFont(Font.body1Regular))

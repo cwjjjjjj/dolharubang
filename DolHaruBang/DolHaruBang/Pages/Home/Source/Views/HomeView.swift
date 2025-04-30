@@ -238,12 +238,10 @@ struct HomeView : View {
                         .position(x: 110, y: 210)
                 }
                 
-                // MARK: 돌이름, 편지갯수, 친밀도
-                if let basicInfo = store.basicInfo {
                     ZStack(alignment: .center){
                         Image("Vector").resizable().scaledToFit()
                         
-                        Text("\(basicInfo.mailCount)")
+                        Text("\(store.unreadCount)")
                             .font(Font.customFont(Font.signCount))
                             .foregroundColor(Color(hex: "837C74"))
                             .padding(.bottom,2)
@@ -253,8 +251,9 @@ struct HomeView : View {
                         x: geometry.size.width - 60,
                         y: geometry.size.height / 2 - 90
                     )
-                    
-                    
+                
+                // MARK: 돌이름, 편지갯수, 친밀도
+                if let basicInfo = store.basicInfo {
                     Text("\(basicInfo.dolName)")
                         .position(
                             x: geometry.size.width / 2,
@@ -386,6 +385,7 @@ struct HomeView : View {
                 store.send(.fetchSand)
                 store.send(.fetchSign)
                 store.send(.fetchBasic)
+                store.send(.fetchUnRead)
             }
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
