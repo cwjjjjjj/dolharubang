@@ -135,8 +135,8 @@ struct LoginView: View {
                 HomeView(store : store)
             case let .DBTIGuideView(store):
                 DBTIGuideView(store : store)
-            case let .DBTIQuestion1View(store):
-                DBTIQuestion1View(store : store)
+            case let .DBTIQuestionView(store):
+                DBTIQuestionView(store : store)
             case let .DBTIResultView(store):
                 DBTIResultView(store : store)
             case let .TrophyView(store):
@@ -190,4 +190,41 @@ struct LoginView: View {
             }
         }
     }
+}
+
+class SignInViewModel: ObservableObject {
+    @Published var userInfo: UserInfoo?
+    
+    func handleSignInWithAppleResult(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .success(let authorization):
+            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                let userId = appleIDCredential.user
+                let email = appleIDCredential.email
+                let fullName = appleIDCredential.fullName
+                
+                DispatchQueue.main.async {
+                    self.userInfo = UserInfoo(
+                        id: userId,
+                        email: email,
+                        firstName: fullName?.givenName,
+                        lastName: fullName?.familyName
+                    )
+                }
+                
+                print("User ID: \(userId)")
+                print("Email: \(email ?? "N/A")")
+                print("Full Name: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
+            }
+        case .failure(let error):
+            print("Authorization failed: \(error.localizedDescription)")
+        }
+    }
+}
+
+struct UserInfoo {
+    let id: String
+    let email: String?
+    let firstName: String?
+    let lastName: String?
 }

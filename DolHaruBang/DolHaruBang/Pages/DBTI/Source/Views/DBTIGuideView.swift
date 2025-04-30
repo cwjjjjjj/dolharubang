@@ -26,7 +26,7 @@ struct DBTIGuideView: View {
                         Spacer().frame(height: geometry.size.height * 0.2892)
                         HStack {
                             Spacer()
-                            CustomText(text: "이제 하루를 함께 할\n반려돌을 주워볼까요?",
+                            CustomText(text: "\(store.username)님!!\n이제 하루를 함께 할\n반려돌을 주워볼까요?",
                                        font: Font.uiFont(for: Font.subtitle2)!,
                                        textColor: .coreBlack,
                                        letterSpacingPercentage: -2.5,
@@ -68,7 +68,11 @@ struct DBTIGuideView: View {
                         
                        
                         HStack {
-                            NavigationLink(state: NavigationFeature.Path.State.home(HomeFeature.State())) {
+                            NavigationLink(
+                                state: NavigationFeature.Path.State.DBTIQuestionView(
+                                    DBTIFeature.State()
+                                )
+                            ) {
                                 HStack {
                                     Spacer()
                                     Text("함께 시작하기!")
@@ -93,39 +97,39 @@ struct DBTIGuideView: View {
 }
 
 
-class SignInViewModel: ObservableObject {
-    @Published var userInfo: UserInfoo?
-    
-    func handleSignInWithAppleResult(_ result: Result<ASAuthorization, Error>) {
-        switch result {
-        case .success(let authorization):
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                let userId = appleIDCredential.user
-                let email = appleIDCredential.email
-                let fullName = appleIDCredential.fullName
-                
-                DispatchQueue.main.async {
-                    self.userInfo = UserInfoo(
-                        id: userId,
-                        email: email,
-                        firstName: fullName?.givenName,
-                        lastName: fullName?.familyName
-                    )
-                }
-                
-                print("User ID: \(userId)")
-                print("Email: \(email ?? "N/A")")
-                print("Full Name: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
-            }
-        case .failure(let error):
-            print("Authorization failed: \(error.localizedDescription)")
-        }
-    }
-}
-
-struct UserInfoo {
-    let id: String
-    let email: String?
-    let firstName: String?
-    let lastName: String?
-}
+//class SignInViewModel: ObservableObject {
+//    @Published var userInfo: UserInfoo?
+//    
+//    func handleSignInWithAppleResult(_ result: Result<ASAuthorization, Error>) {
+//        switch result {
+//        case .success(let authorization):
+//            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+//                let userId = appleIDCredential.user
+//                let email = appleIDCredential.email
+//                let fullName = appleIDCredential.fullName
+//                
+//                DispatchQueue.main.async {
+//                    self.userInfo = UserInfoo(
+//                        id: userId,
+//                        email: email,
+//                        firstName: fullName?.givenName,
+//                        lastName: fullName?.familyName
+//                    )
+//                }
+//                
+//                print("User ID: \(userId)")
+//                print("Email: \(email ?? "N/A")")
+//                print("Full Name: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
+//            }
+//        case .failure(let error):
+//            print("Authorization failed: \(error.localizedDescription)")
+//        }
+//    }
+//}
+//
+//struct UserInfoo {
+//    let id: String
+//    let email: String?
+//    let firstName: String?
+//    let lastName: String?
+//}

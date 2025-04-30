@@ -2,56 +2,31 @@ import SwiftUI
 import ComposableArchitecture
 
 struct InputUserInfoView: View {
-    @EnvironmentObject var userManager: UserManager // 닉네임 전역변수로 기억
-    @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
+    let store: StoreOf<DBTIFeature>
+    @FocusState private var isUsernameFieldFocused: Bool
     
-    @State var store: StoreOf<DBTIFeature>
-    
-    @State var name: String = ""
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
-    @State private var alertMessage: String = ""
-    @State private var showConfirmation: Bool = false
-
-    @State private var isNameConfirmed: Bool = false // 닉네임 중복 확인 여부를 추적하는 상태 변수
-    
-    // 모든 입력이 완료되었는지 확인하는 변수
-    var isFormComplete: Bool {
-        return isNameConfirmed && selectedYear != nil && selectedMonth != nil && selectedDay != nil
-    }
-
-    @State private var selectedYear: Int?
-    @State private var showYearPicker: Bool = false
-
-    @State private var selectedMonth: Int?
-    @State private var showMonthPicker: Bool = false
-
-    @State private var selectedDay: Int?
-    @State private var showDayPicker: Bool = false
-
-    var currentYear: Int {
-        Calendar.current.component(.year, from: Date())
-    }
-    
-    var currentMonth: Int {
-        Calendar.current.component(.month, from: Date())
-    }
-    
-    var currentDay: Int {
-        Calendar.current.component(.day, from: Date())
-    }
+    // 현재 날짜 (년/일/월 + 날 수)
+    var currentYear: Int { Calendar.current.component(.year, from: Date()) }
+    var currentMonth: Int { Calendar.current.component(.month, from: Date()) }
+    var currentDay: Int { Calendar.current.component(.day, from: Date()) }
     
     var days: [Int] {
-        if selectedYear == currentYear && selectedMonth == currentMonth {
+        if store.selectedYear == currentYear && store.selectedMonth == currentMonth {
             return Array(1...currentDay)
-        } else {
-            let dateComponents = DateComponents(year: selectedYear, month: selectedMonth)
+        } else if let year = store.selectedYear, let month = store.selectedMonth {
+            let dateComponents = DateComponents(year: year, month: month)
             let date = Calendar.current.date(from: dateComponents)!
             let range = Calendar.current.range(of: .day, in: .month, for: date)!
             return Array(range)
+        } else {
+            return Array(1...31)
         }
     }
-
+    
+    var isFormComplete: Bool {
+        store.isNameConfirmed && store.selectedYear != nil && store.selectedMonth != nil && store.selectedDay != nil
+    }
+    
     var body: some View {
         ZStack {
             Color.mainWhite
@@ -63,11 +38,9 @@ struct InputUserInfoView: View {
                     
                     HStack {
                         Spacer()
-                        
                         CustomText(text: "돌하루방에서 사용할\n닉네임을 정하고\n생일을 입력해주세요.", font: Font.uiFont(for: Font.subtitle2)!, textColor: .coreBlack)
                             .frame(width: 187, height: 87)
                             .fixedSize(horizontal: false, vertical: true)
-                        
                         Spacer()
                     }.padding(.bottom, 33)
                     
@@ -82,16 +55,42 @@ struct InputUserInfoView: View {
                     
                     HStack {
                         CustomTextField(
-                            text: $name,
-//                            textColor: .coreGreen,
+                            text: Binding(
+                                get: { store.username },
+                                set: { store.send(.setUsername($0)) }
+                            ),
                             placeholder: "닉네임",
-//                            placeholderColor: ,
-                            font: .customFont(Font.button1), maxLength: 12, 
+                            font: .customFont(Font.button1),
+                            maxLength: 12,
                             alertTitle: "글자 수 오류",
                             alertMessage: "닉네임은 1~6자로 입력해주세요.",
-                            onSubmit: {checkUsername()}
+                            onSubmit: { store.send(.checkUsername) }
                         )
                         .frame(width: 210, height: 48)
+                        .alert(isPresented: Binding(
+                                    get: { store.showAlert },
+                                    set: { store.send(.setShowAlert($0)) }
+                                )) {
+                                    if store.showConfirmation {
+                                        return Alert(
+                                            title: Text(store.inputAlertTitle),
+                                            message: Text(store.inputAlertMessage),
+                                            primaryButton: .default(Text("네"), action: {
+                                                isUsernameFieldFocused = false
+                                                store.send(.setIsNameConfirmed(true))
+                                            }),
+                                            secondaryButton: .cancel(Text("아니요")) {
+                                                store.send(.setUsername(""))
+                                            }
+                                        )
+                                    } else {
+                                        return Alert(
+                                            title: Text(store.inputAlertTitle),
+                                            message: Text(store.inputAlertMessage),
+                                            dismissButton: .default(Text("OK"))
+                                        )
+                                    }
+                                }
                         .cornerRadius(24)
                         
                         Spacer().frame(width: 10)
@@ -100,100 +99,125 @@ struct InputUserInfoView: View {
                             title: "중복확인",
                             font: .customFont(Font.button1),
                             textColor: .coreWhite,
-                            action: {
-                                checkUsername()
-                            }
+                            action: { store.send(.checkUsername) }
                         )
                         .frame(width: 100, height: 48)
-                        .background(name.isEmpty ? Color.disabled : Color.mainGreen)
+                        .background(store.username.isEmpty ? Color.disabled : Color.mainGreen)
                         .cornerRadius(24)
-                        .disabled(name.isEmpty)
-                        .onTapGesture {
-                            checkUsername()
-                        }
+                        .disabled(store.username.isEmpty)
+                        .onTapGesture { store.send(.checkUsername) }
                     }
                     
                     Spacer().frame(height: 16)
                     
                     HStack {
                         CustomYearButton(
-                            selectedYear: $selectedYear,
-                            isPresented: $showYearPicker,
+                            selectedYear: Binding(
+                                get: { store.selectedYear },
+                                set: { store.send(.setSelectedYear($0)) }
+                            ),
+                            isPresented: Binding(
+                                get: { store.showYearPicker },
+                                set: { store.send(.setShowYearPicker($0)) }
+                            ),
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
-                        .onTapGesture {
-                            self.showYearPicker = true
-                        }
-                        .sheet(isPresented: $showYearPicker) {
+                        .onTapGesture { store.send(.setShowYearPicker(true)) }
+                        .sheet(isPresented: Binding(
+                            get: { store.showYearPicker },
+                            set: { store.send(.setShowYearPicker($0)) }
+                        )) {
                             YearPicker(
                                 selectedYear: Binding(
-                                    get: { selectedYear ?? 2024 },
-                                    set: { newValue in selectedYear = newValue }
+                                    get: { store.selectedYear ?? 2025 },
+                                    set: { store.send(.setSelectedYear($0)) }
                                 ),
-                                isPresented: $showYearPicker,
+                                isPresented: Binding(
+                                    get: { store.showYearPicker },
+                                    set: { store.send(.setShowYearPicker($0)) }
+                                ),
                                 years: Array(1900...currentYear)
                             ) {
-                                self.selectedMonth = nil
-                                self.selectedDay = nil
+                                store.send(.setSelectedMonth(nil))
+                                store.send(.setSelectedDay(nil))
                             }
                         }
                         
                         CustomMonthButton(
-                            selectedMonth: $selectedMonth,
-                            isPresented: $showMonthPicker,
+                            selectedMonth: Binding(
+                                get: { store.selectedMonth },
+                                set: { store.send(.setSelectedMonth($0)) }
+                            ),
+                            isPresented: Binding(
+                                get: { store.showMonthPicker },
+                                set: { store.send(.setShowMonthPicker($0)) }
+                            ),
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
-                        .onTapGesture {
-                            self.showMonthPicker = true
-                        }
-                        .sheet(isPresented: $showMonthPicker) {
-                            let months = (selectedYear == currentYear) ? Array(1...currentMonth) : Array(1...12)
+                        .onTapGesture { store.send(.setShowMonthPicker(true)) }
+                        .sheet(isPresented: Binding(
+                            get: { store.showMonthPicker },
+                            set: { store.send(.setShowMonthPicker($0)) }
+                        )) {
+                            let months = (store.selectedYear == currentYear) ? Array(1...currentMonth) : Array(1...12)
                             MonthPicker(
                                 selectedMonth: Binding(
-                                    get: { selectedMonth ?? 1 },
-                                    set: { newValue in selectedMonth = newValue }
+                                    get: { store.selectedMonth ?? 1 },
+                                    set: { store.send(.setSelectedMonth($0)) }
                                 ),
-                                isPresented: $showMonthPicker,
+                                isPresented: Binding(
+                                    get: { store.showMonthPicker },
+                                    set: { store.send(.setShowMonthPicker($0)) }
+                                ),
                                 months: months
                             ) {
-                                self.selectedDay = nil
+                                store.send(.setSelectedDay(nil))
                             }
                         }
-
+                        
                         CustomDayButton(
-                            selectedDay: $selectedDay,
-                            isPresented: $showDayPicker,
+                            selectedDay: Binding(
+                                get: { store.selectedDay },
+                                set: { store.send(.setSelectedDay($0)) }
+                            ),
+                            isPresented: Binding(
+                                get: { store.showDayPicker },
+                                set: { store.send(.setShowDayPicker($0)) }
+                            ),
                             font: .customFont(Font.button1)
                         )
                         .background(Color.mainGray)
                         .frame(width: 100, height: 48)
                         .cornerRadius(24)
-                        .onTapGesture {
-                            self.showDayPicker = true
-                        }
-                        .sheet(isPresented: $showDayPicker) {
+                        .onTapGesture { store.send(.setShowDayPicker(true)) }
+                        .sheet(isPresented: Binding(
+                            get: { store.showDayPicker },
+                            set: { store.send(.setShowDayPicker($0)) }
+                        )) {
                             DayPicker(
                                 selectedDay: Binding(
-                                    get: { selectedDay ?? 1 },
-                                    set: { newValue in selectedDay = newValue }
+                                    get: { store.selectedDay ?? 1 },
+                                    set: { store.send(.setSelectedDay($0)) }
                                 ),
-                                isPresented: $showDayPicker,
+                                isPresented: Binding(
+                                    get: { store.showDayPicker },
+                                    set: { store.send(.setShowDayPicker($0)) }
+                                ),
                                 days: days
                             )
                         }
-
                     }
                     
                     Spacer().frame(height: 40)
                     
                     HStack {
-                        NavigationLink(state : NavigationFeature.Path.State.DBTIGuideView(DBTIFeature.State())){
+                        NavigationLink(state: NavigationFeature.Path.State.DBTIGuideView(store.state)) {
                             ZStack {
                                 HStack {
                                     Spacer()
@@ -208,48 +232,53 @@ struct InputUserInfoView: View {
                         .background(isFormComplete ? Color.mainGreen : Color.disabled)
                         .cornerRadius(24)
                         .disabled(!isFormComplete)
-                        .simultaneousGesture(TapGesture().onEnded {
-                            if isFormComplete {
-                                userManager.nickname = name
-//                                print(userManager.nickname ?? "닉네임 세팅 안 됨")
-                            }
-                        })
+//                        .simultaneousGesture(TapGesture().onEnded {
+//                            if isFormComplete {
+//
+//                            }
+//                        })
                     }
                     
                     Spacer()
                 }
             }
-            .alert(isPresented: $showAlert) {
-                if showConfirmation {
+            .alert(isPresented: Binding(
+                get: { store.showAlert },
+                set: { store.send(.setShowAlert($0)) }
+            )) {
+                // 중복 check 결과에 따라서 다르게!
+                if store.showConfirmation {
                     return Alert(
-                        title: Text(alertTitle),
-                        message: Text(alertMessage),
-                        primaryButton: .default(Text("Confirm"), action: {
-                            isNameConfirmed = true // 닉네임 중복 확인 완료
-                            self.hideKeyboard()
+                        title: Text(store.inputAlertTitle),
+                        message: Text(store.inputAlertMessage),
+                        primaryButton: .default(Text("네"), action: {
+                            store.send(.setIsNameConfirmed(true))
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                         }),
-                        secondaryButton: .cancel()
+                        secondaryButton: .cancel(Text("아니요")) {
+                            store.send(.setUsername(""))
+                        }
                     )
                 } else {
                     return Alert(
-                        title: Text(alertTitle),
-                        message: Text(alertMessage),
+                        title: Text(store.inputAlertTitle),
+                        message: Text(store.inputAlertMessage),
                         dismissButton: .default(Text("OK"))
                     )
                 }
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                self.hideKeyboard()
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
         .edgesIgnoringSafeArea(.all)
-        .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        
                     }) {
                         Text("로그아웃")
                             .font(.customFont(Font.body3Regular))
@@ -259,28 +288,5 @@ struct InputUserInfoView: View {
                 .offset(x: 8, y: 8)
             }
         }
-    }
-
-    func checkUsername() {
-        let existingUsernames = ["상준", "희태", "우진", "성재", "영규", "해인"]
-        
-        if (name == "") {
-            alertTitle = "글자 수 오류"
-            alertMessage = "닉네임은 1~12자로 입력해주세요."
-            showConfirmation = false
-            isNameConfirmed = false
-        }
-        else if existingUsernames.contains(name) {
-            alertTitle = "닉네임 중복"
-            alertMessage = "이 닉네임은 이미 사용 중입니다. 다른 닉네임을 선택해주세요."
-            showConfirmation = false
-            isNameConfirmed = false // 닉네임 중복 확인 실패
-        } else {
-            alertTitle = "닉네임 사용 가능"
-            alertMessage = "\(name)으로 하시겠습니까?"
-            showConfirmation = true
-        }
-        
-        showAlert = true
     }
 }

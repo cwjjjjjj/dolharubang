@@ -35,7 +35,9 @@ struct DBTIQuestionView: View {
                                    textAlign: .center)
                         Spacer()
                     }
-                    
+                    .opacity(store.showQuestion ? 1 : 0)
+
+                
                     HStack {
                         Spacer()
                         CustomText(text: questions[store.withState { $0.questionIndex }].text,
@@ -47,9 +49,11 @@ struct DBTIQuestionView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         Spacer()
                     }
+                    .opacity(store.showQuestion ? 1 : 0)
                     
                     Spacer().frame(height: geometry.size.height * 0.15)
                     
+
                     VStack(alignment: .center, spacing: 16) {
                         ForEach(0..<questions[store.withState { $0.questionIndex }].options.count, id: \.self) { index in
                             Button(action: {
@@ -69,13 +73,30 @@ struct DBTIQuestionView: View {
                             }
                         }
                     }
+                    .opacity(store.showOptions ? 1 : 0)
                     
                     Spacer().frame(height: geometry.size.height * 0.2892)
                 }
             }
         }
-        .edgesIgnoringSafeArea(.all)
+        .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                store.send(.toggleQuestion)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                store.send(.toggleOptions)
+            }
+        }
+        .onChange(of: store.questionIndex) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                store.send(.toggleQuestion)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                store.send(.toggleOptions)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack {

@@ -83,7 +83,6 @@
 		DA6E577B2C5908580088A7A7 /* CustomDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */; };
 		DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */; };
 		DA6E57822C5B25170088A7A7 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57812C5B25170088A7A7 /* Text.swift */; };
-		DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */; };
 		DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */; };
 		DA6E57882C5E02240088A7A7 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */; };
 		DA6E578B2C5E4ABE0088A7A7 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */; };
@@ -128,6 +127,7 @@
 		DAAEFC352C5747F000D1F87B /* NanumSquareRoundOTFR.otf in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC322C5747F000D1F87B /* NanumSquareRoundOTFR.otf */; };
 		DAAEFC362C5747F000D1F87B /* NanumSquareRoundOTFEB.otf in Resources */ = {isa = PBXBuildFile; fileRef = DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */; };
 		DAAEFC3A2C575B8900D1F87B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAEFC392C575B8900D1F87B /* LoginView.swift */; };
+		DAC7C3B42DC0D8F900B12FCE /* DBTIQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C3B32DC0D8F900B12FCE /* DBTIQuestionView.swift */; };
 		DAC94BC12C9D43C400112DA7 /* TalkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC94BC02C9D43B800112DA7 /* TalkEnvironment.swift */; };
 		DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */ = {isa = PBXBuildFile; fileRef = DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */; };
 		DAF92ECB2DB0D6FF00BD2B3C /* Dols.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DAF92EC72DB0D6FF00BD2B3C /* Dols.scnassets */; };
@@ -224,7 +224,6 @@
 		DA6E577A2C5908580088A7A7 /* CustomDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDayButton.swift; sourceTree = "<group>"; };
 		DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIGuideView.swift; sourceTree = "<group>"; };
 		DA6E57812C5B25170088A7A7 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
-		DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestion1View.swift; sourceTree = "<group>"; };
 		DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIResultView.swift; sourceTree = "<group>"; };
 		DA6E57872C5E02240088A7A7 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardGuardian.swift; path = DolHaruBang/Pages/DBTI/Source/Views/KeyboardGuardian.swift; sourceTree = SOURCE_ROOT; };
 		DA6E578A2C5E4ABE0088A7A7 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -270,6 +269,7 @@
 		DAAEFC332C5747F000D1F87B /* NanumSquareRoundOTFEB.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundOTFEB.otf; sourceTree = "<group>"; };
 		DAAEFC372C5755E600D1F87B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAAEFC392C575B8900D1F87B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		DAC7C3B32DC0D8F900B12FCE /* DBTIQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIQuestionView.swift; sourceTree = "<group>"; };
 		DAC94BC02C9D43B800112DA7 /* TalkEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkEnvironment.swift; sourceTree = "<group>"; };
 		DAC94C122C9F377600112DA7 /* je_gray_02_4k.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = je_gray_02_4k.hdr; sourceTree = "<group>"; };
 		DAF92EC62DB0D6FF00BD2B3C /* Accessorys.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Accessorys.scnassets; sourceTree = "<group>"; };
@@ -528,7 +528,7 @@
 			isa = PBXGroup;
 			children = (
 				DA6E577F2C594BD90088A7A7 /* DBTIGuideView.swift */,
-				DA6E57832C5C5EFF0088A7A7 /* DBTIQuestion1View.swift */,
+				DAC7C3B32DC0D8F900B12FCE /* DBTIQuestionView.swift */,
 				DA6E57852C5C6A540088A7A7 /* DBTIResultView.swift */,
 				DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */,
 			);
@@ -1352,6 +1352,7 @@
 				DAA4C9DD2C8B7A7700409D4B /* DolView.swift in Sources */,
 				DA6E57732C58F6AA0088A7A7 /* CustomTextField.swift in Sources */,
 				DA461F742C81E45C00270CDE /* CalendarUtil.swift in Sources */,
+				DAC7C3B42DC0D8F900B12FCE /* DBTIQuestionView.swift in Sources */,
 				658216C02CA5798400C5CD37 /* MailFeature.swift in Sources */,
 				6597920B2C9E1CE400E2B51D /* SettingFeature.swift in Sources */,
 				DA7431582D6EFB0700C2C148 /* CalendarFeature.swift in Sources */,
@@ -1384,7 +1385,6 @@
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */,
 				65463D022CEDB96800079A4E /* SignEnviroment.swift in Sources */,
-				DA6E57842C5C5EFF0088A7A7 /* DBTIQuestion1View.swift in Sources */,
 				DA7FE5852C8826A200843462 /* SchedulePopupView.swift in Sources */,
 				DAF92ED52DB0DDF400BD2B3C /* ParkEnvironment.swift in Sources */,
 				DAA4CA042C8B7C6900409D4B /* CustomizeView.swift in Sources */,

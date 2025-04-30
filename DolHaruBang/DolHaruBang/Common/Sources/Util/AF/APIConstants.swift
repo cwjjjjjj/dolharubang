@@ -8,7 +8,10 @@
 import Foundation
 
 struct APIConstants {
-    static let baseURL = "https://sole-organic-singularly.ngrok-free.app/api/v1"
+    // 우진 로컬
+//    static let baseURL = "https://sole-organic-singularly.ngrok-free.app/api/v1"
+    // 표준
+    static let baseURL = "https://dolharubang.shop/api/v1"
     
     // 토큰 관련 키
     static let accessTokenKey = "ACCESS_TOKEN"
@@ -39,11 +42,14 @@ struct APIConstants {
         static let info = "/members/profile"
         static let photo = "/members/profile-picture"
         static let isfirst = "/members/is-first"
+        static let search = "/members/search"
+        static let check = "/members/check"
         
         // MARK: Stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회
         static let sign = "/stones/sign-text"
         static let dolname = "/stones/name"
+        static let adopt = "/stones/adopt"
         
         // MARK: Missions
         static let trophy = "/member-missions"

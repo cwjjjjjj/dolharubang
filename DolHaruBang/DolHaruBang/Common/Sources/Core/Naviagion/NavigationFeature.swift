@@ -23,7 +23,7 @@ struct NavigationFeature {
     case mypage(MyPageFeature)
     case home(HomeFeature)
     case DBTIGuideView(DBTIFeature)
-    case DBTIQuestion1View(DBTIFeature)
+    case DBTIQuestionView(DBTIFeature)
     case DBTIResultView(DBTIFeature)
     case TrophyView(TrophyFeature)
     case SettingView(SettingFeature)
@@ -56,15 +56,13 @@ struct NavigationFeature {
       case .clickButtonEnable:
           state.enableClick = true
           return .none
-          
       case .popToRoot:
         state.path.removeAll()
         return .none
-
       case .goToHome:
         state.path.append(.home(HomeFeature.State()))
         return .none
-          
+
       case .goToInput:
         state.path.removeAll()
         return .none
@@ -131,11 +129,11 @@ struct NavigationFeature {
                   
                   
               case .DBTIGuideView:
-                  state.path.append(.DBTIQuestion1View(DBTIFeature.State()))
+                  state.path.append(.DBTIGuideView(DBTIFeature.State()))
                   return .none
                   
-              case .DBTIQuestion1View:
-                  state.path.append(.DBTIQuestion1View(DBTIFeature.State()))
+              case .DBTIQuestionView:
+                  state.path.append(.DBTIQuestionView(DBTIFeature.State()))
                   return .none
               case .DBTIResultView(_):
                   state.path.append(.DBTIResultView(DBTIFeature.State()))
@@ -156,12 +154,22 @@ struct NavigationFeature {
       // 이렇게 사용하면 NavigationFeature를 불러오지 않고 기존에 사용하는 Reducer만 불러와도 사용 가능
       case let .path(action):
           switch action {
-              
-          case .element(id: _, action: .DBTIResultView(.homeButtonTapped)):
-            state.path.append(.home(HomeFeature.State()))
-            return .none
-              
-          case .element(id: _, action: .DBTIResultView(.goBack)), .element(id: _, action: .DBTIQuestion1View(.goBack)):
+        
+          case .element(id: _, action: .DBTIQuestionView(.goToResult)):
+              if let last = state.path.last, case let .DBTIQuestionView(dbtiState) = last {
+                  state.path.append(.DBTIResultView(dbtiState))
+              } else {
+                  state.path.append(.DBTIResultView(DBTIFeature.State()))
+              }
+              return .none
+          case .element(id: _, action: .DBTIResultView(.goToHome)):
+              if let last = state.path.last, case let .DBTIResultView(dbtiState) = last {
+                  state.path.append(.home(HomeFeature.State()))
+              } else {
+                  state.path.append(.home(HomeFeature.State()))
+              }
+              return .none
+          case .element(id: _, action: .DBTIResultView(.goBack)), .element(id: _, action: .DBTIQuestionView(.goBack)):
               state.path.removeLast()
               return .none
               

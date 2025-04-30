@@ -16,6 +16,8 @@ enum APIError: Error {
     case modelTypeError
 }
 
+struct EmptyResponse: Decodable {}
+
 struct ErrorResponse: Decodable {
     let message: String
     let code: String
