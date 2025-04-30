@@ -9,11 +9,12 @@
 import SwiftUI
 import UIKit
 import ComposableArchitecture
+import HapticsManager
 
 
 struct HomeView : View {
     @State var store: StoreOf<HomeFeature>
-    
+    @State private var isSuccess: Bool = false
     var body : some View {
         GeometryReader { geometry in
             ZStack {
@@ -130,8 +131,7 @@ struct HomeView : View {
                         enable: $store.enable,
                         onImagePicked: { image in
                             store.send(.captureDol(image))
-                        },
-                        hasRendered: $store.needCapture
+                        }
                     )
                     dolView
                     
@@ -140,6 +140,7 @@ struct HomeView : View {
                             Spacer()
                             if store.ability{
                                 Button(action: {
+                                    isSuccess.toggle()
                                     dolView.rollDol()
                                 })
                                 {
@@ -151,6 +152,7 @@ struct HomeView : View {
                                         .frame(height: geometry.size.width * 0.1)
                                         .background(Color.ability1).cornerRadius(20)
                                 }
+                                .hapticFeedback(.impact(.medium), trigger: isSuccess)
                                 .frame(height: geometry.size.width * 0.15)
                                 .transition(.opacity) // 애니메이션 전환 효과
                                 .animation(.easeInOut, value: store.ability)
@@ -163,14 +165,16 @@ struct HomeView : View {
                             Button(action: {
                                 store.send(.clickAbility)
                             }) {
-                                VStack(spacing : 0) {
+                                ZStack {
                                     Image(store.ability ? "Star2" : "Star")
                                         .resizable()
                                         .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                        .padding(.bottom,10)
                                     Text("능력")
                                         .font(Font.customFont(Font.caption1))
                                         .foregroundColor(store.ability ? Color.ability1: Color.ability2)
-                                        .padding(.bottom,2)
+                                        .padding(.top,20)
                                 }
                                 .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
                                 .overlay(
@@ -181,10 +185,7 @@ struct HomeView : View {
                                 .background(store.ability ? Color.ability2 : Color.ability1)
                                 .clipShape(Circle())
                                 .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
-                                
-                                
-                                
-                            }
+                            }.padding(.trailing,10)
                             
                             CustomTextField(
                                 text: $store.message,
@@ -193,10 +194,10 @@ struct HomeView : View {
                                 backgroundColor: .coreWhite,
                                 maxLength: 40,
                                 useDidEndEditing: false,
-                                customFontStyle: Font.body3Bold,
+                                customFontStyle: Font.body35Bold,
                                 alignment: Align.leading,
-                                leftPadding : 5,
-                                rightPadding : 5
+                                leftPadding : 15,
+                                rightPadding : 15
                             )
                             .frame(width: geometry.size.width * 0.65, height: geometry.size.width * 0.1)
                             .cornerRadius(25)
@@ -237,8 +238,59 @@ struct HomeView : View {
                         .position(x: 110, y: 210)
                 }
                 
+                // MARK: 돌이름, 편지갯수, 친밀도
+                if let basicInfo = store.basicInfo {
+                    ZStack(alignment: .center){
+                        Image("Vector").resizable().scaledToFit()
+                        
+                        Text("\(basicInfo.mailCount)")
+                            .font(Font.customFont(Font.signCount))
+                            .foregroundColor(Color(hex: "837C74"))
+                            .padding(.bottom,2)
+                    }
+                    .frame(width: 32,height: 32)
+                    .position(
+                        x: geometry.size.width - 60,
+                        y: geometry.size.height / 2 - 90
+                    )
+                    
+                    
+                    Text("\(basicInfo.dolName)")
+                        .position(
+                            x: geometry.size.width / 2,
+                            y: geometry.size.height / 2 + 160
+                        )
+                        .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
+
+                    // 친밀도 게이지
+                    ZStack(alignment: .leading){
+                        ProgressView(value: Double(basicInfo.friendShip % 100), total: 100)
+                            .progressViewStyle(LinearProgressViewStyle())
+                            .frame(width: 100)
+                            .accentColor(Color.init(hex: "A5CD3B"))
+                        
+                            Text("\(basicInfo.friendShip / 100)")
+                                .font(Font.customFont(Font.dollevel))
+                                .foregroundColor(Color(hex: "618501"))
+                                .frame(width: 26, height: 26) // 흰색 블록 크기
+                                .background(Color(red: 0.98, green: 0.98, blue: 0.97)) // 흰색 블록
+                                .clipShape(Circle()) // 블록을 원으로 자르기
+                                .shadow(
+                                    color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1),
+                                    radius: 4,
+                                    y: 2
+                                )
+                        
+                    }
+                        .position(
+                            x: geometry.size.width / 2,
+                            y: geometry.size.height / 2 + 180
+                        )
+                        
+                }
+                
                 // MARK: 공유버튼
-                if store.shareButton {
+                ZStack {
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
                         .onTapGesture {
@@ -253,10 +305,10 @@ struct HomeView : View {
                     .cornerRadius(25)
                     .shadow(radius: 10)
                     .zIndex(2)
-                }
+                }.opacity(store.shareButton ? 1 : 0)
                 
                 // MARK: 펫말
-                if store.sign {
+                ZStack {
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
                         .onTapGesture {
@@ -273,10 +325,10 @@ struct HomeView : View {
                     .cornerRadius(25)
                     .shadow(radius: 10)
                     .zIndex(2)
-                }
+                }.opacity(store.sign ? 1 : 0)
                 
                 // MARK: 프로필
-                if store.profile {
+                ZStack{
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
                         .onTapGesture {
@@ -293,10 +345,10 @@ struct HomeView : View {
                     .cornerRadius(25)
                     .shadow(radius: 10)
                     .zIndex(2)
-                }
+                }.opacity(store.profile ? 1 : 0)
                 
                 // MARK: 우체통
-                if store.mail {
+                ZStack{
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
                         .onTapGesture {
@@ -313,7 +365,9 @@ struct HomeView : View {
                     .cornerRadius(25)
                     .shadow(radius: 10)
                     .zIndex(2)
-                }
+                }.opacity(store.mail ? 1 : 0)
+                
+                
                 
             } // ZStack
             .edgesIgnoringSafeArea(.all)
@@ -331,6 +385,7 @@ struct HomeView : View {
                 store.send(.fetchNest)
                 store.send(.fetchSand)
                 store.send(.fetchSign)
+                store.send(.fetchBasic)
             }
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

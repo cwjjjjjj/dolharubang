@@ -50,6 +50,8 @@ struct APIConstants {
         static let sign = "/stones/sign-text"
         static let dolname = "/stones/name"
         static let adopt = "/stones/adopt"
+        static let basic = "/stones/stone-info"
+
         
         // MARK: Missions
         static let trophy = "/member-missions"
