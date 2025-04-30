@@ -61,6 +61,8 @@ public class JwtService {
             .refreshToken(refreshToken)
             .build();
 
+        System.out.println(oAuth2LoginResDto.toString());
+
         return ResponseEntity.ok(oAuth2LoginResDto);
     }
 }

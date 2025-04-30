@@ -99,6 +99,8 @@ public class AuthController {
             .refreshToken(tokenDto.getRefreshToken())
             .build();
 
+        System.out.println(oAuth2LoginResDto.toString());
+
         return ResponseEntity.ok(oAuth2LoginResDto);
 
     }
