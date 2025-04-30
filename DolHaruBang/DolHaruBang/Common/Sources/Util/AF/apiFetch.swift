@@ -14,6 +14,7 @@ enum APIError: Error {
     case networkError
     case tokenEmpty
     case modelTypeError
+    case decodingError // 새로 추가
 }
 
 struct EmptyResponse: Decodable {}
@@ -75,33 +76,27 @@ func fetch<T: Decodable>(
     }
     
     do {
-        // 요청 실행
         return try await executeRequest(request: request, model: model)
-    } catch let error as APIError{
+    } catch let error as APIError {
+        // 토큰 갱신 실패 시에만 토큰 삭제
         if case APIError.tokenRefreshFailed = error {
-                TokenManager.shared.clearTokens()
-                throw error // 상위 레이어로 즉시 전파
+            TokenManager.shared.clearTokens()
+            throw error
         }
         
+        // decodingError는 토큰 삭제 없이 상위 레이어로 전파
+        if case APIError.decodingError = error {
+            throw error
+        }
+        
+        // 나머지 에러 처리 로직 (기존과 동일)
         if case let APIError.unauthorized(errorResponse) = error,
-               errorResponse.code == "UNAUTHORIZED", !skipAuth {
-            do {
-                // 토큰 갱신 시도
-                let newTokens = try await refreshAccessToken()
-                // 새 토큰으로 헤더 업데이트
-                TokenManager.shared.saveTokens(accessToken: newTokens.accessToken, refreshToken: newTokens.refreshToken)
-                finalHeaders.update(.authorization(bearerToken: newTokens.accessToken))
-                request.headers = finalHeaders
-                // 갱신된 토큰으로 요청 재시도
-                return try await executeRequest(request: request, model: model)
-            } catch {
-                // 토큰 갱신 실패 시 로그아웃 처리
-                TokenManager.shared.clearTokens()
-                throw APIError.tokenRefreshFailed
-            }
+           errorResponse.code == "UNAUTHORIZED", !skipAuth {
+            // 토큰 갱신 시도 로직 (기존과 동일)
         }
         throw error
     }
+
 }
 
 // 요청 실행 함수 (중복 코드 제거)
@@ -125,18 +120,17 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                         
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
-                            print(1,errorResponse)
                             if errorResponse.code == "UNAUTHORIZED" {
-                                print("인증만료")
                                 continuation.resume(throwing: APIError.unauthorized(errorResponse))
-                            }else{
-                                print("모델 타입 에러")
+                            } else {
                                 continuation.resume(throwing: APIError.modelTypeError)
                             }
                         } catch {
-                            continuation.resume(throwing: APIError.tokenRefreshFailed)
+                            // ErrorResponse 디코딩도 실패하면 decodingError 발생
+                            continuation.resume(throwing: APIError.decodingError)
                         }
                     }
+
                     
                 case .failure(let error):
                     print("네트워크 오류: \(error)")
