@@ -21,7 +21,7 @@ public enum ErrorCode {
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
     SIGN_TEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
-    ABILITY_ALREADY_ACTIVATED(HttpStatus.CONFLICT,"이미 활성화된 능력입니다."),
+    ABILITY_ALREADY_ACTIVATED(HttpStatus.CONFLICT, "이미 활성화된 능력입니다."),
 
     //돌 종류 관련 오류
     SPECIES_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 돌 종류를 찾을 수 없습니다."),
@@ -84,7 +84,10 @@ public enum ErrorCode {
     MISSION_NOT_COMPLETED(HttpStatus.BAD_REQUEST, "완료되지 않은 미션입니다."),
     ALREADY_REWARDED(HttpStatus.BAD_REQUEST, "이미 보상을 받았습니다."),
     INVALID_REWARD_TYPE(HttpStatus.BAD_REQUEST, "잘못된 보상 타입입니다."),
-    ALREADY_HAVE_ITEM(HttpStatus.CONFLICT, "이미 보유하고 있는 아이템입니다.");
+    ALREADY_HAVE_ITEM(HttpStatus.CONFLICT, "이미 보유하고 있는 아이템입니다."),
+
+    // notification 오류
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 알림이 존재하지 않거나 권한이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

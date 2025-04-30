@@ -40,8 +40,7 @@ public class StoneController {
     @Operation(summary = "돌 입양하기", description = "돌을 입양한다.")
     @PostMapping("/adopt")
     public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
-        @RequestBody StoneReqDto requestDto,
-        @RequestBody String spaceName) {
+        @RequestBody StoneReqDto requestDto, String spaceName) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
