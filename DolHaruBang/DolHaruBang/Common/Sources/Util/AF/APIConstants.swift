@@ -20,6 +20,7 @@ struct APIConstants {
     // API 경로
     struct Endpoints {
         static let kakaoLogin = "/auth/kakao-login"
+        static let appleLogin = "/auth/apple-login"
         static let refresh = "/auth/reissue"
         
         // MARK: HaruBang(Diary)
@@ -28,11 +29,15 @@ struct APIConstants {
         // MARK: Schedule(Calendar)
         static let schedule = "/schedules"
         
+
         // MARK: Park(Doljanchi(contests) + Friends)
         static let feed = "/contests/feed"
         static let contest = "/contests"
-        
-        
+
+        // MARK: Mail
+        static let mail = "/notifications"
+        static let read = "/notifications"
+
         // MARK: Customize
         static let background = "/memberItems/customs/BACKGROUND"
         static let face = "/memberItems/customs/FACE"

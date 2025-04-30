@@ -80,6 +80,7 @@ struct ProfileFeature {
                 return .none
                 
             case let .fetchProfileResponse(.failure(error)):
+                print("profile ",error)
                 return .none
        
             }
