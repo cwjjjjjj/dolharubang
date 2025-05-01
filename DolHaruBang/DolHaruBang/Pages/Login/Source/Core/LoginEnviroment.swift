@@ -56,11 +56,11 @@ extension LoginClient: DependencyKey {
             do {
                 let headers: HTTPHeaders = [
                             "id_token": "\(idTokenString)",
-                            "user" : "\(userIdentifier)"
+                            "user" : "\(userIdentifier)",
+                            "Content-Type" : "applications/json"
                         ]
                 print("백전")
                 print("idT임",idTokenString)
-                
                 print("ui임",userIdentifier)
                 
                 return try await fetch(url: url, model: SocialLoginResponse.self, method: .post, headers: headers,skipAuth: true)
