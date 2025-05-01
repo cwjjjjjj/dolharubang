@@ -58,7 +58,7 @@ public class StoneService {
             .stoneName(stoneReqDto.getStoneName())
             .closeness(0L)
             .abilityAble(abilityMap)
-            .signText("클릭해서 팻말 내용을 입력해주세요!")
+            .signText("")
             .build();
 
         member.updateSpaceName(
