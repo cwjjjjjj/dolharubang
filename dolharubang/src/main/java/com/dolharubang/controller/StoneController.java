@@ -40,7 +40,7 @@ public class StoneController {
     @Operation(summary = "돌 입양하기", description = "돌을 입양한다.")
     @PostMapping("/adopt")
     public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
-        @RequestBody StoneReqDto requestDto, String spaceName) {
+        @RequestBody StoneReqDto requestDto) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -51,7 +51,7 @@ public class StoneController {
                 ));
         }
         Member member = principal.getMember();
-        StoneResDto response = stoneService.adoptStone(member, requestDto, spaceName);
+        StoneResDto response = stoneService.adoptStone(member, requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -36,7 +36,7 @@ public class StoneService {
     }
 
     @Transactional
-    public StoneResDto adoptStone(Member member, StoneReqDto stoneReqDto, String spaceName) {
+    public StoneResDto adoptStone(Member member, StoneReqDto stoneReqDto) {
 
         Species species = speciesRepository.findBySpeciesName(stoneReqDto.getSpeciesName())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
@@ -57,7 +57,7 @@ public class StoneService {
             .build();
 
         member.updateSpaceName(
-            spaceName
+            stoneReqDto.getSpaceName()
         );
 
         Stone adoptedStone = stoneRepository.save(stone);
