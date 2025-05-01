@@ -21,6 +21,7 @@ public class FriendService {
 
     private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
+    private final NotificationService notificationService;
 
     // 친구 목록 조회 (ACCEPTED 상태)
     public List<FriendResDto> getAcceptedFriendList(Long memberId) {
@@ -90,6 +91,8 @@ public class FriendService {
                 && !friendRequest.getRequester().equals(requester)) {
                 friendRequest.accept();  // 수락 처리
                 friendRepository.save(friendRequest);
+                notificationService.sendFriendAcceptedNotification(friendRequest.getRequester(),
+                    receiver);
                 return FriendResDto.fromEntity(friendRequest);  // 친구 관계 수락 후 반환
             }
 
@@ -110,6 +113,9 @@ public class FriendService {
             .build();
 
         Friend savedRequest = friendRepository.save(newFriendRequest);
+
+        notificationService.sendFriendRequestNotification(receiver, requester);
+
         return FriendResDto.fromEntity(savedRequest);
     }
 
