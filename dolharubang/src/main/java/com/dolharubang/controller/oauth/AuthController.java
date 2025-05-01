@@ -107,13 +107,13 @@ public class AuthController {
 
     @PostMapping("/apple-login")
     public ResponseEntity<OAuth2LoginResDto> appleLogin(
-        @RequestHeader Map<String, String> request) {
-        System.out.println(request.toString());
-        System.out.println("id_token: : " + request.get("id_token"));
-        System.out.println(request.get("user"));
+        @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        System.out.println("Authorization: " + authorizationHeader);
 
-        // 애플은 idToken을 사용합니다 (카카오의 accessToken과 유사한 역할)
-        String idToken = request.get("id_token");
+        String idToken = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            idToken = authorizationHeader.substring(7);
+        }
 
         if (idToken == null || idToken.isEmpty()) {
             throw new CustomException(ErrorCode.NO_ID_TOKEN);
@@ -132,7 +132,8 @@ public class AuthController {
         String email = (String) appleUserInfo.get("email");
 
         // 이름 (선택적 - 첫 로그인시에만 제공될 수 있음)
-        String name = request.get("user");
+        String name = (String) appleUserInfo.get("name");
+
         if (name != null && !name.isEmpty()) {
             // 사용자 정보가 JSON 문자열 형태로 올 수 있음
             try {
