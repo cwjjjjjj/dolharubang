@@ -5,7 +5,6 @@ import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.dto.response.stone.StoneResDto;
-import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.StoneService;
 import com.dolharubang.type.AbilityType;
@@ -41,6 +40,9 @@ public class StoneController {
     @PostMapping("/adopt")
     public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneReqDto requestDto) {
+
+        System.out.println("컨트롤러 | 방이름: "+requestDto.getSpaceName());
+
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -50,8 +52,8 @@ public class StoneController {
                     "message", "인증에 실패햐였습니다"
                 ));
         }
-        Member member = principal.getMember();
-        StoneResDto response = stoneService.adoptStone(member, requestDto);
+        Long memberId = findMemberId(principal);
+        StoneResDto response = stoneService.adoptStone(memberId, requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

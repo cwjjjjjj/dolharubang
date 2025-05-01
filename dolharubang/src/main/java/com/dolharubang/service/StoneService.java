@@ -36,7 +36,12 @@ public class StoneService {
     }
 
     @Transactional
-    public StoneResDto adoptStone(Member member, StoneReqDto stoneReqDto) {
+    public StoneResDto adoptStone(Long memberId, StoneReqDto stoneReqDto) {
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        System.out.println("서비스 | 방이름: "+stoneReqDto.getSpaceName());
 
         Species species = speciesRepository.findBySpeciesName(stoneReqDto.getSpeciesName())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
