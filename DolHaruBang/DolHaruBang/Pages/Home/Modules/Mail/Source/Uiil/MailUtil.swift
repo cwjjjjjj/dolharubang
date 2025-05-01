@@ -14,7 +14,7 @@ func getImageName(for mailType: String) -> String {
         return "CloverMail" // 클로버 이미지 파일명
     case "SCHEDULE_ALERT":
         return "CalendarMail" // 달력 이미지 파일명
-    case "FRIEND_REQUEST":
+    case "FRIEND_ACCEPTED":
         return "SystemMail" // 시스템 이미지 파일명인데 일단 친구로
     case "MISSION_COMPLETED":
         return "TrophyMail" // 업적 이미지 파일명
