@@ -108,6 +108,9 @@ public class AuthController {
     @PostMapping("/apple-login")
     public ResponseEntity<OAuth2LoginResDto> appleLogin(
         @RequestHeader Map<String, String> request) {
+        System.out.println("id_token: : " + request.get("id_token"));
+        System.out.println(request.get("user"));
+
         // 애플은 idToken을 사용합니다 (카카오의 accessToken과 유사한 역할)
         String idToken = request.get("id_token");
 
