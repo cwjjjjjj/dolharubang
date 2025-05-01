@@ -7,5 +7,6 @@ public class StoneReqDto {
 
     private String speciesName;
     private String stoneName;
+    private String spaceName;
 
 }
