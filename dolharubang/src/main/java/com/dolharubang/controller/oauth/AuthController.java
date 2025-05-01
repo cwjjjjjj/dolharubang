@@ -108,6 +108,7 @@ public class AuthController {
     @PostMapping("/apple-login")
     public ResponseEntity<OAuth2LoginResDto> appleLogin(
         @RequestHeader Map<String, String> request) {
+        System.out.println(request.toString());
         System.out.println("id_token: : " + request.get("id_token"));
         System.out.println(request.get("user"));
 
