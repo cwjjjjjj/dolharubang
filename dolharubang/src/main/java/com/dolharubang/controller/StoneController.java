@@ -4,7 +4,6 @@ import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
-import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.StoneService;
 import com.dolharubang.type.AbilityType;
@@ -53,7 +52,7 @@ public class StoneController {
                 ));
         }
         Long memberId = findMemberId(principal);
-        StoneResDto response = stoneService.adoptStone(memberId, requestDto);
+        boolean response = stoneService.adoptStone(memberId, requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

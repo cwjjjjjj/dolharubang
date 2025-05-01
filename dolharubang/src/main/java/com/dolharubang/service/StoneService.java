@@ -4,7 +4,6 @@ import com.dolharubang.domain.dto.request.StoneReqDto;
 import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
-import com.dolharubang.domain.dto.response.stone.StoneResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Species;
 import com.dolharubang.domain.entity.Stone;
@@ -36,7 +35,7 @@ public class StoneService {
     }
 
     @Transactional
-    public StoneResDto adoptStone(Long memberId, StoneReqDto stoneReqDto) {
+    public boolean adoptStone(Long memberId, StoneReqDto stoneReqDto) {
 
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -58,7 +57,7 @@ public class StoneService {
             .stoneName(stoneReqDto.getStoneName())
             .closeness(0L)
             .abilityAble(abilityMap)
-            .signText("클릭해서 팻말 내용을 입력해주세요!")
+            .signText("")
             .build();
 
         member.updateSpaceName(
@@ -66,7 +65,10 @@ public class StoneService {
         );
 
         Stone adoptedStone = stoneRepository.save(stone);
-        return StoneResDto.fromEntity(adoptedStone);
+        if (adoptedStone != null) {
+            return true;
+        }
+        return false;
     }
 
     @Transactional

@@ -15,6 +15,7 @@ import com.dolharubang.service.oauth.KakaoService;
 import com.dolharubang.service.oauth.RefreshTokenService;
 import com.dolharubang.type.Authority;
 import com.dolharubang.type.Provider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -107,7 +109,8 @@ public class AuthController {
 
     @PostMapping("/apple-login")
     public ResponseEntity<OAuth2LoginResDto> appleLogin(
-        @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        @RequestHeader(value = "Authorization") String authorizationHeader,
+        @RequestBody String nickname) {
         System.out.println("Authorization: " + authorizationHeader);
 
         String idToken = null;
@@ -128,29 +131,16 @@ public class AuthController {
             throw new CustomException(ErrorCode.INVALID_APPLE_ID);
         }
 
-        // 이메일 (선택적)
         String email = (String) appleUserInfo.get("email");
 
-        // 이름 (선택적 - 첫 로그인시에만 제공될 수 있음)
-        String name = (String) appleUserInfo.get("name");
-
-        if (name != null && !name.isEmpty()) {
-            // 사용자 정보가 JSON 문자열 형태로 올 수 있음
+        if (nickname.trim().startsWith("{")) {
+            ObjectMapper mapper = new ObjectMapper();
             try {
-                // JSON 파싱 로직 구현 필요 - 간단한 예시
-                // 실제로는 JSON 라이브러리를 사용하여 파싱해야 함
-                if (name.contains("\"name\"")) {
-                    // JSON에서 이름 추출 로직
-                }
+                nickname = mapper.readTree(nickname).get("nickname").asText();
             } catch (Exception e) {
-                // JSON 파싱 실패 처리
+                e.printStackTrace();
             }
         }
-
-        // 닉네임 설정 - 이메일에서 추출하거나 기본값 사용
-        String nickname = email != null ?
-            email.substring(0, email.indexOf('@')) :
-            "Apple" + providerId.substring(0, 8);
 
         // 회원 조회
         Member member = memberRepository.findByProviderAndProviderId(

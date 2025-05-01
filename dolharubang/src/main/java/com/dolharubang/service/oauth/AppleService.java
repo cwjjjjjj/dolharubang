@@ -64,7 +64,8 @@ public class AppleService {
             }
 
             // 4. 토큰 만료 시간 검증
-            Long expirationTime = (Long) claims.get("exp");
+            Number expirationTimeNumber = (Number) claims.get("exp");
+            long expirationTime = expirationTimeNumber.longValue();
             if (expirationTime < (System.currentTimeMillis() / 1000)) {
                 throw new IllegalArgumentException("Token has expired");
             }
