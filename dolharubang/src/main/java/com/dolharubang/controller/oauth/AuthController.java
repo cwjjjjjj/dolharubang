@@ -15,7 +15,6 @@ import com.dolharubang.service.oauth.KakaoService;
 import com.dolharubang.service.oauth.RefreshTokenService;
 import com.dolharubang.type.Authority;
 import com.dolharubang.type.Provider;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -109,7 +109,8 @@ public class AuthController {
 
     @PostMapping("/apple-login")
     public ResponseEntity<OAuth2LoginResDto> appleLogin(
-        @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        @RequestHeader(value = "Authorization") String authorizationHeader,
+        @RequestBody String nickname) {
         System.out.println("Authorization: " + authorizationHeader);
 
         String idToken = null;
@@ -130,33 +131,14 @@ public class AuthController {
             throw new CustomException(ErrorCode.INVALID_APPLE_ID);
         }
 
-        // 이메일 (선택적)
         String email = (String) appleUserInfo.get("email");
 
-        // 이름 (선택적 - 첫 로그인시에만 제공될 수 있음)
-        String name = (String) appleUserInfo.get("name");
-        String nickname = null;
-
-        if (name != null && !name.isEmpty()) {
+        if (nickname.trim().startsWith("{")) {
+            ObjectMapper mapper = new ObjectMapper();
             try {
-                // name이 JSON 문자열인지 확인
-                if (name.trim().startsWith("{")) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode nameNode = mapper.readTree(name);
-
-                    // 애플의 name 구조에 따라 firstName, lastName 추출
-                    String firstName =
-                        nameNode.has("firstName") ? nameNode.get("firstName").asText() : "";
-                    String lastName =
-                        nameNode.has("lastName") ? nameNode.get("lastName").asText() : "";
-
-                    nickname = (lastName + firstName).trim();
-                } else {
-                    nickname = name;
-                }
+                nickname = mapper.readTree(nickname).get("nickname").asText();
             } catch (Exception e) {
                 e.printStackTrace();
-                nickname = name;
             }
         }
 
