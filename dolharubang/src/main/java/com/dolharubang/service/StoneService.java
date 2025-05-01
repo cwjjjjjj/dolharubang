@@ -53,14 +53,14 @@ public class StoneService {
             .stoneName(stoneReqDto.getStoneName())
             .closeness(0L)
             .abilityAble(abilityMap)
-            .signText("")
+            .signText("클릭해서 팻말 내용을 입력해주세요!")
             .build();
 
-        member.updateSpaceName(spaceName);
+        member.updateSpaceName(
+            spaceName
+        );
+
         Stone adoptedStone = stoneRepository.save(stone);
-        System.out.println(stoneReqDto.toString());
-        System.out.println(spaceName);
-        System.out.println(adoptedStone);
         return StoneResDto.fromEntity(adoptedStone);
     }
 
