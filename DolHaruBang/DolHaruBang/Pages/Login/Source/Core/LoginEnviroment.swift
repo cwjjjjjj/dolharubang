@@ -19,6 +19,11 @@ struct KakaoTokenRequest: Codable, Equatable, Sendable {
     var oauthToken: String
 }
 
+// 애플 이름 요청 모델
+struct appleNameRequest: Codable, Sendable {
+    var nickname: String
+}
+
 @DependencyClient
 struct LoginClient {
     var kakaoLogin: @Sendable (String) async throws -> SocialLoginResponse
@@ -51,19 +56,18 @@ extension LoginClient: DependencyKey {
                     return SocialLoginResponse(accessToken: "no", refreshToken: "no")
                 }
         },
-        appleLogin: { idTokenString,userIdentifier in
+        appleLogin: { idTokenString,userName in
             let url = APIConstants.Endpoints.appleLogin
             do {
                 let headers: HTTPHeaders = [
-                            "id_token": "\(idTokenString)",
-                            "user" : "\(userIdentifier)",
+                            "Authorization": "Bearer \(idTokenString)",
                             "Content-Type" : "applications/json"
                         ]
-                print("백전")
-                print("idT임",idTokenString)
-                print("ui임",userIdentifier)
+                print("userName",userName)
+                let requestBody = appleNameRequest(nickname:userName)
+                let bodyData = try JSONEncoder().encode(requestBody)
                 
-                return try await fetch(url: url, model: SocialLoginResponse.self, method: .post, headers: headers,skipAuth: true)
+                return try await fetch(url: url, model: SocialLoginResponse.self, method: .post, headers: headers,body:bodyData,skipAuth: true)
                 } catch {
                     print("로그인 실패 :", error)
                     return SocialLoginResponse(accessToken: "no", refreshToken: "no")

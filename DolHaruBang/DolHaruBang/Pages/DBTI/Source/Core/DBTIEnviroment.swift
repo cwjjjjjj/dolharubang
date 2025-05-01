@@ -259,12 +259,13 @@ let questions: [Question] = [
 struct tmpRequestBody: Codable, Equatable, Sendable {
     let speciesName: String
     let stoneName: String
+    let spaceName : String
 }
 
 @DependencyClient
 struct DBTIClient {
-    var checkUsername: @Sendable (_ username: String) async throws -> Bool
-    var adoptStone: @Sendable (_ speciesName: String, _ stoneName: String, _ spaceName: String) async throws -> Void
+    var checkUsername: @Sendable (String) async throws -> Bool
+    var adoptStone: @Sendable (String, String, String) async throws -> Void
 }
 
 extension DBTIClient: DependencyKey {
@@ -275,17 +276,13 @@ extension DBTIClient: DependencyKey {
         },
         adoptStone: { speciesName, stoneName, spaceName in
             let url = APIConstants.Endpoints.adopt
-            let queryParameters : [String: String] = [
-                "spaceName": spaceName
-            ]
-            let requestBody = tmpRequestBody(speciesName: speciesName, stoneName: stoneName)
+            let requestBody = tmpRequestBody(speciesName: speciesName, stoneName: stoneName, spaceName : spaceName)
             let bodyData = try JSONEncoder().encode(requestBody)
                
             try await fetch(
                 url: url,
-                model: EmptyResponse.self,
+                model: Bool.self,
                 method: .post,
-                queryParameters: queryParameters,
                 body: bodyData
            )
         }

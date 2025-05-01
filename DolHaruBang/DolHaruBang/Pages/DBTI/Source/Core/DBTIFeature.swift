@@ -177,7 +177,7 @@ struct DBTIFeature {
                         return .none
                     }
 
-                    return .run { [speciesName, stoneName, spaceName, dbtiClient = dbtiClient] send in
+                    return .run { [speciesName, stoneName, spaceName] send in
                         do {
                             try await dbtiClient.adoptStone(speciesName, stoneName, spaceName)
                             await send(.adoptStoneResult(.success(())))
