@@ -15,6 +15,8 @@ import com.dolharubang.service.oauth.KakaoService;
 import com.dolharubang.service.oauth.RefreshTokenService;
 import com.dolharubang.type.Authority;
 import com.dolharubang.type.Provider;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
@@ -133,24 +135,30 @@ public class AuthController {
 
         // 이름 (선택적 - 첫 로그인시에만 제공될 수 있음)
         String name = (String) appleUserInfo.get("name");
+        String nickname = null;
 
         if (name != null && !name.isEmpty()) {
-            // 사용자 정보가 JSON 문자열 형태로 올 수 있음
             try {
-                // JSON 파싱 로직 구현 필요 - 간단한 예시
-                // 실제로는 JSON 라이브러리를 사용하여 파싱해야 함
-                if (name.contains("\"name\"")) {
-                    // JSON에서 이름 추출 로직
+                // name이 JSON 문자열인지 확인
+                if (name.trim().startsWith("{")) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode nameNode = mapper.readTree(name);
+
+                    // 애플의 name 구조에 따라 firstName, lastName 추출
+                    String firstName =
+                        nameNode.has("firstName") ? nameNode.get("firstName").asText() : "";
+                    String lastName =
+                        nameNode.has("lastName") ? nameNode.get("lastName").asText() : "";
+
+                    nickname = (lastName + firstName).trim();
+                } else {
+                    nickname = name;
                 }
             } catch (Exception e) {
-                // JSON 파싱 실패 처리
+                e.printStackTrace();
+                nickname = name;
             }
         }
-
-        // 닉네임 설정 - 이메일에서 추출하거나 기본값 사용
-        String nickname = email != null ?
-            email.substring(0, email.indexOf('@')) :
-            "Apple" + providerId.substring(0, 8);
 
         // 회원 조회
         Member member = memberRepository.findByProviderAndProviderId(
