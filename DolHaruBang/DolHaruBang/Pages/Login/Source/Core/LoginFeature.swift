@@ -1,5 +1,5 @@
 //
-//  DBTIFeature.swift
+//  LoginFeature.swift
 //  DolHaruBang
 //
 //  Created by 양희태 on 9/1/24.
@@ -42,29 +42,8 @@ struct LoginFeature {
       case .goBack:
         return .none
         
-//      case let .kakaoLoginRequested(oauthToken):
-//          return .run { send in
-//              do {
-//                  let tokens = try await loginClient.kakaoLogin(oauthToken)
-//                  await send(.kakaoLoginResponse(.success(tokens)))
-//                  await send(.isFirstRequest)
-//              } catch {
-//                  await send(.kakaoLoginResponse(.failure(error)))
-//              }
-//          }
-//          
-//      case let .kakaoLoginResponse(.success(tokens)):
-//          TokenManager.shared.saveTokens(accessToken:tokens.accessToken, refreshToken: tokens.refreshToken)
-//          return .none
-              
       case let .kakaoLoginRequested(oauthToken):
           return .run { send in
-              // (A) 재발급 전 토큰 print
-              if let oldToken = TokenManager.shared.getAccessToken() {
-                  print("재발급 전 accessToken: \(oldToken)")
-              } else {
-                  print("재발급 전 accessToken: (없음)")
-              }
               do {
                   let tokens = try await loginClient.kakaoLogin(oauthToken)
                   await send(.socialLoginResponse(.success(tokens)))
@@ -81,13 +60,6 @@ struct LoginFeature {
                   await send(.socialLoginResponse(.failure(error)))
               }
           }
-
-      case let .kakaoLoginResponse(.success(tokens)):
-          TokenManager.shared.saveTokens(accessToken:tokens.accessToken, refreshToken: tokens.refreshToken)
-          // (B) 재발급 후 토큰 print
-          print("재발급 후 accessToken: \(tokens.accessToken)")
-          return .none
-
           
       case let .socialLoginResponse(.success(tokens)):
           TokenManager.shared.saveTokens(accessToken:tokens.accessToken, refreshToken: tokens.refreshToken)
@@ -119,4 +91,3 @@ struct LoginFeature {
     }
   }
 }
-

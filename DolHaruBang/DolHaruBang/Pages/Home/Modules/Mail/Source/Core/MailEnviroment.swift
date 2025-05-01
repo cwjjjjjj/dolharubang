@@ -13,25 +13,25 @@ import Alamofire
 
 struct MailInfo: Identifiable,Hashable, Codable {
     let id: Int64
-       let nickname: String?
-       let content: String
-       let isRead: Bool
-       let type: String
-       let createdAt: Date
+    let nickname: String?
+    let content: String
+    let isRead: Bool
+    let type: String
+    let createdAt: Date
     
-//    init(nickname: String? = nil, mailType: String, description: String, dateAgo: String) {
-//           self.nickname = nickname
-//           self.mailType = mailType
-//           self.description = description
-//           self.dateAgo = dateAgo
-//       }
+    //    init(nickname: String? = nil, mailType: String, description: String, dateAgo: String) {
+    //           self.nickname = nickname
+    //           self.mailType = mailType
+    //           self.description = description
+    //           self.dateAgo = dateAgo
+    //       }
 }
 
 
 @DependencyClient
 struct MailClient {
     var fetchMail: @Sendable () async throws -> [MailInfo]
-    var readMail: @Sendable (String) async throws -> [MailInfo]
+    var readMail: @Sendable (String) async throws -> MailInfo
 }
 
 // 실제 통신 전 테스트
@@ -59,13 +59,13 @@ extension MailClient: DependencyKey {
             
             return try await fetch(url: url, model: [MailInfo].self, method: .get, queryParameters: queryParameters)
             
-//            return MailInfo.mockMailInfo
+            //            return MailInfo.mockMailInfo
         },
         readMail: { id in
             let url = APIConstants.Endpoints.mail + "/\(id)" + "/read"
-            return try await fetch(url: url, model: [MailInfo].self, method: .post)
+            return try await fetch(url: url, model: MailInfo.self, method: .post)
         }
-   
+        
     )
 }
 
