@@ -58,6 +58,8 @@
 		65DC8D922DAD4E2200B0BF3D /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D912DAD4E1D00B0BF3D /* KeyChainService.swift */; };
 		65DC8D942DAD520600B0BF3D /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC8D932DAD520500B0BF3D /* APIConstants.swift */; };
 		65E1C50A2C6F7DE700A2E419 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E1C5092C6F7DE700A2E419 /* ColorHex.swift */; };
+		65FCFE542DC4E01E00871140 /* DecoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCFE532DC4E01A00871140 /* DecoFeature.swift */; };
+		65FCFE562DC4E02700871140 /* DecoEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCFE552DC4E02300871140 /* DecoEnviroment.swift */; };
 		DA0E9EF72C9F390A00A3CD39 /* MyPageFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */; };
 		DA0E9EF82C9F390A00A3CD39 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */; };
 		DA0E9EF92C9F390A00A3CD39 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0E9EF42C9F390A00A3CD39 /* MyPageView.swift */; };
@@ -202,6 +204,8 @@
 		65DC8D932DAD520500B0BF3D /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		65E1C5092C6F7DE700A2E419 /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
 		65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DolHaruBangDebug.entitlements; sourceTree = "<group>"; };
+		65FCFE532DC4E01A00871140 /* DecoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoFeature.swift; sourceTree = "<group>"; };
+		65FCFE552DC4E02300871140 /* DecoEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoEnviroment.swift; sourceTree = "<group>"; };
 		DA0E9EF02C9F390A00A3CD39 /* MyPageIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MyPageIcon.xcassets; sourceTree = "<group>"; };
 		DA0E9EF22C9F390A00A3CD39 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DA0E9EF32C9F390A00A3CD39 /* MyPageFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeature.swift; sourceTree = "<group>"; };
@@ -815,6 +819,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		65FCFE522DC4E00D00871140 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				65FCFE552DC4E02300871140 /* DecoEnviroment.swift */,
+				65FCFE532DC4E01A00871140 /* DecoFeature.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		DA0E9EF12C9F390A00A3CD39 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1112,6 +1125,7 @@
 		DAA4C9F12C8B7C6800409D4B /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				65FCFE522DC4E00D00871140 /* Core */,
 				DAA4C9EC2C8B7C6800409D4B /* Models */,
 				DAA4C9EE2C8B7C6800409D4B /* Modules */,
 				DAA4C9F02C8B7C6800409D4B /* View */,
@@ -1379,6 +1393,7 @@
 				DAAEFC112C56941800D1F87B /* EntryPointView.swift in Sources */,
 				65DC8D8C2DAD3E8700B0BF3D /* DBTIEnviroment.swift in Sources */,
 				DAA4CA012C8B7C6900409D4B /* Mail.swift in Sources */,
+				65FCFE562DC4E02700871140 /* DecoEnviroment.swift in Sources */,
 				65382E802CA32266003F130B /* MailView.swift in Sources */,
 				657780F82C84AFC400DC08C2 /* DBTIFeature.swift in Sources */,
 				DAA4CA0A2C8B7D5E00409D4B /* UITextFieldPadding.swift in Sources */,
@@ -1416,6 +1431,7 @@
 				65054FEB2C9DEAEA00A14601 /* TrophyFeature.swift in Sources */,
 				DAAEFC1B2C56941A00D1F87B /* DolHaruBang.xcdatamodeld in Sources */,
 				65054FE92C9DEACF00A14601 /* TrophyView.swift in Sources */,
+				65FCFE542DC4E01E00871140 /* DecoFeature.swift in Sources */,
 				6509BB412DC0D56C004FA6D4 /* InquiryView.swift in Sources */,
 				DA6E57862C5C6A540088A7A7 /* DBTIResultView.swift in Sources */,
 				DA6E57802C594BD90088A7A7 /* DBTIGuideView.swift in Sources */,

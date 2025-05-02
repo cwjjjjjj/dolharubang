@@ -68,7 +68,7 @@ struct LoginFeature {
           }
           
       case let .socialLoginResponse(.failure(error)):
-          print(error)
+          print("백에서 받은 토큰 에러 ",error)
           return .none
           
       case .isFirstRequest:
@@ -85,6 +85,7 @@ struct LoginFeature {
           NotificationCenter.default.post(name: NSNotification.Name("TokenVaild"), object: nil,userInfo: ["isFirst" : isFirst])
           return .none
       case let .isFirstResponse(.failure(error)):
+          print("첫인증자 에러", error)
           return .none
           
       }

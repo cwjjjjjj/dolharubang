@@ -11,7 +11,7 @@ import ComposableArchitecture
 // 표정
 // MARK: 펫말 모델
 enum Sign : String, Customizable {
-    func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
+    func performAction(with store: ComposableArchitecture.StoreOf<DecoFeature>) {
         store.send(.selectSign(self))
     }
     

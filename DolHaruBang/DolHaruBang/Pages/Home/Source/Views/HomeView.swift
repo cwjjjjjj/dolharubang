@@ -22,7 +22,7 @@ struct HomeView : View {
                 // 배경이미지 설정
                 // 추후 통신을 통해 받아오면 됨
                 
-                Image(Background(rawValue: store.selectedBackground.rawValue)!.fileName)
+                Image(Background(rawValue: store.decoStore.selectedBackground.rawValue)!.fileName)
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -116,12 +116,12 @@ struct HomeView : View {
                     
                     // MARK: 3D 돌 뷰
                     let dolView = DolView(
-                        selectedFace: $store.selectedFace,
-                        selectedFaceShape: $store.selectedFaceShape,
-                        selectedAccessory: $store.selectedAccessory,
-                        selectedSign: $store.selectedSign,
-                        selectedMail: $store.selectedMail,
-                        selectedNest: $store.selectedNest,
+                        selectedFace: $store.decoStore.selectedFace,
+                        selectedFaceShape: $store.decoStore.selectedFaceShape,
+                        selectedAccessory: $store.decoStore.selectedAccessory,
+                        selectedSign: $store.decoStore.selectedSign,
+                        selectedMail: $store.decoStore.selectedMail,
+                        selectedNest: $store.decoStore.selectedNest,
                         signText: $store.signStore.signInfo,
                         sign: $store.sign,
                         profile: $store.profile,
@@ -372,11 +372,6 @@ struct HomeView : View {
                 perform : UIApplication.shared.hideKeyboard
             )
             .onAppear{
-                store.send(.fetchBackground)
-                store.send(.fetchFace)
-                store.send(.fetchFaceShape)
-                store.send(.fetchAccessory)
-                store.send(.fetchNest)
                 store.send(.fetchSand)
             }
             .onTapGesture {
@@ -384,7 +379,10 @@ struct HomeView : View {
             }
             .sheet(isPresented: $store.decoration) {
                 // 이 뷰가 모달로 표시됩니다.
-                DecorationView(store: store)
+                DecorationView(store : store.scope(
+                    state: \.decoStore,
+                    action: HomeFeature.Action.decoStore
+                ))
                     .presentationDetents([.fraction(0.45)])
                     .presentationCompactAdaptation(.none)
                     .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
