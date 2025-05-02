@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -45,12 +46,17 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberProfileResDto updateMemberProfilePicture(Long memberId,
-        String imageBase64) {
+    public MemberProfileResDto updateMemberProfilePicture(Long memberId, MultipartFile imageFile) {
         Member member = findMember(memberId);
 
-        String imageUrl = s3UploadService.saveImage(imageBase64,
-            "dolharubang/memberProfile/", memberId);
+        // 이미지 S3에 업로드 (ID 활용해서 경로 생성)
+        String imageUrl = s3UploadService.saveImage(
+            imageFile,
+            "dolharubang/memberProfile/",
+            member.getMemberId()
+        );
+
+        // 이미지 URL 갱신
         member.updateProfilePicture(imageUrl);
 
         return MemberProfileResDto.fromEntity(member);
