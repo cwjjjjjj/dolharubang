@@ -14,13 +14,20 @@ struct MailFeature {
     
     @ObservableState
     struct State: Equatable {
+        var selectMail : MailInfo?
         var mails : [MailInfo]?
+        var clickMail : Bool = false
     }
     
     enum Action {
         case fetchMail
         case readMail(String)
         case fetchMailResponse(Result<[MailInfo], Error>)
+        case readMailResponse(Result<MailInfo, Error>)
+        
+        
+        case selectMail(MailInfo)
+        case closeMail
     }
     
     @Dependency(\.mailClient) var mailClient
@@ -44,19 +51,37 @@ struct MailFeature {
             case let .readMail(id):
                 return .run { send in
                     do {
-                        let mails = try await mailClient.readMail(id)
-                        await send(.fetchMailResponse(.success(mails)))
+                        let mail = try await mailClient.readMail(id)
+                        await send(.readMailResponse(.success(mail)))
                     } catch {
-                        await send(.fetchMailResponse(.failure(error)))
+                        await send(.readMailResponse(.failure(error)))
                     }
                 }
                 
             case let .fetchMailResponse(.success(mails)):
-                state.mails = mails // 업적 목록 갱신
+                state.mails = mails
                 return .none
                 
             case let .fetchMailResponse(.failure(error)):
                 print("mail ",error)
+                return .none
+                
+            case let .readMailResponse(.success(mail)):
+//                state.mails = mails // 업적 목록 갱신
+                return .none
+                
+            case let .readMailResponse(.failure(error)):
+                print("mail ",error)
+                return .none
+                
+            case let .selectMail(mail):
+                state.selectMail = mail
+                state.clickMail = true
+                return .none
+            
+            case .closeMail:
+                state.clickMail = false
+                state.selectMail = nil
                 return .none
        
             }

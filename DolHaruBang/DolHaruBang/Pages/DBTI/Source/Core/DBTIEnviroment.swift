@@ -301,7 +301,7 @@ extension DBTIClient: DependencyKey {
                
             try await fetch(
                 url: url,
-                model: EmptyResponse.self,
+                model: Bool.self,
                 method: .post,
                 body: bodyData
            )

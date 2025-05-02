@@ -12,7 +12,7 @@ import Alamofire
 
 struct UserInfo: Decodable, Equatable, Sendable {
     var userName: String
-    var roomName: String?
+    var roomName: String
     var birthStone: String
     var birthDay: String?
     var emailAddress: String

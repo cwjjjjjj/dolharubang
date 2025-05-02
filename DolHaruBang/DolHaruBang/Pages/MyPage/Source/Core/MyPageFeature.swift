@@ -137,7 +137,7 @@ struct MyPageFeature {
                 state.isLoading = false
                 state.userName = userinfo.userName
                 //                state.roomName = userinfo.roomName
-                state.roomName = userinfo.roomName!
+                state.roomName = userinfo.roomName
                 return .none
                 
             case let .fetchUserInfoResponse(.failure(error)):

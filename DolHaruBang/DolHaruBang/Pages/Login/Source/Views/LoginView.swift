@@ -110,15 +110,26 @@ struct LoginView: View {
                                         case .success(let authorization):
                                             guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
                                                   let identityToken = credential.identityToken,
-                                                  let idTokenString = String(data: identityToken, encoding: .utf8),
-                                                  let userIdentifier = idTokenString.decodeAppleUserIdentifier() else { // ✅ 디코딩
+                                                  let idTokenString = String(data: identityToken, encoding: .utf8)else {
                                                 print("토큰 파싱 실패")
                                                 return
                                             }
                                             
+                                            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                                                  let name = credential.fullName else {
+                                                print("토큰 파싱 실패")
+                                                return
+                                            }
+                                            
+                                            var userName = ""
+                                            if let fullNameComponents = credential.fullName {
+                                                let formatter = PersonNameComponentsFormatter()
+                                                userName = formatter.string(from: fullNameComponents)
+                                            }
+                                            
                                             store.send(.appleLoginRequested(
                                                 idTokenString,
-                                                userIdentifier
+                                                userName
                                             ))
                                             
                                         case .failure(let error):

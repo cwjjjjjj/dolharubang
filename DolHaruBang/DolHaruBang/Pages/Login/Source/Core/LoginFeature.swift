@@ -1,5 +1,5 @@
 //
-//  DBTIFeature.swift
+//  LoginFeature.swift
 //  DolHaruBang
 //
 //  Created by 양희태 on 9/1/24.
@@ -91,4 +91,3 @@ struct LoginFeature {
     }
   }
 }
-

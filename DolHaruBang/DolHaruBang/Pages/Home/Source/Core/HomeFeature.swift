@@ -52,6 +52,7 @@ struct HomeFeature {
         var mail : Bool = false // 펫말 온 오프
         var signText : String = ""
         var basicInfo : BasicInfo?
+        var unreadCount : Int = 0
         
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
@@ -123,6 +124,8 @@ struct HomeFeature {
         case sandLoaded(Result<Int, Error>)
         case fetchBasic
         case basicResponsce(Result<BasicInfo,Error>)
+        case fetchUnRead
+        case unReadResponse(Result<unReadMailCount, Error>)
         
         // 돌 프로필
         case captureDol(UIImage)
@@ -221,6 +224,24 @@ struct HomeFeature {
                 return .none
                 
             case let .basicResponsce(.failure(error)):
+                return .none
+                
+            case .fetchUnRead:
+                return . run { send in
+                    do {
+                        let unreadCount = try await homeClient.unread()
+                        await send(.unReadResponse(.success(unreadCount)))
+                    } catch {
+                        await send(.unReadResponse(.failure(error)))
+                    }
+                }
+            
+            case let .unReadResponse(.success(count)):
+                state.unreadCount = count.unreadCount
+                return .none
+                
+            case let .unReadResponse(.failure(error)):
+                print("unread error ",error)
                 return .none
                 
             case .openDecoration:

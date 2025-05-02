@@ -35,7 +35,7 @@ struct APIConstants {
         // MARK: Mail
         static let mail = "/notifications"
         static let read = "/notifications"
-
+        static let unread = "/notifications/unread-count"
         // MARK: Customize
         static let background = "/memberItems/customs/BACKGROUND"
         static let face = "/memberItems/customs/FACE"
