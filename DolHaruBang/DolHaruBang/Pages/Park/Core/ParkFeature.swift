@@ -1,5 +1,10 @@
 import ComposableArchitecture
 import Foundation
+struct BasicInfo : Hashable, Codable {
+    let dolName : String
+    let mailCount : Int
+    let friendShip : Int
+}
 
 struct History: Identifiable, Equatable {
     let id: UUID

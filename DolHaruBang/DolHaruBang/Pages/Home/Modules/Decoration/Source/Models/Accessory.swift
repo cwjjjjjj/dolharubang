@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 // Accessory
 enum Accessory : String, Customizable {
-    func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
+    func performAction(with store: ComposableArchitecture.StoreOf<DecoFeature>) {
         store.send(.selectAccessory(self))
     }
     

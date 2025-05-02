@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
     
-    let store: StoreOf<HomeFeature>
+    let store: StoreOf<DecoFeature>
     
     @State private var selectedItem : T?
     @State private var showPurchaseAlert = false
@@ -33,7 +33,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
            }
        }
     
-    private var refreshAction: HomeFeature.Action {
+    private var refreshAction: DecoFeature.Action {
             switch T.self {
             case is Background.Type:
                 return .fetchBackground

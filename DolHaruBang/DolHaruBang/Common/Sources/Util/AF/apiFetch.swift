@@ -142,11 +142,6 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                 switch response.result {
                 case .success(let data):
                     do {
-                        print("반환값-------------------------------------------------------------")
-                        print("반환값-------------------------------------------------------------")
-                        dump(response)
-                        print("반환값-------------------------------------------------------------")
-                        print("반환값-------------------------------------------------------------")
                         
                         let jsonDecoder = JSONDecoder()
                         let dateFormatterWithMillis = DateFormatter()

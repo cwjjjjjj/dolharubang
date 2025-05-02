@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 // 얼굴형
 enum Nest : String,Customizable {
-    func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
+    func performAction(with store: ComposableArchitecture.StoreOf<DecoFeature>) {
         store.send(.selectNest(self))
     }
     

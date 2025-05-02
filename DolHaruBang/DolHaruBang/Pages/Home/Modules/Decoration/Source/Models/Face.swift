@@ -10,13 +10,13 @@ import ComposableArchitecture
 protocol Customizable : Hashable, CaseIterable where AllCases == Array<Self>{
     var description: String { get }
     
-    func performAction(with store: StoreOf<HomeFeature>)
+    func performAction(with store: StoreOf<DecoFeature>)
 }
 
 
 // 표정
 enum Face : String, Customizable {
-    func performAction(with store: ComposableArchitecture.StoreOf<HomeFeature>) {
+    func performAction(with store: ComposableArchitecture.StoreOf<DecoFeature>) {
         store.send(.selectFace(self))
     }
     

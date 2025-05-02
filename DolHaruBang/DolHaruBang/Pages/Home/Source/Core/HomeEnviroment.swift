@@ -9,25 +9,9 @@ import ComposableArchitecture
 import Alamofire
 
 
-struct CustomizeItem: Hashable, Codable {
-    let price : Int
-    let imageUrl : String
-    let itemId : String
-    let name: String
-    let isOwned: Bool
-    let isSelected: Bool
-}
-
 
 @DependencyClient
 struct HomeClient {
-    var background: @Sendable () async throws -> [CustomizeItem]
-    var face : @Sendable () async throws -> [CustomizeItem]
-    var faceShape : @Sendable () async throws -> [CustomizeItem]
-    var nest: @Sendable () async throws -> [CustomizeItem]
-    var accessory : @Sendable () async throws -> [CustomizeItem]
-    var purchaseItem : @Sendable (String) async throws -> [CustomizeItem]
-    var selectItem : @Sendable (String) async throws -> [CustomizeItem]
     var sand : @Sendable () async throws -> Int
 }
 
@@ -47,40 +31,8 @@ extension DependencyValues {
 
 extension HomeClient: DependencyKey {
     static let liveValue = HomeClient(
-        background: {
-            let url = APIConstants.Endpoints.background
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-        },
-        face: {
-            let url = APIConstants.Endpoints.face
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-        },
-        faceShape: {
-            let url = APIConstants.Endpoints.faceShape
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-        },
-        nest: {
-            let url = APIConstants.Endpoints.nest
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-        },
-        accessory: {
-            let url = APIConstants.Endpoints.accessory
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .get)
-        },
-        purchaseItem : { itemId in
-            let url = "/memberItems/buy?itemId=\(itemId)"
-            
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
-        },
-        selectItem : { itemId in
-            let url = "/memberItems/wear?itemId=\(itemId)"
-            
-            return try await fetch(url: url, model: [CustomizeItem].self, method: .post)
-                   
-        },
         sand : {
             let url = APIConstants.Endpoints.sand
-            
             return try await fetch(url: url, model: Int.self, method: .get)
         }
         
