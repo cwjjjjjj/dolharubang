@@ -8,7 +8,6 @@ public class DiaryReqDto {
 
     private String contents;
     private String emoji;
-    private String imageBase64;
 
     public static Diary toEntity(DiaryReqDto dto) {
         return Diary.builder()

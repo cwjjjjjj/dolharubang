@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -39,7 +40,9 @@ public class DiaryController {
     @Operation(summary = "하루방 일기 생성하기", description = "하루방 일기를 생성한다.")
     @PostMapping
     public ResponseEntity<?> createDiary(
-        @AuthenticationPrincipal PrincipalDetails principal, @RequestBody DiaryReqDto requestDto) {
+        @AuthenticationPrincipal PrincipalDetails principal,
+        @RequestPart("data") DiaryReqDto requestDto,
+        @RequestPart("image") MultipartFile imageFile) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -51,16 +54,18 @@ public class DiaryController {
         }
 
         Member member = principal.getMember();
-        DiaryResDto response = diaryService.createDiary(member, requestDto);
+        DiaryResDto response = diaryService.createDiary(member, requestDto, imageFile);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "하루방 일기 수정/일부 삭제하기", description = "diary_id를 사용하여 일기를 수정하거나 일부 삭제한다.")
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateOrDeleteDiary(@AuthenticationPrincipal PrincipalDetails principal,
+    public ResponseEntity<?> updateOrDeleteDiary(
+        @AuthenticationPrincipal PrincipalDetails principal,
         @PathVariable Long id,
-        @RequestBody DiaryReqDto requestDto) {
+        @RequestPart("data") DiaryReqDto requestDto,
+        @RequestPart("image") MultipartFile imageFile) {
 
         if (principal == null) {
             return ResponseEntity
@@ -73,7 +78,7 @@ public class DiaryController {
         }
 
         Long memberId = findMemberId(principal);
-        DiaryResDto response = diaryService.updateDiary(memberId, id, requestDto);
+        DiaryResDto response = diaryService.updateDiary(memberId, id, requestDto, imageFile);
 
         return ResponseEntity.ok(response);
     }
