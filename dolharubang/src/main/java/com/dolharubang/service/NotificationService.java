@@ -85,5 +85,15 @@ public class NotificationService {
         notificationRepository.save(toReceiver);
     }
 
+    public void sendWelcomeNotification(Member member) {
+        Notification notification = Notification.builder()
+            .receiverId(member.getMemberId())
+            .content(member.getNickname() + "님 하루방에 오신 것을 환영합니다!")
+            .type(NotificationType.WELCOME)  // 알림 타입이 있다면 적절히 설정
+            .build();
+
+        notificationRepository.save(notification);
+    }
+
 
 }
