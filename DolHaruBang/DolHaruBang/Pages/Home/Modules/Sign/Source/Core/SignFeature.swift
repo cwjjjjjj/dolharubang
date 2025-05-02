@@ -20,6 +20,7 @@ struct SignFeature {
         case fetchSign(String)
         case fetchSignResponse(Result<SignInfo, Error>)
         case applySign(String)
+        case fetchfistSign
         
         case binding( BindingAction < State >)
     }
@@ -42,6 +43,17 @@ struct SignFeature {
                 return .run { send in
                     do {
                         let signText = try await signClient.applySign(text)
+                        await send(.fetchSignResponse(.success(signText)))
+                    } catch {
+                        await send(.fetchSignResponse(.failure(error)))
+                    }
+                }
+                
+                // MARK: 팻말
+            case .fetchfistSign:
+                return .run { send in
+                    do {
+                        let signText = try await signClient.fetchSign()
                         await send(.fetchSignResponse(.success(signText)))
                     } catch {
                         await send(.fetchSignResponse(.failure(error)))

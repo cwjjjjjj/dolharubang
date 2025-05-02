@@ -28,10 +28,15 @@ struct MailInfo: Identifiable,Hashable, Codable {
 }
 
 
+struct unReadMailCount : Codable {
+    let unreadCount : Int
+}
+
 @DependencyClient
 struct MailClient {
     var fetchMail: @Sendable () async throws -> [MailInfo]
     var readMail: @Sendable (String) async throws -> MailInfo
+    var unread : @Sendable () async throws -> unReadMailCount
 }
 
 // 실제 통신 전 테스트
@@ -64,6 +69,11 @@ extension MailClient: DependencyKey {
         readMail: { id in
             let url = APIConstants.Endpoints.mail + "/\(id)" + "/read"
             return try await fetch(url: url, model: MailInfo.self, method: .post)
+        },
+        unread: {
+            let url = APIConstants.Endpoints.unread
+            
+            return try await fetch(url: url, model: unReadMailCount.self, method: .get)
         }
         
     )

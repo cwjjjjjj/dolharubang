@@ -144,6 +144,7 @@ struct MailView: View {
         }
         .onAppear{
             store.send(.fetchMail)
+            store.send(.fetchUnRead)
         }
     }
 }

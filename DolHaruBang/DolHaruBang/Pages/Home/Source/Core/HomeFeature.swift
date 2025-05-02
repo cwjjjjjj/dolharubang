@@ -13,6 +13,12 @@ struct HomeFeature {
     
     @ObservableState
     struct State: Equatable {
+        
+        
+        var profileStore = ProfileFeature.State()
+        var mailStore = MailFeature.State()
+        var signStore = SignFeature.State()
+        
         var selectedFace: Face = {
                if let selectedItem = CustomizeItem.mockFaceItem.first(where: { $0.isSelected }) {
                    return Face.allCases.first { $0.description == selectedItem.name } ?? .sparkle
@@ -50,9 +56,6 @@ struct HomeFeature {
         var profile: Bool = false // 돌 프로필 온 오프
         var sign : Bool = false // 펫말 온 오프
         var mail : Bool = false // 펫말 온 오프
-        var signText : String = ""
-        var basicInfo : BasicInfo?
-        var unreadCount : Int = 0
         
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
@@ -72,6 +75,11 @@ struct HomeFeature {
     }
     
     enum Action: BindableAction {
+        // 하위 Feature 선언
+        case profileStore(ProfileFeature.Action)
+        case mailStore(MailFeature.Action)
+        case signStore(SignFeature.Action)
+        
         case alert(PresentationAction<Alert>)
         enum Alert {
                 case confirm
@@ -122,27 +130,38 @@ struct HomeFeature {
         // 기본정보
         case fetchSand
         case sandLoaded(Result<Int, Error>)
-        case fetchBasic
-        case basicResponsce(Result<BasicInfo,Error>)
-        case fetchUnRead
-        case unReadResponse(Result<unReadMailCount, Error>)
         
         // 돌 프로필
         case captureDol(UIImage)
         
-        // 팻말
-        case fetchSign
-        case fetchSignResponse(Result<SignInfo, Error>)
     }
     
     @Dependency(\.homeClient) var homeClient
-    @Dependency(\.signClient) var signClient
     
     var body : some ReducerOf <Self> {
         BindingReducer ()
+        
+        Scope(state: \.profileStore, action: /Action.profileStore) {
+                   ProfileFeature()
+               }
+        Scope(state: \.mailStore, action: /Action.mailStore) {
+                   MailFeature()
+               }
+        Scope(state: \.signStore, action: /Action.signStore) {
+                   SignFeature()
+               }
+        
         Reduce { state, action in
             
             switch action {
+            // 하위 FeatureAction
+            case .profileStore:
+                return .none
+            case .mailStore:
+                return .none
+            case .signStore:
+                return .none
+                
             case .binding(\.message):
                 // 여기서 사용자 이름 관찰
                 print ("toDolMessage" , state.message)
@@ -207,41 +226,6 @@ struct HomeFeature {
                 return .none
                 
             case let .sandLoaded(.failure(error)):
-                return .none
-                
-            case .fetchBasic:
-                return .run { send in
-                    do {
-                        let basicInfo = try await homeClient.basicInfo()
-                        await send(.basicResponsce(.success(basicInfo)))
-                    } catch {
-                        await send(.basicResponsce(.failure(error)))
-                    }
-                }
-            
-            case let .basicResponsce(.success(basicInfo)):
-                state.basicInfo = basicInfo
-                return .none
-                
-            case let .basicResponsce(.failure(error)):
-                return .none
-                
-            case .fetchUnRead:
-                return . run { send in
-                    do {
-                        let unreadCount = try await homeClient.unread()
-                        await send(.unReadResponse(.success(unreadCount)))
-                    } catch {
-                        await send(.unReadResponse(.failure(error)))
-                    }
-                }
-            
-            case let .unReadResponse(.success(count)):
-                state.unreadCount = count.unreadCount
-                return .none
-                
-            case let .unReadResponse(.failure(error)):
-                print("unread error ",error)
                 return .none
                 
             case .openDecoration:
@@ -505,24 +489,7 @@ struct HomeFeature {
                     }
                 }
                 
-                // MARK: 팻말
-            case .fetchSign:
-                return .run { send in
-                    do {
-                        let signText = try await signClient.fetchSign()
-                        await send(.fetchSignResponse(.success(signText)))
-                    } catch {
-                        await send(.fetchSignResponse(.failure(error)))
-                    }
-                }
-                
-            case let .fetchSignResponse(.success(signText)):
-                state.signText = signText.signText
-                return .none
-                
-            case let .fetchSignResponse(.failure(error)):
-                print("fetch SignEError \(error)")
-                return .none
+               
                 
             }
         }
