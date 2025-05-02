@@ -15,6 +15,7 @@ struct DoljanchiFeature {
         var isLoading: Bool = false
         var errorMessage: String? = nil
         var showJarangPopup: Bool = false
+        
     }
 
     // 액션 정의
@@ -25,8 +26,8 @@ struct DoljanchiFeature {
         case fetchFeed(Int?, String?, Int?)
         case fetchFeedResponse(Result<[Jarang], Error>)
         case toggleJarangPopup
-//        case registJarang(Jarang)
-//        case registJarangResponse(Result<(NetworkMessage, Jarang), Error>)
+        case registJarang(Bool, String, String)
+        case registJarangResponse(Result<Void, Error>)
     }
 
     // 리듀서 정의
@@ -62,34 +63,38 @@ struct DoljanchiFeature {
                     let contentPerPageNum = (state.rowNum * state.colNum)
                     if (contentPerPageNum <= 0) {state.maxPage = 1;}
                     else {state.maxPage = jarangs.count / contentPerPageNum + (jarangs.count % contentPerPageNum > 0 ? 1 : 0)}
-                    print("받기 성공")
+                    print("자랑 피드 \(jarangs.count) 개 받기 성공")
                     return .none
                     
                 case let .fetchFeedResponse(.failure(error)):
                     print(error)
                     state.isLoading = false
                     state.errorMessage = error.localizedDescription
+                    state.errorMessage = "친구들의 돌자랑 조회에 실패했습니다."
                     return .none
                 case .toggleJarangPopup:
                     state.showJarangPopup.toggle()
                     return .none
                     
-//                case let .registJarang(jarang):
-//                    print("----------------등록할 jarang의 정보----------------")
-//                    dump(jarang)
-//                    print("----------------등록할 jarang의 정보----------------")
-//                    state.isLoading = true
-//                    state.errorMessage = nil
-//                    return .run { send in
-//                        do {
-//                            let response = try await parkClient.registJarang(jarang)
-//                            await send(.registJarangResponse(.success((response, jarang))))
-//                        } catch {
-//                            await send(.registJarangResponse(.failure(error)))
-//                        }
-//                    }
-                    
-                    
+                case let .registJarang(isPublic, imageUrl, dolName):
+                    state.isLoading = true
+                    state.errorMessage = nil
+                    return .run { send in
+                        do {
+                            try await parkClient.registJarang(isPublic, imageUrl, dolName)
+                            await send(.registJarangResponse(.success(())))
+                        } catch {
+                            await send(.registJarangResponse(.failure(error)))
+                        }
+                    }
+
+                case .registJarangResponse(.success):
+                    print("성공")
+                    state.showJarangPopup = false
+                    return .none
+                case .registJarangResponse(.failure):
+                    print("실패")
+                    return .none
                 case .binding:
                     return .none
             }

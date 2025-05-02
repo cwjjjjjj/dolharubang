@@ -24,6 +24,38 @@ struct ErrorResponse: Decodable {
     let code: String
 }
 
+func makeMultipartBody(
+    dataDict: [String: Any],
+    imageData: Data?,
+    imageMimeType: String = "image/jpeg"
+) -> (body: Data, boundary: String) {
+    let boundary = "Boundary-\(UUID().uuidString)"
+    var body = Data()
+    let lineBreak = "\r\n"
+    
+    // 1. data 필드 (JSON 문자열)
+    let jsonData = try! JSONSerialization.data(withJSONObject: dataDict, options: [])
+    body.append("--\(boundary)\(lineBreak)".data(using: .utf8)!)
+    body.append("Content-Disposition: form-data; name=\"data\"\(lineBreak)".data(using: .utf8)!)
+    body.append("Content-Type: application/json\(lineBreak)\(lineBreak)".data(using: .utf8)!)
+    body.append(jsonData)
+    body.append(lineBreak.data(using: .utf8)!)
+    
+    // 2. image 필드 (파일)
+    if let imageData = imageData {
+        body.append("--\(boundary)\(lineBreak)".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\(lineBreak)".data(using: .utf8)!)
+        body.append("Content-Type: \(imageMimeType)\(lineBreak)\(lineBreak)".data(using: .utf8)!)
+        body.append(imageData)
+        body.append(lineBreak.data(using: .utf8)!)
+    }
+    
+    // 종료 바운더리
+    body.append("--\(boundary)--\(lineBreak)".data(using: .utf8)!)
+    return (body, boundary)
+}
+
+
 // MARK: fetch 함수
 // baseURL 자동 합체
 // 토큰 관리
@@ -54,7 +86,10 @@ func fetch<T: Decodable>(
         finalHeaders.add(.authorization(bearerToken: accessToken))
     }
     
-    finalHeaders.add(name: "Content-Type", value: "application/json")
+//    finalHeaders.add(name: "Content-Type", value: "application/json")
+    if finalHeaders["Content-Type"] == nil {
+        finalHeaders.add(name: "Content-Type", value: "application/json")
+    }
     
     // 요청 준비
     var request = URLRequest(url: URL(string: fullURL)!)
@@ -106,13 +141,35 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
             .responseData { response in
                 switch response.result {
                 case .success(let data):
-                    do {                    
+                    do {
+                        print("반환값-------------------------------------------------------------")
+                        print("반환값-------------------------------------------------------------")
+                        dump(response)
+                        print("반환값-------------------------------------------------------------")
+                        print("반환값-------------------------------------------------------------")
+                        
                         let jsonDecoder = JSONDecoder()
-                        let dateFormatter = DateFormatter()
-//                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-                        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-                        jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
+                        let dateFormatterWithMillis = DateFormatter()
+                        dateFormatterWithMillis.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+                        dateFormatterWithMillis.timeZone = TimeZone(identifier: "Asia/Seoul")
+
+                        let dateFormatterWithoutMillis = DateFormatter()
+                        dateFormatterWithoutMillis.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                        dateFormatterWithoutMillis.timeZone = TimeZone(identifier: "Asia/Seoul")
+
+                        jsonDecoder.dateDecodingStrategy = .custom { decoder in
+                            let container = try decoder.singleValueContainer()
+                            let dateString = try container.decode(String.self)
+                            if let date = dateFormatterWithMillis.date(from: dateString) {
+                                return date
+                            }
+                            if let date = dateFormatterWithoutMillis.date(from: dateString) {
+                                return date
+                            }
+                            throw DecodingError.dataCorruptedError(in: container,
+                                debugDescription: "Date string does not match expected format.")
+                        }
+
                         let decodedModel = try jsonDecoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedModel)
                     } catch let decodingError {

@@ -14,12 +14,13 @@ struct DBTIFeature {
         var inputAlertMessage: String = "" // 알림 창 내용
         var showConfirmation: Bool = false // 확인 창
         var isNameConfirmed: Bool = false // 닉네임 확인 창
+        
         // InputUserInfoView의 생년월일 관련
-        var selectedYear: Int? = nil
+        var selectedYear: Int? = 2025
         var showYearPicker: Bool = false
-        var selectedMonth: Int? = nil
+        var selectedMonth: Int? = 1
         var showMonthPicker: Bool = false
-        var selectedDay: Int? = nil
+        var selectedDay: Int? = 1
         var showDayPicker: Bool = false
         
         // QuestionView 관련
@@ -43,6 +44,7 @@ struct DBTIFeature {
         var resultAlertMessage: String = ""
         var showResultAlert: Bool = false
         var selectedFaceShape: FaceShape = .sosim
+        var finalButtonDisabled: Bool = true
     }
     
     enum Action {
@@ -61,6 +63,8 @@ struct DBTIFeature {
         case setShowDayPicker(Bool)
         case checkUsername(String)
         case checkUsernameResult(Result<Bool, Error>)
+        case submitMemberInfo(String, String)
+        case submitMemberInfoResult(Result<Void, Error>)
         
         // QuestionView 관련
         case selectOption(Int)
@@ -87,11 +91,16 @@ struct DBTIFeature {
         case setResultAlertMessage(String)
         case setShowResultAlert(Bool)
         case setFaceShape(FaceShape)
+        case toggleFinalButton
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+                    
+                //////////////////////////////////////
+                // QuestionView 관련 //
+                /////////////////////////////////////
                 case .selectOption(let index):
                     state.selectedOption = index
                     let option = questions[state.questionIndex].options[index]
@@ -211,6 +220,10 @@ struct DBTIFeature {
                     state.selectedFaceShape = faceShape
                     return .none
                 
+                case .toggleFinalButton:
+                    state.finalButtonDisabled.toggle()
+                    return.none
+                
                 ///////////////////////////////////////////////
                 // InputUserInfoView 관련 //
                 ///////////////////////////////////////////////
@@ -285,6 +298,27 @@ struct DBTIFeature {
                 case .checkUsernameResult(.failure):
                     state.inputAlertTitle = "오류"
                     state.inputAlertMessage = "닉네임 중복 확인 중 오류가 발생했습니다."
+                    state.showConfirmation = false
+                    state.isNameConfirmed = false
+                    state.showAlert = true
+                    return .none
+                    
+                case let .submitMemberInfo(nickname, birthday):
+                    return .run { send in
+                        do {
+                            try await dbtiClient.postMemberInfo(nickname: nickname, birthday: birthday)
+                            await send(.submitMemberInfoResult(.success(())))
+                        }
+                        catch {
+                            await send(.submitMemberInfoResult(.failure(error)))
+                        }
+                    }
+                    .debounce(id: "submitMemberInfo", for: 1.5, scheduler: DispatchQueue.main)
+                    
+                case . submitMemberInfoResult(.success()):
+                    print("성공")
+                    return .none
+                case .submitMemberInfoResult(.failure):
                     state.showConfirmation = false
                     state.isNameConfirmed = false
                     state.showAlert = true
