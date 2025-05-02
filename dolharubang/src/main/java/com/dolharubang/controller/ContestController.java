@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/contests")
@@ -32,11 +33,14 @@ public class ContestController {
 
     private final ContestService contestService;
 
+
     @Operation(summary = "콘테스트 생성", description = "새로운 콘테스트를 생성합니다")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createContest(
         @AuthenticationPrincipal PrincipalDetails principal,
-        @RequestBody ContestReqDto reqDto) {
+        @RequestPart("data") ContestReqDto reqDto,
+        @RequestPart("image") MultipartFile imageFile
+    ) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -48,7 +52,7 @@ public class ContestController {
         }
 
         Long memberId = principal.getMember().getMemberId();
-        return ResponseEntity.ok(contestService.createContest(memberId, reqDto));
+        return ResponseEntity.ok(contestService.createContest(memberId, reqDto, imageFile));
     }
 
     @Operation(summary = "멤버의 모든 콘테스트 조회", description = "특정 멤버의 모든 콘테스트를 조회합니다")
