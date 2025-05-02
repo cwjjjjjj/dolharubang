@@ -250,11 +250,20 @@ struct InputUserInfoView: View {
                         .background(isFormComplete ? Color.mainGreen : Color.disabled)
                         .cornerRadius(24)
                         .disabled(!isFormComplete)
-//                        .simultaneousGesture(TapGesture().onEnded {
-//                            if isFormComplete {
-//
-//                            }
-//                        })
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if isFormComplete {
+                                guard let year = store.selectedYear,
+                                      let month = store.selectedMonth,
+                                      let day = store.selectedDay else {
+                                    store.send(.setAlertTitle("생년월일을 모두 선택해주세요."))
+                                    store.send(.setShowAlert(true))
+                                    return
+                                }
+                                let nickname = store.username
+                                let birthday = String(format: "%04d%02d%02d", year, month, day)
+                                store.send(.submitMemberInfo(nickname, birthday))
+                            }
+                        })
                     }
                     
                     Spacer()

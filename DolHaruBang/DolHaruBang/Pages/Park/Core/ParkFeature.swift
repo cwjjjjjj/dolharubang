@@ -11,7 +11,9 @@ struct History: Identifiable, Equatable {
 
 @Reducer
 struct ParkFeature {
-  
+    @Dependency(\.parkClient) var parkClient
+    
+    
     @ObservableState
     struct State: Equatable {
         @Shared(.inMemory("background")) var selectedBackground: Background = .December
@@ -22,7 +24,10 @@ struct ParkFeature {
         var isLoading: Bool = true
         var doljanchiFeatureState : DoljanchiFeature.State = DoljanchiFeature.State()
         var friendListFeatureState : FriendListFeature.State = FriendListFeature.State()
-        
+        var isPublic: Bool = false
+        var showImageErrorAlert = false
+        var showDolNameErrorAlert = false
+        var dolInfo: BasicInfo?
     }
 
     // 액션 정의
@@ -35,6 +40,11 @@ struct ParkFeature {
         case toggleHistory
         case loadHistory
         case historyLoaded([History])
+        case toggleIsPublic
+        case toggleImageErrorAlert
+        case toggleDolNameErrorAlert
+        case fetchDolInfo
+        case fetchDolInfoResponse(Result<BasicInfo, Error>)
     }
 
     // 리듀서 정의
@@ -105,6 +115,40 @@ struct ParkFeature {
                 case let .historyLoaded(loadedHistory):
                     state.history = loadedHistory
                     state.isLoading = false
+                    return .none
+                
+                case .toggleIsPublic:
+                    state.isPublic.toggle()
+                    return .none
+                
+                case .toggleImageErrorAlert:
+                    state.showImageErrorAlert.toggle()
+                    return .send(.doljanchiFeatureAction(.toggleJarangPopup))
+//                    return .none
+                
+                case .toggleDolNameErrorAlert:
+                    state.showDolNameErrorAlert.toggle()
+                    return .send(.doljanchiFeatureAction(.toggleJarangPopup))
+//                    return .none
+                    
+                case .fetchDolInfo:
+                    state.isLoading = true
+                    print("돌 정보 불러오기 시작")
+                    return .run { send in
+                        do {
+                            let dolInfo = try await parkClient.fetchDolInfo()
+                            await send(.fetchDolInfoResponse(.success(dolInfo)))
+                        }
+                    }
+                case let .fetchDolInfoResponse(.success(dolInfo)):
+                    state.isLoading = false
+                    state.dolInfo = dolInfo
+                    return .none
+                    
+                case let .fetchDolInfoResponse(.failure(error)):
+                    print(error)
+                    state.isLoading = false
+//                    state.errorMessage = error.localizedDescription
                     return .none
             }
         }

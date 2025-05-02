@@ -8,8 +8,6 @@
 import Foundation
 
 struct APIConstants {
-    // 우진 로컬
-//    static let baseURL = "https://sole-organic-singularly.ngrok-free.app/api/v1"
     // 표준
     static let baseURL = "https://dolharubang.shop/api/v1"
     
@@ -54,6 +52,7 @@ struct APIConstants {
         static let isfirst = "/members/is-first"
         static let search = "/members/search"
         static let check = "/members/check"
+        static let memberInfo = "/members/member-info"
         
         // MARK: Stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회

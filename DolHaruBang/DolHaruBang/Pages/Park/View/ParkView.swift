@@ -124,10 +124,11 @@ struct ParkView: View {
                         Spacer().frame(height: 24)
                         
                         HStack {
-                            Text("돌 자랑하기")
+                            Text("\(store.dolInfo?.dolName ?? "돌") 자랑하기")
                                 .font(Font.customFont(Font.subtitle3))
                                 .foregroundColor(.decoSheetGreen)
                                 .padding(.leading, 24)
+
                             
                             Spacer()
                             
@@ -152,22 +153,68 @@ struct ParkView: View {
                         
                         Spacer()
                         
-                        // 최종 자랑 버튼
-                        Button(action: {
-                            print("돌 자랑 api 슈웃~!")
-//                            store.send(.)
-                        }) {
-                            HStack {
-                                Text("자랑하기")
-                                    .font(.customFont(Font.button4))
-                                    .foregroundColor(.coreWhite)
+                        
+                        HStack {
+                            Spacer()
+                            
+                            HStack(spacing: 8) {
+                                Image(systemName: store.isPublic ? "globe" : "lock.fill")
+                                    .foregroundColor(store.isPublic ? .coreGreen : .gray)
+                                    .frame(width: 16, height: 16)
+                                Toggle(isOn: $store.isPublic) {
+                                    Text(store.isPublic ? "공개" : "비공개")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(store.isPublic ? .coreGreen : .gray)
+                                }
+                                .labelsHidden()
+                                .toggleStyle(SwitchToggleStyle(tint: .coreGreen))
                             }
-                            .frame(width: 82, height: 32)
-                            .background(.coreGreen)
-                            .cornerRadius(16)
+                            .padding(.bottom, 16)
+                            
+                            Spacer()
+                            
+                            // 최종 자랑 버튼
+                            Button(action: {
+                                print("돌 자랑 api 슈웃~!")
+                                guard let imageBase64 = captureDol.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
+                                    store.send(.toggleImageErrorAlert)
+                                    return
+                                }
+                                guard let dolName = store.dolInfo?.dolName else {
+                                    store.send(.toggleDolNameErrorAlert)
+                                    return
+                                }
+                                store.send(.doljanchiFeatureAction(.registJarang(store.isPublic, imageBase64, dolName)))
+                            }) {
+                                HStack {
+                                    Text("자랑하기")
+                                        .font(.customFont(Font.button4))
+                                        .foregroundColor(.coreWhite)
+                                }
+                                .frame(width: 82, height: 32)
+                                .background(.coreGreen)
+                                .cornerRadius(16)
+                            }
+                            .padding(.bottom, 16)
+
+                            
+                            Spacer()
                         }
-                        .padding(.bottom, 16)
                     }
+                    .onAppear {
+                        store.send(.fetchDolInfo)
+                    }
+                    .alert("이미지 변환 실패", isPresented: $store.showImageErrorAlert) {
+                        Button("확인", role: .cancel) { }
+                    } message: {
+                        Text("이미지 변환에 실패했습니다. 다시 시도해 주세요.")
+                    }
+                    .alert("돌 이름 불러오기 실패", isPresented: $store.showDolNameErrorAlert) {
+                        Button("확인", role: .cancel) { }
+                    } message: {
+                        Text("돌 이름을 불러오지 못했습니다. 다시 시도해 주세요.")
+                    }
+
                     .frame(width: 320, height: 400)
                     .background(Color.white)
                     .cornerRadius(25)

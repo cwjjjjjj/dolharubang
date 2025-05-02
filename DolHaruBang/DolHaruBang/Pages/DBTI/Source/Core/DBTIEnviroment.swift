@@ -259,13 +259,19 @@ let questions: [Question] = [
 struct tmpRequestBody: Codable, Equatable, Sendable {
     let speciesName: String
     let stoneName: String
-    let spaceName : String
+    let spaceName: String
+}
+
+struct MemberInfoRequest: Codable, Equatable, Sendable {
+    let nickname: String
+    let birthday: String
 }
 
 @DependencyClient
 struct DBTIClient {
-    var checkUsername: @Sendable (String) async throws -> Bool
-    var adoptStone: @Sendable (String, String, String) async throws -> Void
+    var checkUsername: @Sendable (_ username: String) async throws -> Bool
+    var postMemberInfo: @Sendable (_ nickname: String, _ birthday: String) async throws -> Void
+    var adoptStone: @Sendable (_ speciesName: String, _ stoneName: String, _ spaceName: String) async throws -> Void
 }
 
 extension DBTIClient: DependencyKey {
@@ -273,10 +279,24 @@ extension DBTIClient: DependencyKey {
         checkUsername: { username in
             let url = APIConstants.Endpoints.check + "/\(username)"
             return try await fetch(url: url, model: Bool.self, method: .get)
+        }
+        ,
+        postMemberInfo: { nickname, birthday in
+            let url = APIConstants.Endpoints.memberInfo
+            let requestBody = MemberInfoRequest(nickname: nickname, birthday: birthday)
+            let bodyData = try JSONEncoder().encode(requestBody)
+            
+            try await fetch(
+                url: url,
+                model: EmptyResponse.self,
+                method: .post,
+                body: bodyData
+            )
         },
+        
         adoptStone: { speciesName, stoneName, spaceName in
             let url = APIConstants.Endpoints.adopt
-            let requestBody = tmpRequestBody(speciesName: speciesName, stoneName: stoneName, spaceName : spaceName)
+            let requestBody = tmpRequestBody(speciesName: speciesName, stoneName: stoneName, spaceName: spaceName)
             let bodyData = try JSONEncoder().encode(requestBody)
                
             try await fetch(

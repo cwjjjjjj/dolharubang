@@ -157,7 +157,13 @@ struct DBTIResultView: View {
                     
                     HStack {
                         Button(action: {
+                            guard !store.finalButtonDisabled else { return }
+                            store.send(.toggleFinalButton)
                             store.send(.adoptStone)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                store.send(.toggleFinalButton)
+                            }
                         }) {
                             HStack {
                                 Spacer()

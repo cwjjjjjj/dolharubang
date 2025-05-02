@@ -26,7 +26,8 @@ struct Jarang: Codable, Equatable, Sendable {
 @DependencyClient
 struct ParkClient {
     var fetchFeed: @Sendable (_ lastContestId: Int?, _ contestFeedSortType: String?, _ size : Int?) async throws -> [Jarang]
-//    var registJarang: @Sendable (_ jarang: Jarang) async throws -> NetworkMessage
+    var fetchDolInfo: @Sendable () async throws -> BasicInfo
+    var registJarang: @Sendable (_ isPublic: Bool, _ profileImgUrl: String, _ stoneName: String ) async throws -> Void
 }
 
 extension DependencyValues {
@@ -59,21 +60,41 @@ extension ParkClient: DependencyKey {
             
             return try await fetch(url: url, model: [Jarang].self, method: .get)
         }
-//        ,
-//        registJarang: { jarang in
-//            let url = "/api/v1/contests"
-//            let parameters: [String: Any] = [
-//                "contentsNo": jarang.contentsNo,
-//                "isPublic": jarang.isPublic,
-//                "profileImgUrl": jarang.profileImgUrl ?? NSNull(),
-//                "memberNickname": jarang.memberNickname,
-//                "stoneName": jarang.stoneName,
-//                "createdAt": ISO8601DateFormatter().string(from: jarang.createdAt),
-//                "modifiedAt": jarang.modifiedAt.map { ISO8601DateFormatter().string(from: $0) } ?? NSNull()
-//            ]
-//            
-//            let body = try JSONSerialization.data(withJSONObject: parameters)
-//            return try await fetch(url: url, model: NetworkMessage.self, method: .post, body: body)
-//        }
+        ,
+        fetchDolInfo: {
+            var url = APIConstants.Endpoints.basic
+            return try await fetch(url: url, model: BasicInfo.self, method: .get)
+        }
+        ,
+        registJarang: { isPublic, imageBase64, stoneName in
+            let url = APIConstants.Endpoints.contest
+
+            // 1. data 객체 준비
+            let dataDict: [String: Any] = [
+                "isPublic": isPublic,
+                "stoneName": stoneName
+            ]
+
+            // 2. 이미지 데이터 변환
+            let imageData = Data(base64Encoded: imageBase64)
+
+            // 3. multipart body 생성
+            let (body, boundary) = makeMultipartBody(
+                dataDict: dataDict,
+                imageData: imageData
+            )
+
+            let headers: HTTPHeaders = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
+
+            try await fetch(
+                url: url,
+                model: EmptyResponse.self,
+                method: .post,
+                headers: headers,
+                body: body
+            )
+        }
+
+
     )
 }
