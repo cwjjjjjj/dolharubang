@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ContestService {
@@ -30,26 +31,32 @@ public class ContestService {
     }
 
     @Transactional
-    public ContestResDto createContest(Long memberId, ContestReqDto reqDto) {
+    public ContestResDto createContest(Long memberId, ContestReqDto reqDto,
+        MultipartFile imageFile) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         Contest contest = Contest.builder()
             .member(member)
             .isPublic(reqDto.getIsPublic())
-            .profileImgUrl(reqDto.getProfileImgUrl())
             .stoneName(reqDto.getStoneName())
             .build();
 
         Contest savedContest = contestRepository.save(contest);
-        String imageUrl = s3UploadService.saveImage(reqDto.getProfileImgUrl(),
-            "dolharubang/contest/",
-            savedContest.getId());
 
+        // 이미지 S3에 업로드 (ID 활용해서 경로 생성)
+        String imageUrl = s3UploadService.saveImage(
+            imageFile,
+            "dolharubang/contest/",
+            savedContest.getId()
+        );
+
+        // 이미지 URL 갱신
         savedContest.updateImage(imageUrl);
 
         return ContestResDto.fromEntity(savedContest);
     }
+
 
     @Transactional(readOnly = true)
     public List<ContestResDto> getMyAllContestProfiles(Long memberId) {

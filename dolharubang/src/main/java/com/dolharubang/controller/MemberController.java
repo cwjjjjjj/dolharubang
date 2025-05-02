@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Tag(name = "Members", description = "APIs for managing members")
@@ -112,8 +114,9 @@ public class MemberController {
 
     @Operation(summary = "프로필 사진 수정하기", description = "base64 string으로 프로필 사진을 수정한다.")
     @PostMapping("/profile-picture")
-    public ResponseEntity<?> updateProfilePicture(@AuthenticationPrincipal PrincipalDetails principal,
-        @RequestBody String imageBase64) {
+    public ResponseEntity<?> updateProfilePicture(
+        @AuthenticationPrincipal PrincipalDetails principal,
+        @RequestPart("image") MultipartFile imageFile) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -124,7 +127,8 @@ public class MemberController {
                 ));
         }
         Long memberId = getMemberId(principal);
-        MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId, imageBase64);
+        MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId,
+            imageFile);
 
         return ResponseEntity.ok(response);
     }

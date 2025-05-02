@@ -1,15 +1,16 @@
 package com.dolharubang.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import java.io.ByteArrayInputStream;
-import java.util.Base64;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -21,18 +22,32 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveImage(String imageBase64, String filePath, Long id) {
-        String filenameWithPath = filePath + id; // id로 파일명 생성
-        byte[] decodedImg = Base64.getDecoder().decode(imageBase64);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedImg);
+    public String saveImage(MultipartFile file, String dirName, Long id) {
+        if (file == null || file.isEmpty()) {
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, "파일이 비어있습니다.");
+        }
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(decodedImg.length);
-        metadata.setContentType("image/jpeg");
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileName = dirName + id + ext;
 
-        amazonS3Client.putObject(bucket, filenameWithPath, inputStream, metadata);
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
 
-        return amazonS3Client.getUrl(bucket, filenameWithPath).toString();
+            // S3에 파일 업로드
+            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
+
+            // 업로드된 파일 URL 반환
+            return amazonS3Client.getUrl(bucket, fileName).toString();
+        } catch (AmazonS3Exception e) {
+            log.error("S3 업로드 실패: {}", e.getMessage(), e);
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, "S3 업로드 실패: " + e.getMessage());
+        } catch (IOException e) {
+            log.error("파일 업로드 I/O 오류: {}", e.getMessage(), e);
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, "파일 업로드 실패");
+        }
     }
 
     public void deleteImage(String imgUrl, String filePath) {
