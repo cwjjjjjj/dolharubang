@@ -157,13 +157,17 @@ struct DBTIResultView: View {
                     
                     HStack {
                         Button(action: {
-                            guard !store.finalButtonDisabled else { return }
-                            store.send(.toggleFinalButton)
+                            print("여기1")
+                            guard store.finalButtonAvailable else { return }
+                            print("여기2")
+                            store.send(.setFinalButton(false))
+                            print("여기3")
                             store.send(.adoptStone)
-                            
+                            print("여기4")
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                store.send(.toggleFinalButton)
+                                store.send(.setFinalButton(true))
                             }
+                            print("여기5")
                         }) {
                             HStack {
                                 Spacer()
@@ -174,13 +178,9 @@ struct DBTIResultView: View {
                             }
                         }
                         .frame(width: 320, height: 48)
-                        .background(
-                            (store.stoneName.isEmpty || store.spaceName.isEmpty || store.isEditingName || store.isEditingRoomName)
-                            ? Color.gray
-                            : Color.mainGreen
-                        )
+                        .background(store.isFinalButtonDisabled ? Color.gray : Color.mainGreen)
                         .cornerRadius(24)
-                        .disabled(store.stoneName.isEmpty || store.spaceName.isEmpty || store.isEditingName || store.isEditingRoomName)
+                        .disabled(store.isFinalButtonDisabled)
                     }
                     
                     Spacer().frame(height: geometry.size.height * 0.29)

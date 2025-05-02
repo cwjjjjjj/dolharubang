@@ -44,7 +44,14 @@ struct DBTIFeature {
         var resultAlertMessage: String = ""
         var showResultAlert: Bool = false
         var selectedFaceShape: FaceShape = .sosim
-        var finalButtonDisabled: Bool = true
+        var finalButtonAvailable: Bool = true
+        var isFinalButtonDisabled: Bool {
+            stoneName.isEmpty
+            || spaceName.isEmpty
+            || isEditingName
+            || isEditingRoomName
+            || !finalButtonAvailable
+        }
     }
     
     enum Action {
@@ -91,7 +98,7 @@ struct DBTIFeature {
         case setResultAlertMessage(String)
         case setShowResultAlert(Bool)
         case setFaceShape(FaceShape)
-        case toggleFinalButton
+        case setFinalButton(Bool)
     }
     
     var body: some ReducerOf<Self> {
@@ -220,8 +227,8 @@ struct DBTIFeature {
                     state.selectedFaceShape = faceShape
                     return .none
                 
-                case .toggleFinalButton:
-                    state.finalButtonDisabled.toggle()
+                case let .setFinalButton(available):
+                    state.finalButtonAvailable = available
                     return.none
                 
                 ///////////////////////////////////////////////
