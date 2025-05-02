@@ -20,6 +20,7 @@ struct ProfileView: View {
                 
                 Button(action: {
                     showPopup = false
+                    hideKeyboard()
                 }) {
                     Image(systemName: "xmark")
                         .resizable()
@@ -224,6 +225,7 @@ struct ProfileView: View {
     @ViewBuilder
     private func buttonView() -> some View {
         let buttonAction: () -> Void = store.selectedProfileEdit ? {
+            hideKeyboard()
             store.send(.completeEditProfile)
         } : {
             store.send(.clickEditProfile)

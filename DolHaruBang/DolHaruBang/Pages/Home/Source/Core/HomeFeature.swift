@@ -19,8 +19,6 @@ struct HomeFeature {
         var signStore = SignFeature.State()
         var decoStore = DecoFeature.State()
         
-        
-//        var needCapture : Bool = false
         var sand : Int = 0
         var message: String = "" // 텍스트필드 메시지
         
@@ -35,6 +33,8 @@ struct HomeFeature {
         var profile: Bool = false // 돌 프로필 온 오프
         var sign : Bool = false // 펫말 온 오프
         var mail : Bool = false // 펫말 온 오프
+        
+        var isSuccess : Bool = false
         
         var isKeyboardVisible: Bool = false
         @Shared(.inMemory("dolprofile")) var captureDol: UIImage = UIImage() // 돌머리
@@ -52,6 +52,7 @@ struct HomeFeature {
         case signStore(SignFeature.Action)
         case decoStore(DecoFeature.Action)
         case alert(PresentationAction<Alert>)
+        
         enum Alert {
                 case confirm
             }
@@ -71,7 +72,11 @@ struct HomeFeature {
         case closeSign
         case closeProfile
         case closeMail
-        // 기본정보
+        
+        // 잠재능력
+        case clickRollDol
+        
+        // API통신
         case fetchSand
         case sandLoaded(Result<Int, Error>)
         
@@ -204,10 +209,9 @@ struct HomeFeature {
             case .alert(.dismiss):
                 return .none
                 
-            
-                
-               
-                
+            case .clickRollDol:
+                state.isSuccess.toggle()
+                return .none
             }
         }
     }
