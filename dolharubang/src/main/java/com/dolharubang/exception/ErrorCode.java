@@ -87,8 +87,10 @@ public enum ErrorCode {
     ALREADY_HAVE_ITEM(HttpStatus.CONFLICT, "이미 보유하고 있는 아이템입니다."),
 
     // notification 오류
-    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 알림이 존재하지 않거나 권한이 없습니다.");
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 알림이 존재하지 않거나 권한이 없습니다."),
 
+    // S3 파일 업로드 오류
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
     private final HttpStatus httpStatus;
     private final String detail;
 
