@@ -82,6 +82,7 @@ struct SignView: View {
         .shadow(radius: 10)
         .onAppear{
             store.send(.fetchSign(initMessage))
+            store.send(.fetchfistSign)
         }
         
     }

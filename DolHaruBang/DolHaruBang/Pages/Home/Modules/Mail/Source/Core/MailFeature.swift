@@ -17,6 +17,7 @@ struct MailFeature {
         var selectMail : MailInfo?
         var mails : [MailInfo]?
         var clickMail : Bool = false
+        var unreadCount : Int = 0
     }
     
     enum Action {
@@ -25,6 +26,8 @@ struct MailFeature {
         case fetchMailResponse(Result<[MailInfo], Error>)
         case readMailResponse(Result<MailInfo, Error>)
         
+        case fetchUnRead
+        case unReadResponse(Result<unReadMailCount, Error>)
         
         case selectMail(MailInfo)
         case closeMail
@@ -72,6 +75,24 @@ struct MailFeature {
                 
             case let .readMailResponse(.failure(error)):
                 print("mail ",error)
+                return .none
+                
+            case .fetchUnRead:
+                return . run { send in
+                    do {
+                        let unreadCount = try await mailClient.unread()
+                        await send(.unReadResponse(.success(unreadCount)))
+                    } catch {
+                        await send(.unReadResponse(.failure(error)))
+                    }
+                }
+            
+            case let .unReadResponse(.success(count)):
+                state.unreadCount = count.unreadCount
+                return .none
+                
+            case let .unReadResponse(.failure(error)):
+                print("unread error ",error)
                 return .none
                 
             case let .selectMail(mail):

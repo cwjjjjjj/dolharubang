@@ -14,6 +14,7 @@ import HapticsManager
 
 struct HomeView : View {
     @State var store: StoreOf<HomeFeature>
+    
     @State private var isSuccess: Bool = false
     var body : some View {
         GeometryReader { geometry in
@@ -25,9 +26,6 @@ struct HomeView : View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-                
-                
-                
                 // 메인 컴포넌트들
                 VStack {
                     // 상단 부분
@@ -124,7 +122,7 @@ struct HomeView : View {
                         selectedSign: $store.selectedSign,
                         selectedMail: $store.selectedMail,
                         selectedNest: $store.selectedNest,
-                        signText: $store.signText,
+                        signText: $store.signStore.signInfo,
                         sign: $store.sign,
                         profile: $store.profile,
                         mail: $store.mail,
@@ -133,7 +131,46 @@ struct HomeView : View {
                             store.send(.captureDol(image))
                         }
                     )
-                    dolView
+                    ZStack{
+                        dolView
+                        
+                        // MARK: 새로온 편지
+                            ZStack(alignment: .center){
+                                Image("Vector").resizable().scaledToFit()
+                                
+                                Text("\(store.mailStore.unreadCount)")
+                                    .font(Font.customFont(Font.signCount))
+                                    .foregroundColor(Color(hex: "837C74"))
+                                    .padding(.bottom,2)
+                            }
+                            .frame(width: 32,height: 32)
+                            .offset(x: 50 ,y: 40)
+                        
+                        if let basicInfo = store.profileStore.profile {
+                            Text("\(basicInfo.dolName)")
+                                .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
+
+                            // 친밀도 게이지
+                            ZStack(alignment: .leading){
+                                ProgressView(value: Double(basicInfo.friendShip % 100), total: 100)
+                                    .progressViewStyle(LinearProgressViewStyle())
+                                    .frame(width: 100)
+                                    .accentColor(Color.init(hex: "A5CD3B"))
+                                    Text("\(basicInfo.friendShip / 100)")
+                                        .font(Font.customFont(Font.dollevel))
+                                        .foregroundColor(Color(hex: "618501"))
+                                        .frame(width: 26, height: 26) // 흰색 블록 크기
+                                        .background(Color(red: 0.98, green: 0.98, blue: 0.97)) // 흰색 블록
+                                        .clipShape(Circle()) // 블록을 원으로 자르기
+                                        .shadow(
+                                            color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1),
+                                            radius: 4,
+                                            y: 2
+                                        )
+                            }
+                                
+                        }
+                    }
                     
                     VStack{
                         HStack{
@@ -238,55 +275,9 @@ struct HomeView : View {
                         .position(x: 110, y: 210)
                 }
                 
-                    ZStack(alignment: .center){
-                        Image("Vector").resizable().scaledToFit()
-                        
-                        Text("\(store.unreadCount)")
-                            .font(Font.customFont(Font.signCount))
-                            .foregroundColor(Color(hex: "837C74"))
-                            .padding(.bottom,2)
-                    }
-                    .frame(width: 32,height: 32)
-                    .position(
-                        x: geometry.size.width - 60,
-                        y: geometry.size.height / 2 - 90
-                    )
+                   
                 
-                // MARK: 돌이름, 편지갯수, 친밀도
-                if let basicInfo = store.basicInfo {
-                    Text("\(basicInfo.dolName)")
-                        .position(
-                            x: geometry.size.width / 2,
-                            y: geometry.size.height / 2 + 160
-                        )
-                        .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
-
-                    // 친밀도 게이지
-                    ZStack(alignment: .leading){
-                        ProgressView(value: Double(basicInfo.friendShip % 100), total: 100)
-                            .progressViewStyle(LinearProgressViewStyle())
-                            .frame(width: 100)
-                            .accentColor(Color.init(hex: "A5CD3B"))
-                        
-                            Text("\(basicInfo.friendShip / 100)")
-                                .font(Font.customFont(Font.dollevel))
-                                .foregroundColor(Color(hex: "618501"))
-                                .frame(width: 26, height: 26) // 흰색 블록 크기
-                                .background(Color(red: 0.98, green: 0.98, blue: 0.97)) // 흰색 블록
-                                .clipShape(Circle()) // 블록을 원으로 자르기
-                                .shadow(
-                                    color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1),
-                                    radius: 4,
-                                    y: 2
-                                )
-                        
-                    }
-                        .position(
-                            x: geometry.size.width / 2,
-                            y: geometry.size.height / 2 + 180
-                        )
-                        
-                }
+                
                 
                 // MARK: 공유버튼
                 ZStack {
@@ -317,8 +308,10 @@ struct HomeView : View {
                         .zIndex(1)
                     SignView(
                         showPopup: $store.sign,
-                        initMessage: $store.signText, store: Store(initialState: SignFeature.State()){
-                            SignFeature()}
+                        initMessage: $store.signStore.signInfo, store: store.scope(
+                            state: \.signStore,
+                            action: HomeFeature.Action.signStore
+                        )
                     )
                     .background(Color.white)
                     .cornerRadius(25)
@@ -336,9 +329,10 @@ struct HomeView : View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
                     ProfileView(
-                        showPopup: $store.profile, store: Store(initialState: ProfileFeature.State()){
-                            ProfileFeature()
-                        }
+                        showPopup: $store.profile, store: store.scope(
+                            state: \.profileStore,
+                            action: HomeFeature.Action.profileStore
+                        )
                     )
                     .background(Color.white)
                     .cornerRadius(25)
@@ -356,9 +350,10 @@ struct HomeView : View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
                     MailView(
-                        showPopup: $store.mail, store: Store(initialState: MailFeature.State()){
-                            MailFeature()
-                        }
+                        showPopup: $store.mail, store : store.scope(
+                            state: \.mailStore,
+                            action: HomeFeature.Action.mailStore
+                        )
                     )
                     .background(Color.white)
                     .cornerRadius(25)
@@ -383,9 +378,6 @@ struct HomeView : View {
                 store.send(.fetchAccessory)
                 store.send(.fetchNest)
                 store.send(.fetchSand)
-                store.send(.fetchSign)
-                store.send(.fetchBasic)
-                store.send(.fetchUnRead)
             }
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
