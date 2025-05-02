@@ -27,6 +27,7 @@ struct SignView: View {
                 Spacer()
                     Button(action: { store.send(.applySign(store.signInfo))
                         initMessage = store.signInfo
+                        hideKeyboard()
                         showPopup = false
                        })
                     {
@@ -41,6 +42,7 @@ struct SignView: View {
                 
                 Button(action: {
                     showPopup = false
+                    hideKeyboard()
                 }) {
                     Image(systemName: "xmark")
                         .resizable()
