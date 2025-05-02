@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -34,12 +35,14 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryResDto createDiary(Member member, DiaryReqDto diaryReqDto) {
+    public DiaryResDto createDiary(Member member, DiaryReqDto diaryReqDto,
+        MultipartFile imageFile) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
 
-        Optional<Diary> todayDiary = diaryRepository.findByMemberAndCreatedAtBetween(member, startOfDay, endOfDay);
-        if(todayDiary.isPresent()) {
+        Optional<Diary> todayDiary = diaryRepository.findByMemberAndCreatedAtBetween(member,
+            startOfDay, endOfDay);
+        if (todayDiary.isPresent()) {
             throw new CustomException(ErrorCode.DIARY_ALREADY_EXISTS);
         }
 
@@ -50,28 +53,33 @@ public class DiaryService {
             .build();
 
         Diary savedDiary = diaryRepository.save(diary);
-        if(diaryReqDto.getImageBase64() != null) {
-            String imageUrl = s3UploadService.saveImage(diaryReqDto.getImageBase64(),
-                "dolharubang/diary/", savedDiary.getDiaryId());
-            savedDiary.updateImageUrl(imageUrl);
-        }
+        String imageUrl = s3UploadService.saveImage(
+            imageFile,
+            "dolharubang/diary/",
+            savedDiary.getDiaryId()
+        );
+
+        // 이미지 URL 갱신
+        savedDiary.updateImageUrl(imageUrl);
 
         return DiaryResDto.fromEntity(savedDiary);
     }
 
     //TODO 일기 수정 기능에 제한 필요
     @Transactional
-    public DiaryResDto updateDiary(Long memberId, Long id, DiaryReqDto diaryReqDto) {
+    public DiaryResDto updateDiary(Long memberId, Long id, DiaryReqDto diaryReqDto,
+        MultipartFile imageFile) {
         Diary diary = diaryRepository.findByDiaryId(id)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        String imageUrl = diaryReqDto.getImageBase64();
-        if(diaryReqDto.getImageBase64() != null) {
-            s3UploadService.deleteImageIfExist("dolharubang/diary/", id.toString());
-        }
+        String imageUrl = s3UploadService.saveImage(
+            imageFile,
+            "dolharubang/diary/",
+            diary.getDiaryId()
+        );
 
         diary.update(
             member,
