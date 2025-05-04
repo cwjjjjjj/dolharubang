@@ -27,7 +27,8 @@ public class MemberItemService {
     private final ItemRepository itemRepository;
     private final ItemService itemService;
 
-    public MemberItemService(MemberItemRepository memberItemRepository, MemberRepository memberRepository,
+    public MemberItemService(MemberItemRepository memberItemRepository,
+        MemberRepository memberRepository,
         ItemRepository itemRepository, ItemService itemService) {
         this.memberItemRepository = memberItemRepository;
         this.memberRepository = memberRepository;
@@ -41,8 +42,9 @@ public class MemberItemService {
         Member member = getMember(memberItemReqDto.getMemberId());
         Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
-        boolean exists = memberItemRepository.existsByMemberAndItemId(member, item.getItemId().toString());
-        if(exists) {
+        boolean exists = memberItemRepository.existsByMemberAndItemId(member,
+            item.getItemId().toString());
+        if (exists) {
             throw new CustomException(ErrorCode.DUPLICATE_ITEM);
         }
 
@@ -52,30 +54,26 @@ public class MemberItemService {
 
     @Transactional
     public void initializeItems(Member member) {
-        try {
-            log.info("Initializing items for member: {}", member.getMemberId());
-            List<Item> items = itemRepository.findAll();
-            log.info("Found {} items to initialize", items.size());
+        log.info("Initializing items for member: {}", member.getMemberId());
+        List<Item> items = itemRepository.findAll();
+        log.info("Found {} items to initialize", items.size());
 
-            for (Item item : items) {
-                boolean isDefaultItem = "없음".equals(item.getItemName());
-                log.info("Processing item: {}, isDefault: {}", item.getItemName(), isDefaultItem);
+        for (Item item : items) {
+            boolean isDefaultItem = "없음".equals(item.getItemName());
+            log.info("Processing item: {}, isDefault: {}", item.getItemName(), isDefaultItem);
 
-                MemberItem memberItem = MemberItem.builder()
-                    .member(member)
-                    .itemId(item.getItemId().toString())
-                    .whetherHasItem(isDefaultItem)
-                    .selected(isDefaultItem)
-                    .build();
+            MemberItem memberItem = MemberItem.builder()
+                .member(member)
+                .itemId(item.getItemId().toString())
+                .whetherHasItem(isDefaultItem)
+                .selected(isDefaultItem)
+                .build();
 
-                memberItemRepository.save(memberItem);
-                log.info("Saved MemberItem for item: {}", item.getItemName());
-            }
-            log.info("Successfully initialized all items for member: {}", member.getMemberId());
-        } catch (Exception e) {
-            log.error("Error initializing items for member: {}", member.getMemberId(), e);
-            throw e;
+            memberItemRepository.save(memberItem);
+            log.info("Saved MemberItem for item: {}", item.getItemName());
         }
+        log.info("Successfully initialized all items for member: {}", member.getMemberId());
+
     }
 
     //아이템 구매
@@ -86,11 +84,11 @@ public class MemberItemService {
         MemberItem memberItem = getMemberItem(itemId, member);
         Item item = itemService.findByItemId(memberItem.getItemId());
 
-        if(memberItem.isWhetherHasItem()) {
+        if (memberItem.isWhetherHasItem()) {
             throw new CustomException(ErrorCode.ALREADY_BOUGHT);
         }
 
-        if(member.getSands() < item.getPrice()) {
+        if (member.getSands() < item.getPrice()) {
             throw new CustomException(ErrorCode.LACK_OF_SAND);
         }
 
@@ -144,11 +142,11 @@ public class MemberItemService {
 
         // 같은 타입의 모든 아이템 착용 해제
         memberItems.stream()
-                .filter(memberItem -> {
-                    Item item = itemService.findByItemId(memberItem.getItemId());
-                    return item.getItemType() == itemType;
-                })
-                .forEach(memberItem -> memberItem.wearItem(false));
+            .filter(memberItem -> {
+                Item item = itemService.findByItemId(memberItem.getItemId());
+                return item.getItemType() == itemType;
+            })
+            .forEach(memberItem -> memberItem.wearItem(false));
 
         targetMemberItem.wearItem(true);
 
@@ -157,13 +155,13 @@ public class MemberItemService {
 
     private MemberItem getMemberItem(String itemId, Member member) {
         MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
         return memberItem;
     }
 
     private Member getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         return member;
     }
 }
