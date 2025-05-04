@@ -73,13 +73,16 @@ public class StoneService {
 
     @Transactional
     public StoneProfileResDto updateStoneName(Long memberId, StoneTextUpdateReqDto dto) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         Stone stone = findStoneByMemberId(memberId);
         dto.updateStoneName(stone);
 
         Species species = speciesRepository.findById(stone.getSpeciesId())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
-        return StoneProfileResDto.fromEntity(stone, species);
+        return StoneProfileResDto.fromEntity(stone, species, member);
     }
 
     @Transactional
@@ -103,12 +106,15 @@ public class StoneService {
 
     @Transactional(readOnly = true)
     public StoneProfileResDto getStoneProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         Stone stone = findStoneByMemberId(memberId);
 
         Species species = speciesRepository.findById(stone.getSpeciesId())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
-        return StoneProfileResDto.fromEntity(stone, species);
+        return StoneProfileResDto.fromEntity(stone, species, member);
     }
 
     @Transactional(readOnly = true)
