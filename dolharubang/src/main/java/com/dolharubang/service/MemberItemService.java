@@ -54,13 +54,10 @@ public class MemberItemService {
 
     @Transactional
     public void initializeItems(Member member) {
-        log.info("Initializing items for member: {}", member.getMemberId());
         List<Item> items = itemRepository.findAll();
-        log.info("Found {} items to initialize", items.size());
 
         for (Item item : items) {
             boolean isDefaultItem = "없음".equals(item.getItemName());
-            log.info("Processing item: {}, isDefault: {}", item.getItemName(), isDefaultItem);
 
             MemberItem memberItem = MemberItem.builder()
                 .member(member)
@@ -70,10 +67,7 @@ public class MemberItemService {
                 .build();
 
             memberItemRepository.save(memberItem);
-            log.info("Saved MemberItem for item: {}", item.getItemName());
         }
-        log.info("Successfully initialized all items for member: {}", member.getMemberId());
-
     }
 
     //아이템 구매
