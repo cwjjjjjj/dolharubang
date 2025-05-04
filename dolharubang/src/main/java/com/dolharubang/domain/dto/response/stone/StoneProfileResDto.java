@@ -1,5 +1,6 @@
 package com.dolharubang.domain.dto.response.stone;
 
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Species;
 import com.dolharubang.domain.entity.Stone;
 import com.dolharubang.type.AbilityType;
@@ -30,8 +31,10 @@ public class StoneProfileResDto {
     private List<AbilityType> activeAbilities;
     @JsonProperty("potential")
     private List<AbilityType> potentialAbilities;
+    @JsonProperty("roomName")
+    private String spaceName;
 
-    public static StoneProfileResDto fromEntity(Stone stone, Species species) {
+    public static StoneProfileResDto fromEntity(Stone stone, Species species, Member member) {
         List<AbilityType> activeAbilities = new ArrayList<>();
         List<AbilityType> potentialAbilities = new ArrayList<>();
 
@@ -54,6 +57,7 @@ public class StoneProfileResDto {
             .closeness(stone.getCloseness())
             .activeAbilities(activeAbilities)
             .potentialAbilities(potentialAbilities)
+            .spaceName(member.getSpaceName())
             .build();
     }
 }
