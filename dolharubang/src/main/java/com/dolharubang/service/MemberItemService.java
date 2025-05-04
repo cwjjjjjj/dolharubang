@@ -35,7 +35,6 @@ public class MemberItemService {
         this.itemService = itemService;
     }
 
-    // TODO createItem에 넣기
     @Transactional
     public void createMemberItem(MemberItemReqDto memberItemReqDto) {
         Member member = getMember(memberItemReqDto.getMemberId());
@@ -52,15 +51,29 @@ public class MemberItemService {
 
     @Transactional
     public void initializeItems(Member member) {
-        List<Item> items = itemRepository.findAll();
+        try {
+            log.info("Initializing items for member: {}", member.getMemberId());
+            List<Item> items = itemRepository.findAll();
+            log.info("Found {} items to initialize", items.size());
 
-        for (Item item : items) {
-            MemberItem memberItem = MemberItem.builder()
-                .member(member)
-                .itemId(item.getItemId().toString())
-                .whetherHasItem(false)
-                .build();
-            memberItemRepository.save(memberItem);
+            for (Item item : items) {
+                boolean isDefaultItem = "없음".equals(item.getItemName());
+                log.info("Processing item: {}, isDefault: {}", item.getItemName(), isDefaultItem);
+
+                MemberItem memberItem = MemberItem.builder()
+                    .member(member)
+                    .itemId(item.getItemId().toString())
+                    .whetherHasItem(isDefaultItem)
+                    .selected(isDefaultItem)
+                    .build();
+
+                memberItemRepository.save(memberItem);
+                log.info("Saved MemberItem for item: {}", item.getItemName());
+            }
+            log.info("Successfully initialized all items for member: {}", member.getMemberId());
+        } catch (Exception e) {
+            log.error("Error initializing items for member: {}", member.getMemberId(), e);
+            throw e;
         }
     }
 

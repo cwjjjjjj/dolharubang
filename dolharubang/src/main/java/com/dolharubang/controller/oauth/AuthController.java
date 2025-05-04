@@ -161,6 +161,7 @@ public class AuthController {
                 .build();
 
             memberRepository.save(member);
+            memberItemService.initializeItems(member);
         }
 
         // PrincipalDetails 생성 (인증 객체 생성)
