@@ -1,6 +1,7 @@
 package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.response.FriendResDto;
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ public class FriendController {
     private final FriendService friendService;
 
     @Operation(summary = "친구 목록 조회", description = "회원의 친구 목록을 조회합니다.")
-    @GetMapping("/list/accepted")
+    @GetMapping("/accepted")
     public ResponseEntity<?> getAcceptedFriendList(
         @AuthenticationPrincipal PrincipalDetails principal) {
         if (principal == null) {
@@ -41,14 +42,13 @@ public class FriendController {
                 ));
         }
 
-        Long memberId = principal.getMember().getMemberId();
-        List<FriendResDto> friendList = friendService.getAcceptedFriendList(memberId);
+        Member member = principal.getMember();
+        List<FriendResDto> friendList = friendService.getAcceptedFriendList(member);
         return ResponseEntity.ok(friendList);
     }
 
-    @Operation(summary = "내가 보낸 친구 요청 목록 조회", description = "회원이 보낸 대기 중인 친구 요청 목록을 조회합니다.")
-    @GetMapping("/list/sent")
-    public ResponseEntity<?> getSentFriendRequests(
+    @GetMapping("/requests")
+    public ResponseEntity<?> getAllFriendRequests(
         @AuthenticationPrincipal PrincipalDetails principal) {
         if (principal == null) {
             return ResponseEntity
@@ -60,28 +60,10 @@ public class FriendController {
                 ));
         }
 
-        Long memberId = principal.getMember().getMemberId();
-        List<FriendResDto> sentRequests = friendService.getSentFriendRequests(memberId);
-        return ResponseEntity.ok(sentRequests);
-    }
+        Member member = principal.getMember();
+        List<FriendResDto> result = friendService.getAllPendingFriendRequests(member);
 
-    @Operation(summary = "내가 받은 친구 요청 목록 조회", description = "회원이 받은 대기 중인 친구 요청 목록을 조회합니다.")
-    @GetMapping("/list/received")
-    public ResponseEntity<?> getReceivedFriendRequests(
-        @AuthenticationPrincipal PrincipalDetails principal) {
-        if (principal == null) {
-            return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Map.of(
-                    "code", "UNAUTHORIZED",
-                    "message", "인증안댐"
-                ));
-        }
-
-        Long memberId = principal.getMember().getMemberId();
-        List<FriendResDto> receivedRequests = friendService.getReceivedFriendRequests(memberId);
-        return ResponseEntity.ok(receivedRequests);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/request")
@@ -99,8 +81,8 @@ public class FriendController {
                 ));
         }
 
-        Long requesterId = principal.getMember().getMemberId();
-        FriendResDto response = friendService.sendFriendRequest(requesterId, receiverId);
+        Member requester = principal.getMember();
+        FriendResDto response = friendService.sendFriendRequest(requester, receiverId);
         return ResponseEntity.status(201).body(response);
     }
 
@@ -119,8 +101,8 @@ public class FriendController {
                 ));
         }
 
-        Long receiverId = principal.getMember().getMemberId();
-        FriendResDto response = friendService.acceptFriendRequest(requesterId, receiverId);
+        Member receiver = principal.getMember();
+        FriendResDto response = friendService.acceptFriendRequest(requesterId, receiver);
         return ResponseEntity.ok(response);
     }
 
@@ -139,8 +121,8 @@ public class FriendController {
                 ));
         }
 
-        Long receiverId = principal.getMember().getMemberId();
-        FriendResDto response = friendService.declineFriendRequest(requesterId, receiverId);
+        Member receiver = principal.getMember();
+        FriendResDto response = friendService.declineFriendRequest(requesterId, receiver);
         return ResponseEntity.ok(response);
     }
 
@@ -159,8 +141,8 @@ public class FriendController {
                 ));
         }
 
-        Long memberId = principal.getMember().getMemberId();
-        FriendResDto response = friendService.deleteFriend(memberId, friendId);
+        Member member = principal.getMember();
+        FriendResDto response = friendService.deleteFriend(member, friendId);
         return ResponseEntity.ok(response);
     }
 }

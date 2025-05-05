@@ -24,50 +24,27 @@ public class FriendService {
     private final NotificationService notificationService;
 
     // 친구 목록 조회 (ACCEPTED 상태)
-    public List<FriendResDto> getAcceptedFriendList(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
+    public List<FriendResDto> getAcceptedFriendList(Member member) {
         List<Friend> friends = friendRepository.findAllFriendsByStatus(member,
             FriendStatusType.ACCEPTED);
 
         return friends.stream()
-            .map(FriendResDto::fromEntity)
+            .map(friend -> FriendResDto.fromEntity(friend, member))
             .collect(Collectors.toList());
     }
 
-    // 내가 보낸 친구 요청 목록 조회 (requester가 PENDING 상태인 경우)
-    public List<FriendResDto> getSentFriendRequests(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    // 내가 보낸/받은 친구 요청 목록 조회
+    public List<FriendResDto> getAllPendingFriendRequests(Member member) {
+        List<Friend> friendRequests = friendRepository.findAllFriendRequests(
+            member, FriendStatusType.PENDING);
 
-        // 내가 요청을 보낸 PENDING 상태의 요청들 조회
-        List<Friend> sentRequests = friendRepository.findAllSentFriendRequests(member,
-            FriendStatusType.PENDING);
-
-        return sentRequests.stream()
-            .map(FriendResDto::fromEntity)
-            .collect(Collectors.toList());
-    }
-
-    // 내가 받은 친구 요청 목록 조회 (receiver가 PENDING 상태인 경우)
-    public List<FriendResDto> getReceivedFriendRequests(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-        // 내가 받은 PENDING 상태의 요청들 조회
-        List<Friend> receivedRequests = friendRepository.findAllReceivedFriendRequests(member,
-            FriendStatusType.PENDING);
-
-        return receivedRequests.stream()
-            .map(FriendResDto::fromEntity)
+        return friendRequests.stream()
+            .map(friend -> FriendResDto.fromEntity(friend, member))
             .collect(Collectors.toList());
     }
 
     // 친구 요청 보내기
-    public FriendResDto sendFriendRequest(Long requesterId, Long receiverId) {
-        Member requester = memberRepository.findById(requesterId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    public FriendResDto sendFriendRequest(Member requester, Long receiverId) {
         Member receiver = memberRepository.findById(receiverId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -93,7 +70,7 @@ public class FriendService {
                 friendRepository.save(friendRequest);
                 notificationService.sendFriendAcceptedNotification(friendRequest.getRequester(),
                     receiver);
-                return FriendResDto.fromEntity(friendRequest);  // 친구 관계 수락 후 반환
+                return FriendResDto.fromEntity(friendRequest, requester);  // 친구 관계 수락 후 반환
             }
 
             // 소프트 딜리트 또는 거절된 경우에는 새로운 요청으로 처리
@@ -101,7 +78,7 @@ public class FriendService {
                 || friendRequest.getStatus() == FriendStatusType.DELETED) {
                 friendRequest.restore(requester, receiver);  // 상태를 PENDING으로 변경
                 friendRepository.save(friendRequest);
-                return FriendResDto.fromEntity(friendRequest);
+                return FriendResDto.fromEntity(friendRequest, requester);
             }
         }
 
@@ -116,15 +93,13 @@ public class FriendService {
 
         notificationService.sendFriendRequestNotification(receiver, requester);
 
-        return FriendResDto.fromEntity(savedRequest);
+        return FriendResDto.fromEntity(savedRequest, requester);
     }
 
 
     // 친구 요청 수락
-    public FriendResDto acceptFriendRequest(Long requesterId, Long receiverId) {
+    public FriendResDto acceptFriendRequest(Long requesterId, Member receiver) {
         Member requester = memberRepository.findById(requesterId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        Member receiver = memberRepository.findById(receiverId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 요청자와 수신자의 관계를 조회 (양방향으로 조회)
@@ -145,17 +120,18 @@ public class FriendService {
             throw new CustomException(ErrorCode.FRIEND_ALREADY_ACCEPTED);
         }
 
+        // 친구 요청 수락 처리
         friendRequest.accept();
         friendRepository.save(friendRequest);
 
-        return FriendResDto.fromEntity(friendRequest);
+        // FriendResDto 생성 시 receiver가 요청을 수락했으므로 receiver를 넘겨주어야 한다.
+        return FriendResDto.fromEntity(friendRequest, receiver);  // receiver가 수락한 경우
     }
 
+
     // 친구 요청 거절
-    public FriendResDto declineFriendRequest(Long requesterId, Long receiverId) {
+    public FriendResDto declineFriendRequest(Long requesterId, Member receiver) {
         Member requester = memberRepository.findById(requesterId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        Member receiver = memberRepository.findById(receiverId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 요청자와 수신자의 관계를 조회 (양방향으로 조회)
@@ -179,13 +155,11 @@ public class FriendService {
         friendRequest.decline();
         friendRepository.save(friendRequest);
 
-        return FriendResDto.fromEntity(friendRequest);
+        return FriendResDto.fromEntity(friendRequest, receiver);
     }
 
     // 친구 삭제 (친구 관계 종료)
-    public FriendResDto deleteFriend(Long memberId, Long friendId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    public FriendResDto deleteFriend(Member member, Long friendId) {
         Member friend = memberRepository.findById(friendId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -200,6 +174,6 @@ public class FriendService {
         friendRequest.delete();
         friendRepository.save(friendRequest);
 
-        return FriendResDto.fromEntity(friendRequest);
+        return FriendResDto.fromEntity(friendRequest, member);
     }
 }
