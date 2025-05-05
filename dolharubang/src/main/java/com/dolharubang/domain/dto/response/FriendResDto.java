@@ -1,6 +1,7 @@
 package com.dolharubang.domain.dto.response;
 
 import com.dolharubang.domain.entity.Friend;
+import com.dolharubang.domain.entity.Member;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,23 +14,25 @@ import lombok.ToString;
 @ToString
 public class FriendResDto {
 
-    private Long requesterId;
-    private Long receiverId;
-    private String status;
+    private Long id;
+    private String requesterNickname;
+    private String receiverNickname;
+    private String requesterProfileImageURL;
+    private String receiverProfileImageURL;
+    private boolean isSender;
     private LocalDateTime acceptedAt;
-    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private LocalDateTime deletedAt;
 
-    public static FriendResDto fromEntity(Friend friend) {
+    public static FriendResDto fromEntity(Friend friend, Member me) {
         return FriendResDto.builder()
-            .requesterId(friend.getRequester().getMemberId())
-            .receiverId(friend.getReceiver().getMemberId())
-            .status(friend.getStatus().name())
+            .id(friend.getId())
+            .requesterNickname(friend.getRequester().getNickname())
+            .receiverNickname(friend.getReceiver().getNickname())
+            .requesterProfileImageURL(friend.getRequester().getProfilePicture())
+            .receiverProfileImageURL(friend.getReceiver().getProfilePicture())
+            .isSender(friend.getRequester().equals(me))
             .acceptedAt(friend.getAcceptedAt())
-            .createdAt(friend.getCreatedAt())
             .modifiedAt(friend.getModifiedAt())
-            .deletedAt(friend.getDeletedAt())
             .build();
     }
 }
