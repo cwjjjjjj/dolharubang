@@ -47,6 +47,7 @@ public class FriendController {
         return ResponseEntity.ok(friendList);
     }
 
+    @Operation(summary = "내가 보내고 받은 친구 목록 조회", description = "회원이 보내고 받은 친구 목록을 조회합니다.")
     @GetMapping("/requests")
     public ResponseEntity<?> getAllFriendRequests(
         @AuthenticationPrincipal PrincipalDetails principal) {
@@ -66,6 +67,7 @@ public class FriendController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "친구 요청 보내기", description = "회원이 친구 요청을 보냅니다.")
     @PostMapping("/request")
     public ResponseEntity<?> sendFriendRequest(
         @AuthenticationPrincipal PrincipalDetails principal,
