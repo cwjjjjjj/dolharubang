@@ -32,7 +32,7 @@ public class FriendResDto {
             .receiverNickname(friend.getReceiver().getNickname())
             .requesterProfileImageURL(friend.getRequester().getProfilePicture())
             .receiverProfileImageURL(friend.getReceiver().getProfilePicture())
-            .isSender(friend.getRequester().equals(me))
+            .isSender(friend.getRequester().getMemberId().equals(me.getMemberId()))
             .acceptedAt(friend.getAcceptedAt())
             .modifiedAt(friend.getModifiedAt())
             .build();
