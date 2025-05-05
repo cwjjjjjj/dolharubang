@@ -431,40 +431,33 @@ struct SchedulePopupView: View {
     // 일정 추가 함수
     private func addSchedule() {
         if !newScheduleContent.isEmpty {
-            let calendar = Calendar.current
+            // KST 시간대로 설정된 캘린더 생성
+            var calendar = Calendar.current
+            calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
 
-            let kstFormatter = DateFormatter()
-            kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-            kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-            let kstDate = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: date, matchingPolicy: .nextTime) ?? date
-            
-            // 시작 시간
-            var startComponents = calendar.dateComponents([.year, .month, .day], from: kstDate)
-            print("startPeriod: \(startPeriod), startHour: \(startHour), startMinute: \(startMinute)")
-            
-            // 종료 시간
-            var endComponents = calendar.dateComponents([.year, .month, .day], from: kstDate)
-            print("endPeriod: \(endPeriod), endHour: \(endHour), endMinute: \(endMinute)")
-            
-            // 12시간제에서 24시간제로 변환 (오후 11시 -> 23시)
-            let startHour24 = startPeriod == "오후" ? (startHour % 12) + 12 : (startHour % 12)
-            startComponents.hour = startHour24
+            // 시작 및 종료 시간 컴포넌트 생성
+            var startComponents = DateComponents()
+            startComponents.timeZone = TimeZone(identifier: "Asia/Seoul")
+            startComponents.year = calendar.component(.year, from: date)
+            startComponents.month = calendar.component(.month, from: date)
+            startComponents.day = calendar.component(.day, from: date)
+            startComponents.hour = startPeriod == "오후" ? (startHour % 12) + 12 : (startHour % 12)
             startComponents.minute = startMinute
-            let endHour24 = endPeriod == "오후" ? (endHour % 12) + 12 : (endHour % 12)
-            endComponents.hour = endHour24
+            
+            var endComponents = DateComponents()
+            endComponents.timeZone = TimeZone(identifier: "Asia/Seoul")
+            endComponents.year = calendar.component(.year, from: date)
+            endComponents.month = calendar.component(.month, from: date)
+            endComponents.day = calendar.component(.day, from: date)
+            endComponents.hour = endPeriod == "오후" ? (endHour % 12) + 12 : (endHour % 12)
             endComponents.minute = endMinute
             
-            // 객체 생성 및 디버깅
             guard let startDate = calendar.date(from: startComponents),
                   let endDate = calendar.date(from: endComponents) else {
                 print("Date 생성 실패")
                 return
             }
             
-            print("생성된 startComponents: \(startComponents)")
-            print("생성된 endComponents: \(endComponents)")
-            
-            // Schedule 객체 생성 (alarmTime도 KST로 설정)
             let newSchedule = Schedule(
                 id: 1,
                 contents: newScheduleContent,
@@ -474,18 +467,11 @@ struct SchedulePopupView: View {
                 alarmTime: startDate
             )
             
-            print("----------<<새로운 스케쥴 정보>>----------")
-            print("KST 기준:")
-            print("startScheduleDate: \(kstFormatter.string(from: newSchedule.startScheduleDate))")
-            print("endScheduleDate: \(kstFormatter.string(from: newSchedule.endScheduleDate))")
-            print("alarmTime: \(kstFormatter.string(from: newSchedule.alarmTime))")
-            dump(newSchedule)
-            
-            // Store에 새로운 일정 추가
             store.send(.addSchedule(newSchedule))
             resetFields()
         }
     }
+
     
     private func enterEditMode(for index: Int) {
         guard let schedule = schedules[date]?[index] else { return }
@@ -506,7 +492,7 @@ struct SchedulePopupView: View {
 
     private func editSchedule(at index: Int) {
         guard !newScheduleContent.isEmpty,
-              let originalSchedule = schedules[date]?[index] else {
+            let originalSchedule = schedules[date]?[index] else {
             resetFields()
             return
         }
