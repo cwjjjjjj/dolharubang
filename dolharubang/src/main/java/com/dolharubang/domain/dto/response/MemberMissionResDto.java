@@ -1,9 +1,9 @@
 package com.dolharubang.domain.dto.response;
 
+import com.dolharubang.domain.entity.Item;
 import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.Mission;
-import com.dolharubang.mongo.entity.Item;
-import com.dolharubang.mongo.service.ItemService;
+import com.dolharubang.service.ItemService;
 import com.dolharubang.type.RewardType;
 import java.time.LocalDateTime;
 import lombok.Builder;
