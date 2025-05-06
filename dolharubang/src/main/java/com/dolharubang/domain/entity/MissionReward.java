@@ -24,11 +24,11 @@ public class MissionReward {
     @Column(nullable = false)
     private int quantity;
 
-    private String itemNo;
+    private Long itemNo;
 
 
     @Builder
-    public MissionReward(RewardType type, int quantity, String itemNo) {
+    public MissionReward(RewardType type, int quantity, Long itemNo) {
         this.type = type;
         this.quantity = quantity;
         this.itemNo = itemNo;
@@ -37,7 +37,7 @@ public class MissionReward {
 
     private void validate() {
         if (type == RewardType.ITEM) {
-            if (itemNo == null || itemNo.isBlank()) {
+            if (itemNo == null) {
                 throw new CustomException(ErrorCode.MISSING_ITEM_NUMBER);
             }
             // 아이템 번호 형식이나 실제 존재하는 아이템인지 검증하는 로직
@@ -51,7 +51,7 @@ public class MissionReward {
     }
 
     // 아이템 번호 유효성 검증 메서드
-    private boolean isValidItemNumber(String itemNo) {
+    private boolean isValidItemNumber(Long itemNo) {
         // 아이템 번호 검증 로직
         // 예: 형식 검증, 실제 아이템 존재 여부 확인 등
         return true; // 임시 반환

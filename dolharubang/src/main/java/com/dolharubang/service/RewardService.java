@@ -23,7 +23,7 @@ public class RewardService {
         this.memberRepository = memberRepository;
     }
 
-    public void giveReward(Member member, RewardType type, int quantity, String itemNo) {
+    public void giveReward(Member member, RewardType type, int quantity, Long itemNo) {
         switch (type) {
             case SAND -> giveSandReward(member, quantity);
             case ITEM -> giveItemReward(member, itemNo);
@@ -37,7 +37,7 @@ public class RewardService {
         memberRepository.save(member);
     }
 
-    private void giveItemReward(Member member, String itemNo) {
+    private void giveItemReward(Member member, Long itemNo) {
         // 해당 아이템이 있는 아이템인지 먼저 조회
         if (memberItemRepository.existsByMemberAndItemId(member, itemNo)) {
             throw new CustomException(ErrorCode.ALREADY_HAVE_ITEM);

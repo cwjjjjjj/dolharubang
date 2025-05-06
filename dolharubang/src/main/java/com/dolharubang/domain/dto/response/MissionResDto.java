@@ -39,7 +39,7 @@ public class MissionResDto {
     // MissionReward 관련 컬럼
     private RewardType rewardType;
     private int rewardQuantity;
-    private String rewardItemNo;
+    private Long rewardItemNo;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

@@ -37,7 +37,7 @@ public class MissionReqDto {
     // MissionReward 관련
     private RewardType rewardType;
     private int rewardQuantity;
-    private String rewardItemNo;
+    private Long rewardItemNo;
 
     public Mission toEntity() {
         return Mission.builder()
