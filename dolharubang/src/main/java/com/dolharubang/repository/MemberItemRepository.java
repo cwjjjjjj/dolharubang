@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberItemRepository extends JpaRepository<MemberItem, Long> {
 
-    boolean existsByMemberAndItemId(Member member, String itemId);
+    boolean existsByMemberAndItemId(Member member, Long itemId);
 
-    Optional<MemberItem> findByMemberAndItemId(Member member, String itemId);
+    Optional<MemberItem> findByMemberAndItemId(Member member, Long itemId);
 
     List<MemberItem> findAllByMember(Member member);
 }
