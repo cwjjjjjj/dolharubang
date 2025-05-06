@@ -46,12 +46,12 @@ struct FriendListView: View {
 
                 LazyVStack(spacing: 16) {
                     if (store.searchKeyword.isEmpty) {
-                        ForEach(store.friendsList) { friend in
+                        ForEach(store.friends) { friend in
                             FriendItemView(friend: friend, isLoading: store.isLoading)
                         }
                     }
                     else {
-                        ForEach(store.friendsList.filter{ friend in
+                        ForEach(store.friends.filter{ friend in
                             friend.nickname.lowercased().contains(store.searchKeyword.lowercased()) ||
                             friend.roomName.lowercased().contains(store.searchKeyword.lowercased())
                         }) { friend in
@@ -66,8 +66,8 @@ struct FriendListView: View {
         .cornerRadius(15, corners: [.bottomLeft, .bottomRight])
         .task {
             // 이미 로드되지 않았을 때만 loadFriends 액션을 보냅니다
-            if store.friendsList.isEmpty {
-                await store.send(.loadFriends).finish()
+            if store.friends.isEmpty {
+                await store.send(.fetchFriends).finish()
             }
         }
     }

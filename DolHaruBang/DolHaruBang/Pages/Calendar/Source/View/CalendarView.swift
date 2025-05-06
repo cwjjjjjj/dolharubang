@@ -180,7 +180,7 @@ struct CalendarView: View {
                     .onAppear {
                         print("Schedules on appear: \(store.schedules)")
                         let components = calendar.dateComponents([.year, .month], from: store.currentDate)
-                        store.send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 3, memberId: 1))
+                        store.send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 5))
                     }
 
                     

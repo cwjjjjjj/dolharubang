@@ -78,28 +78,3 @@ extension DependencyValues {
         set { self[TalkClient.self] = newValue }
     }
 }
-
-//// TestDependencyKey 수정
-//extension TalkClient: TestDependencyKey {
-//    // 미리보기
-//    static let previewValue = Self(
-//        fetchTalk: {
-//            return Talk.mock
-//        },
-//        fetchTalks: {
-//            return Talk.mockTalks
-//        },
-//        registTalk: { _ in
-//            return NetworkMessage(message: "등록 성공!")
-//        },
-//        editTalk: { _ in
-//            return NetworkMessage(message: "수정 성공!")
-//        },
-//        deleteTalk: { _ in
-//            return NetworkMessage(message: "삭제 성공!")
-//        }
-//    )
-//    
-//    // 테스트
-//    static let testValue = Self()
-//}

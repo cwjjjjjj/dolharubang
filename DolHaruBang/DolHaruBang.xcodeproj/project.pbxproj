@@ -78,7 +78,7 @@
 		DA69042B2CAFC1A700A557A1 /* ParkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042A2CAFC1A700A557A1 /* ParkView.swift */; };
 		DA69042D2CB0070B00A557A1 /* JarangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042C2CB0070B00A557A1 /* JarangView.swift */; };
 		DA6904302CB2E79200A557A1 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA69042F2CB2E79200A557A1 /* ProfileImageView.swift */; };
-		DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */; };
+		DA6904352CB3D83900A557A1 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6904342CB3D83900A557A1 /* FriendRequestsView.swift */; };
 		DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */; };
 		DA6E576D2C5860CA0088A7A7 /* SpringHasCome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */; };
 		DA6E576F2C58A4CF0088A7A7 /* InputUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */; };
@@ -224,7 +224,7 @@
 		DA69042A2CAFC1A700A557A1 /* ParkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkView.swift; sourceTree = "<group>"; };
 		DA69042C2CB0070B00A557A1 /* JarangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JarangView.swift; sourceTree = "<group>"; };
 		DA69042F2CB2E79200A557A1 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
-		DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPopupView.swift; sourceTree = "<group>"; };
+		DA6904342CB3D83900A557A1 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		DA6E57692C57D4920088A7A7 /* Cafe24Ssurround.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.ttf; sourceTree = "<group>"; };
 		DA6E576C2C5860CA0088A7A7 /* SpringHasCome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpringHasCome.mp3; sourceTree = "<group>"; };
 		DA6E576E2C58A4CF0088A7A7 /* InputUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUserInfoView.swift; sourceTree = "<group>"; };
@@ -916,7 +916,7 @@
 				DA6904262CAFC13100A557A1 /* DoljanchiView..swift */,
 				DA69042A2CAFC1A700A557A1 /* ParkView.swift */,
 				DA69042C2CB0070B00A557A1 /* JarangView.swift */,
-				DA6904342CB3D83900A557A1 /* HistoryPopupView.swift */,
+				DA6904342CB3D83900A557A1 /* FriendRequestsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1443,7 +1443,7 @@
 				DA6E57792C59084A0088A7A7 /* CustomMonthButton.swift in Sources */,
 				DAA4C9FF2C8B7C6900409D4B /* Background.swift in Sources */,
 				65382E822CA326F9003F130B /* ProfileFeature.swift in Sources */,
-				DA6904352CB3D83900A557A1 /* HistoryPopupView.swift in Sources */,
+				DA6904352CB3D83900A557A1 /* FriendRequestsView.swift in Sources */,
 				DA89DF082D77578A00F04C93 /* ImageUtil.swift in Sources */,
 				DA6E57752C5904900088A7A7 /* CustomButton.swift in Sources */,
 				DA74315A2D6EFB2500C2C148 /* CalendarEnvironment.swift in Sources */,

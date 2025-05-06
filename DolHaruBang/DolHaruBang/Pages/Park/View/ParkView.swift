@@ -33,8 +33,7 @@ struct ParkView: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    store.send(.toggleHistory)
-                                    print("toggle되었습니다.")
+                                    store.send(.toggleFriendRequests)
                                 }) {
                                     ZStack(alignment: .topTrailing) {
                                         Image("friendsHistory")
@@ -42,7 +41,7 @@ struct ParkView: View {
                                             .scaledToFit()
                                             .frame(width: 40, height: 40)
                                         
-                                        if store.hasHistory {
+                                        if !store.friendListFeatureState.friendRequests.isEmpty {
                                             ZStack {
                                                 Circle()
                                                     .fill(Color.ffffff.opacity(0.3))
@@ -96,18 +95,18 @@ struct ParkView: View {
                 }
                 
                 // 친구 신청 내역 보여주는 팝업
-                if store.showHistory {
+                if store.showFriendRequests {
                     Color.black.opacity(0.3)
                         .ignoresSafeArea()
                         .onTapGesture {
-                            if (store.showHistory) {
-                                store.send(.toggleHistory)
+                            if (store.showFriendRequests) {
+                                store.send(.toggleFriendRequests)
                             }
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
 
-                    HistoryPopupView(store: store)
+                    FriendRequestsView(store: store)
                         .zIndex(2)
                 }
                 

@@ -84,11 +84,17 @@ func fetch<T: Decodable>(
     // 인증 토큰 자동 추가 (skipAuth가 false일 때만)
     if !skipAuth, let accessToken = TokenManager.shared.getAccessToken() {
         finalHeaders.add(.authorization(bearerToken: accessToken))
+//        print("엑세스톡흔", accessToken)
     }
     
-//    finalHeaders.add(name: "Content-Type", value: "application/json")
     if finalHeaders["Content-Type"] == nil {
         finalHeaders.add(name: "Content-Type", value: "application/json")
+    }
+    
+    if let body = body {
+        print("Request Body: \(String(data: body, encoding: .utf8) ?? "Unable to decode body")")
+    } else {
+        print("Request Body: nil")
     }
     
     // 요청 준비
@@ -105,8 +111,8 @@ func fetch<T: Decodable>(
     // 헤더 추가
     request.headers = finalHeaders
     
-    // 바디 데이터 추가 (POST 및 PUT 요청 시 사용)
-    if (method == .post || method == .put), let body = body {
+    // 바디 데이터 추가 (POST 및 PUT 및 PATCH 요청 시 사용)
+    if (method == .post || method == .put || method == .patch), let body = body {
         request.httpBody = body
     }
     
@@ -142,6 +148,15 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                 switch response.result {
                 case .success(let data):
                     do {
+                        print("------------서버로 부터 응답 값------------")
+                        dump(response)
+                        print("------------서버로 부터 응답 값------------")
+                        
+                        // 상태 코드 확인 (204 No Content 처리)
+                        if let httpResponse = response.response, httpResponse.statusCode == 204, model is EmptyResponse.Type {
+                            continuation.resume(returning: EmptyResponse() as! T)
+                            return
+                        }
                         
                         let jsonDecoder = JSONDecoder()
                         let dateFormatterWithMillis = DateFormatter()

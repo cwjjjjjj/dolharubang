@@ -89,11 +89,11 @@ struct DoljanchiFeature {
                     }
 
                 case .registJarangResponse(.success):
-                    print("성공")
+                    print("자랑 등록 성공")
                     state.showJarangPopup = false
                     return .none
                 case .registJarangResponse(.failure):
-                    print("실패")
+                    print("자랑 등록 실패")
                     return .none
                 case .binding:
                     return .none

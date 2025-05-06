@@ -25,9 +25,13 @@ struct Jarang: Codable, Equatable, Sendable {
 
 @DependencyClient
 struct ParkClient {
+    // 돌 잔치 관련
     var fetchFeed: @Sendable (_ lastContestId: Int?, _ contestFeedSortType: String?, _ size : Int?) async throws -> [Jarang]
     var fetchDolInfo: @Sendable () async throws -> BasicInfo
     var registJarang: @Sendable (_ isPublic: Bool, _ profileImgUrl: String, _ stoneName: String ) async throws -> Void
+    // 친구 관련
+    var fetchFriends: @Sendable() async throws -> [Friend]
+    var fetchFriendRequests: @Sendable() async throws -> [FriendRequest]
 }
 
 extension DependencyValues {
@@ -39,6 +43,7 @@ extension DependencyValues {
 
 extension ParkClient: DependencyKey {
     static let liveValue = ParkClient(
+        
         fetchFeed: { lastContestId, contestFeedSortType, size in
             var url = APIConstants.Endpoints.feed
             var queryItems: [String] = []
@@ -61,11 +66,13 @@ extension ParkClient: DependencyKey {
             return try await fetch(url: url, model: [Jarang].self, method: .get)
         }
         ,
+        
         fetchDolInfo: {
             var url = APIConstants.Endpoints.basic
             return try await fetch(url: url, model: BasicInfo.self, method: .get)
         }
         ,
+        
         registJarang: { isPublic, imageBase64, stoneName in
             let url = APIConstants.Endpoints.contest
 
@@ -94,7 +101,18 @@ extension ParkClient: DependencyKey {
                 body: body
             )
         }
-
+        ,
+        
+        fetchFriends: {
+            let url = APIConstants.Endpoints.friends
+            return try await fetch(url: url, model: [Friend].self, method: .get)
+        }
+        ,
+        
+        fetchFriendRequests: {
+            let url = APIConstants.Endpoints.friendsRequest
+            return try await fetch(url: url, model: [FriendRequest].self, method: .get)
+        }
 
     )
 }
