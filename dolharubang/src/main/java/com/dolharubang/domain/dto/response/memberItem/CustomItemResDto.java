@@ -1,7 +1,7 @@
 package com.dolharubang.domain.dto.response.memberItem;
 
+import com.dolharubang.domain.entity.Item;
 import com.dolharubang.domain.entity.MemberItem;
-import com.dolharubang.mongo.entity.Item;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class CustomItemResDto {
     private boolean selected;
     private int price;
     private String imageUrl;
-    private String itemId;
+    private Long itemId;
 
     public static CustomItemResDto fromEntity(MemberItem memberItem, Item item) {
         return CustomItemResDto.builder()
@@ -29,7 +29,7 @@ public class CustomItemResDto {
             .selected(memberItem.isSelected())
             .price(item.getPrice())
             .imageUrl(item.getImageUrl())
-            .itemId(item.getItemId().toString())
+            .itemId(item.getItemId())
             .build();
     }
 }

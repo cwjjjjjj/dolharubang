@@ -2,16 +2,15 @@ package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.MemberItemReqDto;
 import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
+import com.dolharubang.domain.entity.Item;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberItem;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.mongo.entity.Item;
-import com.dolharubang.mongo.enumTypes.ItemType;
-import com.dolharubang.mongo.repository.ItemRepository;
-import com.dolharubang.mongo.service.ItemService;
+import com.dolharubang.repository.ItemRepository;
 import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.type.ItemType;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +43,7 @@ public class MemberItemService {
         Item item = itemRepository.findByItemId(memberItemReqDto.getItemId());
 
         boolean exists = memberItemRepository.existsByMemberAndItemId(member,
-            item.getItemId().toString());
+            item.getItemId());
         if (exists) {
             throw new CustomException(ErrorCode.DUPLICATE_ITEM);
         }
@@ -62,7 +61,7 @@ public class MemberItemService {
 
             MemberItem memberItem = MemberItem.builder()
                 .member(member)
-                .itemId(item.getItemId().toString())
+                .itemId(item.getItemId())
                 .whetherHasItem(isDefaultItem)
                 .selected(isDefaultItem)
                 .build();
@@ -73,7 +72,7 @@ public class MemberItemService {
 
     //아이템 구매
     @Transactional
-    public List<CustomItemResDto> updateItemOwnership(Long memberId, String itemId) {
+    public List<CustomItemResDto> updateItemOwnership(Long memberId, Long itemId) {
 
         Member member = getMember(memberId);
         MemberItem memberItem = getMemberItem(itemId, member);
@@ -117,7 +116,7 @@ public class MemberItemService {
 
     //착용 아이템 변경
     @Transactional
-    public List<CustomItemResDto> wearItem(Long memberId, String itemId) {
+    public List<CustomItemResDto> wearItem(Long memberId, Long itemId) {
         Member member = getMember(memberId);
         MemberItem targetMemberItem = getMemberItem(itemId, member);
 
@@ -181,7 +180,7 @@ public class MemberItemService {
         return memberItemRepository.findAllByMember(member);
     }
 
-    private MemberItem getMemberItem(String itemId, Member member) {
+    private MemberItem getMemberItem(Long itemId, Member member) {
         MemberItem memberItem = memberItemRepository.findByMemberAndItemId(member, itemId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
         return memberItem;

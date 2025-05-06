@@ -28,7 +28,7 @@ public class MemberItem extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    private String itemId;
+    private Long itemId;
 
     // 보유 여부
     private boolean whetherHasItem;
@@ -37,7 +37,7 @@ public class MemberItem extends BaseEntity {
     private boolean selected;
 
     @Builder
-    public MemberItem(Member member, Long memberItemId, String itemId, boolean whetherHasItem, boolean selected) {
+    public MemberItem(Member member, Long memberItemId, Long itemId, boolean whetherHasItem, boolean selected) {
         this.member = member;
         this.memberItemId = memberItemId;
         this.itemId = itemId;
