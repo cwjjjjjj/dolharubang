@@ -20,6 +20,7 @@ public class MemberProfileResDto {
     @JsonProperty("roomName")
     private String spaceName;
     private int closeness;
+    private String profilePicture;
 
     public static MemberProfileResDto fromEntity(Member member) {
         return MemberProfileResDto.builder()
@@ -29,6 +30,7 @@ public class MemberProfileResDto {
             .birthStone("가넷")
             .spaceName(member.getSpaceName())
             .closeness(member.getCloseness())
+            .profilePicture(member.getProfilePicture())
             .build();
     }
 }
