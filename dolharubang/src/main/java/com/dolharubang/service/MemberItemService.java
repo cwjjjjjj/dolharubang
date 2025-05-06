@@ -13,6 +13,7 @@ import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -145,6 +146,39 @@ public class MemberItemService {
         targetMemberItem.wearItem(true);
 
         return findCustomsByType(memberId, itemType);
+    }
+
+    @Transactional
+    public void updateSpeciesItemStatus(Member member, String speciesName) {
+        List<MemberItem> memberItems = findAllItemsByMember(member);
+
+        List<Item> speciesItems = itemRepository.findByItemName(speciesName);
+
+        if (speciesItems.isEmpty()) {
+            log.warn("No items found with name matching species: {}", speciesName);
+            return;
+        }
+
+        for (Item speciesItem : speciesItems) {
+            String itemId = speciesItem.getItemId().toString();
+
+            Optional<MemberItem> memberItemOpt = memberItems.stream()
+                .filter(mi -> mi.getItemId().equals(itemId))
+                .findFirst();
+
+            if (memberItemOpt.isPresent()) {
+                MemberItem memberItem = memberItemOpt.get();
+                memberItem.buyItem();
+                memberItem.wearItem(true);
+            } else {
+                log.warn("MemberItem not found for itemId: {}, member: {}", itemId, member.getMemberId());
+            }
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberItem> findAllItemsByMember(Member member) {
+        return memberItemRepository.findAllByMember(member);
     }
 
     private MemberItem getMemberItem(String itemId, Member member) {

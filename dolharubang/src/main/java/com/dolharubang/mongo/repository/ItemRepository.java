@@ -11,4 +11,6 @@ public interface ItemRepository extends MongoRepository<Item, ObjectId> {
     Item findByItemId(Object itemId);
 
     List<Item> findByItemType(ItemType itemType);
+
+    List<Item> findByItemName(String itemName);
 }
