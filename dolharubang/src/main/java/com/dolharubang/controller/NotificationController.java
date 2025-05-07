@@ -50,7 +50,7 @@ public class NotificationController {
         Page<NotificationResDto> notifications = notificationService.getNotifications(member,
             page, size, unreadOnly);
 
-        return ResponseEntity.ok(notifications);
+        return ResponseEntity.ok(notifications.getContent());
     }
 
     @Operation(summary = "읽지 않은 알림 수 조회", description = "회원의 읽지 않은 알림 개수를 반환합니다.")
