@@ -13,7 +13,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
     
     @State private var selectedItem : T?
     @State private var showPurchaseAlert = false
-    @State private var currentItemId: String? = nil
+    @State private var currentItemId: Int64? = 6
     
     // 타입별로 다른 변수 받아오는 로직 구현
     private var items: [CustomizeItem] {

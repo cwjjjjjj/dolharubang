@@ -47,7 +47,7 @@ struct HomeView : View {
                     // MARK: 중단부분
                     ZStack{
                         dolView
-                        DolContentView(store: store)
+                        DolContentView(store: store,geometry: geometry)
                     }
                     
                     // MARK: 하단 컴포넌트
@@ -156,6 +156,7 @@ struct HomeView : View {
                 perform : UIApplication.shared.hideKeyboard
             )
             .onAppear{
+                store.send(.fetchDeco)
                 store.send(.fetchSand)
             }
             .onTapGesture {
@@ -241,12 +242,14 @@ struct HomeHeader : View {
                 Spacer()
             }.frame(width: geometry.size.width * 0.25)
             
-            
-            Text("돌돌이 방")
-                .padding(.bottom , 15)
-                .font(Font.customFont(Font.h6))
-                .shadow(radius: 4,x:0,y: 1)
-                .frame(width: geometry.size.width * 0.4, alignment: .center)
+            if let profile = store.profileStore.profile
+            {
+                Text("\(profile.roomName) 방")
+                    .padding(.bottom , 15)
+                    .font(Font.customFont(Font.h6))
+                    .shadow(radius: 4,x:0,y: 1)
+                    .frame(width: geometry.size.width * 0.4, alignment: .center)
+            }
             
             // 공유, 꾸미기
             HStack(spacing: 10){
@@ -301,6 +304,7 @@ struct HomeHeader : View {
 
 struct DolContentView : View {
     let store : StoreOf<HomeFeature>
+    let geometry : GeometryProxy
     var body : some View {
         // MARK: 새로온 편지
         ZStack(alignment: .center){
@@ -312,11 +316,13 @@ struct DolContentView : View {
                 .padding(.bottom,2)
         }
         .frame(width: 32,height: 32)
-        .offset(x: 50 ,y: 40)
+        .offset(x: geometry.size.width * 0.33 ,y: geometry.size.height * -0.11)
         
         if let basicInfo = store.profileStore.profile {
             Text("\(basicInfo.dolName)")
                 .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
+            
+            .offset(x: 0 ,y: geometry.size.height * 0.19)
             
             // 친밀도 게이지
             ZStack(alignment: .leading){
@@ -336,6 +342,7 @@ struct DolContentView : View {
                         y: 2
                     )
             }
+            .offset(x: 0 ,y: geometry.size.height * 0.21)
             
         }
         

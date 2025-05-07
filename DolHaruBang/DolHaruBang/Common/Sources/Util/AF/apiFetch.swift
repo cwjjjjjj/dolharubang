@@ -84,7 +84,7 @@ func fetch<T: Decodable>(
     // 인증 토큰 자동 추가 (skipAuth가 false일 때만)
     if !skipAuth, let accessToken = TokenManager.shared.getAccessToken() {
         finalHeaders.add(.authorization(bearerToken: accessToken))
-//        print("엑세스톡흔", accessToken)
+        print("엑세스토큰 ", accessToken)
     }
     
     if finalHeaders["Content-Type"] == nil {
