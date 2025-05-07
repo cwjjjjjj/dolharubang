@@ -56,6 +56,28 @@ func formattedDate(_ date: Date) -> String {
     return formatter.string(from: date)
 }
 
+func formattedDate(from string: String) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+    
+    var date: Date? = formatter.date(from: string)
+    if date == nil {
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        date = formatter.date(from: string)
+    }
+    if date == nil {
+        formatter.dateFormat = "yyyy-MM-dd"
+        date = formatter.date(from: string)
+    }
+    if let date = date {
+        return formattedDate(date) // 이미 있는 formattedDate(_: Date) 사용
+    } else {
+        return string.components(separatedBy: "T").first ?? string
+    }
+}
+
 func formattedFloatingDate(_ date: Date) -> String {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "ko_KR")

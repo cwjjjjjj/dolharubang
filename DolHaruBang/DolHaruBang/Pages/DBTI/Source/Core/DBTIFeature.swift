@@ -146,8 +146,8 @@ struct DBTIFeature {
                     }
                     return .none
                 case .goToResult:
-                    state.stoneName = state.score.character.koreanName
-                    state.originalStoneName = state.score.character.koreanName
+                    state.stoneName = state.score.character.description
+                    state.originalStoneName = state.score.character.description
                     state.selectedFaceShape = state.score.character.toFaceShape ?? .sosim
                     return .none
 

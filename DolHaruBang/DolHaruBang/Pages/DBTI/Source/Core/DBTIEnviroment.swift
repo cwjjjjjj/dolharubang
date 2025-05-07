@@ -5,15 +5,19 @@ import Alamofire
 
 // 캐릭터 종류
 enum DBTIModel: String, Codable, CaseIterable {
-    case saechim     // 새침이
-    case chic        // 시크
-    case sosim       // 소심이
-    case ballal      // 발랄이
-    case cupid       // 큐피드
-    case bboombboom  // 뿜뿜이
-    case nareun      // 나른이
-    case meong       // 멍이
-    case banzzag     // 반짝이
+    var description: String {
+        return self.rawValue
+    }
+    
+    case sparkle = "반짝이"
+    case sosim = "소심이"
+    case saechim = "새침이"
+    case nareun = "나른이"
+    case meong = "멍이"
+    case cupid = "큐피드"
+    case bboombboom = "뿜뿜이"
+    case balral = "발랄이"
+    case chic = "시크"
 }
 
 // 초기능력 타입 (AbilityType)
@@ -27,20 +31,6 @@ public enum AbilityType: String, Codable {
 }
 
 extension DBTIModel {
-    /// 한글 이름 (화면 표시용)
-    var koreanName: String {
-        switch self {
-        case .saechim:     return "새침이"
-        case .chic:        return "시크"
-        case .sosim:       return "소심이"
-        case .ballal:      return "발랄이"
-        case .cupid:       return "큐피드"
-        case .bboombboom:  return "뿜뿜이"
-        case .nareun:      return "나른이"
-        case .meong:       return "멍이"
-        case .banzzag:     return "반짝이"
-        }
-    }
     
     /// 성격 (한글)
     var personality: String {
@@ -48,27 +38,27 @@ extension DBTIModel {
         case .saechim:     return "까다로움"
         case .chic:        return "시크함"
         case .sosim:       return "소심함"
-        case .ballal:      return "명랑함"
+        case .balral:      return "명랑함"
         case .cupid:       return "애정넘침"
         case .bboombboom:  return "에너지넘침"
         case .nareun:      return "나른함"
         case .meong:       return "멍함"
-        case .banzzag:     return "낭만파"
+        case .sparkle:     return "낭만파"
         }
     }
     
     /// 성격 (영문)
     var personalityEng: String {
         switch self {
-        case .saechim:     return "Picky"
-        case .chic:        return "Chic"
-        case .sosim:       return "Timid"
-        case .ballal:      return "Cheerful"
-        case .cupid:       return "Affectionate"
-        case .bboombboom:  return "Energetic"
-        case .nareun:      return "Lethargic"
-        case .meong:       return "Blank"
-        case .banzzag:     return "Romantic"
+        case .saechim:     return "picky"
+        case .chic:        return "chic"
+        case .sosim:       return "timid"
+        case .balral:      return "cheerful"
+        case .cupid:       return "affectionate"
+        case .bboombboom:  return "energetic"
+        case .nareun:      return "sleepy"
+        case .meong:       return "blank"
+        case .sparkle:     return "romantic"
         }
     }
     
@@ -78,12 +68,12 @@ extension DBTIModel {
         case .saechim:     return .ROCKSTAR
         case .chic:        return .ADVISOR
         case .sosim:       return .WEATHERCASTER
-        case .ballal:      return .ROCKSTAR
+        case .balral:      return .ROCKSTAR
         case .cupid:       return .ADVISOR
         case .bboombboom:  return .WISESAYING
         case .nareun:      return .FOODEXPERT
         case .meong:       return .FORTUNETELLING
-        case .banzzag:     return .FOODEXPERT
+        case .sparkle:     return .FOODEXPERT
         }
     }
     
@@ -93,26 +83,26 @@ extension DBTIModel {
         case .saechim:     return "Rock스타"
         case .chic:        return "고민해결사"
         case .sosim:       return "기상캐스터"
-        case .ballal:      return "Rock스타"
+        case .balral:      return "Rock스타"
         case .cupid:       return "고민해결사"
         case .bboombboom:  return "오늘의명언"
         case .nareun:      return "쩝쩝박사"
         case .meong:       return "탄생석운세"
-        case .banzzag:     return "쩝쩝박사"
+        case .sparkle:     return "쩝쩝박사"
         }
     }
     
     
     var toFaceShape: FaceShape? {
         switch self {
-        case .banzzag:     return .sparkle
+        case .sparkle:     return .sparkle
         case .sosim:       return .sosim
         case .saechim:     return .saechim
         case .nareun:      return .nareun
         case .meong:       return .meong
         case .cupid:       return .cupid
         case .bboombboom:  return .bboombboom
-        case .ballal:      return .balral
+        case .balral:      return .balral
         case .chic:        return .chic
         }
     }
@@ -136,7 +126,7 @@ extension DBTIScore {
             case (0...1, 3...4): return .nareun
             
             // [ballal] 중도 + 적은 생각
-            case (2, 0...1): return .ballal
+            case (2, 0...1): return .balral
             
             // [cupid] 중도 + 적당한 생각
             case (2, 2): return .cupid
@@ -151,7 +141,7 @@ extension DBTIScore {
             case (3...4, 2): return .meong
             
             // [banzzag] 이상 + 많은 생각
-            case (3...4, 3...4): return .banzzag
+            case (3...4, 3...4): return .sparkle
             
             // [sosim] 기본값
             default: return .sosim
