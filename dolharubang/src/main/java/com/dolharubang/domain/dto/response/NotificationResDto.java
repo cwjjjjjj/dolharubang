@@ -20,10 +20,10 @@ public class NotificationResDto {
     private String type;
     private LocalDateTime createdAt;
 
-    public static NotificationResDto from(Notification notification) {
+    public static NotificationResDto from(Notification notification, String requesterNickname) {
         return NotificationResDto.builder()
             .id(notification.getId())
-            .nickname(notification.getContentNickname())
+            .nickname(requesterNickname)
             .content(notification.getContent())
             .isRead(notification.isRead())
             .type(notification.getType().name())
