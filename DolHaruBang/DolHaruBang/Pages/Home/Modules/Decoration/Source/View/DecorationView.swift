@@ -113,13 +113,6 @@ struct DecorationView: View {
                 .background(Color.white) // TabView의 배경색
                 .frame(width: geometry.size.width, height: geometry.size.height) // TabView의 크기를 GeometryReader를 사용하여 조정
             }
-            .onAppear{
-                store.send(.fetchBackground)
-                store.send(.fetchFace)
-                store.send(.fetchFaceShape)
-                store.send(.fetchAccessory)
-                store.send(.fetchNest)
-            }
             .frame(width: geometry.size.width, height: geometry.size.height)// 전체 레이아웃 크기 설정
             .background(Color.white)
         }

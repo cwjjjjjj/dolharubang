@@ -79,6 +79,7 @@ struct HomeFeature {
         // API통신
         case fetchSand
         case sandLoaded(Result<Int, Error>)
+        case fetchDeco
         
         // 돌 프로필
         case captureDol(UIImage)
@@ -115,8 +116,18 @@ struct HomeFeature {
                 return .none
             case .signStore:
                 return .none
+                
+            case .decoStore(.purchaseItemResponse):
+                return .run { send in
+                    await send(.fetchSand)
+                }
+                
             case .decoStore:
                 return .none
+            
+            case .fetchDeco:
+                return .send(.decoStore(.fetchAll))
+            
                 
             case .binding(\.message):
                 // 여기서 사용자 이름 관찰

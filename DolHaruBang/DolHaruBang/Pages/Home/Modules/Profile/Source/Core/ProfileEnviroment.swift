@@ -19,6 +19,7 @@ struct ProfileInfo: Hashable, Codable {
     let friendShip : Int
     let activeAbility : [String]
     let potential : [String]
+    let roomName : String
 }
 
 // 프로필 수정용
@@ -72,7 +73,8 @@ extension ProfileInfo {
         dolBirth: "2022-05-15",
         friendShip: 365,
         activeAbility: ["재치있는 대화", "즉흥적인 연주"],
-        potential: ["리더십", "창의성"]
+        potential: ["리더십", "창의성"],
+        roomName : "돌돌이"
     )
 }
 
