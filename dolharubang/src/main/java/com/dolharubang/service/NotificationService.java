@@ -26,12 +26,15 @@ public class NotificationService {
             Sort.by(Sort.Order.asc("isRead"), Sort.Order.desc("createdAt")));
 
         Page<Notification> pageResult = unreadOnly
-            ? notificationRepository.findByReceiverIdAndIsReadFalse(member.getMemberId(), pageable)
-            : notificationRepository.findByReceiverId(member.getMemberId(), pageable);
+            ? notificationRepository.findByReceiverIdAndIsReadFalseWithRequester(
+            member.getMemberId(), pageable)
+            : notificationRepository.findByReceiverIdWithRequester(member.getMemberId(), pageable);
 
-        return pageResult.map(NotificationResDto::from);
+        return pageResult.map(notification -> {
+            String requesterNickname = notification.getRequester().getNickname();
+            return NotificationResDto.from(notification, requesterNickname);
+        });
     }
-
 
     public long getUnreadCount(Long memberId) {
         return notificationRepository.countByReceiverIdAndIsReadFalse(memberId);
@@ -45,14 +48,14 @@ public class NotificationService {
         notification.markAsRead();
         notificationRepository.save(notification); // 변경사항 반영
 
-        return NotificationResDto.from(notification);
+        return NotificationResDto.from(notification, notification.getRequester().getNickname());
     }
 
     // 친구 요청시 알림
     public void sendFriendRequestNotification(Member receiver, Member requester) {
         Notification notification = Notification.builder()
             .receiverId(receiver.getMemberId())
-            .contentNickname(requester.getNickname())
+            .requester(requester)
             .content("님이 친구 요청을 보냈어요.")
             .type(NotificationType.FRIEND_REQUEST)
             .isRead(false)
@@ -66,7 +69,7 @@ public class NotificationService {
         // 수락한 B → A에게 알림
         Notification toRequester = Notification.builder()
             .receiverId(requester.getMemberId())
-            .contentNickname(receiver.getNickname())
+            .requester(receiver)
             .content("님과 친구가 되었어요!")
             .type(NotificationType.FRIEND_ACCEPTED)
             .isRead(false)
@@ -75,7 +78,7 @@ public class NotificationService {
         // 요청했던 A → 수락한 B에게 알림
         Notification toReceiver = Notification.builder()
             .receiverId(receiver.getMemberId())
-            .contentNickname(requester.getNickname())
+            .requester(requester)
             .content(requester.getNickname() + "님과 친구가 되었어요!")
             .type(NotificationType.FRIEND_ACCEPTED)
             .isRead(false)
@@ -88,7 +91,7 @@ public class NotificationService {
     public void sendWelcomeNotification(Member member) {
         Notification notification = Notification.builder()
             .receiverId(member.getMemberId())
-            .contentNickname(member.getNickname())
+            .requester(member)
             .content("님 하루방에 오신 것을 환영합니다!")
             .type(NotificationType.WELCOME)  // 알림 타입이 있다면 적절히 설정
             .build();
