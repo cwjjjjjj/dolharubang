@@ -25,7 +25,6 @@ struct MailFeature {
         case readMail(String)
         case fetchMailResponse(Result<[MailInfo], Error>)
         case readMailResponse(Result<MailInfo, Error>)
-        
         case fetchUnRead
         case unReadResponse(Result<unReadMailCount, Error>)
         
@@ -62,11 +61,12 @@ struct MailFeature {
                 }
                 
             case let .fetchMailResponse(.success(mails)):
+                print("mail response ",mails)
                 state.mails = mails
                 return .none
                 
             case let .fetchMailResponse(.failure(error)):
-                print("mail ",error)
+                print("mail error ",error)
                 return .none
                 
             case let .readMailResponse(.success(mail)):
@@ -74,7 +74,7 @@ struct MailFeature {
                 return .none
                 
             case let .readMailResponse(.failure(error)):
-                print("mail ",error)
+                print("mail error ",error)
                 return .none
                 
             case .fetchUnRead:

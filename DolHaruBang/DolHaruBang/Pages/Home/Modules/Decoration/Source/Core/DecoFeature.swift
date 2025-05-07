@@ -149,7 +149,7 @@ struct DecoFeature {
                 }
                 
             case let .faceShapeItemsResponse(.success(customizeInfo)):
-                print("얼굴형아이템 ", customizeInfo)
+//                print("얼굴형아이템 ", customizeInfo)
                 state.faceShapeItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let faceShape = FaceShape.allCases.first(where: { $0.description == selectedItem.name }) {
@@ -175,7 +175,7 @@ struct DecoFeature {
             case let .faceItemsResponse(.success(customizeInfo)):
                 state.faceItems = customizeInfo
                 
-                    print("얼굴아이템 ", customizeInfo)
+//                    print("얼굴아이템 ", customizeInfo)
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let face = Face.allCases.first(where: { $0.description == selectedItem.name }) {
                         state.selectedFace = face
@@ -200,7 +200,7 @@ struct DecoFeature {
                 
             case let .backItemsResponse(.success(customizeInfo)):
                 
-                    print("배경아이템 ", customizeInfo)
+//                    print("배경아이템 ", customizeInfo)
                 state.backItems = customizeInfo         // 선택된 배경 업데이트
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let background = Background.allCases.first(where: { $0.description == selectedItem.name }) {
@@ -231,7 +231,7 @@ struct DecoFeature {
                 
             case let .accessoryItemsResponse(.success(customizeInfo)):
                 
-                    print("악세서리 아이템 ", customizeInfo)
+//                    print("악세서리 아이템 ", customizeInfo)
                 state.accessoryItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let accessory = Accessory.allCases.first(where: { $0.description == selectedItem.name }) {
@@ -256,7 +256,7 @@ struct DecoFeature {
                 }
                 
             case let .nestItemsResponse(.success(customizeInfo)):
-                print("둥지 아이템 ", customizeInfo)
+//                print("둥지 아이템 ", customizeInfo)
                 state.nestItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let nest = Nest.allCases.first(where: { $0.description == selectedItem.name }) {

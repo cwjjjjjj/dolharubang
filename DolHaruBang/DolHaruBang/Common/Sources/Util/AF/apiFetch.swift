@@ -91,12 +91,12 @@ func fetch<T: Decodable>(
         finalHeaders.add(name: "Content-Type", value: "application/json")
     }
     
-    if let body = body {
-        print("Request Body: \(String(data: body, encoding: .utf8) ?? "Unable to decode body")")
-    } else {
-        print("Request Body: nil")
-    }
-    
+//    if let body = body {
+//        print("Request Body: \(String(data: body, encoding: .utf8) ?? "Unable to decode body")")
+//    } else {
+//        print("Request Body: nil")
+//    }
+//    
     // 요청 준비
     var request = URLRequest(url: URL(string: fullURL)!)
     request.httpMethod = method.rawValue
@@ -148,9 +148,9 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                 switch response.result {
                 case .success(let data):
                     do {
-                        print("------------서버로 부터 응답 값------------")
-                        dump(response)
-                        print("------------서버로 부터 응답 값------------")
+//                        print("------------서버로 부터 응답 값------------")
+//                        dump(response)
+//                        print("------------서버로 부터 응답 값------------")
                         
                         // 상태 코드 확인 (204 No Content 처리)
                         if let httpResponse = response.response, httpResponse.statusCode == 204, model is EmptyResponse.Type {

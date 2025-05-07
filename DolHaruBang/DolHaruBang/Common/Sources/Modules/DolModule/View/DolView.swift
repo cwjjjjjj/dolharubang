@@ -266,7 +266,7 @@ struct DolView : UIViewRepresentable {
                 //                print("출력 \(selectedSign) reference")
                 showAllNodes(rootNode: signNode)
                 hideAllNodesExcept(node: childSignNode, rootNode: signNode) // 선택 노드만 보이게 설정
-                moveNodeToPosition(node: childSignNode, x: -1.1, y: 0.4, z: -0.15) // x, y, z 값은 원하는 위치로 설정
+                moveNodeToPosition(node: childSignNode, x: -1.1, y: 0.4, z: -0.17) // x, y, z 값은 원하는 위치로 설정
                 
                 
             } else {
@@ -275,7 +275,7 @@ struct DolView : UIViewRepresentable {
         }
         
         if let textNode = scene.rootNode.childNode(withName: "text" , recursively: true){
-            print("textNode : ",textNode)
+//            print("textNode : ",textNode)
             updateTextNode(textNode, newText: signText)
             moveNodeToPosition(node: textNode, x: -1.3, y: -0.1, z: 0.5) // x, y, z 값은 원하는 위치로 설정
             

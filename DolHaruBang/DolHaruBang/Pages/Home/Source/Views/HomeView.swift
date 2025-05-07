@@ -316,13 +316,13 @@ struct DolContentView : View {
                 .padding(.bottom,2)
         }
         .frame(width: 32,height: 32)
-        .offset(x: geometry.size.width * 0.33 ,y: geometry.size.height * -0.11)
+        .offset(x: geometry.size.width * 0.36 ,y: geometry.size.height * -0.11)
         
         if let basicInfo = store.profileStore.profile {
             Text("\(basicInfo.dolName)")
                 .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
             
-            .offset(x: 0 ,y: geometry.size.height * 0.19)
+            .offset(x: 0 ,y: geometry.size.height * 0.2)
             
             // 친밀도 게이지
             ZStack(alignment: .leading){
@@ -342,7 +342,7 @@ struct DolContentView : View {
                         y: 2
                     )
             }
-            .offset(x: 0 ,y: geometry.size.height * 0.21)
+            .offset(x: 0 ,y: geometry.size.height * 0.22)
             
         }
         
