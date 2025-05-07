@@ -16,8 +16,12 @@ func getImageName(for mailType: String) -> String {
         return "CalendarMail" // 달력 이미지 파일명
     case "FRIEND_ACCEPTED":
         return "SystemMail" // 시스템 이미지 파일명인데 일단 친구로
+    case "FRIEND_REQUEST":
+        return "SystemMail" // 시스템 이미지 파일명인데 일단 친구로
     case "MISSION_COMPLETED":
         return "TrophyMail" // 업적 이미지 파일명
+    case "WELCOME":
+        return "SystemMail" // 시스템 이미지 파일명
     default:
         return "ReadMail" // 기본 이미지 파일명
     }

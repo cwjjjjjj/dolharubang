@@ -32,9 +32,9 @@ struct InfoRequestBody: Codable, Equatable, Sendable {
 }
 
 
-struct photoRequestBody: Encodable {
-    let photo : String
-    }
+struct photoRequestBody: Codable, Equatable,Sendable {
+    let image : String
+}
 
 @DependencyClient
 struct MyPageClient {
@@ -96,24 +96,29 @@ extension MyPageClient: DependencyKey {
             let bodyData = try JSONEncoder().encode(requestBody)
             return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
         },
-        updateUserPhoto: { photoName in
+        updateUserPhoto: { base64String in
             let url = APIConstants.Endpoints.photo
             
-            let photoName = Data(base64Encoded: photoName)
-
+            let requestBody = photoRequestBody(image: base64String)
+            let body2 = try JSONEncoder().encode(requestBody)
+            let photoName = Data(base64Encoded: base64String)
+            
+            
+            
             // 3. multipart body 생성
             let (body, boundary) = ImagetoStirngBody(
                 imageData: photoName
             )
 
             let headers: HTTPHeaders = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
+            
 
             return try await fetch(
                 url: url,
                 model: UserInfo.self,
                 method: .post,
                 headers: headers,
-                body: body
+                body: body2
             )
         }
     )
@@ -128,10 +133,10 @@ private let jsonDecoder: JSONDecoder = {
 
 extension UserInfo {
     static let mockUserInf = Self(
-         userName: "희태",
+         userName: "돌멩",
          roomName: "돌돌이방",
-         birthStone: "가넷",
-         birthday: "2023년 10월 31일",
+         birthStone: "사파이어",
+         birthday: "2099년 10월 31일",
          emailAddress: "smyang0220@naver.com",
          closeness: 5,
          profilePicture: "사진주소?"

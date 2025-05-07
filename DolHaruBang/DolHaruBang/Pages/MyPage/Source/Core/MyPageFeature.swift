@@ -134,6 +134,7 @@ struct MyPageFeature {
                 
                 // 조회,수정 결과 적용하기
             case let .fetchUserInfoResponse(.success(userinfo)):
+                print("프로필 요청 성공")
                 state.isLoading = false
                 state.userInfo = userinfo
                 state.userName = userinfo.userName
@@ -141,6 +142,7 @@ struct MyPageFeature {
                 return .none
                 
             case let .fetchUserInfoResponse(.failure(error)):
+                print("프로필 조회 ",error)
                 state.isLoading = false
                 state.errorMessage = error.localizedDescription
                 return .none

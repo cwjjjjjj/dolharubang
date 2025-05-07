@@ -11,13 +11,13 @@ import ComposableArchitecture
 import Alamofire
 
 
-struct MailInfo: Identifiable,Hashable, Codable {
+struct MailInfo: Hashable,Codable {
     let id: Int64
     let nickname: String?
     let content: String
-    let isRead: Bool
     let type: String
-    let createdAt: Date
+    let createdAt: String
+    let isRead : Bool
     
     //    init(nickname: String? = nil, mailType: String, description: String, dateAgo: String) {
     //           self.nickname = nickname
@@ -59,12 +59,10 @@ extension MailClient: DependencyKey {
             let url = APIConstants.Endpoints.mail
             let queryParameters : [String: String] = [
                 "page": "0",
-                "size": "8"
+                "size": "20"
             ]
             
             return try await fetch(url: url, model: [MailInfo].self, method: .get, queryParameters: queryParameters)
-            
-            //            return MailInfo.mockMailInfo
         },
         readMail: { id in
             let url = APIConstants.Endpoints.mail + "/\(id)" + "/read"
