@@ -301,19 +301,19 @@ struct InputUserInfoView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Button(action: {
-                        
-                    }) {
-                        Text("로그아웃")
-                            .font(.customFont(Font.body3Regular))
-                            .foregroundColor(.mainBlue)
-                    }
-                }
-                .offset(x: 8, y: 8)
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                HStack {
+//                    Button(action: {
+//                        
+//                    }) {
+//                        Text("로그아웃")
+//                            .font(.customFont(Font.body3Regular))
+//                            .foregroundColor(.mainBlue)
+//                    }
+//                }
+//                .offset(x: 8, y: 8)
+//            }
+//        }
     }
 }

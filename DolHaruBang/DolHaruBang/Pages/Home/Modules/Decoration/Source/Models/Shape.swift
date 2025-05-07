@@ -31,14 +31,14 @@ enum FaceShape : String,Customizable {
 extension FaceShape {
     var toDBTIModel: DBTIModel {
         switch self {
-            case .sparkle:    return .banzzag
+            case .sparkle:    return .sparkle
             case .sosim:      return .sosim
             case .saechim:    return .saechim
             case .nareun:     return .nareun
             case .meong:      return .meong
             case .cupid:      return .cupid
             case .bboombboom: return .bboombboom
-            case .balral:     return .ballal
+            case .balral:     return .balral
             case .chic:       return .chic
         }
     }

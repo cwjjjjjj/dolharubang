@@ -9,7 +9,26 @@ import Foundation
 import ComposableArchitecture
 import Alamofire
 
+let personalityKoreanDict: [String: String] = [
+    "picky": "까다로움",
+    "chic": "시크함",
+    "timid": "소심함",
+    "cheerful": "명랑함",
+    "affectionate": "애정넘침",
+    "energetic": "에너지넘침",
+    "sleepy": "나른함",
+    "blank": "멍함",
+    "romantic": "낭만파"
+]
 
+let baseAbilityKoreanDict: [String: String] = [
+    "ROCKSTAR": "Rock스타",
+    "ADVISOR": "고민해결사",
+    "WEATHERCASTER": "기상캐스터",
+    "WISESAYING": "오늘의명언",
+    "FOODEXPERT": "쩝쩝박사",
+    "FORTUNETELLING": "탄생석운세"
+]
 
 struct ProfileInfo: Hashable, Codable {
     let dolName: String
@@ -19,6 +38,16 @@ struct ProfileInfo: Hashable, Codable {
     let friendShip : Int
     let activeAbility : [String]
     let potential : [String]
+    
+}
+
+extension ProfileInfo {
+    var personalityKorean: String {
+        personalityKoreanDict[personality] ?? personality
+    }
+    var baseAbilityKorean: String {
+        baseAbilityKoreanDict[baseAbility] ?? baseAbility
+    }
 }
 
 // 프로필 수정용
@@ -35,7 +64,6 @@ struct ProfileClient {
 // 실제 통신 전 테스트
 extension ProfileClient: TestDependencyKey {
     static let previewValue = Self()
-
     static let testValue = Self()
 }
 
