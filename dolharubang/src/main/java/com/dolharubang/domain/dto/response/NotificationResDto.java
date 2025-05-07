@@ -1,6 +1,7 @@
 package com.dolharubang.domain.dto.response;
 
 import com.dolharubang.domain.entity.Notification;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ public class NotificationResDto {
     private Long id;
     private String nickname;
     private String content;
+    @JsonProperty("isRead")
     private boolean isRead;
     private String type;
     private LocalDateTime createdAt;
