@@ -10,11 +10,53 @@ import SwiftUI
 
 struct MailView: View {
     @Binding var showPopup: Bool // 팝업 표시 여부
+    let geometry : GeometryProxy
     
     @State var store: StoreOf<MailFeature> // Store로 상태 및 액션 전달
     
     var body: some View {
-        ZStack{
+        if let mail = store.state.selectMail{
+            VStack(alignment: .center){
+                    Spacer().frame(height: 24)
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        store.send(.closeMail)
+                    }) {
+                        Image(systemName: "xmark")
+                            .resizable()
+                            .frame(width: 14, height: 14)
+                            .foregroundColor(.placeHolder)
+                    }
+                    .padding(.trailing, 24)
+                }
+                Image("clover")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: geometry.size.width * 0.7)
+                HStack{
+                    (
+                        Text(mail.nickname ?? "").foregroundColor(Color.init(hex: "618501"))
+                        +
+                        Text("\(mail.content)".splitCharacter())
+                            .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                    )
+                    .font(Font.customFont(Font.body2Bold))
+                    .frame(width: 222, height : 48, alignment: .leading)
+                    .lineSpacing(5)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    .padding(.vertical, 8) // 세로 여백 추가
+                    
+                }
+                Spacer()
+            }
+            .background(Color.white)
+            .cornerRadius(25)
+            .shadow(radius: 10).opacity(store.clickMail ? 1 : 0)
+        }
+        else{
+            
             VStack(alignment: .center) {
                 Spacer().frame(height: 24)
                 
@@ -57,7 +99,7 @@ struct MailView: View {
                                             .frame(width: 40, height: 26)
                                             .padding(.top, 8)
                                         
-                                        Text("\(mail.content)")
+                                        Text(formatRelativeTime(from:mail.createdAt))
                                             .font(Font.customFont(Font.body6Bold))
                                             .lineSpacing(10.40)
                                             .foregroundColor(Color(red: 0.65, green: 0.61, blue: 0.57))
@@ -91,60 +133,18 @@ struct MailView: View {
                             }
                             
                         }
-                        
                     }
-                }.frame(height: 304).padding(10)
-                
-                //
+                }.padding(10)
                 
             }
-            .frame(width: 320, height : 400)
             .background(Color.white)
             .cornerRadius(25)
             .shadow(radius: 10)
-            if let mail = store.state.selectMail{
-                VStack(alignment: .center){
-                        HStack{
-                            Button(action: {
-                                store.send(.closeMail)
-                            }) {
-                                Image(systemName: "xmark")
-                                    .resizable()
-                                    .frame(width: 14, height: 14)
-                                    .foregroundColor(.placeHolder)
-                            }
-                            .padding(.trailing, 24)
-                        }
-                        Image("clover")
-                            .resizable()
-                            .scaledToFill()
-                        HStack{
-                            (
-                                Text(mail.nickname ?? "").foregroundColor(Color.init(hex: "618501"))
-                                
-                                +
-                                
-                                Text("\(mail.content)".splitCharacter())
-                                    .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
-                            )
-                            .font(Font.customFont(Font.body2Bold))
-                            .frame(width: 222, height : 48, alignment: .leading)
-                            .lineSpacing(5)
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
-                            .padding(.vertical, 8) // 세로 여백 추가
-                            
-                        }
-                    }
-                .frame(width: 320, height : 400)
-                .background(Color.white)
-                .cornerRadius(25)
-                .shadow(radius: 10).opacity(store.clickMail ? 1 : 0)
+            .onAppear{
+                store.send(.fetchMail)
+                store.send(.fetchUnRead)
             }
         }
-        .onAppear{
-            store.send(.fetchMail)
-            store.send(.fetchUnRead)
-        }
     }
+        
 }

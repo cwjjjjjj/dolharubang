@@ -4,6 +4,7 @@
 //
 //  Created by 양희태 on 9/26/24.
 //
+import Foundation
 
 // 메일 타입에 따른 이미지 선택 함수
 func getImageName(for mailType: String) -> String {
@@ -32,3 +33,50 @@ extension String {
         return self.split(separator: "").joined(separator: "\u{200B}")
     }
 }
+
+    func formatRelativeTime(from backendDateString: String) -> String {
+        // DateFormatter 세팅
+          let dateFormatter = DateFormatter()
+          dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+          dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+          dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+          
+          // 파싱 시도, 마이크로초 6자리
+          var date = dateFormatter.date(from: backendDateString)
+          
+          // 파싱 실패 시(마이크로초 3자리 등), 포맷 변경해서 재시도
+          if date == nil {
+              dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+              date = dateFormatter.date(from: backendDateString)
+          }
+          // 파싱 실패 시(마이크로초 없는 경우), 포맷 변경해서 재시도
+          if date == nil {
+              dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+              date = dateFormatter.date(from: backendDateString)
+          }
+          // 그래도 실패하면 원본 반환
+          guard let backendDate = date else { return backendDateString }
+          
+          let now = Date()
+          let diff = now.timeIntervalSince(backendDate)
+          let minute = 60.0
+          let hour = 60 * minute
+          let day = 24 * hour
+          
+          if diff < day {
+              if diff < hour {
+                  let minutes = Int(diff / minute)
+                  return "\(minutes)분전"
+              } else {
+                  let hours = Int(diff / hour)
+                  return "\(hours)시간전"
+              }
+          } else if diff < 3 * day {
+              let days = Int(diff / day)
+              return "\(days)일전"
+          } else {
+              let outputFormatter = DateFormatter()
+              outputFormatter.dateFormat = "yyyy-MM-dd"
+              return outputFormatter.string(from: backendDate)
+          }
+      }

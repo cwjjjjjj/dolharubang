@@ -121,6 +121,7 @@ struct HomeView : View {
                             action: HomeFeature.Action.profileStore
                         )
                     )
+                    .frame(width: geometry.size.width * 0.8142, height : geometry.size.height * 0.55)
                     .background(Color.white)
                     .cornerRadius(25)
                     .shadow(radius: 10)
@@ -137,11 +138,12 @@ struct HomeView : View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
                     MailView(
-                        showPopup: $store.mail, store : store.scope(
+                        showPopup: $store.mail, geometry : geometry, store : store.scope(
                             state: \.mailStore,
                             action: HomeFeature.Action.mailStore
                         )
                     )
+                    .frame(width: geometry.size.width * 0.8142, height : geometry.size.height * 0.55)
                     .background(Color.white)
                     .cornerRadius(25)
                     .shadow(radius: 10)
