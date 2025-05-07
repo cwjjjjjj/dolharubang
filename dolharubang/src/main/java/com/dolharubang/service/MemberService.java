@@ -37,6 +37,10 @@ public class MemberService {
     public MemberProfileResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
         Member member = findMember(memberId);
 
+        if (!checkNickname(requestDto.getNickname())) {
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+        }
+
         member.update(
             requestDto.getNickname(),
             requestDto.getSpaceName()

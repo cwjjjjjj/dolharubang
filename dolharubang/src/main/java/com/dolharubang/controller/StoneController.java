@@ -40,8 +40,6 @@ public class StoneController {
     public ResponseEntity<?> addStone(@AuthenticationPrincipal PrincipalDetails principal,
         @RequestBody StoneReqDto requestDto) {
 
-        System.out.println("컨트롤러 | 방이름: "+requestDto.getSpaceName());
-
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

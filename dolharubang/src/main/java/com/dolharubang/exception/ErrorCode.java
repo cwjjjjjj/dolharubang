@@ -13,6 +13,7 @@ public enum ErrorCode {
     // 유저 관련 오류
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
     MEMBER_PROFILE_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "기존 프로필 사진 경로를 찾을 수 없습니다."),
+    DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "중복된 닉네임입니다."),
 
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),

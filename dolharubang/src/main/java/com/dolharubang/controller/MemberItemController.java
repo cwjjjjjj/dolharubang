@@ -2,8 +2,8 @@ package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.response.memberItem.CustomItemResDto;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
-import com.dolharubang.mongo.enumTypes.ItemType;
 import com.dolharubang.service.MemberItemService;
+import com.dolharubang.type.ItemType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -35,7 +35,7 @@ public class MemberItemController {
     @Operation(summary = "아이템 구매하기", description = "memberId와 아이템을 사용하여 아이템을 구매상태로 변경한다.")
     @PostMapping("/buy")
     public ResponseEntity<?> buyMemberItem(@AuthenticationPrincipal PrincipalDetails principal,
-        @RequestParam String itemId) {
+        @RequestParam Long itemId) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -71,7 +71,7 @@ public class MemberItemController {
     @PostMapping("/wear")
     public ResponseEntity<?> wearMemberItem(
         @AuthenticationPrincipal PrincipalDetails principal,
-            @RequestParam String itemId) {
+            @RequestParam Long itemId) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

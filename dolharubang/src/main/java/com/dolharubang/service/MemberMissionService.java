@@ -8,7 +8,6 @@ import com.dolharubang.domain.entity.Mission;
 import com.dolharubang.domain.entity.Notification;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.mongo.service.ItemService;
 import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.MissionRepository;

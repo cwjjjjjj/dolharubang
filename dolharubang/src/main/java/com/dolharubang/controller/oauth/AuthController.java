@@ -74,7 +74,7 @@ public class AuthController {
                 .providerId(providerId)
                 .memberEmail(kakaoInfo.getEmail())
                 .nickname(kakaoInfo.getNickname())
-                .profilePicture(kakaoInfo.getProfileImageUrl())
+                .profilePicture(null)
                 .sands(0)
                 .closeness(0)
                 .build();
@@ -164,6 +164,7 @@ public class AuthController {
                 .build();
 
             memberRepository.save(member);
+            memberItemService.initializeItems(member);
             notificationService.sendWelcomeNotification(member);
         }
 

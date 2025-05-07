@@ -8,7 +8,7 @@ import lombok.Getter;
 public class MemberItemReqDto {
 
     private Long memberId;
-    private String itemId;
+    private Long itemId;
     private boolean whetherHasItem;
 
     public static MemberItem toEntity(MemberItemReqDto dto, Member member) {

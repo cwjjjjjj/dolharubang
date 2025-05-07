@@ -27,11 +27,14 @@ public class StoneService {
     private final StoneRepository stoneRepository;
     private final MemberRepository memberRepository;
     private final SpeciesRepository speciesRepository;
+    private final MemberItemService memberItemService;
 
-    public StoneService(StoneRepository stoneRepository, MemberRepository memberRepository, SpeciesRepository speciesRepository) {
+    public StoneService(StoneRepository stoneRepository, MemberRepository memberRepository,
+        SpeciesRepository speciesRepository, MemberItemService memberItemService) {
         this.stoneRepository = stoneRepository;
         this.memberRepository = memberRepository;
         this.speciesRepository = speciesRepository;
+        this.memberItemService = memberItemService;
     }
 
     @Transactional
@@ -40,15 +43,13 @@ public class StoneService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        System.out.println("서비스 | 방이름: "+stoneReqDto.getSpaceName());
-
         Species species = speciesRepository.findBySpeciesName(stoneReqDto.getSpeciesName())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
         Map<AbilityType, Boolean> abilityMap = Arrays.stream(AbilityType.values()).collect(
             Collectors.toMap(
                 ability -> ability,
-                ability -> ability == species.getBaseAbility()
+                ability -> ability == species.getBaseAbility() || ability == AbilityType.ROLLING
             ));
 
         Stone stone = Stone.builder()
@@ -60,9 +61,10 @@ public class StoneService {
             .signText("")
             .build();
 
-        member.updateSpaceName(
-            stoneReqDto.getSpaceName()
-        );
+        member.updateSpaceName(stoneReqDto.getSpaceName());
+        memberItemService.updateSpeciesItemStatus(member, species.getSpeciesName());
+
+        memberRepository.save(member);
 
         Stone adoptedStone = stoneRepository.save(stone);
         if (adoptedStone != null) {
@@ -73,13 +75,16 @@ public class StoneService {
 
     @Transactional
     public StoneProfileResDto updateStoneName(Long memberId, StoneTextUpdateReqDto dto) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         Stone stone = findStoneByMemberId(memberId);
         dto.updateStoneName(stone);
 
         Species species = speciesRepository.findById(stone.getSpeciesId())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
-        return StoneProfileResDto.fromEntity(stone, species);
+        return StoneProfileResDto.fromEntity(stone, species, member);
     }
 
     @Transactional
@@ -103,12 +108,15 @@ public class StoneService {
 
     @Transactional(readOnly = true)
     public StoneProfileResDto getStoneProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
         Stone stone = findStoneByMemberId(memberId);
 
         Species species = speciesRepository.findById(stone.getSpeciesId())
             .orElseThrow(() -> new CustomException(ErrorCode.SPECIES_NOT_FOUND));
 
-        return StoneProfileResDto.fromEntity(stone, species);
+        return StoneProfileResDto.fromEntity(stone, species, member);
     }
 
     @Transactional(readOnly = true)

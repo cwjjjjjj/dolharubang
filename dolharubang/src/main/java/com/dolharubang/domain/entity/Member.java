@@ -97,6 +97,7 @@ public class Member extends BaseEntity {
 
     public void updateProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+        this.modifiedAt = LocalDateTime.now();
     }
 
     //엔티티가 영속성 컨텍스트에 저장되기 전에 호출

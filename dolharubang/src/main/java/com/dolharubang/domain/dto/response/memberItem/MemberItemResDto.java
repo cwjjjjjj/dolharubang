@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class MemberItemResDto {
     private Long memberItemId;
-    private String itemId;
+    private Long itemId;
     private boolean whetherHasItem;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
