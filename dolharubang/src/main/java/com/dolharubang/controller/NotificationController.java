@@ -88,7 +88,7 @@ public class NotificationController {
 
         Member member = principal.getMember();
         NotificationResDto updatedNotification = notificationService.markAsRead(
-            member.getMemberId(), id, member.getNickname());
+            member.getMemberId(), id);
 
         return ResponseEntity.ok(updatedNotification);
     }
