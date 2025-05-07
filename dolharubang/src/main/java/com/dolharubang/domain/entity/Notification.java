@@ -27,6 +27,8 @@ public class Notification extends BaseEntity {
     private Long receiverId;
 
     private String content;
+    private String contentNickname;
+
     private boolean isRead = false;
 
     @Enumerated(EnumType.STRING)
