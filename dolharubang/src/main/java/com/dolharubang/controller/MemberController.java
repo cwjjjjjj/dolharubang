@@ -117,20 +117,54 @@ public class MemberController {
     public ResponseEntity<?> updateProfilePicture(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestPart("image") MultipartFile imageFile) {
+
+        log.info("프로필 사진 수정 요청 - 인증 정보: {}", principal != null ? principal.getUsername() : "null");
+
+        if (imageFile == null) {
+            log.error("이미지 파일이 null입니다");
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "BAD_REQUEST",
+                    "message", "이미지 파일이 없습니다"
+                ));
+        }
+
+        log.info("이미지 파일 정보 - 이름: {}, 크기: {}, 타입: {}",
+            imageFile.getOriginalFilename(),
+            imageFile.getSize(),
+            imageFile.getContentType());
+
         if (principal == null) {
+            log.error("인증 정보가 없습니다");
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Map.of(
                     "code", "UNAUTHORIZED",
-                    "message", "인증에 실패햐였습니다"
+                    "message", "인증에 실패하였습니다"
                 ));
         }
-        Long memberId = getMemberId(principal);
-        MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId,
-            imageFile);
 
-        return ResponseEntity.ok(response);
+        try {
+            Long memberId = getMemberId(principal);
+            log.info("회원 ID: {}", memberId);
+
+            MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId, imageFile);
+            log.info("프로필 사진 업데이트 성공 - 새 URL: {}", response.getProfilePicture());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("프로필 사진 업데이트 중 오류 발생", e);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "SERVER_ERROR",
+                    "message", "서버 오류: " + e.getMessage()
+                ));
+        }
     }
 
     @Operation(summary = "회원 모래알 조회하기", description = "모래알을 조회한다.")
