@@ -93,3 +93,91 @@ func nextMonthText(calendar: Calendar, store: StoreOf<CalendarFeature>) -> Strin
     let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: store.currentDate)!
     return dateFormatterMonth.string(from: nextMonthDate) + "월"
 }
+
+// KST 시간대로 Date 객체를 인코딩하는 커스텀 전략을 제공하는 함수
+func kstDateEncodingStrategy() -> JSONEncoder.DateEncodingStrategy {
+    return .custom { date, encoder in
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        let dateString = formatter.string(from: date)
+        var container = encoder.singleValueContainer()
+        try container.encode(dateString)
+    }
+}
+
+// KST 시간대로 문자열을 Date 객체로 디코딩하는 커스텀 전략을 제공하는 함수
+func kstDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
+    return .custom { decoder in
+        let container = try decoder.singleValueContainer()
+        let dateString = try container.decode(String.self)
+        
+        let milliFormatter = DateFormatter()
+        milliFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        milliFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        let basicFormatter = DateFormatter()
+        basicFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        basicFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        if let date = milliFormatter.date(from: dateString) {
+            return date
+        }
+        if let date = basicFormatter.date(from: dateString) {
+            return date
+        }
+        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date format: \(dateString)")
+    }
+}
+
+// 일반화된 인코딩 함수
+func encodeWithKST<T: Encodable>(_ value: T, additionalFields: [String: Any]? = nil, debug: Bool = false) throws -> Data {
+    if debug {
+        print("--------------------------------------------------------------------------")
+        print("Encoding \(T.self)...")
+        print("--------------------------------------------------------------------------")
+        
+        // 디버깅용 KST 시간 출력
+        if let dateContainingObject = value as? Schedule {
+            let kstFormatter = DateFormatter()
+            kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+            
+            print("<<인코딩 전, KST 기준 일정 시간>>")
+            print("startScheduleDate: \(kstFormatter.string(from: dateContainingObject.startScheduleDate))")
+            print("endScheduleDate: \(kstFormatter.string(from: dateContainingObject.endScheduleDate))")
+            print("alarmTime: \(kstFormatter.string(from: dateContainingObject.alarmTime))")
+        }
+    }
+    
+    // JSONEncoder 설정
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = kstDateEncodingStrategy()
+    
+    // 기본 인코딩
+    let jsonData = try encoder.encode(value)
+    
+    // 추가 필드가 있는 경우 처리
+    if let additionalFields = additionalFields, !additionalFields.isEmpty {
+        var jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as! [String: Any]
+        for (key, value) in additionalFields {
+            jsonDict[key] = value
+        }
+        let finalData = try JSONSerialization.data(withJSONObject: jsonDict)
+        
+        if debug, let jsonString = String(data: finalData, encoding: .utf8) {
+            print("Request Body: \(jsonString)")
+        }
+        
+        return finalData
+    }
+    
+    if debug {
+        print("--------------------------------------------------------------------------")
+        print("Encoding Ends...")
+        print("--------------------------------------------------------------------------")
+    }
+    
+    return jsonData
+}

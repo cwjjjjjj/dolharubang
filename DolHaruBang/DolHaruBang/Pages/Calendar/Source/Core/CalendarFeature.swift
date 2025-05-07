@@ -19,7 +19,7 @@ struct CalendarFeature {
         case changeMonth(by: Int)
         case selectDate(Date?)
         case togglePopup(Bool)
-        case fetchSchedulesForMonth(year: Int, month: Int, memberId: Int)
+        case fetchSchedulesForMonth(year: Int, month: Int)
         case schedulesReceived(Result<[Schedule], Error>, isFullUpdate: Bool)  // 수정된 부분
         case addSchedule(Schedule)
         case editSchedule(Schedule)
@@ -36,7 +36,7 @@ struct CalendarFeature {
                     state.currentDate = newDate
                     let components = Calendar.current.dateComponents([.year, .month], from: newDate)
                     return .run { send in
-                        await send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 2, memberId: 1))
+                        await send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 1))
                     }
                 }
                 return .none
@@ -49,11 +49,11 @@ struct CalendarFeature {
                 state.showPopup = show
                 return .none
                 
-                case let .fetchSchedulesForMonth(year, month, memberId):
+                case let .fetchSchedulesForMonth(year, month):
                     state.isLoading = true
                     return .run { send in
                         do {
-                            let schedules = try await scheduleClient.fetchSchedulesById(year, month, memberId)
+                            let schedules = try await scheduleClient.fetchSchedules(year, month)
                             print("<<성공 - \(schedules.count)개의 일정 가져옴>>")
                             schedules.forEach { schedule in
                                 // KST로 포맷팅된 시작일 출력
@@ -75,7 +75,7 @@ struct CalendarFeature {
                 return .run { send in
                     do {
                         let addedSchedule = try await scheduleClient.addSchedule(schedule)
-                        await send(.schedulesReceived(.success([addedSchedule]), isFullUpdate: false))  // 부분 업데이트
+                        await send(.schedulesReceived(.success([addedSchedule]), isFullUpdate: false))
                     } catch {
                         await send(.schedulesReceived(.failure(error), isFullUpdate: false))
                     }
@@ -92,39 +92,20 @@ struct CalendarFeature {
                         }
                     }
                     
-//            case .deleteSchedule(let schedule):
-//                return .run { send in
-//                    try await scheduleClient.deleteSchedule(schedule.id)
-//                } catch: { error, send in
-//                    print("Failed to delete schedule: \(error)")
-//                }
             case let .deleteSchedule(schedule):
                 return .run { [state] send in
                     try await scheduleClient.deleteSchedule(schedule.id)
                     
-                    var kstCalendar = Calendar.current
-                    kstCalendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+                    // 삭제 후 현재 월의 일정을 다시 불러오기
+                    let components = Calendar.current.dateComponents([.year, .month], from: state.currentDate)
+                    await send(.fetchSchedulesForMonth(year: components.year ?? 2025, month: components.month ?? 1))
                     
-                    // 삭제한 일정의 날짜
-                    let deletionDate = kstCalendar.startOfDay(for: schedule.startScheduleDate)
-                    
-                    var newSchedules = state.schedules
-                    if var schedulesForDate = newSchedules[deletionDate] {
-                        schedulesForDate.removeAll { $0.id == schedule.id }
-                        if schedulesForDate.isEmpty {
-                            newSchedules[deletionDate] = nil // 날짜에 일정이 없으면 제거
-                        } else {
-                            newSchedules[deletionDate] = schedulesForDate // 업데이트
-                        }
-                        print("ID \(schedule.id)번 일정 삭제 후 상태 업데이트: \(newSchedules)")
-                        
-                        // 상태를 업데이트하기 위해 새로운 상태를 생성하거나 binding 액션 전송
-                        await send(.binding(.set(\.schedules, newSchedules)))
-                    }
+                    print("ID \(schedule.id)번 일정 삭제 후 일정 다시 불러오기")
                 } catch: { error, send in
                     print("Failed to delete schedule: \(error)")
                     await send(.schedulesReceived(.failure(error), isFullUpdate: false))
                 }
+
 
             case .schedulesReceived(.success(let schedules), let isFullUpdate):
                 state.isLoading = false
