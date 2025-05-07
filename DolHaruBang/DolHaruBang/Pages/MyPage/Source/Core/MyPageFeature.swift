@@ -25,7 +25,7 @@ struct MyPageFeature {
         var selectedImage: UIImage?
         var isLoading : Bool = false
         
-        var userInfo : UserInfo? = UserInfo.mockUserInf
+        var userInfo : UserInfo?
         var errorMessage: String? = nil
         var userName = ""
         var roomName = ""

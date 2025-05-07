@@ -256,11 +256,12 @@ struct DecoFeature {
                 }
                 
             case let .nestItemsResponse(.success(customizeInfo)):
-//                print("둥지 아이템 ", customizeInfo)
+                print("둥지 아이템 ", customizeInfo)
                 state.nestItems = customizeInfo
                 if let selectedItem = customizeInfo.first(where: { $0.isSelected }) {
                     if let nest = Nest.allCases.first(where: { $0.description == selectedItem.name }) {
                         state.selectedNest = nest
+                        print("둥지 선택",nest)
                     }
                 }
                 return .none

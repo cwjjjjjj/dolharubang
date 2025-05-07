@@ -246,6 +246,19 @@ struct DolView : UIViewRepresentable {
             }
         }
         
+        // Nest Node Hide On Off
+        if let nestNode = scene.rootNode.childNode(withName: "Nest" , recursively: true){
+            if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
+                // 선택한 얼굴형중 선택한 표정만 black_glasses reference
+                //                print("출력 \(selectedNest) reference")
+                showAllNestNodes(rootNode: nestNode)
+                hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
+                moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.65, z: 0.0) // x, y, z 값은 원하는 위치로 설정
+            } else {
+                print("\(selectedNest) 노드가 씬에 존재하지 않습니다.")
+            }
+        }
+        
         // Accessory Node Hide On Off
         if let accessoryNode = scene.rootNode.childNode(withName: "Face" , recursively: true){
             if let childAccessoryNode = accessoryNode.childNode(withName: "\(selectedAccessory) reference", recursively: true) {
@@ -282,18 +295,7 @@ struct DolView : UIViewRepresentable {
         }
         
         
-        // Nest Node Hide On Off
-        if let nestNode = scene.rootNode.childNode(withName: "Nest" , recursively: true){
-            if let childNestNode = nestNode.childNode(withName: "\(selectedNest) reference", recursively: true) {
-                // 선택한 얼굴형중 선택한 표정만 black_glasses reference
-                //                print("출력 \(selectedNest) reference")
-                showAllNestNodes(rootNode: nestNode)
-                hideAllNodesExcept(node: childNestNode, rootNode: nestNode) // 선택 노드만 보이게 설정
-                moveNodeToPosition(node: childNestNode, x: 0.0, y: -0.65, z: 0.0) // x, y, z 값은 원하는 위치로 설정
-            } else {
-                print("\(selectedNest) 노드가 씬에 존재하지 않습니다.")
-            }
-        }
+        
         
         
         

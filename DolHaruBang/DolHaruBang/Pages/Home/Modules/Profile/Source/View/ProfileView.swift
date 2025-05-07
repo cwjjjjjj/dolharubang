@@ -213,7 +213,6 @@ struct ProfileView: View {
             }
             Spacer()
         }
-        .frame(width: 320, height: 417)
         .background(Color.white)
         .cornerRadius(25)
         .shadow(radius: 10)
