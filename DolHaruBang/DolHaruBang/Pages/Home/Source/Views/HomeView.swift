@@ -241,12 +241,14 @@ struct HomeHeader : View {
                 Spacer()
             }.frame(width: geometry.size.width * 0.25)
             
-            
-            Text("돌돌이 방")
-                .padding(.bottom , 15)
-                .font(Font.customFont(Font.h6))
-                .shadow(radius: 4,x:0,y: 1)
-                .frame(width: geometry.size.width * 0.4, alignment: .center)
+            if let profile = store.profileStore.profile
+            {
+                Text("\(profile.roomName) 방")
+                    .padding(.bottom , 15)
+                    .font(Font.customFont(Font.h6))
+                    .shadow(radius: 4,x:0,y: 1)
+                    .frame(width: geometry.size.width * 0.4, alignment: .center)
+            }
             
             // 공유, 꾸미기
             HStack(spacing: 10){

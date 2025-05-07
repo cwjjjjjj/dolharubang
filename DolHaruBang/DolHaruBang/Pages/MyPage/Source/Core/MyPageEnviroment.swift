@@ -14,9 +14,10 @@ struct UserInfo: Decodable, Equatable, Sendable {
     var userName: String
     var roomName: String
     var birthStone: String
-    var birthDay: String
+    var birthday: String
     var emailAddress: String
     var closeness : Int
+    var profilePicture : String?
 }
 
 struct ChangeInfo: Codable, Equatable, Sendable {
@@ -98,12 +99,22 @@ extension MyPageClient: DependencyKey {
         updateUserPhoto: { photoName in
             let url = APIConstants.Endpoints.photo
             
-            // 백에서는 그냥 String을 담아서 보냄
-            let requestBody = photoRequestBody(photo: photoName)
+            let photoName = Data(base64Encoded: photoName)
 
-            let bodyData = try JSONEncoder().encode(requestBody)
+            // 3. multipart body 생성
+            let (body, boundary) = ImagetoStirngBody(
+                imageData: photoName
+            )
 
-            return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
+            let headers: HTTPHeaders = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
+
+            return try await fetch(
+                url: url,
+                model: UserInfo.self,
+                method: .post,
+                headers: headers,
+                body: body
+            )
         }
     )
 }
@@ -120,8 +131,32 @@ extension UserInfo {
          userName: "희태",
          roomName: "돌돌이방",
          birthStone: "가넷",
-         birthDay: "2023년 10월 31일",
+         birthday: "2023년 10월 31일",
          emailAddress: "smyang0220@naver.com",
-         closeness: 5
+         closeness: 5,
+         profilePicture: "사진주소?"
     )
+}
+
+
+private func ImagetoStirngBody(
+    imageData: Data?,
+    imageMimeType: String = "image/jpeg"
+) -> (body: Data, boundary: String) {
+    let boundary = "Boundary-\(UUID().uuidString)"
+    var body = Data()
+    let lineBreak = "\r\n"
+    
+    // 1. 이미지 필드 (파일)
+    if let imageData = imageData {
+        body.append("--\(boundary)\(lineBreak)".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\(lineBreak)".data(using: .utf8)!)
+        body.append("Content-Type: \(imageMimeType)\(lineBreak)\(lineBreak)".data(using: .utf8)!)
+        body.append(imageData)
+        body.append(lineBreak.data(using: .utf8)!)
+    }
+    
+    // 종료 바운더리
+    body.append("--\(boundary)--\(lineBreak)".data(using: .utf8)!)
+    return (body, boundary)
 }

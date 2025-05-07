@@ -5,6 +5,8 @@
 //  Created by 양희태 on 8/31/24.
 //
 
+
+import UIKit
 import SwiftUI
 import ComposableArchitecture
 
@@ -47,26 +49,19 @@ struct MyPageView : View {
                         if let userinfo = store.userInfo {
                             // 프로필 이미지
                             ZStack{
-                                
-                                if store.selectedImage != nil {
-                                    // 선택된 이미지가 있을 때
-                                    Image(uiImage: store.selectedImage!)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
+                                if let urlString = userinfo.profilePicture,let url = URL(string: urlString) {
+                                    Text("시발\(url)").foregroundStyle(Color.black)
+                                    AsyncImage(url: url)
                                         .frame(width: 108, height: 108)
-                                        .clipShape(Circle()) // 이미지를 원형으로 클리핑
+                                        .clipShape(Circle())
                                 } else {
-                                    // 선택된 이미지가 없을 때
                                     Image("normalprofile")
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 108, height: 108)
                                         .clipShape(Circle())
                                 }
-
-                                
                                 // 오른쪽 위에 플러스 버튼 배치
-                                
                                 if store.selectedProfileEdit {
                                             plusButton()
                                                 .offset(x: 40, y: -40)
@@ -136,7 +131,7 @@ struct MyPageView : View {
                                     .padding(6)
                                     .background(Color(red: 0.79, green: 0.32, blue: 0.17))
                                     .cornerRadius(20)
-                                    Text("\(userinfo.birthDay)")
+                                    Text("\(userinfo.birthday)")
                                         .font(Font.customFont(Font.body3Bold))
                                         .lineSpacing(25.20)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
@@ -144,7 +139,7 @@ struct MyPageView : View {
                                 .frame(width: 152, height: 21)
                                 
                                 // 사용자 이메일 주소
-                                Text("\(userinfo.emailAddress)")// 텍스트 선택 비활성화 (iOS 15 이상에서 가능)
+                                Text("\(userinfo.emailAddress)")
                                     .font(Font.customFont(Font.body2Bold))
                                     .lineSpacing(21.60)
                                     .foregroundColor(Color(hex: "837C74"))
@@ -251,6 +246,9 @@ struct MyPageView : View {
         let buttonTitle = store.selectedProfileEdit ? "완료" : "프로필 수정"
         let buttonAction: () -> Void = store.selectedProfileEdit ? {
             store.send(.completeEditProfile)
+            if let photo = store.selectedImage, let photoData = photo.jpegData(compressionQuality: 1.0) {
+                store.send(.changeUserPhoto(photoData.base64EncodedString()))
+            }
         } : {
             store.send(.clickEditProfile)
         }
@@ -356,3 +354,4 @@ struct MyPageView : View {
           }
       }
 }
+

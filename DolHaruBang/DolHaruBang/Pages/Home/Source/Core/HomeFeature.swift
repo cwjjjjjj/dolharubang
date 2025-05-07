@@ -115,8 +115,17 @@ struct HomeFeature {
                 return .none
             case .signStore:
                 return .none
+                
+            case .decoStore(.purchaseItemResponse):
+                return .run { send in
+                    await send(.fetchSand)
+                }
+                
             case .decoStore:
                 return .none
+            
+                
+            
                 
             case .binding(\.message):
                 // 여기서 사용자 이름 관찰
