@@ -11,7 +11,9 @@ import com.dolharubang.repository.ItemRepository;
 import com.dolharubang.repository.MemberItemRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.type.ItemType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -55,9 +57,25 @@ public class MemberItemService {
     @Transactional
     public void initializeItems(Member member) {
         List<Item> items = itemRepository.findAll();
+        log.info("멤버 {} 아이템 초기화 시작, 총 아이템 수: {}", member.getMemberId(), items.size());
+
+        // 타입별로 기본 아이템 ID를 저장할 맵
+        Map<ItemType, Long> defaultItemsByType = new HashMap<>();
 
         for (Item item : items) {
-            boolean isDefaultItem = "없음".equals(item.getItemName());
+            if (item.getItemName().equals("없음")) {
+                defaultItemsByType.put(item.getItemType(), item.getItemId());
+                log.info("기본 아이템 발견: {}, ID: {}, 타입: {}",
+                    item.getItemName(), item.getItemId(), item.getItemType());
+            }
+        }
+
+        for (Item item : items) {
+            boolean isDefaultItem = defaultItemsByType.containsValue(item.getItemId());
+
+            if (item.getItemType() == ItemType.SHAPE || item.getItemType() == ItemType.FACE) {
+                isDefaultItem = false;
+            }
 
             MemberItem memberItem = MemberItem.builder()
                 .member(member)
@@ -66,8 +84,21 @@ public class MemberItemService {
                 .selected(isDefaultItem)
                 .build();
 
-            memberItemRepository.save(memberItem);
+            MemberItem savedItem = memberItemRepository.save(memberItem);
+
+            if (isDefaultItem) {
+                log.info("기본 아이템 저장 결과: ID={}, 보유={}, 착용={}",
+                    savedItem.getItemId(), savedItem.isWhetherHasItem(), savedItem.isSelected());
+            }
         }
+
+        List<MemberItem> savedItems = memberItemRepository.findAllByMember(member);
+        long defaultItemsCount = savedItems.stream()
+            .filter(MemberItem::isWhetherHasItem)
+            .filter(MemberItem::isSelected)
+            .count();
+
+        log.info("저장된 기본 아이템 수: {}", defaultItemsCount);
     }
 
     //아이템 구매
@@ -105,7 +136,7 @@ public class MemberItemService {
         return items.stream()
             .map(item -> {
                 MemberItem memberItem = memberItems.stream()
-                    .filter(mi -> mi.getItemId().equals(item.getItemId().toString()))
+                    .filter(mi -> mi.getItemId().equals(item.getItemId()))
                     .findFirst()
                     .orElseThrow(() -> new CustomException(ErrorCode.MEMBERITEM_NOT_FOUND));
 
@@ -150,7 +181,6 @@ public class MemberItemService {
     @Transactional
     public void updateSpeciesItemStatus(Member member, String speciesName) {
         List<MemberItem> memberItems = findAllItemsByMember(member);
-
         List<Item> speciesItems = itemRepository.findByItemName(speciesName);
 
         if (speciesItems.isEmpty()) {
@@ -158,11 +188,28 @@ public class MemberItemService {
             return;
         }
 
-        for (Item speciesItem : speciesItems) {
-            String itemId = speciesItem.getItemId().toString();
+        // 종족 아이템의 타입별로 그룹화
+        Map<ItemType, Item> speciesItemsByType = new HashMap<>();
+        for (Item item : speciesItems) {
+            speciesItemsByType.put(item.getItemType(), item);
+        }
 
+        // 각 타입별로 처리
+        for (Map.Entry<ItemType, Item> entry : speciesItemsByType.entrySet()) {
+            ItemType itemType = entry.getKey();
+            Item speciesItem = entry.getValue();
+
+            // 같은 타입의 모든 아이템 착용 해제
+            memberItems.stream()
+                .filter(memberItem -> {
+                    Item item = itemService.findByItemId(memberItem.getItemId());
+                    return item.getItemType() == itemType;
+                })
+                .forEach(memberItem -> memberItem.wearItem(false));
+
+            // 종족 아이템 보유 및 착용
             Optional<MemberItem> memberItemOpt = memberItems.stream()
-                .filter(mi -> mi.getItemId().equals(itemId))
+                .filter(mi -> mi.getItemId().equals(speciesItem.getItemId()))
                 .findFirst();
 
             if (memberItemOpt.isPresent()) {
@@ -170,10 +217,11 @@ public class MemberItemService {
                 memberItem.buyItem();
                 memberItem.wearItem(true);
             } else {
-                log.warn("MemberItem not found for itemId: {}, member: {}", itemId, member.getMemberId());
+                log.warn("MemberItem not found for itemId: {}, member: {}", speciesItem.getItemId(), member.getMemberId());
             }
         }
     }
+
 
     @Transactional(readOnly = true)
     public List<MemberItem> findAllItemsByMember(Member member) {
