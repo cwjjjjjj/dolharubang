@@ -49,17 +49,27 @@ struct MyPageView : View {
                         if let userinfo = store.userInfo {
                             // 프로필 이미지
                             ZStack{
-                                if let urlString = userinfo.profilePicture,let url = URL(string: urlString) {
-                                    Text("시발\(url)").foregroundStyle(Color.black)
-                                    AsyncImage(url: url)
-                                        .frame(width: 108, height: 108)
-                                        .clipShape(Circle())
-                                } else {
-                                    Image("normalprofile")
+                                
+                                if store.selectedImage != nil {
+                                    // 선택된 이미지가 있을 때
+                                    Image(uiImage: store.selectedImage!)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 108, height: 108)
-                                        .clipShape(Circle())
+                                        .clipShape(Circle()) // 이미지를 원형으로 클리핑
+                                } else{
+                                    if let urlString = userinfo.profilePicture,let url = URL(string: urlString) {
+                                        Text("시발\(url)").foregroundStyle(Color.black)
+                                        AsyncImage(url: url)
+                                            .frame(width: 108, height: 108)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Image("normalprofile")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 108, height: 108)
+                                            .clipShape(Circle())
+                                    }
                                 }
                                 // 오른쪽 위에 플러스 버튼 배치
                                 if store.selectedProfileEdit {

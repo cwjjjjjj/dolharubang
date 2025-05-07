@@ -79,6 +79,7 @@ struct HomeFeature {
         // API통신
         case fetchSand
         case sandLoaded(Result<Int, Error>)
+        case fetchDeco
         
         // 돌 프로필
         case captureDol(UIImage)
@@ -124,7 +125,8 @@ struct HomeFeature {
             case .decoStore:
                 return .none
             
-                
+            case .fetchDeco:
+                return .send(.decoStore(.fetchAll))
             
                 
             case .binding(\.message):

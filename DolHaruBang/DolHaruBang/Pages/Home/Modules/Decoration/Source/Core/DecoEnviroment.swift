@@ -13,7 +13,7 @@ import Alamofire
 struct CustomizeItem: Hashable, Codable {
     let price : Int
     let imageUrl : String
-    let itemId : String
+    let itemId : Int64
     let name: String
     let isOwned: Bool
     let isSelected: Bool
@@ -27,8 +27,8 @@ struct DecoClient {
     var faceShape : @Sendable () async throws -> [CustomizeItem]
     var nest: @Sendable () async throws -> [CustomizeItem]
     var accessory : @Sendable () async throws -> [CustomizeItem]
-    var purchaseItem : @Sendable (String) async throws -> [CustomizeItem]
-    var selectItem : @Sendable (String) async throws -> [CustomizeItem]
+    var purchaseItem : @Sendable (Int64) async throws -> [CustomizeItem]
+    var selectItem : @Sendable (Int64) async throws -> [CustomizeItem]
 }
 
 // 실제 통신 전 테스트

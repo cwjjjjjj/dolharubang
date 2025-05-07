@@ -63,6 +63,7 @@ struct DecoFeature {
         case binding( BindingAction < State >)
         
         // 커스터마이즈 통신
+        case fetchAll
         case fetchFaceShape
         case fetchFace
         case fetchBackground
@@ -76,10 +77,10 @@ struct DecoFeature {
         case nestItemsResponse(Result<[CustomizeItem], Error>)
         
         // 아이템 구매
-        indirect case purchaseItem(String, refreshAction: Action)
+        indirect case purchaseItem(Int64, refreshAction: Action)
         case purchaseItemResponse(Result<String, Error>)
         // 아이템 선택
-        indirect case selectItem(String, refreshAction: Action)
+        indirect case selectItem(Int64, refreshAction: Action)
         
         
     }
@@ -126,6 +127,14 @@ struct DecoFeature {
                 state.selectedNest = selectedNest
                 return .none
                 
+            case .fetchAll:
+                return .merge(
+                    .send(.fetchFaceShape),
+                    .send(.fetchFace),
+                    .send(.fetchBackground),
+                    .send(.fetchAccessory),
+                    .send(.fetchNest)
+                )
     
                 
                 // MARK: 얼굴형 아이템 조회
