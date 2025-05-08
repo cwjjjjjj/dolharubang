@@ -50,8 +50,11 @@ struct HomeView : View {
                         DolContentView(store: store,geometry: geometry)
                     }
                     
+                    
                     // MARK: 하단 컴포넌트
                     HomeBottom(store: store, geometry: geometry, rollDoll:  { dolView.rollDol() })
+                    
+                    Spacer().frame(height: geometry.size.height * 0.02)
                     
                 }
                 
@@ -344,7 +347,7 @@ struct DolContentView : View {
                         y: 2
                     )
             }
-            .offset(x: 0 ,y: geometry.size.height * 0.22)
+            .offset(x: 0 ,y: geometry.size.height * 0.23)
             
         }
         
@@ -420,7 +423,7 @@ struct HomeBottom : View {
                     leftPadding : 15,
                     rightPadding : 15
                 )
-                .frame(width: geometry.size.width * 0.65, height: geometry.size.width * 0.1)
+                .frame(width: geometry.size.width * 0.6, height: geometry.size.width * 0.1)
                 .cornerRadius(25)
                 .shadow(color: Color(hex:"B4B8BF"), radius: 5, x:0, y:1)
                 
@@ -436,6 +439,7 @@ struct HomeBottom : View {
                 }
                 
             }
+            .padding(.vertical, geometry.size.width * 0.005)
             .padding(.bottom , geometry.size.height * 0.02)
         }
         // 키보드 focus시 오프셋 변경
