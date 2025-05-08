@@ -32,26 +32,32 @@ struct TrophyListView : View {
                                             .frame(width: 80, height: 75)
                                             .padding(.top, 15)
                                     }else{
-                                    Image("silverTrophy")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 80, height: 75)
-                                        .padding(.top, 15)
+                                        Image("silverTrophy")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 80, height: 75)
+                                            .padding(.top, 15)
                                     }
                                 }
                                 
                                 // 업적명, 업적 과제
-                                VStack(spacing: 12) {
+                                VStack(alignment : .center ,spacing: 12) {
                                     Text("\(trophy.missionName)")
                                         .font(Font.customFont(Font.body1Bold))
-                                        .lineSpacing(28.80)
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
+                                    HStack(alignment: .center){
+                                        Text("\(trophy.missionDescription)".splitCharacter())
+                                            .frame(width: geometry.size.width * 0.35, height : 48, alignment: .leading)
+                                            .font(Font.customFont(Font.body4Regular))
+                                            .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                            .lineSpacing(4)
+                                            .lineLimit(2)
+                                            .multilineTextAlignment(.center)
+                                    }
+                                    .padding(.horizontal,10)
                                     
-                                    Text("\(trophy.missionDescription)")
-                                        .font(Font.customFont(Font.body4Regular))
-                                        .lineSpacing(19.80)
-                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }.padding(.bottom, 15)
+                                    
                                 
                                 // 절취선
                                 Divider()
@@ -61,21 +67,19 @@ struct TrophyListView : View {
                                 //  보상 표시
                                 HStack(spacing: 8) {
                                     
-//                                    if let uiImage = UIImage(data: trophy.rewardImage) {
-//                                        Image(uiImage: uiImage)
-//                                            .resizable()
-//                                            .aspectRatio(contentMode: .fit)
-//                                            .frame(width: 48, height: 48)
-//                                    } else {
-//                                        Text("이미지 로드 실패")
-//                                    }
+                                    // 추후 아이템 이름 받아서 매칭
+                                    // 아마 rewardName이 될것
+                                    Image("Sand")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 18, height: 18)
                                     
-                                    Text("\(trophy.rewardName)")  .font(Font.customFont(Font.body5Bold))
+                                    Text("\(trophy.rewardQuantity) \(formatRewardName(trophy.rewardName))")  .font(Font.customFont(Font.body5Bold))
                                         .lineSpacing(18)
                                         .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                    
                                 }.padding(.top,7)
                             }
-                            
                             .frame(width: geometry.size.width * 0.42, height: geometry.size.height * 0.37) // 두 개의 카드 너비 조정
                             .overlay(
                                 RoundedRectangle(cornerRadius: 15)
@@ -97,11 +101,23 @@ struct TrophyListView : View {
             }
         }
         .frame(width: geometry.size.width ,height : geometry.size.height * 0.83)
-            .background(Color(red: 0.98, green: 0.98, blue: 0.97))
-            .cornerRadius(15) // 뭉툭한 테두리
-            .onAppear {
-                store.send(.fetchTrophys)
-            }
-            
+        .background(Color(red: 0.98, green: 0.98, blue: 0.97))
+        .cornerRadius(15) // 뭉툭한 테두리
+        .onAppear {
+            store.send(.fetchTrophys)
+        }
+        
+    }
+}
+
+
+func formatRewardName(_ name: String) -> String {
+    switch name {
+    case "SAND":
+        return "모래알"
+    case "Hi":
+        return "인사"
+    default:
+        return name
     }
 }
