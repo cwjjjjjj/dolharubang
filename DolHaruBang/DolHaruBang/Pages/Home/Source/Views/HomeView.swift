@@ -54,7 +54,7 @@ struct HomeView : View {
                     // MARK: 하단 컴포넌트
                     HomeBottom(store: store, geometry: geometry, rollDoll:  { dolView.rollDol() })
                     
-                    Spacer().frame(height: geometry.size.height * 0.02)
+                    Spacer().frame(height: geometry.size.height * 0.033)
                     
                 }
                 
@@ -319,6 +319,7 @@ struct DolContentView : View {
                 .font(Font.customFont(Font.signCount))
                 .foregroundColor(Color(hex: "837C74"))
                 .padding(.bottom,2)
+            
         }
         .frame(width: 32,height: 32)
         .offset(x: geometry.size.width * 0.35 ,y: geometry.size.height * -0.12)
@@ -327,7 +328,7 @@ struct DolContentView : View {
             Text("\(basicInfo.dolName)")
                 .font(Font.customFont(Font.dolname)).shadow(color: Color(red: 0.60, green: 0.60, blue: 0.60, opacity: 1.00), radius: 4, x: 0, y: 1)
             
-            .offset(x: 0 ,y: geometry.size.height * 0.2)
+                .offset(x: 0 ,y: geometry.size.height * 0.2)
             
             // 친밀도 게이지
             ZStack(alignment: .leading){
@@ -362,26 +363,58 @@ struct HomeBottom : View {
         VStack{
             HStack{
                 Spacer()
-                if store.ability{
+                if store.ability
+                {
                     Button(action: {
-                        store.send(.clickRollDol)
                         rollDoll()
+                        store.send(.clickRollDol)
                     })
                     {
-                        // 구르기추가
-                        Text("구르기")
-                            .font(Font.customFont(Font.caption1))
-                            .foregroundColor(store.ability ? .black: .white)
-                            .padding()// Text
-                            .frame(height: geometry.size.width * 0.1)
-                            .background(Color.ability1).cornerRadius(20)
+                        ZStack{
+                            Image(store.ability ? "ability11" : "ability22")
+                                .resizable()
+                                .layoutPriority(-1)
+                            
+                            HStack(alignment: .center){
+                                // 구르기추가
+                                Text("구르기")
+                                    .font(Font.customFont(Font.caption1))
+                                    .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
+                            }
+                            .padding()
+                        }
+                        .frame(height: geometry.size.height * 0.05)
                     }
                     .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
-                    .frame(height: geometry.size.width * 0.15)
                     .transition(.opacity) // 애니메이션 전환 효과
                     .animation(.easeInOut, value: store.ability)
-                }else{
-                    Text("").frame(height: geometry.size.width * 0.15)
+                    
+                    Button(action: {
+                        rollDoll()
+                        store.send(.clickRollDol)
+                    })
+                    {
+                        ZStack{
+                            Image(store.ability ? "ability11" : "ability22")
+                                .resizable()
+                                .layoutPriority(-1)
+                            HStack(alignment: .center){
+                                // 구르기추가
+                                Text("앞구르기")
+                                    .font(Font.customFont(Font.caption1))
+                                    .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
+                            }
+                            .padding()
+                        }
+                        .frame(height: geometry.size.height * 0.05)
+                    }
+                    .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
+                    .transition(.opacity) // 애니메이션 전환 효과
+                    .animation(.easeInOut, value: store.ability)
+                }
+                else{
+                    Text("")
+                        .frame(height: geometry.size.height * 0.05)
                 }
                 Spacer()
             }
@@ -389,27 +422,34 @@ struct HomeBottom : View {
                 Button(action: {
                     store.send(.clickAbility)
                 }) {
-                    ZStack {
-                        Image(store.ability ? "Star2" : "Star")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .padding(.bottom,10)
-                        Text("능력")
-                            .font(Font.customFont(Font.caption1))
-                            .foregroundColor(store.ability ? Color.ability1: Color.ability2)
-                            .padding(.top,20)
-                    }
-                    .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
-                    .overlay(
-                        Ellipse()
-                            .inset(by: 0.25)
-                            .stroke(.white, lineWidth: 0.25)
-                    )
-                    .background(store.ability ? Color.ability2 : Color.ability1)
-                    .clipShape(Circle())
-                    .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
-                }.padding(.trailing,10)
+                    //                    ZStack {
+                    //                        Image(store.ability ? "Star2" : "Star")
+                    //                            .resizable()
+                    //                            .scaledToFit()
+                    //                            .frame(width: 30, height: 30)
+                    //                            .padding(.bottom,10)
+                    //                        Text("능력")
+                    //                            .font(Font.customFont(Font.caption1))
+                    //                            .foregroundColor(store.ability ? Color.ability1: Color.ability2)
+                    //                            .padding(.top,20)
+                    //                    }
+                    // 사진박기 추가
+                    Image(store.ability ? "Star11" : "Star22")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: geometry.size.width * 0.15, height: geometry.size.width * 0.15)
+                    // 사진박기 종료, 주석 제거하면 기존 코드
+                    //                    .frame(width: geometry.size.width * 0.12, height: geometry.size.width * 0.12)
+                    //                    .overlay(
+                    //                        Ellipse()
+                    //                            .inset(by: 0.25)
+                    //                            .stroke(.white, lineWidth: 0.25)
+                    //                    )
+                    //                    .background(store.ability ? Color.ability2 : Color.ability1)
+                    //                    .clipShape(Circle())
+                    //                    .shadow(color: Color(hex:"CECECE") , radius: 5, x:0, y:1)
+                }
+                //                .padding(.trailing,10)
                 
                 CustomTextField(
                     text: $store.message,
@@ -423,7 +463,7 @@ struct HomeBottom : View {
                     leftPadding : 15,
                     rightPadding : 15
                 )
-                .frame(width: geometry.size.width * 0.6, height: geometry.size.width * 0.1)
+                .frame(width: geometry.size.width * 0.64, height: geometry.size.width * 0.1)
                 .cornerRadius(25)
                 .shadow(color: Color(hex:"B4B8BF"), radius: 5, x:0, y:1)
                 
