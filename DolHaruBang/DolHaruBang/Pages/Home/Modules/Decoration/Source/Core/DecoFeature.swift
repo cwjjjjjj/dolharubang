@@ -25,9 +25,9 @@ struct DecoFeature {
         
         @Shared(.inMemory("background")) var selectedBackground: Background = {
             if let selectedItem = CustomizeItem.mockFaceItem.first(where: { $0.isSelected }) {
-            return Background.allCases.first { $0.description == selectedItem.name } ?? .December
+            return Background.allCases.first { $0.description == selectedItem.name } ?? .July
             }
-            return .December
+            return .July
         }()
     
         var selectedAccessory : Accessory = .black_glasses
@@ -60,7 +60,7 @@ struct DecoFeature {
         case selectNest(Nest)
         case selectSign(Sign)
         case selectMail(Mail)
-        case binding( BindingAction < State >)
+        case binding(BindingAction < State >)
         
         // 커스터마이즈 통신
         case fetchAll
