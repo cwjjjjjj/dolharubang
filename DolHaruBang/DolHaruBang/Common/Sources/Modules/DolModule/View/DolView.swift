@@ -37,6 +37,10 @@ struct DolView : UIViewRepresentable {
         makeCoordinator().rollDol()
     }
     
+    func frontRollDol(){
+        makeCoordinator().frontRollDol()
+    }
+    
     class Coordinator: NSObject {
         var parent: DolView
         private var lastPanTranslation: CGPoint = .zero
@@ -46,13 +50,14 @@ struct DolView : UIViewRepresentable {
         }
         
         // 추가
+        // 옆구르기
         func rollDol() {
             guard let scnView = DolView.sharedSCNView else { return }
             parent.enable = false
-            
-            if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFace)", recursively: true),
+            print("롤돌")
+            if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFace) reference", recursively: true),
                let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
-                
+                print("롤돌2")
                 let rotateAction1 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(0, 0, 1), duration: 3)
                 let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
                 let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
@@ -64,10 +69,10 @@ struct DolView : UIViewRepresentable {
                 
                 // 전체 액션 시퀀스 정의
                 let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
-                
+                print("롤돌3")
                 // 액션이 완료된 후 실행할 작업 정의
                 let completionAction = SCNAction.run { node in
-                    //                    print("액션이 완료되었습니다.")
+                    print("액션이 완료되었습니다.")
                     // UI 업데이트는 메인 스레드에서 실행
                     DispatchQueue.main.async {
                         self.parent.enable = true
@@ -82,6 +87,44 @@ struct DolView : UIViewRepresentable {
             }
         }
         // 추가종료
+        
+        
+        func frontRollDol() {
+            guard let scnView = DolView.sharedSCNView else { return }
+            parent.enable = false
+            if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFace) reference", recursively: true),
+               let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
+                let rotateAction1 = SCNAction.rotate(by: 2 * .pi, around: SCNVector3(1, 0, 0), duration: 2)
+                let moveAction1 = SCNAction.moveBy(x: 0, y: 0, z: 4, duration: 2)
+                let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
+
+                let rotateAction2 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(1, 0, 0), duration: 2)
+                let moveAction2 = SCNAction.moveBy(x: 0, y: 0, z: -4, duration: 2)
+                let actionGroup2 = SCNAction.group([rotateAction2, moveAction2])
+
+                let reverseMoveSequence = SCNAction.sequence([actionGroup1, actionGroup2])
+
+                // 초기 각도 복구 (Y축 기준 0도)
+                let rotateToHorizontal = SCNAction.rotateTo(x: 0, y: 0, z: 0, duration: 0.5)
+                
+                // 전체 액션 시퀀스 정의
+                let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
+                // 액션이 완료된 후 실행할 작업 정의
+                let completionAction = SCNAction.run { node in
+                    print("앞구르기 완료되었습니다.")
+                    // UI 업데이트는 메인 스레드에서 실행
+                    DispatchQueue.main.async {
+                        self.parent.enable = true
+                    }
+                }
+                
+                let finalSequence = SCNAction.sequence([completeSequence, completionAction])
+                
+                // faceNode와 accessoryNode 모두에 액션 적용
+                faceNode.runAction(finalSequence)
+                accessoryNode.runAction(completeSequence)
+            }
+        }
         
         // 터치했을때의 액션
         @objc func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {

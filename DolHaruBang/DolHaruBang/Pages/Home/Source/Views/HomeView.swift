@@ -43,7 +43,7 @@ struct HomeView : View {
                             store.send(.captureDol(image))
                         }
                     )
-                    let rollDolHandler = { dolView.rollDol() }
+                    
                     // MARK: 중단부분
                     ZStack{
                         dolView
@@ -52,7 +52,7 @@ struct HomeView : View {
                     
                     
                     // MARK: 하단 컴포넌트
-                    HomeBottom(store: store, geometry: geometry, rollDoll:  { dolView.rollDol() })
+                    HomeBottom(store: store, geometry: geometry, rollDol:  { dolView.rollDol() }, frontRollDol: { dolView.frontRollDol() })
                     
                     Spacer().frame(height: geometry.size.height * 0.033)
                     
@@ -332,10 +332,20 @@ struct DolContentView : View {
             
             // 친밀도 게이지
             ZStack(alignment: .leading){
-                ProgressView(value: Double(basicInfo.friendShip % 100), total: 100)
-                    .progressViewStyle(LinearProgressViewStyle())
-                    .frame(width: 100)
-                    .accentColor(Color.init(hex: "A5CD3B"))
+                //                ProgressView(value: Double(basicInfo.friendShip % 100), total: 100)
+                //                    .progressViewStyle(LinearProgressViewStyle())
+                //                    .frame(width: 100)
+                //                    .accentColor(Color.init(hex: "A5CD3B"))
+                Image("progressWhite")
+                    .resizable()
+                    .frame(width: 136, height: 24)
+                VStack(alignment: .leading){
+                    Image("progressGreen")
+                        .resizable()
+                        .frame(width: Double(basicInfo.friendShip % 100) * 1.3 + 126 ,height: 14)
+                    Spacer().frame(height:4)
+                }
+                
                 Text("\(basicInfo.friendShip / 100)")
                     .font(Font.customFont(Font.dollevel))
                     .foregroundColor(Color(hex: "618501"))
@@ -347,6 +357,7 @@ struct DolContentView : View {
                         radius: 4,
                         y: 2
                     )
+                    .offset(x:-4)
             }
             .offset(x: 0 ,y: geometry.size.height * 0.23)
             
@@ -358,7 +369,11 @@ struct DolContentView : View {
 struct HomeBottom : View {
     @State var store : StoreOf<HomeFeature>
     let geometry : GeometryProxy
-    let rollDoll : () -> Void
+    let rollDol : () -> Void
+    let frontRollDol : () -> Void
+    
+    @State private var activeRoll: RollType? = nil
+    
     var body : some View {
         VStack{
             HStack{
@@ -366,48 +381,41 @@ struct HomeBottom : View {
                 if store.ability
                 {
                     Button(action: {
-                        rollDoll()
+                        rollDol()
                         store.send(.clickRollDol)
                     })
                     {
-                        ZStack{
-                            Image(store.ability ? "ability11" : "ability22")
-                                .resizable()
-                                .layoutPriority(-1)
-                            
-                            HStack(alignment: .center){
-                                // 구르기추가
-                                Text("구르기")
-                                    .font(Font.customFont(Font.caption1))
-                                    .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
-                            }
-                            .padding()
+                        
+                        HStack(alignment: .center){
+                            // 구르기추가
+                            Text("구르기")
+                                .font(Font.customFont(Font.caption1))
+                                .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
                         }
+                        .padding()
                         .frame(height: geometry.size.height * 0.05)
                     }
+                    
+                    .buttonStyle(RollButtonStyle())
                     .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
                     .transition(.opacity) // 애니메이션 전환 효과
                     .animation(.easeInOut, value: store.ability)
                     
                     Button(action: {
-                        rollDoll()
+                        frontRollDol()
                         store.send(.clickRollDol)
                     })
                     {
-                        ZStack{
-                            Image(store.ability ? "ability11" : "ability22")
-                                .resizable()
-                                .layoutPriority(-1)
-                            HStack(alignment: .center){
-                                // 구르기추가
-                                Text("앞구르기")
-                                    .font(Font.customFont(Font.caption1))
-                                    .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
-                            }
-                            .padding()
+                        HStack(alignment: .center){
+                            // 구르기추가
+                            Text("앞구르기")
+                                .font(Font.customFont(Font.caption1))
+                                .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
                         }
+                        .padding()
                         .frame(height: geometry.size.height * 0.05)
                     }
+                    .buttonStyle(RollButtonStyle())
                     .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
                     .transition(.opacity) // 애니메이션 전환 효과
                     .animation(.easeInOut, value: store.ability)
@@ -486,5 +494,29 @@ struct HomeBottom : View {
         .offset(y: store.isKeyboardVisible ? -geometry.size.height * 0.22 : 0)
         .animation(.easeInOut, value: store.isKeyboardVisible)
         Spacer().frame(height: geometry.size.height * 0.12)
+    }
+}
+
+
+enum RollType: Hashable {
+    case normal
+    case front
+    case side
+}
+
+struct RollButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            // 이미지가 텍스트 크기에 맞게 크기 결정
+            Image(configuration.isPressed ? "ability22" : "ability11")
+                .resizable()
+                .layoutPriority(-1) // 이미지 우선순위 낮춤
+            
+            configuration.label
+                .padding(.vertical,2)
+                .layoutPriority(1) // 텍스트 우선순위 높임
+        }
+        .fixedSize() // 내용물 크기에 맞게 ZStack 크기 고정
+        .opacity(configuration.isPressed ? 0.8 : 1.0)
     }
 }

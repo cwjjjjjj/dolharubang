@@ -253,7 +253,7 @@ struct MyPageView : View {
     
     @ViewBuilder
     private func buttonView() -> some View {
-        let buttonTitle = store.selectedProfileEdit ? "완료" : "프로필 수정"
+        let buttonTitle = store.selectedProfileEdit ? "저장" : "프로필 수정"
         let buttonAction: () -> Void = store.selectedProfileEdit ? {
             store.send(.completeEditProfile)
             if let photo = store.selectedImage, let photoData = photo.jpegData(compressionQuality: 1.0) {
@@ -267,13 +267,14 @@ struct MyPageView : View {
             HStack {
                 Text(buttonTitle)
                     .font(Font.customFont(Font.body3Bold))
-                    .lineSpacing(19.20)
                     .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
+                    .padding(.horizontal, 10)
             }
-            .frame(width: 82, height: 29)
+            .frame( height: 29)
             .background(Color(red: 0.65, green: 0.80, blue: 0.23))
             .cornerRadius(14)
             .padding(15)
+            .padding(.trailing,10)
         }
     }
     
