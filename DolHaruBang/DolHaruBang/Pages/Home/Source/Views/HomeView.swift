@@ -311,6 +311,16 @@ struct DolContentView : View {
     let store : StoreOf<HomeFeature>
     let geometry : GeometryProxy
     var body : some View {
+        
+        Text("\(store.DolResponse)")
+                .font(.largeTitle)
+                .foregroundColor(.gray)
+                .opacity(store.DotsVisible ? 1 : 0) // opacity로 표시/숨김
+                .animation(.easeInOut(duration: 0.3), value: store.DotsVisible)
+                .fixedSize() // 텍스트 크기 고정
+                .offset(x: geometry.size.width * 0.18 ,y: geometry.size.height * -0.13)
+        
+        
         // MARK: 새로온 편지
         ZStack(alignment: .center){
             Image("Vector").resizable().scaledToFit()
@@ -375,7 +385,7 @@ struct HomeBottom : View {
     @State private var activeRoll: RollType? = nil
     
     var body : some View {
-        VStack{
+        VStack(spacing:0){
             HStack{
                 Spacer()
                 if store.ability
@@ -393,9 +403,8 @@ struct HomeBottom : View {
                                 .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
                         }
                         .padding()
-                        .frame(height: geometry.size.height * 0.05)
                     }
-                    
+                    .frame(height: geometry.size.height * 0.05)
                     .buttonStyle(RollButtonStyle())
                     .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
                     .transition(.opacity) // 애니메이션 전환 효과
@@ -413,8 +422,8 @@ struct HomeBottom : View {
                                 .foregroundColor(store.ability ? Color(hex: "7F5D1A"): .white)
                         }
                         .padding()
-                        .frame(height: geometry.size.height * 0.05)
                     }
+                    .frame(height: geometry.size.height * 0.05)
                     .buttonStyle(RollButtonStyle())
                     .hapticFeedback(.impact(.medium), trigger: store.isSuccess)
                     .transition(.opacity) // 애니메이션 전환 효과
@@ -513,7 +522,7 @@ struct RollButtonStyle: ButtonStyle {
                 .layoutPriority(-1) // 이미지 우선순위 낮춤
             
             configuration.label
-                .padding(.vertical,2)
+                .padding(.vertical,0)
                 .layoutPriority(1) // 텍스트 우선순위 높임
         }
         .fixedSize() // 내용물 크기에 맞게 ZStack 크기 고정

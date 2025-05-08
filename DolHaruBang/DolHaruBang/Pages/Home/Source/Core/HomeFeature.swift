@@ -19,8 +19,11 @@ struct HomeFeature {
         var signStore = SignFeature.State()
         var decoStore = DecoFeature.State()
         
+        // HomeView 변수
         var sand : Int = 0
         var message: String = "" // 텍스트필드 메시지
+        var DotsVisible : Bool = false
+        var DolResponse : String = "..."
         
         // Home Button state
         var ability: Bool = false // 잠재능력 버튼 온 오프
@@ -54,8 +57,8 @@ struct HomeFeature {
         case alert(PresentationAction<Alert>)
         
         enum Alert {
-                case confirm
-            }
+            case confirm
+        }
         case clickAbility
         case clickMessage
         case openDecoration
@@ -64,6 +67,8 @@ struct HomeFeature {
         case updateToDol(String)
         case binding( BindingAction < State >)
         
+        case showDot
+        case hiddenDot
         // 팝업 열고 닫기
         case openSand
         case closeSand
@@ -92,24 +97,24 @@ struct HomeFeature {
         BindingReducer ()
         
         Scope(state: \.profileStore, action: /Action.profileStore) {
-                   ProfileFeature()
-               }
+            ProfileFeature()
+        }
         Scope(state: \.mailStore, action: /Action.mailStore) {
-                   MailFeature()
-               }
+            MailFeature()
+        }
         Scope(state: \.signStore, action: /Action.signStore) {
-                   SignFeature()
-               }
+            SignFeature()
+        }
         Scope(state: \.decoStore, action: /Action.decoStore) {
-                   DecoFeature()
-               }
+            DecoFeature()
+        }
         
         Reduce { state, action in
             
             switch action {
             case .binding( _ ):
                 return .none
-            // 하위 FeatureAction
+                // 하위 FeatureAction
             case .profileStore:
                 return .none
             case .mailStore:
@@ -124,10 +129,10 @@ struct HomeFeature {
                 
             case .decoStore:
                 return .none
-            
+                
             case .fetchDeco:
                 return .send(.decoStore(.fetchAll))
-            
+                
                 
             case .binding(\.message):
                 // 여기서 사용자 이름 관찰
@@ -138,12 +143,26 @@ struct HomeFeature {
                 return .none
             case .binding( _ ):
                 return .none
-            
+                
             case .clickAbility:
                 state.ability.toggle()
                 return .none
             case .clickMessage:
                 state.message = ""
+                return .run { send in
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    await send(.showDot)
+                }
+                
+            case .showDot:
+                state.DotsVisible = true
+                return  .run { send in
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    await send(.hiddenDot)
+                }
+                
+            case .hiddenDot:
+                state.DotsVisible = false
                 return .none
                 
             case .fetchSand:
@@ -216,7 +235,7 @@ struct HomeFeature {
             case .alert(.presented(.confirm)):
                 state.alert = nil
                 return .none
-            
+                
             case .alert(.dismiss):
                 return .none
                 

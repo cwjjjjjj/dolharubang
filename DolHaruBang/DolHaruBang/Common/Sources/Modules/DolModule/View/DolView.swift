@@ -54,10 +54,8 @@ struct DolView : UIViewRepresentable {
         func rollDol() {
             guard let scnView = DolView.sharedSCNView else { return }
             parent.enable = false
-            print("롤돌")
             if let faceNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedFace) reference", recursively: true),
                let accessoryNode = scnView.scene?.rootNode.childNode(withName: "\(parent.selectedAccessory) reference", recursively: true) {
-                print("롤돌2")
                 let rotateAction1 = SCNAction.rotate(by: -2 * .pi, around: SCNVector3(0, 0, 1), duration: 3)
                 let moveAction1 = SCNAction.moveBy(x: 4, y: 0, z: 0, duration: 3)
                 let actionGroup1 = SCNAction.group([rotateAction1, moveAction1])
@@ -69,7 +67,6 @@ struct DolView : UIViewRepresentable {
                 
                 // 전체 액션 시퀀스 정의
                 let completeSequence = SCNAction.sequence([reverseMoveSequence, rotateToHorizontal])
-                print("롤돌3")
                 // 액션이 완료된 후 실행할 작업 정의
                 let completionAction = SCNAction.run { node in
                     print("액션이 완료되었습니다.")
