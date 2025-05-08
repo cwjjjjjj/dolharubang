@@ -63,7 +63,6 @@ struct MailFeature {
             case let .fetchMailResponse(.success(mails)):
                 print("mail response ",mails)
                 state.mails = mails
-                print("계산날짜 ",formatRelativeTime(from:mails[0].createdAt))
                 return .none
                 
             case let .fetchMailResponse(.failure(error)):

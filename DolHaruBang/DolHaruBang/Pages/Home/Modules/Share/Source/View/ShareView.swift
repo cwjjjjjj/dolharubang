@@ -30,8 +30,8 @@ struct ShareView: View {
 
             HStack {
                 Text("돌 공유하기")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color.green)
+                    .font(Font.customFont(Font.subtitle3))
+                    .foregroundColor(.decoSheetGreen)
                     .padding(.leading, 118)
 
                 Spacer()

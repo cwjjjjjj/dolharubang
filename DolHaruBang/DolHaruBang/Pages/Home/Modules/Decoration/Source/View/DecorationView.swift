@@ -28,11 +28,11 @@ struct DecorationView: View {
                             action: { selected = .background }
                         )
                         
-                        TabButton(
-                            title: "얼굴형",
-                            isSelected: selected == .shape,
-                            action: { selected = .shape }
-                        )
+//                        TabButton(
+//                            title: "얼굴형",
+//                            isSelected: selected == .shape,
+//                            action: { selected = .shape }
+//                        )
                         
                         TabButton(
                             title: "얼굴",

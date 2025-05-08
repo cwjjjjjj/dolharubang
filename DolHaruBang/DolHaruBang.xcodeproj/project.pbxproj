@@ -110,7 +110,7 @@
 		DAA4C9FA2C8B7C6900409D4B /* HomeEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9DE2C8B7C6700409D4B /* HomeEnviroment.swift */; };
 		DAA4C9FB2C8B7C6900409D4B /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9DF2C8B7C6700409D4B /* HomeFeature.swift */; };
 		DAA4C9FC2C8B7C6900409D4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9E12C8B7C6700409D4B /* HomeView.swift */; };
-		DAA4C9FD2C8B7C6900409D4B /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAA4C9E42C8B7C6800409D4B /* Background.xcassets */; };
+		DAA4C9FD2C8B7C6900409D4B /* Decoration.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAA4C9E42C8B7C6800409D4B /* Decoration.xcassets */; };
 		DAA4C9FE2C8B7C6900409D4B /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9E62C8B7C6800409D4B /* Accessory.swift */; };
 		DAA4C9FF2C8B7C6900409D4B /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9E72C8B7C6800409D4B /* Background.swift */; };
 		DAA4CA002C8B7C6900409D4B /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4C9E82C8B7C6800409D4B /* Face.swift */; };
@@ -257,7 +257,7 @@
 		DAA4C9DE2C8B7C6700409D4B /* HomeEnviroment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeEnviroment.swift; sourceTree = "<group>"; };
 		DAA4C9DF2C8B7C6700409D4B /* HomeFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		DAA4C9E12C8B7C6700409D4B /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		DAA4C9E42C8B7C6800409D4B /* Background.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Background.xcassets; sourceTree = "<group>"; };
+		DAA4C9E42C8B7C6800409D4B /* Decoration.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Decoration.xcassets; sourceTree = "<group>"; };
 		DAA4C9E62C8B7C6800409D4B /* Accessory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
 		DAA4C9E72C8B7C6800409D4B /* Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		DAA4C9E82C8B7C6800409D4B /* Face.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
@@ -1090,7 +1090,7 @@
 		DAA4C9E52C8B7C6800409D4B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				DAA4C9E42C8B7C6800409D4B /* Background.xcassets */,
+				DAA4C9E42C8B7C6800409D4B /* Decoration.xcassets */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -1324,7 +1324,7 @@
 			files = (
 				658216CA2CA57D0200C5CD37 /* Mail.xcassets in Resources */,
 				DA6E576A2C57D4920088A7A7 /* Cafe24Ssurround.ttf in Resources */,
-				DAA4C9FD2C8B7C6900409D4B /* Background.xcassets in Resources */,
+				DAA4C9FD2C8B7C6900409D4B /* Decoration.xcassets in Resources */,
 				DAC94C132C9F377600112DA7 /* je_gray_02_4k.hdr in Resources */,
 				DAAEFC132C56941A00D1F87B /* Assets.xcassets in Resources */,
 				658216B62CA56B0400C5CD37 /* Profile.xcassets in Resources */,
