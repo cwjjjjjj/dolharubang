@@ -10,6 +10,7 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.jwt.TokenProvider;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.service.MemberItemService;
+import com.dolharubang.service.MissionService;
 import com.dolharubang.service.NotificationService;
 import com.dolharubang.service.oauth.AppleService;
 import com.dolharubang.service.oauth.KakaoService;
@@ -46,6 +47,7 @@ public class AuthController {
     private final MemberRepository memberRepository;
     private final MemberItemService memberItemService;
     private final NotificationService notificationService;
+    private final MissionService missionService;
 
     @Operation(summary = "카카오 로그인", description = "카카오 로그인")
     @PostMapping("/kakao-login")
@@ -81,6 +83,7 @@ public class AuthController {
 
             memberRepository.save(member);
             memberItemService.initializeItems(member);
+            missionService.assignAllMissionsToNewMember(member);
             notificationService.sendWelcomeNotification(member);
         }
 
