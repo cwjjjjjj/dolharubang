@@ -26,7 +26,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("status", "error");
         errorResponse.put("message", "접근 권한이 없습니다.");
-        errorResponse.put("code", "FORBIDDEN_ERROR");
+        errorResponse.put("code", "REFRESH_TOKEN_EXPIRED");
         errorResponse.put("timestamp", new Date().getTime());
 
         // JSON 직렬화
@@ -35,7 +35,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         // 응답 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpStatus.FORBIDDEN.value());  // 403 상태코드로 수정
+        response.setStatus(HttpStatus.FORBIDDEN.value());
 
         // 응답 전송
         PrintWriter out = response.getWriter();
