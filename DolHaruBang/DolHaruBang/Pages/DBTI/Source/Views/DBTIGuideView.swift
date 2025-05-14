@@ -91,6 +91,7 @@ struct DBTIGuideView: View {
                 }
             }
         
+        .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
         .edgesIgnoringSafeArea(.all)
         
     }
