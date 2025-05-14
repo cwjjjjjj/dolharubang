@@ -24,7 +24,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("status", "error");
         errorResponse.put("message", "인증되지 않은 사용자입니다.");
-        errorResponse.put("code", "UNAUTHORIZED_ERROR");
+        errorResponse.put("code", "ACCESS_TOKEN_EXPIRED");
         errorResponse.put("timestamp", new Date().getTime());
 
         // JSON 직렬화
