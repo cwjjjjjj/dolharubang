@@ -37,7 +37,7 @@ public class MemberService {
     public MemberProfileResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
         Member member = findMember(memberId);
 
-        if (!checkNickname(requestDto.getNickname())) {
+        if (!checkNicknameDuplication(requestDto.getNickname(), member.getNickname())) {
             throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
 
@@ -114,8 +114,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkNickname(String keyword) {
-        return memberRepository.findByNickname(keyword).isEmpty();
+    public boolean checkNicknameDuplication(String newNickname, String originalNickname) {
+        if(originalNickname.equals(newNickname)) {
+            return true;
+        }
+
+        return memberRepository.findByNickname(newNickname).isEmpty();
     }
 
     @Transactional(readOnly = true)
