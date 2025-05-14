@@ -115,7 +115,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public boolean checkNicknameDuplication(String newNickname, String originalNickname) {
-        if(originalNickname.equals(newNickname)) {
+        if(originalNickname != null & originalNickname.equals(newNickname)) {
             return true;
         }
 
