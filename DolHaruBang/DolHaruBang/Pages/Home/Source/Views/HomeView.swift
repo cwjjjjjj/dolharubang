@@ -352,7 +352,7 @@ struct DolContentView : View {
                 VStack(alignment: .leading){
                     Image("progressGreen")
                         .resizable()
-                        .frame(width: Double(basicInfo.friendShip % 100) * 1.3 + 126 ,height: 14)
+                        .frame(width: Double(basicInfo.friendShip % 100) * 1.3/* + 126*/ ,height: 14)
                     Spacer().frame(height:4)
                 }
                 

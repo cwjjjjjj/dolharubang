@@ -96,7 +96,7 @@ struct SandRow: View {
         }
         .frame(maxWidth: .infinity)
         .onPreferenceChange(WidthPreferenceKey.self) { widths in
-            print("디버깅: 텍스트 너비 - \(widths)")
+//            print("디버깅: 텍스트 너비 - \(widths)")
         }
     }
 }

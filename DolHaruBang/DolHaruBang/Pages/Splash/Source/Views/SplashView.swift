@@ -76,8 +76,6 @@ struct SplashView: View {
                     //                    .shadow(color: Color(hex: "837C74").opacity(0.4), radius: 0.6)
                     //                    .padding(.top, 4)
                 }
-
-                Spacer().frame(height: 25)
                 Spacer()
             }
         }
