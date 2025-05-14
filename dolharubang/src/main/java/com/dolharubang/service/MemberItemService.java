@@ -57,16 +57,12 @@ public class MemberItemService {
     @Transactional
     public void initializeItems(Member member) {
         List<Item> items = itemRepository.findAll();
-        log.info("멤버 {} 아이템 초기화 시작, 총 아이템 수: {}", member.getMemberId(), items.size());
 
-        // 타입별로 기본 아이템 ID를 저장할 맵
         Map<ItemType, Long> defaultItemsByType = new HashMap<>();
 
         for (Item item : items) {
-            if (item.getItemName().equals("없음")) {
+            if (item.getItemName().equals("없음") || item.getItemName().equals("7월의 푸른 잔디")) {
                 defaultItemsByType.put(item.getItemType(), item.getItemId());
-                log.info("기본 아이템 발견: {}, ID: {}, 타입: {}",
-                    item.getItemName(), item.getItemId(), item.getItemType());
             }
         }
 
@@ -84,12 +80,7 @@ public class MemberItemService {
                 .selected(isDefaultItem)
                 .build();
 
-            MemberItem savedItem = memberItemRepository.save(memberItem);
-
-            if (isDefaultItem) {
-                log.info("기본 아이템 저장 결과: ID={}, 보유={}, 착용={}",
-                    savedItem.getItemId(), savedItem.isWhetherHasItem(), savedItem.isSelected());
-            }
+            memberItemRepository.save(memberItem);
         }
 
         List<MemberItem> savedItems = memberItemRepository.findAllByMember(member);
