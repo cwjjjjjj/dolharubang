@@ -47,11 +47,9 @@ struct LoginFeature {
         return .none
       
       case .goToHome:
-          print("홈")
           return .none
       
       case .goToInput:
-          print("인풋")
           return .none
         
       case let .kakaoLoginRequested(oauthToken):
