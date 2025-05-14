@@ -37,6 +37,10 @@ public class MemberService {
     public MemberProfileResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
         Member member = findMember(memberId);
 
+        if(!checkNicknameFormat(requestDto.getNickname())) {
+            throw new CustomException(ErrorCode.INVALID_NICKNAME_FORMAT);
+        }
+
         if (!checkNicknameDuplication(requestDto.getNickname(), member.getNickname())) {
             throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
@@ -48,6 +52,7 @@ public class MemberService {
 
         return MemberProfileResDto.fromEntity(member);
     }
+
     @Transactional
     public MemberProfileResDto updateMemberProfilePicture(Long memberId, MultipartFile imageFile) {
         log.info("회원 프로필 사진 업데이트 서비스 시작 - 회원 ID: {}", memberId);
@@ -115,7 +120,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public boolean checkNicknameDuplication(String newNickname, String originalNickname) {
-        if(originalNickname != null & originalNickname.equals(newNickname)) {
+        if (originalNickname != null & originalNickname.equals(newNickname)) {
             return true;
         }
 
@@ -125,6 +130,11 @@ public class MemberService {
     @Transactional(readOnly = true)
     public boolean isStoneEmpty(Member member) {
         return stoneRepository.findByMember(member).isEmpty();
+    }
+
+    private boolean checkNicknameFormat(String newNickname) {
+        String regex = "^[가-힣a-zA-Z0-9]+$";
+        return newNickname.matches(regex);
     }
 
     private Member findMember(Long memberId) {
