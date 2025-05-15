@@ -151,7 +151,8 @@ public class MemberController {
             Long memberId = getMemberId(principal);
             log.info("회원 ID: {}", memberId);
 
-            MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId, imageFile);
+            MemberProfileResDto response = memberService.updateMemberProfilePicture(memberId,
+                imageFile);
             log.info("프로필 사진 업데이트 성공 - 새 URL: {}", response.getProfilePicture());
 
             return ResponseEntity.ok(response);
@@ -185,14 +186,26 @@ public class MemberController {
 
     @Operation(summary = "회원 검색하기", description = "닉네임 기준으로 회원을 검색한다.")
     @GetMapping("/search")
-    public ResponseEntity<List<MemberSearchResDto>> searchMember(String keyword) {
-        List<MemberSearchResDto> response = memberService.searchMember(keyword);
+    public ResponseEntity<?> searchMember(String keyword,
+        @AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        Long myId = principal.getMember().getMemberId();
+        List<MemberSearchResDto> response = memberService.searchMember(myId, keyword);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "닉네임 중복 검사하기", description = "같은 닉네임의 회원이 없다면 true 반환한다.")
     @GetMapping("/check/{keyword}")
-    public ResponseEntity<?> checkNickname(@PathVariable String keyword, @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity<?> checkNickname(@PathVariable String keyword,
+        @AuthenticationPrincipal PrincipalDetails principal) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

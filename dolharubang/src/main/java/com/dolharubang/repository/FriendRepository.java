@@ -4,6 +4,7 @@ import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.type.FriendStatusType;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,5 +32,11 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query("SELECT f FROM Friend f WHERE (f.requester = :member1 AND f.receiver = :member2 OR f.requester = :member2 AND f.receiver = :member1)")
     Friend findBetweenMembersWithDeleted(@Param("member1") Member member1,
         @Param("member2") Member member2);
+
+    // FriendRepository에서 친구의 ID만 가져오는 쿼리 추가 (친구 ID만 반환)
+    @Query("SELECT f.requester.memberId FROM Friend f WHERE (f.requester = :member OR f.receiver = :member) AND f.status = :status AND f.deletedAt IS NULL")
+    Set<Long> findFriendIdsByStatus(@Param("member") Member member,
+        @Param("status") FriendStatusType status);
+
 
 }
