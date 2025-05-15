@@ -118,7 +118,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberSearchResDto> 가(Long myId, String keyword) {  // myId 파라미터 추가
+    public List<MemberSearchResDto> searchMember(Long myId, String keyword) {  // myId 파라미터 추가
         Member currentUser = memberRepository.findById(myId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
