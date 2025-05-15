@@ -13,7 +13,7 @@ public class MemberSearchResDto {
 
     private Long memberId;
     private String nickname;
-    private String profilePicture;
+    private String profileImageURL;
     private String spaceName;
     @JsonProperty("isFriend")
     private boolean isFriend;
@@ -22,7 +22,7 @@ public class MemberSearchResDto {
         return MemberSearchResDto.builder()
             .memberId(member.getMemberId())
             .nickname(member.getNickname())
-            .profilePicture(member.getProfilePicture())
+            .profileImageURL(member.getProfilePicture())
             .spaceName(member.getSpaceName())
             .isFriend(isFriend)
             .build();
