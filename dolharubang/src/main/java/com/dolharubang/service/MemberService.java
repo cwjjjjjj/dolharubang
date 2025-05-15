@@ -5,6 +5,7 @@ import com.dolharubang.domain.dto.request.member.MemberProfileReqDto;
 import com.dolharubang.domain.dto.response.member.MemberProfileResDto;
 import com.dolharubang.domain.dto.response.member.MemberResDto;
 import com.dolharubang.domain.dto.response.member.MemberSearchResDto;
+import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
@@ -13,8 +14,9 @@ import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.s3.S3UploadService;
 import com.dolharubang.type.FriendStatusType;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -118,26 +120,64 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberSearchResDto> searchMember(Long myId, String keyword) {  // myId 파라미터 추가
+    public List<MemberSearchResDto> searchMember(Long myId, String keyword) {
         Member currentUser = memberRepository.findById(myId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Set<Long> friendIds = friendRepository.findFriendIdsByStatus(
-            currentUser,
-            FriendStatusType.ACCEPTED
-        );
-
-        List<Member> members = memberRepository.findByNicknameContaining(keyword);
-
-        return members.stream()
-            .filter(member -> !member.getMemberId().equals(myId))  // 본인 제외
-            .map(member -> MemberSearchResDto.fromEntity(
-                member,
-                friendIds.contains(member.getMemberId())  // 친구 여부 추가
-            ))
+        // 1. 검색 결과 회원 목록
+        List<Member> members = memberRepository.findByNicknameContaining(keyword)
+            .stream()
+            .filter(member -> !member.getMemberId().equals(myId)) // 본인 제외
             .collect(Collectors.toList());
 
+        // 2. 검색 결과 회원 ID 리스트
+        List<Long> searchMemberIds = members.stream()
+            .map(Member::getMemberId)
+            .collect(Collectors.toList());
+
+        // 3. 이 중에서 나와의 관계만 한 번에 조회
+        List<Friend> relations = friendRepository.findRelationsWithMembers(myId, searchMemberIds);
+
+        // 4. 관계 맵핑 (memberId -> Friend)
+        Map<Long, Friend> relationMap = new HashMap<>();
+        for (Friend f : relations) {
+            Long otherId = f.getRequester().getMemberId().equals(myId)
+                ? f.getReceiver().getMemberId()
+                : f.getRequester().getMemberId();
+            relationMap.put(otherId, f);
+        }
+
+        // 5. DTO 변환
+        return members.stream()
+            .map(member -> {
+                Friend relation = relationMap.get(member.getMemberId());
+                boolean isFriend = false;
+                boolean isRequested = false;
+                boolean isReceived = false;
+
+                if (relation != null) {
+                    if (relation.getStatus() == FriendStatusType.ACCEPTED) {
+                        isFriend = true;
+                    } else if (relation.getStatus() == FriendStatusType.PENDING) {
+                        // 내가 요청자면 isRequested, 내가 수신자면 isReceived
+                        if (relation.getRequester().getMemberId().equals(myId)) {
+                            isRequested = true;
+                        } else {
+                            isReceived = true;
+                        }
+                    }
+                }
+
+                return MemberSearchResDto.fromEntity(
+                    member,
+                    isFriend,
+                    isRequested,
+                    isReceived
+                );
+            })
+            .collect(Collectors.toList());
     }
+
 
     @Transactional(readOnly = true)
     public boolean checkNicknameDuplication(String newNickname, String originalNickname) {
