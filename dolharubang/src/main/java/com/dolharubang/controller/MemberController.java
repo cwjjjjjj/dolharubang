@@ -192,8 +192,18 @@ public class MemberController {
 
     @Operation(summary = "닉네임 중복 검사하기", description = "같은 닉네임의 회원이 없다면 true 반환한다.")
     @GetMapping("/check/{keyword}")
-    public ResponseEntity<Boolean> checkNickname(@PathVariable String keyword) {
-        boolean isUnique = memberService.checkNickname(keyword);
+    public ResponseEntity<?> checkNickname(@PathVariable String keyword, @AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+        String nickname = principal.getMember().getNickname();
+        boolean isUnique = memberService.checkNicknameDuplication(keyword, nickname);
         return ResponseEntity.ok(isUnique);
     }
 
