@@ -22,6 +22,8 @@ public class FriendResDto {
     private String receiverProfileImageURL;
     @JsonProperty("isSender")
     private boolean isSender;
+    private String requesterSpaceName;
+    private String receiverSpaceName;
     private LocalDateTime acceptedAt;
     private LocalDateTime modifiedAt;
 
@@ -33,6 +35,8 @@ public class FriendResDto {
             .requesterProfileImageURL(friend.getRequester().getProfilePicture())
             .receiverProfileImageURL(friend.getReceiver().getProfilePicture())
             .isSender(friend.getRequester().getMemberId().equals(me.getMemberId()))
+            .requesterSpaceName(friend.getRequester().getSpaceName())
+            .receiverSpaceName(friend.getReceiver().getSpaceName())
             .acceptedAt(friend.getAcceptedAt())
             .modifiedAt(friend.getModifiedAt())
             .build();
