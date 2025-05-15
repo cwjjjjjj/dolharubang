@@ -14,13 +14,15 @@ public class MemberSearchResDto {
     private String nickname;
     private String profilePicture;
     private String spaceName;
+    private boolean isFriend;
 
-    public static MemberSearchResDto fromEntity(Member member) {
+    public static MemberSearchResDto fromEntity(Member member, boolean isFriend) {
         return MemberSearchResDto.builder()
             .memberId(member.getMemberId())
             .nickname(member.getNickname())
             .profilePicture(member.getProfilePicture())
             .spaceName(member.getSpaceName())
+            .isFriend(isFriend)
             .build();
     }
 }
