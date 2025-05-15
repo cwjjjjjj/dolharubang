@@ -8,10 +8,13 @@ import com.dolharubang.domain.dto.response.member.MemberSearchResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.FriendRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.s3.S3UploadService;
+import com.dolharubang.type.FriendStatusType;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,19 +28,22 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final S3UploadService s3UploadService;
     private final StoneRepository stoneRepository;
+    private final FriendRepository friendRepository;
 
     public MemberService(MemberRepository memberRepository,
-        S3UploadService s3UploadService, StoneRepository stoneRepository) {
+        S3UploadService s3UploadService, StoneRepository stoneRepository,
+        FriendRepository friendRepository) {
         this.memberRepository = memberRepository;
         this.s3UploadService = s3UploadService;
         this.stoneRepository = stoneRepository;
+        this.friendRepository = friendRepository;
     }
 
     @Transactional
     public MemberProfileResDto updateMemberProfile(Long memberId, MemberProfileReqDto requestDto) {
         Member member = findMember(memberId);
 
-        if(!checkNicknameFormat(requestDto.getNickname())) {
+        if (!checkNicknameFormat(requestDto.getNickname())) {
             throw new CustomException(ErrorCode.INVALID_NICKNAME_FORMAT);
         }
 
@@ -112,10 +118,25 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberSearchResDto> searchMember(String keyword) {
+    public List<MemberSearchResDto> 가(Long myId, String keyword) {  // myId 파라미터 추가
+        Member currentUser = memberRepository.findById(myId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Set<Long> friendIds = friendRepository.findFriendIdsByStatus(
+            currentUser,
+            FriendStatusType.ACCEPTED
+        );
+
         List<Member> members = memberRepository.findByNicknameContaining(keyword);
-        return members.stream().map(MemberSearchResDto::fromEntity)
+
+        return members.stream()
+            .filter(member -> !member.getMemberId().equals(myId))  // 본인 제외
+            .map(member -> MemberSearchResDto.fromEntity(
+                member,
+                friendIds.contains(member.getMemberId())  // 친구 여부 추가
+            ))
             .collect(Collectors.toList());
+
     }
 
     @Transactional(readOnly = true)
