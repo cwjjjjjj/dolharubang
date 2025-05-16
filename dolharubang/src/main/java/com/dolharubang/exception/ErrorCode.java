@@ -24,6 +24,7 @@ public enum ErrorCode {
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
     SIGN_TEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
     ABILITY_ALREADY_ACTIVATED(HttpStatus.CONFLICT, "이미 활성화된 능력입니다."),
+    STONE_OWNERSHIP_MISMATCH(HttpStatus.FORBIDDEN, "해당 돌을 소유하고 있지 않습니다"),
 
     //돌 종류 관련 오류
     SPECIES_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 돌 종류를 찾을 수 없습니다."),
@@ -66,6 +67,7 @@ public enum ErrorCode {
     CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 돌 자랑을 찾을 수 없습니다."),
     CONTEST_NOT_FOUND_BY_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버의 돌 자랑은 없습니다."),
     CONTEST_MEMBER_MISMATCH(HttpStatus.NOT_FOUND, "해당 멤버에게서 확인할 수 없는 돌자랑입니다."),
+    DAILY_CONTEST_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "하루에 한 개의 돌로만 콘테스트 생성이 가능합니다"),
 
     // 미션 관련 오류
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다."),
