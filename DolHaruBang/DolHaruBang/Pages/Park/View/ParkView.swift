@@ -81,6 +81,14 @@ struct ParkView: View {
                         if (store.selectedTap == 0) {
                             DoljanchiView(store: store.scope(state: \.doljanchiFeatureState, action: \.doljanchiFeatureAction))
                                  .tag(0)
+                                 .onAppear {
+                                     store.send(.fetchDolInfo)
+                                 }
+                                 .onChange(of: store.dolInfo) {
+                                     if let stoneId = store.dolInfo?.stoneId {
+                                         store.send(.doljanchiFeatureAction(.checkCanRegistJarang(stoneId)))
+                                     }
+                                 }
                          }
                         else {
                             FriendListView(store: store.scope(state: \.friendListFeatureState, action: \.friendListFeatureAction))
@@ -179,11 +187,11 @@ struct ParkView: View {
                                     store.send(.toggleImageErrorAlert)
                                     return
                                 }
-                                guard let dolName = store.dolInfo?.dolName else {
+                                guard let dolName = store.dolInfo?.dolName , let stoneId = store.dolInfo?.stoneId else {
                                     store.send(.toggleDolNameErrorAlert)
                                     return
                                 }
-                                store.send(.doljanchiFeatureAction(.registJarang(store.isPublic, imageBase64, dolName)))
+                                store.send(.doljanchiFeatureAction(.registJarang(store.isPublic, imageBase64, dolName, stoneId)))
                             }) {
                                 HStack {
                                     Text("자랑하기")
@@ -200,9 +208,14 @@ struct ParkView: View {
                             Spacer()
                         }
                     }
-                    .onAppear {
-                        store.send(.fetchDolInfo)
-                    }
+//                    .onAppear {
+//                        store.send(.fetchDolInfo)
+//                    }
+//                    .onChange(of: store.dolInfo) {
+//                        if let stoneId = store.dolInfo?.stoneId {
+//                            store.send(.doljanchiFeatureAction(.checkCanRegistJarang(stoneId)))
+//                        }
+//                    }
                     .alert("이미지 변환 실패", isPresented: $store.showImageErrorAlert) {
                         Button("확인", role: .cancel) { }
                     } message: {

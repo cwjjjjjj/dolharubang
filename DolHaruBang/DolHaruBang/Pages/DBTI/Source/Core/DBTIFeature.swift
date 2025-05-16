@@ -320,7 +320,7 @@ struct DBTIFeature {
                             await send(.submitMemberInfoResult(.failure(error)))
                         }
                     }
-                    .debounce(id: "submitMemberInfo", for: 1.5, scheduler: DispatchQueue.main)
+                    .debounce(id: "submitMemberInfo", for: 2, scheduler: DispatchQueue.main)
                     
                 case . submitMemberInfoResult(.success()):
                     print("성공")

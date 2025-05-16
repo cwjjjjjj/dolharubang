@@ -6,20 +6,44 @@ struct DoljanchiView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            TabView(selection: $store.state.currentPage) {
-                ForEach(0..<store.state.maxPage, id: \.self) { pageIndex in
-                    GridView(
-                        rowNums: $store.rowNum,
-                        colNums: $store.colNum,
-                        jarangs: $store.jarangs,
-                        currentPage: $store.state.currentPage
-                    )
-                    .tag(pageIndex)
+            if (store.errorMessage == nil) {
+                TabView(selection: $store.state.currentPage) {
+                    ForEach(0..<store.state.maxPage, id: \.self) { pageIndex in
+                        GridView(
+                            rowNums: $store.rowNum,
+                            colNums: $store.colNum,
+                            jarangs: $store.jarangs,
+                            currentPage: $store.state.currentPage
+                        )
+                        .tag(pageIndex)
+                    }
                 }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                
+                CustomPageIndicator(numberOfPages: store.state.maxPage, currentPage: $store.state.currentPage)
+            } else {
+                VStack(spacing: 16) {
+                    Spacer()
+                    Text("돌잔치를 불러오는 데 실패하였습니다.")
+                        .font(.customFont(Font.body2Bold))
+                        .foregroundColor(.coreDisabled)
+                        .multilineTextAlignment(.center)
+                    Button(action: {
+                        store.send(.fetchFeed(nil, "LATEST", 16))
+                    }) {
+                        HStack {
+                            Text("재시도")
+                                .font(.customFont(Font.button4))
+                                .foregroundColor(.coreWhite)
+                        }
+                        .frame(width: 82, height: 32)
+                        .background(.coreGreen)
+                        .cornerRadius(16)
+                    }
+                    Spacer()
+                }
+                .frame(width: UIScreen.main.bounds.width)
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            
-            CustomPageIndicator(numberOfPages: store.state.maxPage, currentPage: $store.state.currentPage)
             
             Button(action: {
                 print("돌 자랑하기 버튼이 눌렸습니다.")
@@ -31,9 +55,12 @@ struct DoljanchiView: View {
                         .foregroundColor(.coreWhite)
                 }
                 .frame(width: 82, height: 32)
-                .background(.coreGreen)
+                .background(store.canRegist ? .coreGreen : .coreDisabled)
+//                .background(.coreGreen) // test용
                 .cornerRadius(16)
+                
             }
+            .disabled(!store.canRegist)
             
             Spacer().frame(height: 10)
         }
@@ -67,17 +94,16 @@ struct GridView: View {
     @Binding var colNums: Int
     @Binding var jarangs: [Jarang]
     @Binding var currentPage: Int
-    
+
     var body: some View {
         if !jarangs.isEmpty {
             let itemsPerPage = rowNums * colNums
             let startIndex = currentPage * itemsPerPage
             let endIndex = min(startIndex + itemsPerPage, jarangs.count)
-            
-            // 현재 페이지에 표시할 데이터가 있는지 확인
+
             if startIndex < jarangs.count {
                 let pageItems = Array(jarangs[startIndex..<endIndex])
-                
+
                 Grid(horizontalSpacing: 16, verticalSpacing: 16) {
                     ForEach(0..<rowNums, id: \.self) { row in
                         GridRow {
@@ -88,8 +114,10 @@ struct GridView: View {
                                         isLoading: false,
                                         jarang: pageItems[index]
                                     )
+                                    .frame(maxWidth: .infinity)
                                 } else {
-                                    EmptyView()
+                                    Color.clear
+                                        .frame(maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                                 }
                             }
                         }
@@ -104,12 +132,4 @@ struct GridView: View {
         }
     }
 }
-
-
-
-
-
-
-
-
 

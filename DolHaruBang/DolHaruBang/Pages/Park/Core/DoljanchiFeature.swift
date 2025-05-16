@@ -15,7 +15,8 @@ struct DoljanchiFeature {
         var isLoading: Bool = false
         var errorMessage: String? = nil
         var showJarangPopup: Bool = false
-        
+        var stoneId: Int?
+        var canRegist: Bool = false
     }
 
     // 액션 정의
@@ -23,10 +24,12 @@ struct DoljanchiFeature {
         case binding(BindingAction<State>)
         case nextPage
         case previousPage
+        case checkCanRegistJarang(Int)
+        case checkResponse(Result<Bool, Error>)
         case fetchFeed(Int?, String?, Int?)
         case fetchFeedResponse(Result<[Jarang], Error>)
         case toggleJarangPopup
-        case registJarang(Bool, String, String)
+        case registJarang(Bool, String, String, Int)
         case registJarangResponse(Result<Void, Error>)
     }
 
@@ -44,6 +47,25 @@ struct DoljanchiFeature {
                     if state.currentPage != 0 {
                         state.currentPage -= 1
                     }
+                    return .none
+                case .checkCanRegistJarang(let stoneId):
+                    state.isLoading = true
+                    return .run { send in
+                        do {
+                            let isPossible = try await parkClient.checkCanRegistJarang(stoneId)
+                            await send(.checkResponse(.success(isPossible)))
+                        } catch  {
+                            await send(.checkResponse(.failure(error)))
+                        }
+                    }
+                case let .checkResponse(.success(isPossible)):
+                    state.isLoading = false
+                    state.canRegist = isPossible
+                    return .none
+                case let .checkResponse(.failure(error)):
+                    state.isLoading = false
+                    state.canRegist = false
+                    print(error)
                     return .none
                 case .fetchFeed(let lastId, let sortType, let size):
                     state.isLoading = true
@@ -76,12 +98,12 @@ struct DoljanchiFeature {
                     state.showJarangPopup.toggle()
                     return .none
                     
-                case let .registJarang(isPublic, imageUrl, dolName):
+                case let .registJarang(isPublic, imageUrl, dolName, stoneId):
                     state.isLoading = true
                     state.errorMessage = nil
                     return .run { send in
                         do {
-                            try await parkClient.registJarang(isPublic, imageUrl, dolName)
+                            try await parkClient.registJarang(isPublic, imageUrl, dolName, stoneId)
                             await send(.registJarangResponse(.success(())))
                         } catch {
                             await send(.registJarangResponse(.failure(error)))
@@ -90,14 +112,16 @@ struct DoljanchiFeature {
 
                 case .registJarangResponse(.success):
                     state.showJarangPopup = false
-                    return .none
+                    guard let stoneId = state.stoneId else {
+                        return .send(.fetchFeed(nil, "LATEST", 16))
+                    }
+                    return .merge(
+                        .send(.fetchFeed(nil, "LATEST", 16)),
+                        .send(.checkCanRegistJarang(stoneId))
+                    )
                 case .registJarangResponse(.failure):
                     print("돌자랑 사진 업로드 실패")
-                    print("자랑 등록 성공")
                     state.showJarangPopup = false
-                    return .none
-                case .registJarangResponse(.failure):
-                    print("자랑 등록 실패")
                     return .none
                 case .binding:
                     return .none

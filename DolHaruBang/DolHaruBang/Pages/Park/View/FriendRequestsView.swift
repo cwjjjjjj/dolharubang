@@ -5,7 +5,6 @@ private func formattedDateF(_ date: Date) -> String {
     let year = dateFormatterYear.string(from: date)
     let month = dateFormatterMonth.string(from: date)
     let day = dateFormatterDay.string(from: date)
-//    let weekday = dateFormatterWeekday.string(from: date)
     
     return "\(year).\(month).\(day)."
 }
@@ -41,7 +40,7 @@ struct FriendRequestsView: View {
             Divider()
             
             ScrollView {
-                LazyVStack(spacing: 24) {
+                LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(store.friendListFeatureState.friendRequests, id: \.id) { req in
                         HStack(alignment: .center, spacing: 12) {
                             ProfileImageView(
@@ -50,9 +49,8 @@ struct FriendRequestsView: View {
                             )
                             
                             VStack(alignment: .leading, spacing: 4) {
-
                                 Text(formattedDateF(req.modifiedAt))
-                                    .font(Font.customFont(.init(customFont: .nanumSquareRoundBold, size: 7)))
+                                    .font(.customFont(Font.body3Regular))
                                     .foregroundStyle(Color(hex: "BAAC9B"))
                                 
                                 if req.isSender {
@@ -68,6 +66,25 @@ struct FriendRequestsView: View {
                                     Text("친구 신청을 보냈습니다.")
                                         .font(.customFont(Font.body2Bold))
                                         .foregroundColor(.coreDisabled)
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {
+                                            store.send(.friendListFeatureAction(.cancelFriendRequest(req.id)))
+                                        }) {
+                                            Text("요청 취소")
+                                                .font(.customFont(Font.body4Bold))
+                                                .foregroundColor(.coreGreen)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 6)
+                                                .background(Color.white)
+                                                .cornerRadius(8)
+                                        }
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Color.coreGreen, lineWidth: 0.8)
+                                        )
+                                        .padding(.trailing, 24)
+                                    }
                                 } else {
                                     // 내가 받은 요청일 경우
                                     HStack(spacing: 0) {
@@ -86,6 +103,7 @@ struct FriendRequestsView: View {
                                     HStack {
                                         Button(action: {
                                             // 수락 요청
+                                            store.send(.friendListFeatureAction(.acceptFriend(req.id)))
                                         }) {
                                             ZStack {
                                                 RoundedRectangle(cornerRadius: 16)
@@ -100,6 +118,7 @@ struct FriendRequestsView: View {
                                         
                                         Button(action: {
                                             // 거절 요청
+                                            store.send(.friendListFeatureAction(.declineFriend(req.id)))
                                         }) {
                                             ZStack {
                                                 RoundedRectangle(cornerRadius: 16)
@@ -120,6 +139,7 @@ struct FriendRequestsView: View {
                     
                     Spacer()
                 }
+                .padding(.leading, 24)
             }
 
         }
