@@ -11,18 +11,42 @@ func getImageName(for mailType: String) -> String {
     switch mailType {
 //    case "Read":
 //        return "ReadMail" // 프로모션 이미지 파일명
+    case "readMail":
+        return "ReadMail"
     case "RECEIVED_CLOVER":
         return "CloverMail" // 클로버 이미지 파일명
     case "SCHEDULE_ALERT":
         return "CalendarMail" // 달력 이미지 파일명
     case "FRIEND_ACCEPTED":
-        return "SystemMail" // 시스템 이미지 파일명인데 일단 친구로
+        return "FriendMail" // 시스템 이미지 파일명인데 일단 친구로
     case "FRIEND_REQUEST":
-        return "SystemMail" // 시스템 이미지 파일명인데 일단 친구로
+        return "FriendMail" // 시스템 이미지 파일명인데 일단 친구로
     case "MISSION_COMPLETED":
         return "TrophyMail" // 업적 이미지 파일명
     case "WELCOME":
         return "SystemMail" // 시스템 이미지 파일명
+    default:
+        return "ReadMail" // 기본 이미지 파일명
+    }
+}
+
+// 메일 타입에 따른 이미지 선택 함수
+func getSelectImageName(for mailType: String) -> String {
+    switch mailType {
+//    case "Read":
+//        return "ReadMail" // 프로모션 이미지 파일명
+    case "RECEIVED_CLOVER":
+        return "Clover" // 클로버 이미지 파일명
+    case "SCHEDULE_ALERT":
+        return "Calendar" // 달력 이미지 파일명
+    case "FRIEND_ACCEPTED":
+        return "Trophy" // 시스템 이미지 파일명인데 일단 친구로
+    case "FRIEND_REQUEST":
+        return "Clover" // 시스템 이미지 파일명인데 일단 친구로
+    case "MISSION_COMPLETED":
+        return "Trophy" // 업적 이미지 파일명
+    case "WELCOME":
+        return "Clover" // 시스템 이미지 파일명
     default:
         return "ReadMail" // 기본 이미지 파일명
     }
