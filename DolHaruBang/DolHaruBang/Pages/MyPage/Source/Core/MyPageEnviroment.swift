@@ -133,13 +133,13 @@ private let jsonDecoder: JSONDecoder = {
 
 extension UserInfo {
     static let mockUserInf = Self(
-         userName: "돌멩",
-         roomName: "돌돌이방",
-         birthStone: "사파이어",
-         birthday: "2099년 10월 31일",
-         emailAddress: "smyang0220@naver.com",
-         closeness: 5,
-         profilePicture: "사진주소?"
+         userName: "",
+         roomName: "",
+         birthStone: "돌맹",
+         birthday: "2000년 09월 10일",
+         emailAddress: "",
+         closeness: 0,
+         profilePicture: ""
     )
 }
 

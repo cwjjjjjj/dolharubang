@@ -15,12 +15,15 @@ struct LoginFeature {
   @ObservableState
   struct State: Equatable {
       var kakaoToken: String?
+      var kakaoButtonDisable : Bool = false
   }
 
   enum Action {
 //    case calendarButtonTapped
     case homeButtonTapped
     case goBack
+    case goToHome
+    case goToInput
       
     case kakaoLoginRequested(String)
     case appleLoginRequested(String,String)
@@ -29,6 +32,7 @@ struct LoginFeature {
       
     case isFirstRequest
     case isFirstResponse(Result<Bool, Error>)
+      
 
   }
     
@@ -41,8 +45,15 @@ struct LoginFeature {
           return .none
       case .goBack:
         return .none
+      
+      case .goToHome:
+          return .none
+      
+      case .goToInput:
+          return .none
         
       case let .kakaoLoginRequested(oauthToken):
+          state.kakaoButtonDisable = true
           return .run { send in
               do {
                   let tokens = try await loginClient.kakaoLogin(oauthToken)
@@ -72,6 +83,7 @@ struct LoginFeature {
           return .none
           
       case .isFirstRequest:
+          state.kakaoButtonDisable = true
           return .run { send in
               do {
                   let isFirst = try await loginClient.isFirst()
@@ -83,9 +95,11 @@ struct LoginFeature {
           
       case let .isFirstResponse(.success(isFirst)):
           NotificationCenter.default.post(name: NSNotification.Name("TokenVaild"), object: nil,userInfo: ["isFirst" : isFirst])
+          state.kakaoButtonDisable = false
           return .none
       case let .isFirstResponse(.failure(error)):
           print("첫인증자 에러", error)
+          state.kakaoButtonDisable = false
           return .none
           
       }

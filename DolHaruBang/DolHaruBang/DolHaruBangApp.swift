@@ -39,8 +39,10 @@ struct DolHaruBangApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            EntryPointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
-            EntryPointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
+//            PointView( store: Store(initialState: LoginFeature.State()) { LoginFeature() })
+            Demo(store: Store(initialState: NavigationFeature.State()) { NavigationFeature() }) { nav in
+                EntryPointView( nav: nav, store: Store(initialState: LoginFeature.State()) { LoginFeature() })
+            }
                 .onAppear {
                 // 저장된 설정값 확인 후 재생/정지
                 let isMusicOn = UserDefaults.standard.bool(forKey: "isBGMMusicOn")

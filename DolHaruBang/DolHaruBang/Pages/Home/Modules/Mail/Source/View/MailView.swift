@@ -89,7 +89,6 @@ struct MailView: View {
                 Divider().background(Color(hex: "E5DFD7"))
                 ScrollView(.vertical){
                     if let mails = store.state.mails {
-                        ZStack{
                             ForEach(Array(mails.enumerated()), id:\.element.id){ index,mail in
                                 HStack(spacing:10) {
                                     VStack{
@@ -131,8 +130,6 @@ struct MailView: View {
                                     
                                 }.frame(width: 272, height: 48).padding(.bottom,10)
                             }
-                            
-                        }
                     }
                 }.padding(10)
                 
