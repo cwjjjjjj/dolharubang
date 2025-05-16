@@ -24,7 +24,7 @@ public class ContestResDto {
     public static ContestResDto fromEntity(Contest contest) {
         return ContestResDto.builder()
             .contestNo(contest.getId())
-            .nickname(contest.getMember().getMemberEmail())
+            .nickname(contest.getMember().getNickname())
             .isPublic(contest.getIsPublic())
             .profileImgUrl(contest.getProfileImgUrl())
             .stoneName(contest.getStoneName())
