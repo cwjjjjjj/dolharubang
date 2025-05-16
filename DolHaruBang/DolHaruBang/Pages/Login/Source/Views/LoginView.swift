@@ -7,17 +7,10 @@ import KakaoSDKUser
 struct LoginView: View {
     
     @Environment(\.presentationMode) var presentationMode // 뒤로가기 동작을 위한 환경 변수
-    @State private var logoutObserver: NSObjectProtocol?
-    @State private var loginObserver: NSObjectProtocol?
-    //    @Bindable var nav: StoreOf<NavigationFeature>
     @State var store: StoreOf<LoginFeature>
     @StateObject private var signInViewModel = SignInWithAppleViewModel()
     
     var body: some View {
-        
-        // path : 이동하는 경로들을 전부 선언해줌
-        // $nav.scope : NavigationFeature의 forEach에 접근
-        //        NavigationStack(path: $nav.scope(state: \.path, action: \.path)){
         ZStack {
             Color.mainGreen
                 .edgesIgnoringSafeArea(.all)
@@ -160,36 +153,6 @@ struct LoginView: View {
             }
         }
         .edgesIgnoringSafeArea(.all)
-        //        }
-        // MARK: NavigationStack에서 관리하는 경로&리듀서 선언
-        // 해당 값을 가지고 NavigationStack이 패턴매칭을 함
-        //        destination : { nav in
-        //            switch nav.case {
-        //            case let .calendar(store):
-        //                CalendarView(store: store)
-        //            case let .harubang(store):
-        //                HaruBangView(store: store)
-        //            case let .mypage(store):
-        //                MyPageView(store : store)
-        //            case let .park(store):
-        //                ParkView(store : store)
-        //            case let .home(store):
-        //                HomeView(store : store)
-        //            case let .DBTIGuideView(store):
-        //                DBTIGuideView(store : store)
-        //            case let .DBTIQuestionView(store):
-        //                DBTIQuestionView(store : store)
-        //            case let .DBTIResultView(store):
-        //                DBTIResultView(store : store)
-        //            case let .TrophyView(store):
-        //                TrophyView(store : store)
-        //            case let .SettingView(store):
-        //                SettingView(store : store)
-        //            case let .input(store):
-        //                InputUserInfoView(store : store)
-        //
-        //            }
-        //        }
         .onAppear{
             store.send(.isFirstRequest)
         }
@@ -206,36 +169,9 @@ struct LoginView: View {
                 }
             }
         }
-        //        .onAppear{
-        //            logoutObserver = NotificationCenter.default.addObserver(
-        //                forName: NSNotification.Name("LogoutRequired"),
-        //                object: nil,
-        //                queue: .main
-        //            ) { _ in
-        //                nav.send(.popToRoot)
-        //            }
-        //        }
-        
-        // MARK: FloatingMenuView Start
-        //        .safeAreaInset(edge: .bottom) {
-        //            FloatingMenuView(nav: nav)
-        //        }
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true) // 기본 뒤로가기 버튼 숨기기
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image("backIcon")
-                            .resizable()
-                            .frame(width: 32, height: 32)
-                    }
-                }
-                .offset(x: 8, y: 8)
-            }
-        }
+      
     }
 }
 

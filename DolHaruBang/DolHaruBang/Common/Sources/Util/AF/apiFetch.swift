@@ -1,6 +1,15 @@
 import Alamofire
 import Foundation
 
+// HTTP 메서드 정의
+enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case patch = "PATCH"
+    case put = "PUT"
+    case delete = "DELETE"
+}
+
 // 토큰 응답 모델
 struct TokenResponse: Decodable, Equatable, Sendable {
     let accessToken: String
@@ -10,7 +19,7 @@ struct TokenResponse: Decodable, Equatable, Sendable {
 // 에러 타입
 enum APIError: Error {
     case tokenRefreshFailed
-    case unauthorized(ErrorResponse)
+    case unauthorized
     case networkError
     case tokenEmpty
     case modelTypeError
@@ -57,10 +66,10 @@ func makeMultipartBody(
 
 
 // MARK: fetch 함수
-// baseURL 자동 합체
+// baseURL 처리
 // 토큰 관리
 // 제네릭 사용으로 다양한 모델 타입 대응
-// async throws로 비동기 함수 + 에러 처리
+// 에러핸들링
 func fetch<T: Decodable>(
     url: String, // 요청 endpoint 주소
     model: T.Type,
@@ -84,19 +93,13 @@ func fetch<T: Decodable>(
     // 인증 토큰 자동 추가 (skipAuth가 false일 때만)
     if !skipAuth, let accessToken = TokenManager.shared.getAccessToken() {
         finalHeaders.add(.authorization(bearerToken: accessToken))
-//        print("엑세스토큰 ", accessToken)
+        //        print("엑세스토큰 ", accessToken)
     }
     
     if finalHeaders["Content-Type"] == nil {
         finalHeaders.add(name: "Content-Type", value: "application/json")
     }
     
-//    if let body = body {
-//        print("Request Body: \(String(data: body, encoding: .utf8) ?? "Unable to decode body")")
-//    } else {
-//        print("Request Body: nil")
-//    }
-//    
     // 요청 준비
     var request = URLRequest(url: URL(string: fullURL)!)
     request.httpMethod = method.rawValue
@@ -119,54 +122,81 @@ func fetch<T: Decodable>(
     do {
         return try await executeRequest(request: request, model: model)
     } catch let error as APIError {
-        // 토큰 갱신 실패 시에만 토큰 삭제
-        if case APIError.tokenRefreshFailed = error {
+        switch error {
+        case APIError.unauthorized:
+            print("엑세스 토큰 만료")
+        case APIError.tokenRefreshFailed:
+            print("엑세스 토큰 갱신 에러")
             TokenManager.shared.clearTokens()
-            throw error
-        }
-        
-        // decodingError는 토큰 삭제 없이 상위 레이어로 전파
-        if case APIError.decodingError = error {
-            throw error
-        }
-        
-        // 나머지 에러 처리 로직 (기존과 동일)
-        if case let APIError.unauthorized(errorResponse) = error,
-           errorResponse.code == "UNAUTHORIZED", !skipAuth {
-            // 토큰 갱신 시도 로직 (기존과 동일)
+        case APIError.networkError:
+            print("네트워크에러")
+            TokenManager.shared.clearTokens()
+            
+        case APIError.decodingError:
+            print("디코딩에러")
+        default:
+            print("아무튼 에러")
+            TokenManager.shared.clearTokens()
         }
         throw error
     }
-
 }
 
-// 요청 실행 함수 (중복 코드 제거)
+// 실제 통신 부부
 private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
     return try await withCheckedThrowingContinuation { continuation in
         AF.request(request)
             .responseData { response in
+                let statusCode = response.response?.statusCode
+                
+                
+                // 401
+                if statusCode == 401 {
+                    print("401진입")
+                    Task {
+                        do {
+                            let newToken = try await refreshAccessToken()
+                            TokenManager.shared.saveTokens(accessToken: newToken.accessToken, refreshToken: newToken.refreshToken)
+                            print("1")
+                            var newRequest = request
+                            newRequest.setValue("Bearer \(newToken.accessToken)", forHTTPHeaderField: "Authorization")
+                            print("2")
+                            let result = try await executeRequest(request: newRequest, model: model)
+                            print("3")
+                            continuation.resume(returning: result)
+                        } catch {
+                            print("재발급 과정에서 에러")
+                            continuation.resume(throwing: APIError.tokenRefreshFailed)
+                        }
+                    }
+                    return // 반드시 return!
+                }
+                
+                
+                if statusCode == 403 {
+                    print("403")
+                    continuation.resume(throwing: APIError.tokenRefreshFailed)
+                    return
+                }
+                
+                // 204 No Content 처리
+                if statusCode == 204, model is EmptyResponse.Type {
+                    continuation.resume(returning: EmptyResponse() as! T)
+                    return
+                }
+                
                 switch response.result {
                 case .success(let data):
                     do {
-//                        print("------------서버로 부터 응답 값------------")
-//                        dump(response)
-//                        print("------------서버로 부터 응답 값------------")
-                        
-                        // 상태 코드 확인 (204 No Content 처리)
-                        if let httpResponse = response.response, httpResponse.statusCode == 204, model is EmptyResponse.Type {
-                            continuation.resume(returning: EmptyResponse() as! T)
-                            return
-                        }
-                        
                         let jsonDecoder = JSONDecoder()
                         let dateFormatterWithMillis = DateFormatter()
                         dateFormatterWithMillis.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
                         dateFormatterWithMillis.timeZone = TimeZone(identifier: "Asia/Seoul")
-
+                        
                         let dateFormatterWithoutMillis = DateFormatter()
                         dateFormatterWithoutMillis.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                         dateFormatterWithoutMillis.timeZone = TimeZone(identifier: "Asia/Seoul")
-
+                        
                         jsonDecoder.dateDecodingStrategy = .custom { decoder in
                             let container = try decoder.singleValueContainer()
                             let dateString = try container.decode(String.self)
@@ -177,28 +207,15 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                                 return date
                             }
                             throw DecodingError.dataCorruptedError(in: container,
-                                debugDescription: "Date string does not match expected format.")
+                                                                   debugDescription: "Date string does not match expected format.")
                         }
-
+                        
                         let decodedModel = try jsonDecoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedModel)
-                    } catch let decodingError {
-                        print("디코딩 오류: \(decodingError)")
-                        
-                        do {
-                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
-                            if errorResponse.code == "UNAUTHORIZED" {
-                                continuation.resume(throwing: APIError.unauthorized(errorResponse))
-                            } else {
-                                continuation.resume(throwing: APIError.modelTypeError)
-                            }
-                        } catch {
-                            // ErrorResponse 디코딩도 실패하면 decodingError 발생
-                            continuation.resume(throwing: APIError.decodingError)
-                        }
+                    } catch {
+                        // 기타 디코딩 에러 처리
+                        continuation.resume(throwing: APIError.decodingError)
                     }
-
-                    
                 case .failure(let error):
                     print("네트워크 오류: \(error)")
                     continuation.resume(throwing: APIError.networkError)
@@ -207,34 +224,30 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
     }
 }
 
-
 // 토큰 갱신 함수
 private func refreshAccessToken() async throws -> TokenResponse {
+    print("함수 진입")
     guard let refreshToken = TokenManager.shared.getRefreshToken() else {
         throw APIError.tokenEmpty
     }
+    
+    print("리프레시 토큰 가져오기 성공")
     
     let headers: HTTPHeaders = [
         "Content-Type": "application/json",
         "Authorization": "Bearer \(refreshToken)"
     ]
     
-    
-    // 토큰 갱신 요청 (skipAuth=true로 설정하여 무한 루프 방지)
-    return try await fetch(
-        url: APIConstants.Endpoints.refresh,
-        model: TokenResponse.self,
-        method: .post,
-        headers: headers,
-        skipAuth: true
-    )
-}
-
-// HTTP 메서드 정의
-enum HTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case patch = "PATCH"
-    case put = "PUT"
-    case delete = "DELETE"
+    do {
+        return try await fetch(
+            url: APIConstants.Endpoints.refresh,
+            model: TokenResponse.self,
+            method: .post,
+            headers: headers,
+            skipAuth: true // 엑세스 토큰이 아닌 리프레시 토큰이 헤더가 되도록
+        )
+    } catch {
+        print("리프레시 요청에서 잡은 에러")
+        throw APIError.tokenRefreshFailed
+    }
 }
