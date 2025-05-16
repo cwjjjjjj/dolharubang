@@ -45,7 +45,7 @@ struct LoginView: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                if (UserApi.isKakaoTalkLoginAvailable()) {
+                                if (UserApi.isKakaoTalkLoginAvailable() && !store.kakaoButtonDisable) {
                                     UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                                         if let error = error {
                                             print(error)
@@ -82,7 +82,7 @@ struct LoginView: View {
                                 .frame(width: geometry.size.width - 72, height: 48)
                                 .background(Color.kakao)
                                 .cornerRadius(16)
-                            }
+                            }.disabled(store.kakaoButtonDisable)
                             Spacer()
                         }
                     }
