@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class StoneHomeResDto {
 
+    private long stoneId;
     @JsonProperty("dolName")
     private String stoneName;
     @JsonProperty("friendShip")
@@ -19,6 +20,7 @@ public class StoneHomeResDto {
 
     public static StoneHomeResDto fromEntity(Stone stone) {
         return StoneHomeResDto.builder()
+            .stoneId(stone.getStoneId())
             .stoneName(stone.getStoneName())
             .closeness(stone.getCloseness())
             .mailCount(7)
