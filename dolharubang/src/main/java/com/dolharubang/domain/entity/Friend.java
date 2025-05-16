@@ -1,5 +1,7 @@
 package com.dolharubang.domain.entity;
 
+import com.dolharubang.exception.CustomException;
+import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.type.FriendStatusType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,4 +64,13 @@ public class Friend extends BaseEntity {
         this.status = FriendStatusType.PENDING;
         this.deletedAt = null;
     }
+
+    public void cancel() {
+        if (this.status != FriendStatusType.PENDING) {
+            throw new CustomException(ErrorCode.FRIEND_CANNOT_BE_CANCEL);
+        }
+        this.status = FriendStatusType.CANCELED;
+        this.deletedAt = LocalDateTime.now();
+    }
+
 }
