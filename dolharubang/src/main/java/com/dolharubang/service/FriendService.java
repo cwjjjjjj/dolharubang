@@ -75,7 +75,8 @@ public class FriendService {
 
             // 소프트 딜리트 또는 거절된 경우에는 새로운 요청으로 처리
             if (friendRequest.getStatus() == FriendStatusType.DECLINED
-                || friendRequest.getStatus() == FriendStatusType.DELETED) {
+                || friendRequest.getStatus() == FriendStatusType.DELETED
+                || friendRequest.getStatus() == FriendStatusType.CANCELED) {
                 friendRequest.restore(requester, receiver);  // 상태를 PENDING으로 변경
                 friendRepository.save(friendRequest);
                 return FriendResDto.fromEntity(friendRequest, requester);
@@ -106,7 +107,8 @@ public class FriendService {
         Friend friendRequest = friendRepository.findBetweenMembersWithDeleted(requester, receiver);
 
         // 요청이 없거나 삭제된 상태라면 친구 요청을 찾을 수 없는 에러 던짐
-        if (friendRequest == null || friendRequest.getStatus() == FriendStatusType.DELETED) {
+        if (friendRequest == null || friendRequest.getStatus() == FriendStatusType.DELETED
+            || friendRequest.getStatus() == FriendStatusType.CANCELED) {
             throw new CustomException(ErrorCode.FRIEND_NOT_FOUND);
         }
 
@@ -138,7 +140,8 @@ public class FriendService {
         Friend friendRequest = friendRepository.findBetweenMembersWithDeleted(requester, receiver);
 
         // 요청이 없거나 삭제된 상태라면 친구 요청을 찾을 수 없는 에러 던짐
-        if (friendRequest == null || friendRequest.getStatus() == FriendStatusType.DELETED) {
+        if (friendRequest == null || friendRequest.getStatus() == FriendStatusType.DELETED
+            || friendRequest.getStatus() == FriendStatusType.CANCELED) {
             throw new CustomException(ErrorCode.FRIEND_NOT_FOUND);
         }
 
@@ -176,4 +179,22 @@ public class FriendService {
 
         return FriendResDto.fromEntity(friendRequest, member);
     }
+
+    // 친구 취소
+    @Transactional
+    public FriendResDto cancelFriendRequest(Member requester, Long receiverId) {
+        Member receiver = memberRepository.findById(receiverId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Friend request = friendRepository.findByRequesterAndReceiverAndStatus(
+            requester,
+            receiver,
+            FriendStatusType.PENDING
+        ).orElseThrow(() -> new CustomException(ErrorCode.FRIEND_NOT_FOUND));
+
+        request.cancel();
+        return FriendResDto.fromEntity(request, requester);
+    }
+
+
 }
