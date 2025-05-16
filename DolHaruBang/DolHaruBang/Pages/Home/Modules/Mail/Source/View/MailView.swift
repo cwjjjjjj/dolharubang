@@ -30,7 +30,7 @@ struct MailView: View {
                     }
                     .padding(.trailing, 24)
                 }
-                Image("clover")
+                Image(getSelectImageName(for: mail.type))
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width * 0.7)
@@ -92,7 +92,7 @@ struct MailView: View {
                             ForEach(Array(mails.enumerated()), id:\.element.id){ index,mail in
                                 HStack(spacing:10) {
                                     VStack{
-                                        Image(getImageName(for: mail.type))
+                                        Image(getImageName(for: mail.isRead ? "readMail" : mail.type))
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 40, height: 26)

@@ -98,7 +98,7 @@ struct MailFeature {
             case let .selectMail(mail):
                 state.selectMail = mail
                 state.clickMail = true
-                return .none
+                return .send(.readMail(String(mail.id)))
             
             case .closeMail:
                 state.clickMail = false
