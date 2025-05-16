@@ -37,8 +37,18 @@ public class Contest extends BaseEntity {
     @Column(name = "profile_img_url")
     String profileImgUrl;
 
-    @Column(name = "stone_name")
-    String stoneName;
+    @ManyToOne
+    @JoinColumn(name = "stone_id")
+    private Stone stone;
+
+    @Builder
+    public Contest(Member member, Stone stone, Boolean isPublic, String profileImgUrl,
+        String stoneName) {
+        this.member = member;
+        this.stone = stone;
+        this.isPublic = isPublic;
+        this.profileImgUrl = profileImgUrl;
+    }
 
     public void updateImage(String profileImgUrl) {
         this.profileImgUrl = profileImgUrl;
