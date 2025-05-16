@@ -29,10 +29,12 @@ struct APIConstants {
         
 
         // MARK: Park(Doljanchi(contests) + Friends)
+        static let canRegist = "/contests/check-eligibility"
         static let feed = "/contests/feed"
         static let contest = "/contests"
         static let friends = "/friends/accepted"
         static let friendsRequest = "/friends/requests"
+        static let friendControl = "/friends"
 
         // MARK: Mail
         static let mail = "/notifications"

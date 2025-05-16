@@ -188,6 +188,13 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                 switch response.result {
                 case .success(let data):
                     do {
+                        
+                        // 상태 코드 확인 (204 No Content 처리)
+                        if let httpResponse = response.response, httpResponse.statusCode == 204, model is EmptyResponse.Type {
+                            continuation.resume(returning: EmptyResponse() as! T)
+                            return
+                        }
+
                         let jsonDecoder = JSONDecoder()
                         let dateFormatterWithMillis = DateFormatter()
                         dateFormatterWithMillis.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"

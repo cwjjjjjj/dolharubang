@@ -3,6 +3,7 @@ import Foundation
 
 struct BasicInfo : Hashable, Codable {
     let dolName : String
+    let stoneId : Int
     let mailCount : Int
     let friendShip : Int
 }
@@ -100,6 +101,7 @@ struct ParkFeature {
                 case let .fetchDolInfoResponse(.success(dolInfo)):
                     state.isLoading = false
                     state.dolInfo = dolInfo
+                    state.doljanchiFeatureState.stoneId = dolInfo.stoneId
                     return .none
                     
                 case let .fetchDolInfoResponse(.failure(error)):

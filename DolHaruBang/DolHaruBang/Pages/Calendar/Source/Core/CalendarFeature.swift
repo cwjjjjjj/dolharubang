@@ -123,15 +123,12 @@ struct CalendarFeature {
                     
                     if var existingSchedules = state.schedules[date] {
                         if let index = existingSchedules.firstIndex(where: { $0.id == schedule.id }) {
-                            print("\(date)의 \(index)번째 스케쥴인 \(schedule.id)번 스케쥴 수정")
                             existingSchedules[index] = schedule
                         } else {
-                            print("\(date)에 \(schedule.id)번 스케쥴 추가")
                             existingSchedules.append(schedule)
                         }
                         state.schedules[date] = existingSchedules
                     } else {
-                        print("\(date)에 첫 번째 스케쥴로 \(schedule.id)번 스케쥴 추가")
                         state.schedules[date] = [schedule]
                     }
                 }
@@ -139,7 +136,6 @@ struct CalendarFeature {
                 
             case .schedulesReceived(.failure(let error), _):
                 state.isLoading = false
-                print("Failed to process schedules: \(error)")
                 return .none
                 
             case .binding:
