@@ -1,21 +1,13 @@
 package com.dolharubang.domain.dto.request;
 
-import com.dolharubang.domain.entity.Contest;
-import com.dolharubang.domain.entity.Member;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class ContestReqDto {
 
+    @NotNull(message = "stoneId는 필수입니다.")
+    private Long stoneId;
     private Boolean isPublic;
-    private String stoneName;
-
-    public static Contest toEntity(ContestReqDto dto, Member member) {
-        return Contest.builder()
-            .member(member)
-            .isPublic(dto.getIsPublic())
-            .stoneName(dto.getStoneName())
-            .build();
-    }
 
 }

@@ -33,6 +33,27 @@ public class ContestController {
 
     private final ContestService contestService;
 
+    @Operation(summary = "콘테스트 생성 가능 여부 확인", description = "새로운 콘테스트를 생성할 수 있는지 여부를 확인합니다")
+    @GetMapping("/check-eligibility")
+    public ResponseEntity<?> checkContestEligibility(
+        @AuthenticationPrincipal PrincipalDetails principal,
+        @RequestParam Long stoneId
+    ) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+
+        Long memberId = principal.getMember().getMemberId();
+        boolean isEligible = contestService.checkEligibility(memberId, stoneId);
+
+        return ResponseEntity.ok(isEligible);
+    }
 
     @Operation(summary = "콘테스트 생성", description = "새로운 콘테스트를 생성합니다")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

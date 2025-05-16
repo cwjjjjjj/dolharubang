@@ -27,7 +27,7 @@ public class ContestResDto {
             .nickname(contest.getMember().getNickname())
             .isPublic(contest.getIsPublic())
             .profileImgUrl(contest.getProfileImgUrl())
-            .stoneName(contest.getStoneName())
+            .stoneName(contest.getStone().getStoneName())
             .createdAt(contest.getCreatedAt())
             .modifiedAt(contest.getModifiedAt())
             .build();

@@ -2,6 +2,8 @@ package com.dolharubang.repository;
 
 import com.dolharubang.domain.entity.Contest;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.Stone;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,5 +49,15 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
     List<Contest> findLatestContests(
         @Param("lastContestId") Long lastContestId,
         @Param("size") int size
+    );
+
+    @Query("SELECT COUNT(c) FROM Contest c " +
+        "WHERE c.member = :member " +
+        "AND c.stone = :stone " +
+        "AND c.createdAt >= :startOfDay")
+    int countTodayContestByMemberAndStone(
+        @Param("member") Member member,
+        @Param("stone") Stone stone,
+        @Param("startOfDay") LocalDateTime startOfDay
     );
 }
