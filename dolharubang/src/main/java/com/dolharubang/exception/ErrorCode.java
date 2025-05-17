@@ -59,6 +59,7 @@ public enum ErrorCode {
     FRIEND_REQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 친구 요청을 보냈습니다."),
     FRIEND_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 친구 요청을 찾을 수 없습니다."),
     FRIEND_CANNOT_BE_DELETED(HttpStatus.BAD_REQUEST, "친구를 삭제할 수 없습니다."),
+    FRIEND_CANNOT_BE_CANCEL(HttpStatus.BAD_REQUEST, "친구 요청을 취소할 수 없습니다."),
     FRIEND_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 수락했습니다."),
     FRIEND_ALREADY_PENDING(HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
     FRIEND_ALREADY_DECLINED(HttpStatus.BAD_REQUEST, "이미 친구 요청을 거절했습니다."),

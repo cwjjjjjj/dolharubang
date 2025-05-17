@@ -4,6 +4,7 @@ import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.type.FriendStatusType;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +27,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<Friend> findAllFriendRequests(@Param("member") Member member,
         @Param("status") FriendStatusType status);
 
-
     // 요청자와 수신자의 관계를 양방향으로 조회 (소프트 딜리트 포함)
     @Query("SELECT f FROM Friend f WHERE (f.requester = :member1 AND f.receiver = :member2 OR f.requester = :member2 AND f.receiver = :member1)")
     Friend findBetweenMembersWithDeleted(@Param("member1") Member member1,
@@ -43,5 +43,11 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
         """)
     List<Friend> findRelationsWithMembers(@Param("myId") Long myId, @Param("ids") List<Long> ids);
 
+    @Query("SELECT f FROM Friend f WHERE f.requester = :requester AND f.receiver = :receiver AND f.status = :status")
+    Optional<Friend> findByRequesterAndReceiverAndStatus(
+        @Param("requester") Member requester,
+        @Param("receiver") Member receiver,
+        @Param("status") FriendStatusType status
+    );
 
 }

@@ -29,7 +29,8 @@ public class FriendResDto {
 
     public static FriendResDto fromEntity(Friend friend, Member me) {
         return FriendResDto.builder()
-            .id(friend.getId())
+            .id(me.getMemberId().equals(friend.getRequester().getMemberId()) ? friend.getReceiver()
+                .getMemberId() : friend.getRequester().getMemberId())
             .requesterNickname(friend.getRequester().getNickname())
             .receiverNickname(friend.getReceiver().getNickname())
             .requesterProfileImageURL(friend.getRequester().getProfilePicture())

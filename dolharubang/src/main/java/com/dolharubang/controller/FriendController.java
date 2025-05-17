@@ -147,4 +147,26 @@ public class FriendController {
         FriendResDto response = friendService.deleteFriend(member, friendId);
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "친구 요청 취소")
+    @DeleteMapping("/request")
+    public ResponseEntity<?> cancelFriendRequest(
+        @AuthenticationPrincipal PrincipalDetails principal,
+        @RequestParam Long friendId
+    ) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증안댐"
+                ));
+        }
+        
+        Member requester = principal.getMember();
+        FriendResDto response = friendService.cancelFriendRequest(requester, friendId);
+        return ResponseEntity.ok(response);
+    }
+
 }
