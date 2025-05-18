@@ -92,6 +92,31 @@ public class DiaryService {
         return DiaryResDto.fromEntity(diary);
     }
 
+    @Transactional
+    public DiaryResDto partialDeleteDiary(Long memberId, Long id, DeleteTarget deleteTarget) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        switch (deleteTarget) {
+            case CONTENT:
+                diary.update(member, null, diary.getEmoji(), diary.getImageUrl(), diary.getReply());
+                break;
+            case EMOJI:
+                diary.update(member, diary.getContents(), null, diary.getImageUrl(), diary.getReply());
+                break;
+            case IMAGE:
+                diary.update(member, diary.getContents(), diary.getEmoji(), null, diary.getReply());
+                break;
+            default:
+                throw new CustomException(ErrorCode.INVALID_DELETE_TARGET);
+        }
+
+        return DiaryResDto.fromEntity(diary);
+    }
+
     @Transactional(readOnly = true)
     public DiaryResDto getDiary(Long id) {
         Diary diary = diaryRepository.findByDiaryId(id)
