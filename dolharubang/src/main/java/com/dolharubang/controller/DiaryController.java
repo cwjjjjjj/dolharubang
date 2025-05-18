@@ -43,7 +43,7 @@ public class DiaryController {
     public ResponseEntity<?> createDiary(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestPart("data") DiaryReqDto requestDto,
-        @RequestPart("image") MultipartFile imageFile) {
+        @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
