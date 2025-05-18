@@ -38,7 +38,7 @@ public class DiaryController {
     }
 
     @Operation(summary = "하루방 일기 생성하기", description = "하루방 일기를 생성한다.")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createDiary(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestPart("data") DiaryReqDto requestDto,
