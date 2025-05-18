@@ -5,6 +5,7 @@ import com.dolharubang.domain.dto.response.DiaryResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.DiaryService;
+import com.dolharubang.type.DeleteTarget;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

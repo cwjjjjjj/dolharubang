@@ -9,10 +9,10 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import com.dolharubang.type.DeleteTarget;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,11 +39,12 @@ public class DiaryService {
         MultipartFile imageFile) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+        int maxDiariesPerDay = 2;
 
-        Optional<Diary> todayDiary = diaryRepository.findByMemberAndCreatedAtBetween(member,
+        List<Diary> todayDiary = diaryRepository.findAllByMemberAndCreatedAtBetween(member,
             startOfDay, endOfDay);
-        if (todayDiary.isPresent()) {
-            throw new CustomException(ErrorCode.DIARY_ALREADY_EXISTS);
+        if (todayDiary.size() >= maxDiariesPerDay) {
+            throw new CustomException(ErrorCode.TOO_MANY_DIARIES);
         }
 
         Diary diary = Diary.builder()
