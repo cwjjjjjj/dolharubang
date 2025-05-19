@@ -142,13 +142,14 @@ func fetch<T: Decodable>(
     }
 }
 
-// 실제 통신 부부
+// 실제 통신 부분
 private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
     return try await withCheckedThrowingContinuation { continuation in
         AF.request(request)
             .responseData { response in
                 let statusCode = response.response?.statusCode
                 
+                dump(response)
                 
                 // 401
                 if statusCode == 401 {

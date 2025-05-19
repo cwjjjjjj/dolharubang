@@ -133,20 +133,20 @@ struct TalkBubbleGroup: View {
                     isResponse: false,
                     onEdit: nil,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.emoji))
+                        store.send(.toggleDeleteAlert(.EMOJI))
                     },
                     isEmoji: true
                 )
             }
             
             // 텍스트 메시지
-            if !talk.contents.isEmpty {
+            if let contents = talk.contents, !contents.isEmpty {
                 SpeechBubbleView(
-                    content: talk.contents,
+                    content: contents,
                     createdAt: talk.createdAt,
                     isResponse: false,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.content))
+                        store.send(.toggleDeleteAlert(.CONTENT))
                     },
                     isEmoji: false
                 )
@@ -160,7 +160,7 @@ struct TalkBubbleGroup: View {
                     isResponse: false,
                     onEdit: nil,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.image))
+                        store.send(.toggleDeleteAlert(.IMAGE))
                     },
                     isEmoji: false
                 )
@@ -173,7 +173,7 @@ struct TalkBubbleGroup: View {
                     createdAt: talk.createdAt,
                     isResponse: true,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.reply))
+                        store.send(.toggleDeleteAlert(.REPLY))
                     },
                     isEmoji: false
                 )

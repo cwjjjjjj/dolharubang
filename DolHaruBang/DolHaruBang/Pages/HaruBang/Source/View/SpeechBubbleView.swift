@@ -12,6 +12,7 @@ struct SpeechBubbleView: View {
         HStack(alignment: .top, spacing: 0) {
             if !isResponse {
                 Spacer()
+                    .frame(minWidth: UIScreen.main.bounds.width * (137 / 393))
             } else {
                 HStack(alignment: .top, spacing: 1) {
                     Circle()
@@ -37,7 +38,7 @@ struct SpeechBubbleView: View {
             VStack(alignment: .leading, spacing: 0) {
                 contentDisplay
                 
-                if !isEmoji && !isResponse {
+                if !isResponse {
                     Divider()
                         .foregroundStyle(Color(hex: "E5DFD7"))
                         .padding(.horizontal, 16)
@@ -47,7 +48,11 @@ struct SpeechBubbleView: View {
             .background(Color.coreWhite)
             .cornerRadius(15)
             .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 1)
-            .frame(minWidth: 40, maxWidth: UIScreen.main.bounds.width * (256 / 393), alignment: isResponse ? .leading : .trailing)
+//            .frame(minWidth: 40, maxWidth: UIScreen.main.bounds.width * (256 / 393), alignment: isResponse ? .leading : .trailing)
+            .frame(
+                width: isEmoji ? 64 : nil,
+                alignment: isResponse ? .leading : .trailing
+            )
                         
             if isResponse {
                 Spacer()
@@ -71,7 +76,7 @@ struct SpeechBubbleView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 48, height: 48)
                     .padding(8)
-            } else if content.hasPrefix("http"), let url = URL(string: content) { // URL인지 확인
+            } else if content.hasPrefix("http"), let url = URL(string: content) {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
@@ -114,12 +119,14 @@ struct SpeechBubbleView: View {
     
     private var dateAndActionButtons: some View {
         HStack {
-            Text(formattedFloatingDate(createdAt))
-                .font(.customFont(Font.body4Regular))
-                .foregroundColor(.coreGreen)
+            if !isEmoji {
+                Text(formattedFloatingDate(createdAt))
+                    .font(.customFont(Font.body4Regular))
+                    .foregroundColor(.coreGreen)
+            }
             
             if !isResponse {
-                Spacer()
+                if !isEmoji {Spacer()}
 //                Button(action: { onEdit?() }) {
 //                    Text("수정")
 //                        .font(.customFont(Font.body4Regular))
@@ -138,8 +145,8 @@ struct SpeechBubbleView: View {
     
     private func formattedFloatingDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "a hh시 mm분"
+        formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: date)
     }
 }
