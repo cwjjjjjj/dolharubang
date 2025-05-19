@@ -2,19 +2,19 @@ import ComposableArchitecture
 import SwiftUI
 
 enum DeleteTarget: Equatable {
-    case content
-    case emoji
-    case image
-    case reply
+    case CONTENT
+    case EMOJI
+    case IMAGE
+    case REPLY
     
     var caseName: String { String(describing: self) }
     
     var displayName: String {
         switch self {
-        case .content: return "일기 내용"
-        case .emoji: return "이모티콘"
-        case .image: return "사진"
-        case .reply: return "답장"
+        case .CONTENT: return "일기 내용"
+        case .EMOJI: return "이모티콘"
+        case .IMAGE: return "사진"
+        case .REPLY: return "답장"
         }
     }
 }
