@@ -18,7 +18,8 @@ public enum ErrorCode {
 
     // 하루방 관련 오류
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일기를 찾을 수 없습니다."),
-    DIARY_ALREADY_EXISTS(HttpStatus.CONFLICT, "오늘의 일기를 이미 작성했습니다."),
+    TOO_MANY_DIARIES(HttpStatus.TOO_MANY_REQUESTS, "오늘의 일기 개수를 초과했습니다."),
+    INVALID_DELETE_TARGET(HttpStatus.BAD_REQUEST, "삭제할 수 없는 요청입니다"),
 
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),

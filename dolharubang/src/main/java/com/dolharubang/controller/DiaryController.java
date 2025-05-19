@@ -5,6 +5,7 @@ import com.dolharubang.domain.dto.response.DiaryResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.DiaryService;
+import com.dolharubang.type.DeleteTarget;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -38,11 +39,11 @@ public class DiaryController {
     }
 
     @Operation(summary = "하루방 일기 생성하기", description = "하루방 일기를 생성한다.")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createDiary(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestPart("data") DiaryReqDto requestDto,
-        @RequestPart("image") MultipartFile imageFile) {
+        @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         if (principal == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -59,13 +60,36 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "하루방 일기 수정/일부 삭제하기", description = "diary_id를 사용하여 일기를 수정하거나 일부 삭제한다.")
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateOrDeleteDiary(
+//    @Operation(summary = "하루방 일기 수정하기", description = "diary_id를 사용하여 일기를 수정한다.")
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<?> updateDiary(
+//        @AuthenticationPrincipal PrincipalDetails principal,
+//        @PathVariable Long id,
+//        @RequestPart("data") DiaryReqDto requestDto,
+//        @RequestPart("image") MultipartFile imageFile) {
+//
+//        if (principal == null) {
+//            return ResponseEntity
+//                .status(HttpStatus.UNAUTHORIZED)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(Map.of(
+//                    "code", "UNAUTHORIZED",
+//                    "message", "인증에 실패햐였습니다"
+//                ));
+//        }
+//
+//        Long memberId = findMemberId(principal);
+//        DiaryResDto response = diaryService.updateDiary(memberId, id, requestDto, imageFile);
+//
+//        return ResponseEntity.ok(response);
+//    }
+
+    @Operation(summary = "하루방 일기 일부 삭제하기", description = "diary_id를 사용하여 일기를 일부 삭제한다.")
+    @PatchMapping("/{id}/{deleteTarget}")
+    public ResponseEntity<?> partialDeleteDiary(
         @AuthenticationPrincipal PrincipalDetails principal,
         @PathVariable Long id,
-        @RequestPart("data") DiaryReqDto requestDto,
-        @RequestPart("image") MultipartFile imageFile) {
+        @PathVariable DeleteTarget deleteTarget) {
 
         if (principal == null) {
             return ResponseEntity
@@ -78,7 +102,7 @@ public class DiaryController {
         }
 
         Long memberId = findMemberId(principal);
-        DiaryResDto response = diaryService.updateDiary(memberId, id, requestDto, imageFile);
+        DiaryResDto response = diaryService.partialDeleteDiary(memberId, id, deleteTarget);
 
         return ResponseEntity.ok(response);
     }

@@ -9,10 +9,10 @@ import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.s3.S3UploadService;
+import com.dolharubang.type.DeleteTarget;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,11 +39,12 @@ public class DiaryService {
         MultipartFile imageFile) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+        int maxDiariesPerDay = 2;
 
-        Optional<Diary> todayDiary = diaryRepository.findByMemberAndCreatedAtBetween(member,
+        List<Diary> todayDiary = diaryRepository.findAllByMemberAndCreatedAtBetween(member,
             startOfDay, endOfDay);
-        if (todayDiary.isPresent()) {
-            throw new CustomException(ErrorCode.DIARY_ALREADY_EXISTS);
+        if (todayDiary.size() >= maxDiariesPerDay) {
+            throw new CustomException(ErrorCode.TOO_MANY_DIARIES);
         }
 
         Diary diary = Diary.builder()
@@ -53,14 +54,16 @@ public class DiaryService {
             .build();
 
         Diary savedDiary = diaryRepository.save(diary);
-        String imageUrl = s3UploadService.saveImage(
-            imageFile,
-            "dolharubang/diary/",
-            savedDiary.getDiaryId()
-        );
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = s3UploadService.saveImage(
+                imageFile,
+                "dolharubang/diary/",
+                savedDiary.getDiaryId()
+            );
 
-        // 이미지 URL 갱신
-        savedDiary.updateImageUrl(imageUrl);
+            // 이미지 URL 갱신
+            savedDiary.updateImageUrl(imageUrl);
+        }
 
         return DiaryResDto.fromEntity(savedDiary);
     }
@@ -88,6 +91,31 @@ public class DiaryService {
             imageUrl,
             diary.getReply()
         );
+
+        return DiaryResDto.fromEntity(diary);
+    }
+
+    @Transactional
+    public DiaryResDto partialDeleteDiary(Long memberId, Long id, DeleteTarget deleteTarget) {
+        Diary diary = diaryRepository.findByDiaryId(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        switch (deleteTarget) {
+            case CONTENT:
+                diary.update(member, null, diary.getEmoji(), diary.getImageUrl(), diary.getReply());
+                break;
+            case EMOJI:
+                diary.update(member, diary.getContents(), null, diary.getImageUrl(), diary.getReply());
+                break;
+            case IMAGE:
+                diary.update(member, diary.getContents(), diary.getEmoji(), null, diary.getReply());
+                break;
+            default:
+                throw new CustomException(ErrorCode.INVALID_DELETE_TARGET);
+        }
 
         return DiaryResDto.fromEntity(diary);
     }
