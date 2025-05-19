@@ -54,14 +54,16 @@ public class DiaryService {
             .build();
 
         Diary savedDiary = diaryRepository.save(diary);
-        String imageUrl = s3UploadService.saveImage(
-            imageFile,
-            "dolharubang/diary/",
-            savedDiary.getDiaryId()
-        );
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = s3UploadService.saveImage(
+                imageFile,
+                "dolharubang/diary/",
+                savedDiary.getDiaryId()
+            );
 
-        // 이미지 URL 갱신
-        savedDiary.updateImageUrl(imageUrl);
+            // 이미지 URL 갱신
+            savedDiary.updateImageUrl(imageUrl);
+        }
 
         return DiaryResDto.fromEntity(savedDiary);
     }
