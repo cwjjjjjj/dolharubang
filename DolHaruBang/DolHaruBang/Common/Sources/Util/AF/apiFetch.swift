@@ -133,6 +133,8 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
         AF.request(request)
             .responseData { response in
                 
+                dump(response)
+                
                 let statusCode = response.response?.statusCode
                 let requestPath = request.url?.path ?? ""
 
