@@ -44,6 +44,7 @@ struct MyPageView : View {
                         HStack(spacing:0){
                             Spacer()
                             buttonView()
+                                .padding(.vertical, 8)
                         }
                         
                         if let userinfo = store.userInfo {
@@ -54,28 +55,38 @@ struct MyPageView : View {
                                     // 선택된 이미지가 있을 때
                                     Image(uiImage: store.selectedImage!)
                                         .resizable()
-                                        .aspectRatio(contentMode: .fill)
+                                        .scaledToFit()
+//                                        .aspectRatio(contentMode: .fill)
                                         .frame(width: 108, height: 108)
-                                        .clipShape(Circle()) // 이미지를 원형으로 클리핑
+                                        .clipShape(Circle())
+                                        .allowsHitTesting(false)
                                 } else{
                                     if let urlString = userinfo.profilePicture,let url = URL(string: urlString) {
-                                        Text("시발\(url)").foregroundStyle(Color.black)
-                                        AsyncImage(url: url)
-                                            .frame(width: 108, height: 108)
-                                            .clipShape(Circle())
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        .id(store.imageID)
+                                        .frame(width: 108, height: 108)
+                                        .clipShape(Circle())
+                                        .allowsHitTesting(false)
                                     } else {
                                         Image("normalprofile")
                                             .resizable()
-                                            .aspectRatio(contentMode: .fill)
+//                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 108, height: 108)
                                             .clipShape(Circle())
+                                            .allowsHitTesting(false)
                                     }
                                 }
                                 // 오른쪽 위에 플러스 버튼 배치
-//                                if store.selectedProfileEdit {
-//                                            plusButton()
-//                                                .offset(x: 40, y: -40)
-//                                        }
+                                if store.selectedProfileEdit {
+                                    plusButton()
+                                        .offset(x: 40, y: -40)
+                                }
                             }
                             
                            
@@ -255,11 +266,14 @@ struct MyPageView : View {
     private func buttonView() -> some View {
         let buttonTitle = store.selectedProfileEdit ? "저장" : "프로필 수정"
         let buttonAction: () -> Void = store.selectedProfileEdit ? {
+            print("버튼 클릭1")
             store.send(.completeEditProfile)
             if let photo = store.selectedImage, let photoData = photo.jpegData(compressionQuality: 1.0) {
+                print("버튼 클릭2")
                 store.send(.changeUserPhoto(photoData.base64EncodedString()))
             }
         } : {
+            print("버튼 클릭3")
             store.send(.clickEditProfile)
         }
         

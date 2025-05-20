@@ -23,6 +23,8 @@ struct MyPageFeature {
         var selectedProfileEdit : Bool = false
         var showImagePicker: Bool = false // ImagePicker 표시 상태
         var selectedImage: UIImage?
+        var imageID: UUID = UUID()
+        
         var isLoading : Bool = false
         
         var userInfo : UserInfo? = UserInfo.mockUserInf
@@ -43,6 +45,7 @@ struct MyPageFeature {
         case binding( BindingAction < State >)
         case userNameChanged(String)
         case roomNameChanged(String)
+        case profileImageChanged(UIImage)
         
         case fetchUserInfo
         case changeUserInfo(String,String)
@@ -88,8 +91,7 @@ struct MyPageFeature {
                 state.selectedProfileEdit = false
                 // 수정 요청 전송
                 return .send(.changeUserInfo(state.userName, state.roomName))
-                
-                
+
                 // 변수 변경 감지
             case let .userNameChanged(name):
                 state.userName = name
@@ -130,6 +132,10 @@ struct MyPageFeature {
                         await send(.fetchUserInfoResponse(.failure(error)))
                     }
                 }
+            case let .profileImageChanged(image):
+                state.selectedImage = image
+                state.imageID = UUID() // 여기서 갱신
+                return .none
                 
                 
                 // 조회,수정 결과 적용하기

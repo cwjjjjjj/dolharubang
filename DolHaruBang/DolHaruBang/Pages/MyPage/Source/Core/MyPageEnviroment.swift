@@ -99,17 +99,18 @@ extension MyPageClient: DependencyKey {
         updateUserPhoto: { base64String in
             let url = APIConstants.Endpoints.photo
             
-            let requestBody = photoRequestBody(image: base64String)
-            let body2 = try JSONEncoder().encode(requestBody)
-            let photoName = Data(base64Encoded: base64String)
+            let imageData: Data? = {
+                if !base64String.isEmpty {
+                    return Data(base64Encoded: base64String)
+                } else {
+                    return nil
+                }
+            }()
             
-            
-            
-            // 3. multipart body 생성
-            let (body, boundary) = ImagetoStirngBody(
-                imageData: photoName
+            let (body, boundary) = makeMultipartBody(
+                dataDict: [:],
+                imageData: imageData
             )
-
             let headers: HTTPHeaders = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
             
 
@@ -118,7 +119,7 @@ extension MyPageClient: DependencyKey {
                 model: UserInfo.self,
                 method: .post,
                 headers: headers,
-                body: body2
+                body: body
             )
         }
     )
