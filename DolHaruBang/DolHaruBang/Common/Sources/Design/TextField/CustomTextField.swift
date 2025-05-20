@@ -274,7 +274,6 @@ struct ResizableTextView: View {
             let currentTextWidth = label.frame.width
             lineCount += ceil(currentTextWidth / maxTextWidth)
         }
-        print("lineCount = \(lineCount)")
         return lineCount
     }
 }

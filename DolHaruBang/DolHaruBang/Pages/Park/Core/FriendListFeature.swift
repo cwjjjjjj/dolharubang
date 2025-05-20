@@ -72,7 +72,6 @@ struct FriendListFeature {
         Reduce { state, action in
             switch action {
                 case .binding(\.searchKeyword):
-//                   print ("writing searchKeyword: " , state.searchKeyword)
                    return .none
                 case .binding:
                     return .none
@@ -83,29 +82,23 @@ struct FriendListFeature {
                     return .run { send in
                         do {
                             let friends = try await parkClient.fetchFriends()
-                            
-                            print("친구 목록 불러 오기 성공")
                             await send (.fetchFriendsResponse(.success(friends)))
                         }
                         catch {
-                            print("친구 목록 불러오기 실패")
                             await send (.fetchFriendsResponse(.failure(error)))
                         }
                     }
                 case let .fetchFriendsResponse(.success(friends)):
                     state.isLoading = false
                     state.friends = friends
-                    print("친구 목록 갱신 성공")
                     return .none
                 case let .fetchFriendsResponse(.failure(error)):
                     state.isLoading = false
                     print(error)
-                    print("친구 목록 갱신 실패")
                     return .none
                 // 친구 요청 관련
                 case .fetchFriendRequests:
                     state.isLoading = true
-                    print("친구 요청 목록 불러오기 시작")
                     return .run { send in
                         do {
                             let friendRequests = try await parkClient.fetchFriendRequests()
@@ -118,12 +111,9 @@ struct FriendListFeature {
                 case let .fetchFriendRequestsResponse(.success(friendRequests)):
                     state.isLoading = false
                     state.friendRequests = friendRequests
-                    print("친구 요청 목록 갱신 성공")
                     return .none
                 case let .fetchFriendRequestsResponse(.failure(error)):
                     state.isLoading = false
-                    print(error)
-                    print("친구 요청 목록 갱신 실패")
                     return .none
                 // 친구 검색 관련
                 case let .searchKeywordChanged(keyword):

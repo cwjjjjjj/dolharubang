@@ -21,7 +21,7 @@ struct ParkFeature {
         var showFriendRequests: Bool = false
         var doljanchiFeatureState : DoljanchiFeature.State = DoljanchiFeature.State()
         var friendListFeatureState : FriendListFeature.State = FriendListFeature.State()
-        var isPublic: Bool = false
+        var isPublic: Bool = true
         var showImageErrorAlert = false
         var showDolNameErrorAlert = false
         var dolInfo: BasicInfo?

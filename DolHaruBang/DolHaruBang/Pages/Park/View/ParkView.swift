@@ -163,26 +163,24 @@ struct ParkView: View {
                         
                         HStack {
                             Spacer()
-                            
-                            HStack(spacing: 8) {
-                                Image(systemName: store.isPublic ? "globe" : "lock.fill")
-                                    .foregroundColor(store.isPublic ? .coreGreen : .gray)
-                                    .frame(width: 16, height: 16)
-                                Toggle(isOn: $store.isPublic) {
-                                    Text(store.isPublic ? "공개" : "비공개")
-                                        .font(.system(size: 14, weight: .medium))
-                                        .foregroundColor(store.isPublic ? .coreGreen : .gray)
-                                }
-                                .labelsHidden()
-                                .toggleStyle(SwitchToggleStyle(tint: .coreGreen))
-                            }
-                            .padding(.bottom, 16)
-                            
-                            Spacer()
+//                            HStack(spacing: 8) {
+//                                Image(systemName: store.isPublic ? "globe" : "lock.fill")
+//                                    .foregroundColor(store.isPublic ? .coreGreen : .gray)
+//                                    .frame(width: 16, height: 16)
+//                                Toggle(isOn: $store.isPublic) {
+//                                    Text(store.isPublic ? "공개" : "비공개")
+//                                        .font(.system(size: 14, weight: .medium))
+//                                        .foregroundColor(store.isPublic ? .coreGreen : .gray)
+//                                }
+//                                .labelsHidden()
+//                                .toggleStyle(SwitchToggleStyle(tint: .coreGreen))
+//                            }
+//                            .padding(.bottom, 16)
+//                            
+//                            Spacer()
                             
                             // 최종 자랑 버튼
                             Button(action: {
-                                print("돌 자랑 api 슈웃~!")
                                 guard let imageBase64 = captureDol.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
                                     store.send(.toggleImageErrorAlert)
                                     return

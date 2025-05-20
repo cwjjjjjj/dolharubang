@@ -132,6 +132,7 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
     return try await withCheckedThrowingContinuation { continuation in
         AF.request(request)
             .responseData { response in
+                
                 let statusCode = response.response?.statusCode
                 let requestPath = request.url?.path ?? ""
 

@@ -63,12 +63,6 @@ extension ScheduleClient: DependencyKey {
             let url = APIConstants.Endpoints.schedule + "/\(schedule.id)"
             print("\(schedule.id)번 일정 수정 요청")
             let jsonData = try encodeWithKST(schedule, debug: true)
-            print("-------------------------------------------------------------------")
-            print("-------------------------------------------------------------------")
-            dump(jsonData)
-            print(jsonData)
-            print("-------------------------------------------------------------------")
-            print("-------------------------------------------------------------------")
             return try await fetch(url: url, model: Schedule.self, method: .patch, body: jsonData)
         },
 
