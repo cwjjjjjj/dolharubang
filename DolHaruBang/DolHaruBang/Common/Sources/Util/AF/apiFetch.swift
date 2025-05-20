@@ -148,7 +148,7 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                                 
                                 var newRequest = request
                                 newRequest.setValue("Bearer \(newToken.accessToken)", forHTTPHeaderField: "Authorization")
-                                
+
                                 let result = try await executeRequest(request: newRequest, model: model)
                                 continuation.resume(returning: result)
                             }
@@ -157,7 +157,7 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                                 continuation.resume(throwing: APIError.tokenRefreshFailed)
                             }
                         }
-                        return 
+                        return
                     } else {
                         // /reissue 요청에서 401/403이면 바로 실패
                         continuation.resume(throwing: APIError.tokenRefreshFailed)

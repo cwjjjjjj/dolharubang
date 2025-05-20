@@ -60,6 +60,21 @@ struct LoginView: View {
                                             store.send(.kakaoLoginRequested(accessToken))
                                         }
                                     }
+                                }else{
+                                    UserApi.shared.loginWithKakaoAccount{(oauthToken, error) in
+                                        if let error = error {
+                                            print(error)
+                                        }
+                                        else {
+                                            guard let token = oauthToken else {
+                                                // Handle the nil case
+                                                return
+                                            }
+                                            
+                                            let accessToken = token.accessToken
+                                            store.send(.kakaoLoginRequested(accessToken))
+                                        }
+                                    }
                                 }
                             }){
                                 ZStack {
