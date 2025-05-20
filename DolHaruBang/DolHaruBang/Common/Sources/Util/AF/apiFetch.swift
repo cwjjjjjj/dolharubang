@@ -132,35 +132,32 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
     return try await withCheckedThrowingContinuation { continuation in
         AF.request(request)
             .responseData { response in
-                dump(response)
-                
                 let statusCode = response.response?.statusCode
-                let contentType = response.response?.allHeaderFields["Content-Type"] as? String ?? ""
+                let requestPath = request.url?.path ?? ""
 
-                // 401: 인증 만료
-                if statusCode == 401 {
-                    print("401진입")
-                    Task {
-                        do {
-                            let newToken = try await refreshAccessToken()
-                            TokenManager.shared.saveTokens(accessToken: newToken.accessToken, refreshToken: newToken.refreshToken)
-                            var newRequest = request
-                            newRequest.setValue("Bearer \(newToken.accessToken)", forHTTPHeaderField: "Authorization")
-                            let result = try await executeRequest(request: newRequest, model: model)
-                            continuation.resume(returning: result)
-                        } catch {
-                            print("재발급 과정에서 에러")
-                            continuation.resume(throwing: APIError.tokenRefreshFailed)
+                // 401 또는 403 처리
+                if statusCode == 401 || statusCode == 403 {
+                    if !requestPath.contains("/reissue") {
+                        Task {
+                            do {
+                                print("리프레시 재발급")
+                                let newToken = try await refreshAccessToken()
+                                TokenManager.shared.saveTokens(accessToken: newToken.accessToken, refreshToken: newToken.refreshToken)
+                                var newRequest = request
+                                newRequest.setValue("Bearer (newToken.accessToken)", forHTTPHeaderField: "Authorization")
+                                let result = try await executeRequest(request: newRequest, model: model)
+                                continuation.resume(returning: result)
+                            } catch {
+                                print("재발급 과정에서 에러")
+                                continuation.resume(throwing: APIError.tokenRefreshFailed)
+                            }
                         }
+                        return 
+                    } else {
+                        // /reissue 요청에서 401/403이면 바로 실패
+                        continuation.resume(throwing: APIError.tokenRefreshFailed)
+                        return 
                     }
-                    return
-                }
-                
-                // 403: 인증 실패
-                if statusCode == 403 {
-                    print("403")
-                    continuation.resume(throwing: APIError.unauthorized)
-                    return
                 }
                 
                 // 204 No Content 처리
@@ -185,7 +182,6 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                             }
                             return
                         }
-                        
                         if let httpResponse = response.response, httpResponse.statusCode == 204, model is EmptyResponse.Type {
                             continuation.resume(returning: EmptyResponse() as! T)
                             return
@@ -217,14 +213,17 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                         continuation.resume(returning: decodedModel)
                     } catch {
                         continuation.resume(throwing: APIError.decodingError)
+                        return
                     }
                 case .failure(let error):
                     print("네트워크 오류: \(error)")
                     continuation.resume(throwing: APIError.networkError)
+                    return
                 }
             }
     }
 }
+
 
 // 토큰 갱신 함수
 private func refreshAccessToken() async throws -> TokenResponse {

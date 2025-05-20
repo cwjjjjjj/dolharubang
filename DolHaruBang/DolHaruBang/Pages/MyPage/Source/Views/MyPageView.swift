@@ -72,10 +72,10 @@ struct MyPageView : View {
                                     }
                                 }
                                 // 오른쪽 위에 플러스 버튼 배치
-                                if store.selectedProfileEdit {
-                                            plusButton()
-                                                .offset(x: 40, y: -40)
-                                        }
+//                                if store.selectedProfileEdit {
+//                                            plusButton()
+//                                                .offset(x: 40, y: -40)
+//                                        }
                             }
                             
                            

@@ -93,6 +93,8 @@ struct HomeView : View {
                         .ignoresSafeArea()
                         .onTapGesture {
                             store.send(.closeSign)
+                            
+                            hideKeyboard()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
@@ -369,7 +371,7 @@ struct DolContentView : View {
                     )
                     .offset(x:-4)
             }
-            .offset(x: 0 ,y: geometry.size.height * 0.23)
+            .offset(x: 0 ,y: geometry.size.height * 0.24)
             
         }
         
