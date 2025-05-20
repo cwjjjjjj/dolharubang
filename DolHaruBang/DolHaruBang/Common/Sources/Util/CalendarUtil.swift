@@ -156,20 +156,12 @@ func kstDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
 // 일반화된 인코딩 함수
 func encodeWithKST<T: Encodable>(_ value: T, additionalFields: [String: Any]? = nil, debug: Bool = false) throws -> Data {
     if debug {
-        print("--------------------------------------------------------------------------")
-        print("Encoding \(T.self)...")
-        print("--------------------------------------------------------------------------")
         
         // 디버깅용 KST 시간 출력
         if let dateContainingObject = value as? Schedule {
             let kstFormatter = DateFormatter()
             kstFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
             kstFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-            
-            print("<<인코딩 전, KST 기준 일정 시간>>")
-            print("startScheduleDate: \(kstFormatter.string(from: dateContainingObject.startScheduleDate))")
-            print("endScheduleDate: \(kstFormatter.string(from: dateContainingObject.endScheduleDate))")
-            print("alarmTime: \(kstFormatter.string(from: dateContainingObject.alarmTime))")
         }
     }
     
@@ -188,18 +180,8 @@ func encodeWithKST<T: Encodable>(_ value: T, additionalFields: [String: Any]? = 
         }
         let finalData = try JSONSerialization.data(withJSONObject: jsonDict)
         
-        if debug, let jsonString = String(data: finalData, encoding: .utf8) {
-            print("Request Body: \(jsonString)")
-        }
-        
         return finalData
     }
-    
-    if debug {
-        print("--------------------------------------------------------------------------")
-        print("Encoding Ends...")
-        print("--------------------------------------------------------------------------")
-    }
-    
+
     return jsonData
 }

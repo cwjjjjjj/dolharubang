@@ -65,7 +65,6 @@ struct DoljanchiFeature {
                 case let .checkResponse(.failure(error)):
                     state.isLoading = false
                     state.canRegist = false
-                    print(error)
                     return .none
                 case .fetchFeed(let lastId, let sortType, let size):
                     state.isLoading = true
@@ -85,7 +84,6 @@ struct DoljanchiFeature {
                     let contentPerPageNum = (state.rowNum * state.colNum)
                     if (contentPerPageNum <= 0) {state.maxPage = 1;}
                     else {state.maxPage = jarangs.count / contentPerPageNum + (jarangs.count % contentPerPageNum > 0 ? 1 : 0)}
-                    print("자랑 피드 \(jarangs.count) 개 받기 성공")
                     return .none
                     
                 case let .fetchFeedResponse(.failure(error)):
@@ -120,7 +118,6 @@ struct DoljanchiFeature {
                         .send(.checkCanRegistJarang(stoneId))
                     )
                 case .registJarangResponse(.failure):
-                    print("돌자랑 사진 업로드 실패")
                     state.showJarangPopup = false
                     return .none
                 case .binding:

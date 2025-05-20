@@ -9,7 +9,6 @@ func encodeFileToBase64(fileURL: URL) -> String? {
         let fileData = try Data(contentsOf: fileURL)
         return fileData.base64EncodedString()
     } catch {
-        print("Error reading file data: \(error)")
         return nil
     }
 }

@@ -160,7 +160,7 @@ struct TalkFeature {
                 return .none
             case let .fetchTalksResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = "대화 목록을 불러오지 못했습니다"
+                state.errorMessage = "대화 목록을 불러오지 못했습니다."
                 state.showErrorAlert = true
                 return .none
 
