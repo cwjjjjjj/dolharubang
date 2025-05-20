@@ -117,6 +117,10 @@ public class DiaryService {
                 throw new CustomException(ErrorCode.INVALID_DELETE_TARGET);
         }
 
+        if (diary.getContents() == null & diary.getEmoji() == null & diary.getImageUrl() == null) {
+            deleteDiary(diary.getDiaryId());
+        }
+
         return DiaryResDto.fromEntity(diary);
     }
 
