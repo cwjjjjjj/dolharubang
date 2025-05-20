@@ -136,6 +136,7 @@ struct CalendarFeature {
                 
             case .schedulesReceived(.failure(let error), _):
                 state.isLoading = false
+                state.schedules = [:]
                 return .none
                 
             case .binding:
