@@ -2,19 +2,19 @@ import ComposableArchitecture
 import SwiftUI
 
 enum DeleteTarget: Equatable {
-    case content
-    case emoji
-    case image
-    case reply
+    case CONTENT
+    case EMOJI
+    case IMAGE
+    case REPLY
     
     var caseName: String { String(describing: self) }
     
     var displayName: String {
         switch self {
-        case .content: return "일기 내용"
-        case .emoji: return "이모티콘"
-        case .image: return "사진"
-        case .reply: return "답장"
+        case .CONTENT: return "일기 내용"
+        case .EMOJI: return "이모티콘"
+        case .IMAGE: return "사진"
+        case .REPLY: return "답장"
         }
     }
 }
@@ -28,6 +28,7 @@ struct TalkFeature {
         var talks: [Talk]? = []
         var isLoading: Bool = false
         var showDeleteAlert: Bool = false
+        var showErrorAlert: Bool = false
         var deleteTarget: DeleteTarget? = nil
         var errorMessage: String? = nil
         var messageInput: String = "" // 사용자 입력값
@@ -134,7 +135,8 @@ struct TalkFeature {
                 return .none
             case let .fetchTalkResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = "대화를 불러오지 못했습니다: \(error.localizedDescription)"
+                state.errorMessage = "대화를 불러오지 못했습니다"
+                state.showErrorAlert = true
                 return .none
 
 
@@ -158,14 +160,12 @@ struct TalkFeature {
                 return .none
             case let .fetchTalksResponse(.failure(error)):
                 state.isLoading = false
-                    state.errorMessage = "대화 목록을 불러오지 못했습니다: \(error.localizedDescription)"
+                state.errorMessage = "대화 목록을 불러오지 못했습니다"
+                state.showErrorAlert = true
                 return .none
 
             // MARK: [POST] 대화 등록하기
             case let .registTalk(talk):
-                print("----------------등록할 talk의 정보----------------")
-                dump(talk)
-                print("----------------등록할 talk의 정보----------------")
                 state.isLoading = true
                 state.errorMessage = nil
                 return .run { send in
@@ -177,18 +177,31 @@ struct TalkFeature {
                     }
                 }
             case let .registTalkResponse(.success(talk)):
-                print("----------------등록 완료 talk의 정보----------------")
-                dump(talk)
-                print("----------------등록 완료 talk의 정보----------------")
                 state.isLoading = false
                 state.talks?.append(talk) // 등록 성공 시 추가
                 state.messageInput = "" // 입력 필드 초기화
                 state.selectedEmoji = nil // 선택된 이모지 초기화
                 state.selectedImage = nil // 선택된 이미지 초기화
                 return .none
+//            case let .registTalkResponse(.failure(error)):
+//                state.isLoading = false
+//                state.errorMessage = "대화 등록에 실패했습니다"
+//                state.showErrorAlert = true
+//                return .none
             case let .registTalkResponse(.failure(error)):
                 state.isLoading = false
-                state.errorMessage = "대화 등록에 실패했습니다: \(error.localizedDescription)"
+
+                if let urlError = error as? URLError {
+                    state.errorMessage = "네트워크 오류입니다"
+                } else if let decodingError = error as? DecodingError {
+                    state.errorMessage = "응답 형태 오류입니다"
+                } else if let errorResponse = error as? LocalizedError, let msg = errorResponse.errorDescription {
+                    state.errorMessage = msg
+                } else {
+                    state.errorMessage = "에러 발생"
+                }
+
+                state.showErrorAlert = true
                 return .none
 
             // [UPDATE] 대화 수정하기
@@ -239,8 +252,9 @@ struct TalkFeature {
 
             case let .deletePartResponse(.failure(error)):
                 state.isLoading = false
+//                state.errorMessage = "\(state.deleteTarget?.displayName ?? "타깃 없음") 삭제에 실패했습니다: \(error.localizedDescription)"
                 state.errorMessage = "\(state.deleteTarget?.displayName ?? "타깃 없음") 삭제에 실패했습니다: \(error.localizedDescription)"
-                state.showDeleteAlert = false
+                state.showDeleteAlert = true
                 state.deleteTarget = nil
                 return .none
                     
@@ -265,6 +279,7 @@ struct TalkFeature {
             case let .deleteTalkResponse(.failure(error)):
                 state.isLoading = false
                 state.errorMessage = "대화 삭제에 실패했습니다: \(error.localizedDescription)"
+                state.showErrorAlert = true
                 return .none
             }
         }

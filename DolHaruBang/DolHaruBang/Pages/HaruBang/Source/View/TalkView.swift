@@ -69,6 +69,9 @@ struct MessagesListSection: View {
                         showDateDebounced()
                     }
                 }
+                .alert(store.errorMessage ?? "에러 발생", isPresented: $store.showErrorAlert) {
+                    Button("확인", role: .cancel) { }
+                }
             }
             Spacer(minLength: 80)
 
@@ -133,20 +136,20 @@ struct TalkBubbleGroup: View {
                     isResponse: false,
                     onEdit: nil,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.emoji))
+                        store.send(.toggleDeleteAlert(.EMOJI))
                     },
                     isEmoji: true
                 )
             }
             
             // 텍스트 메시지
-            if !talk.contents.isEmpty {
+            if let contents = talk.contents, !contents.isEmpty {
                 SpeechBubbleView(
-                    content: talk.contents,
+                    content: contents,
                     createdAt: talk.createdAt,
                     isResponse: false,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.content))
+                        store.send(.toggleDeleteAlert(.CONTENT))
                     },
                     isEmoji: false
                 )
@@ -160,7 +163,7 @@ struct TalkBubbleGroup: View {
                     isResponse: false,
                     onEdit: nil,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.image))
+                        store.send(.toggleDeleteAlert(.IMAGE))
                     },
                     isEmoji: false
                 )
@@ -173,7 +176,7 @@ struct TalkBubbleGroup: View {
                     createdAt: talk.createdAt,
                     isResponse: true,
                     onDelete: {
-                        store.send(.toggleDeleteAlert(.reply))
+                        store.send(.toggleDeleteAlert(.REPLY))
                     },
                     isEmoji: false
                 )
@@ -194,7 +197,6 @@ struct TalkBubbleGroup: View {
                 Text("정말로 이 \(target.displayName)을(를) 삭제하시겠습니까?")
             }
         }
-
     }
 }
 

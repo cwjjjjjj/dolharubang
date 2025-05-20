@@ -11,13 +11,16 @@ import SwiftUI
 extension DolView {
     
     static func clearSharedSCNView() {
-        // 씬 해제
-        DolView.sharedSCNView?.scene = nil
-        // 뷰 계층에서 제거
-        DolView.sharedSCNView?.removeFromSuperview()
-        // 참조 해제
-        DolView.sharedSCNView = nil
+        DispatchQueue.main.async {
+            // 씬 해제
+            DolView.sharedSCNView?.scene = nil
+            // 뷰 계층에서 제거
+            DolView.sharedSCNView?.removeFromSuperview()
+            // 참조 해제
+            DolView.sharedSCNView = nil
+        }
     }
+
 }
 
 // MARK: 3D 돌 출력 뷰
