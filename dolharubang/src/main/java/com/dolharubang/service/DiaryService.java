@@ -39,7 +39,7 @@ public class DiaryService {
         MultipartFile imageFile) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
-        int maxDiariesPerDay = 2;
+        int maxDiariesPerDay = 1;
 
         List<Diary> todayDiary = diaryRepository.findAllByMemberAndCreatedAtBetween(member,
             startOfDay, endOfDay);
@@ -115,6 +115,10 @@ public class DiaryService {
                 break;
             default:
                 throw new CustomException(ErrorCode.INVALID_DELETE_TARGET);
+        }
+
+        if (diary.getContents() == null & diary.getEmoji() == null & diary.getImageUrl() == null) {
+            deleteDiary(diary.getDiaryId());
         }
 
         return DiaryResDto.fromEntity(diary);
