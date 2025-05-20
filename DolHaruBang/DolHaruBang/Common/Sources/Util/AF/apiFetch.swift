@@ -142,13 +142,17 @@ private func executeRequest<T: Decodable>(request: URLRequest, model: T.Type) as
                         Task {
                             do {
                                 print("리프레시 재발급")
+                                
                                 let newToken = try await refreshAccessToken()
                                 TokenManager.shared.saveTokens(accessToken: newToken.accessToken, refreshToken: newToken.refreshToken)
+                                
                                 var newRequest = request
-                                newRequest.setValue("Bearer (newToken.accessToken)", forHTTPHeaderField: "Authorization")
+                                newRequest.setValue("Bearer \(newToken.accessToken)", forHTTPHeaderField: "Authorization")
+                                
                                 let result = try await executeRequest(request: newRequest, model: model)
                                 continuation.resume(returning: result)
-                            } catch {
+                            }
+                            catch {
                                 print("재발급 과정에서 에러")
                                 continuation.resume(throwing: APIError.tokenRefreshFailed)
                             }
