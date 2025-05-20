@@ -69,6 +69,9 @@ struct MessagesListSection: View {
                         showDateDebounced()
                     }
                 }
+                .alert(store.errorMessage ?? "에러 발생", isPresented: $store.showErrorAlert) {
+                    Button("확인", role: .cancel) { }
+                }
             }
             Spacer(minLength: 80)
 
@@ -194,7 +197,6 @@ struct TalkBubbleGroup: View {
                 Text("정말로 이 \(target.displayName)을(를) 삭제하시겠습니까?")
             }
         }
-
     }
 }
 

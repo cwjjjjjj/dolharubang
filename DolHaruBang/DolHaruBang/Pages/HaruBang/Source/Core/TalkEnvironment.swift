@@ -67,7 +67,6 @@ extension TalkClient: DependencyKey {
 
             return try await fetch(url: url, model: Talk.self, method: .post, headers: headers, body: body)
         }
-
         ,
 
         deletePart: { diaryId, deleteTarget in

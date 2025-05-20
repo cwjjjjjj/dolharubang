@@ -7,7 +7,10 @@ struct SpeechBubbleView: View {
     var onEdit: (() -> Void)?
     var onDelete: (() -> Void)?
     var isEmoji: Bool
-    
+    @State private var showImagePreview = false
+    @State private var previewImageURL: URL? = nil
+    @State private var previewID = UUID()
+
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             if !isResponse {
@@ -37,7 +40,7 @@ struct SpeechBubbleView: View {
 
             VStack(alignment: .leading, spacing: 0) {
                 contentDisplay
-                
+
                 if !isResponse {
                     Divider()
                         .foregroundStyle(Color(hex: "E5DFD7"))
@@ -48,12 +51,11 @@ struct SpeechBubbleView: View {
             .background(Color.coreWhite)
             .cornerRadius(15)
             .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 1)
-//            .frame(minWidth: 40, maxWidth: UIScreen.main.bounds.width * (256 / 393), alignment: isResponse ? .leading : .trailing)
             .frame(
                 width: isEmoji ? 64 : nil,
                 alignment: isResponse ? .leading : .trailing
             )
-                        
+
             if isResponse {
                 Spacer()
             } else {
@@ -65,8 +67,60 @@ struct SpeechBubbleView: View {
             }
         }
         .padding(.horizontal, 16)
+        .fullScreenCover(isPresented: $showImagePreview) {
+            ZStack {
+                Color.black.ignoresSafeArea()
+                if let url = previewImageURL {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(2)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .background(Color.black)
+                        case .failure:
+                            Text("사진을 띄울 수 없습니다")
+                                .foregroundColor(.white)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                }
+
+                // 우상단 닫기 버튼
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            showImagePreview = false
+                            previewImageURL = nil
+                            previewID = UUID() // 닫을 때 id 갱신
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                                .foregroundColor(.white)
+                                .shadow(radius: 4)
+                                .padding()
+                        }
+                    }
+                    Spacer()
+                }
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                showImagePreview = false
+                previewImageURL = nil
+                previewID = UUID() // 닫을 때 id 갱신
+            }
+        }
+        .id(previewID)
     }
-    
+
     // 내용 표시 부분 (이모지, 텍스트, 이미지)
     private var contentDisplay: some View {
         Group {
@@ -80,16 +134,21 @@ struct SpeechBubbleView: View {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
-                        ProgressView() // 로딩 중
+                        ProgressView()
                             .frame(width: 48, height: 48)
                             .padding(8)
                     case .success(let image):
                         image
                             .resizable()
                             .scaledToFit()
-                            .frame(maxWidth: UIScreen.main.bounds.width * (256 / 393) - 32, maxHeight: 200) // 최대 너비와 높이 제한
+                            .frame(maxWidth: UIScreen.main.bounds.width * (256 / 393) - 32, maxHeight: 200)
                             .cornerRadius(10)
                             .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 14))
+                            .onTapGesture {
+                                previewImageURL = url
+                                previewID = UUID() // 프리뷰 열 때 id 갱신
+                                showImagePreview = true
+                            }
                     case .failure:
                         Text("\(content) 사진을 띄울 수 없습니다")
                             .font(.customFont(Font.body3Regular))
@@ -116,7 +175,7 @@ struct SpeechBubbleView: View {
             }
         }
     }
-    
+
     private var dateAndActionButtons: some View {
         HStack {
             if !isEmoji {
@@ -124,15 +183,15 @@ struct SpeechBubbleView: View {
                     .font(.customFont(Font.body4Regular))
                     .foregroundColor(.coreGreen)
             }
-            
+
             if !isResponse {
-                if !isEmoji {Spacer()}
-//                Button(action: { onEdit?() }) {
-//                    Text("수정")
-//                        .font(.customFont(Font.body4Regular))
-//                        .foregroundColor(.coreLightGray)
-//                }
-                
+                if !isEmoji { Spacer() }
+                // Button(action: { onEdit?() }) {
+                //     Text("수정")
+                //         .font(.customFont(Font.body4Regular))
+                //         .foregroundColor(.coreLightGray)
+                // }
+
                 Button(action: { onDelete?() }) {
                     Text("삭제")
                         .font(.customFont(Font.body4Regular))
@@ -142,7 +201,7 @@ struct SpeechBubbleView: View {
         }
         .padding(EdgeInsets(top: 14, leading: 16, bottom: 16, trailing: 16))
     }
-    
+
     private func formattedFloatingDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "a hh시 mm분"
