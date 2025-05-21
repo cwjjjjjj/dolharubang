@@ -58,6 +58,7 @@ struct APIConstants {
         static let search = "/members/search"
         static let check = "/members/check"
         static let memberInfo = "/members/member-info"
+        static let withdraw = "/members/withdraw"
         
         // MARK: Stones
         static let dolprofile = "/stones/profile" // 돌 프로필 조회

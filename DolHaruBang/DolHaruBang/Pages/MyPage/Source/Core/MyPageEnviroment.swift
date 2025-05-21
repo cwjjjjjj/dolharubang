@@ -41,39 +41,40 @@ struct MyPageClient {
     var fetchMypage: @Sendable () async throws -> UserInfo
     var updateUserInfo: @Sendable (String, String) async throws -> UserInfo
     var updateUserPhoto: @Sendable (String) async throws -> UserInfo
+    var withdraw: @Sendable () async throws -> Void
 }
 
 // 실제 통신 전 테스트
-extension MyPageClient: TestDependencyKey {
-    static let previewValue = Self(
-        fetchMypage: {
-            let url = APIConstants.Endpoints.info
-            do {
-                return try await fetch(url: url, model: UserInfo.self, method: .get)
-            } catch {
-                print("회원불러오기 실패:", error)
-                return UserInfo.mockUserInf
-            }
-        },
-        updateUserInfo: { nickName, spaceName in
-            // 테스트 환경에서는 mock 데이터 반환
-            return UserInfo.mockUserInf
-        },
-        updateUserPhoto: { photoName in
-            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile-picture/15"
-            do {
-                // photoName을 어떻게 보낼지 처리 필요
-                let body = try JSONEncoder().encode(["profilePicture": photoName])
-                return try await fetch(url: url, model: UserInfo.self, method: .post, body: body)
-            } catch {
-                print("회원수정 실패:", error)
-                return UserInfo.mockUserInf
-            }
-        }
-    )
-
-    static let testValue = Self()
-}
+//extension MyPageClient: TestDependencyKey {
+//    static let previewValue = Self(
+//        fetchMypage: {
+//            let url = APIConstants.Endpoints.info
+//            do {
+//                return try await fetch(url: url, model: UserInfo.self, method: .get)
+//            } catch {
+//                print("회원불러오기 실패:", error)
+//                return UserInfo.mockUserInf
+//            }
+//        },
+//        updateUserInfo: { nickName, spaceName in
+//            // 테스트 환경에서는 mock 데이터 반환
+//            return UserInfo.mockUserInf
+//        },
+//        updateUserPhoto: { photoName in
+//            let url = "https://sole-organic-singularly.ngrok-free.app/api/v1/members/profile-picture/15"
+//            do {
+//                // photoName을 어떻게 보낼지 처리 필요
+//                let body = try JSONEncoder().encode(["profilePicture": photoName])
+//                return try await fetch(url: url, model: UserInfo.self, method: .post, body: body)
+//            } catch {
+//                print("회원수정 실패:", error)
+//                return UserInfo.mockUserInf
+//            }
+//        }
+//    )
+//
+//    static let testValue = Self()
+//}
 
 extension DependencyValues {
     var myPageClient: MyPageClient {
@@ -88,14 +89,18 @@ extension MyPageClient: DependencyKey {
             let url = APIConstants.Endpoints.info
             
             return try await fetch(url: url, model: UserInfo.self, method: .get)
-        },
+        }
+        ,
+        
         updateUserInfo: { nickName, spaceName in
             let url = APIConstants.Endpoints.info
             
             let requestBody = InfoRequestBody(nickname: nickName, spaceName: spaceName)
             let bodyData = try JSONEncoder().encode(requestBody)
             return try await fetch(url: url, model: UserInfo.self, method: .post,body: bodyData)
-        },
+        }
+        ,
+        
         updateUserPhoto: { base64String in
             let url = APIConstants.Endpoints.photo
             
@@ -122,6 +127,14 @@ extension MyPageClient: DependencyKey {
                 body: body
             )
         }
+        ,
+        
+        withdraw: {
+            let url = APIConstants.Endpoints.withdraw
+            
+            _  = try await fetch (url: url, model: EmptyResponse.self, method: .delete)
+        }
+        
     )
 }
 
