@@ -14,6 +14,7 @@ struct TrophyView : View {
     
     var body : some View {
         GeometryReader { geometry in
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             ZStack {
                 // 배경이미지 설정
                 // 추후 통신을 통해 받아오면 됨
@@ -41,7 +42,7 @@ struct TrophyView : View {
                    
                     Spacer()
                     
-                }
+                }.scaleEffect(scale)
                 
             } // ZStack
             .edgesIgnoringSafeArea(.all)

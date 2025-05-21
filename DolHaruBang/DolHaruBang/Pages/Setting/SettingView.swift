@@ -18,6 +18,7 @@ struct SettingView : View {
     
     var body : some View {
         GeometryReader { geometry in
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             ZStack {
                 
                 // 배경 이미지
@@ -105,7 +106,7 @@ struct SettingView : View {
                     
                     Spacer()
                     
-                }
+                }.scaleEffect(scale)
                 
             } // ZStack
             .edgesIgnoringSafeArea(.all)

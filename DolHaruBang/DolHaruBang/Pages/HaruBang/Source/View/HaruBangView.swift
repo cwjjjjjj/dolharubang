@@ -7,6 +7,7 @@ struct HaruBangView: View {
     var body: some View {
         GeometryReader { geometry in
             let totalHeight = geometry.size.height
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             
             ZStack {
                 Image(Background(rawValue: store.state.selectedBackground.rawValue)!.fileName)
@@ -32,10 +33,12 @@ struct HaruBangView: View {
                     TalkView(store: store.scope(state: \.talkFeatureState, action: \.talkFeatureAction))
                         .background(.clear)
                         .frame(height: totalHeight * 680 / 852)
+                        .scaleEffect(scale)
                     
 
                     Spacer().frame(minHeight: totalHeight * 64 / 804)
                 }
+                
             }
             .edgesIgnoringSafeArea(.all)
         }

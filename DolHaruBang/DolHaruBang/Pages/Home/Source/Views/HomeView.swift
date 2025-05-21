@@ -11,12 +11,14 @@ import UIKit
 import ComposableArchitecture
 import HapticsManager
 
-
+    
 struct HomeView : View {
+    @Environment(\.horizontalSizeClass) var device
     @State var store: StoreOf<HomeFeature>
     
     var body : some View {
         GeometryReader { geometry in
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             ZStack {
                 Image(Background(rawValue: store.decoStore.selectedBackground.rawValue)!.fileName)
                     .resizable()
@@ -27,6 +29,7 @@ struct HomeView : View {
                     // MARK: 홈 상단
                     HomeHeader(store: store, geometry: geometry)
                     // MARK: 3D 돌 뷰
+                    
                     let dolView = DolView(
                         selectedFace: $store.decoStore.selectedFace,
                         selectedFaceShape: $store.decoStore.selectedFaceShape,
@@ -51,12 +54,20 @@ struct HomeView : View {
                     }
                     
                     
+                    if UIDevice.current.userInterfaceIdiom == .pad {
+                        Text("아이패드").foregroundStyle(Color.red)
+                    }
                     // MARK: 하단 컴포넌트
                     HomeBottom(store: store, geometry: geometry, rollDol:  { dolView.rollDol() }, frontRollDol: { dolView.frontRollDol() })
                     
-                    Spacer().frame(height: geometry.size.height * 0.033)
+                    if UIDevice.current.userInterfaceIdiom == .pad {
+                        Text("아이패드").foregroundStyle(Color.red)
+                        Spacer().frame(height: geometry.size.height * 0.053)
+                    }
                     
-                }
+                    Spacer().frame(height: geometry.size.height * 0.01)
+                    
+                }.scaleEffect(scale)
                 
                 // MARK: 모래알 튜토리얼
                 SandView(store: store)

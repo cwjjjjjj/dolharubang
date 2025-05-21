@@ -175,6 +175,7 @@
 		656BB3352C9DB9A90034AA2A /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
 		657780E02C83427000DC08C2 /* NavigationFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationFeature.swift; sourceTree = "<group>"; };
 		657780F72C84AFC400DC08C2 /* DBTIFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTIFeature.swift; sourceTree = "<group>"; };
+		657C85432DDD2A9F00724E17 /* DolHaruBangRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DolHaruBangRelease.entitlements; sourceTree = "<group>"; };
 		657E5F952C7452B7002FFA69 /* hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hideKeyboard.swift; sourceTree = "<group>"; };
 		657E5F972C745356002FFA69 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		658216B52CA56B0400C5CD37 /* Profile.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Profile.xcassets; sourceTree = "<group>"; };
@@ -1198,6 +1199,7 @@
 		DAAEFC0D2C56941800D1F87B /* DolHaruBang */ = {
 			isa = PBXGroup;
 			children = (
+				657C85432DDD2A9F00724E17 /* DolHaruBangRelease.entitlements */,
 				65ED1C1A2CB6D245000615D7 /* DolHaruBangDebug.entitlements */,
 				DAAEFC0E2C56941800D1F87B /* DolHaruBangApp.swift */,
 				6550AA382C59E5A6000A264E /* Common */,
@@ -1651,7 +1653,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1660,6 +1662,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DolHaruBang/DolHaruBangRelease.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1692,7 +1695,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -8,6 +8,7 @@ struct ParkView: View {
     var body: some View {
         GeometryReader { geometry in
             let totalHeight = geometry.size.height
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             
             ZStack {
                 Image(Background(rawValue: store.state.selectedBackground.rawValue)!.fileName)
@@ -57,7 +58,7 @@ struct ParkView: View {
                                 }
                                 .padding(.bottom, 15)
                                 .padding(.trailing, 20)
-                            }
+                            }.scaleEffect(scale)
                         }
                     }
                     .frame(width: geometry.size.width)
@@ -97,6 +98,7 @@ struct ParkView: View {
                         
                      }
                      .frame(height: totalHeight * 680 / 852)
+                     .scaleEffect(scale)
                     
                     Spacer().frame(minHeight: totalHeight * 64 / 804)
 
