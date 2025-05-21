@@ -17,4 +17,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
     List<MemberMission> findByMember(Member member);
 
     void deleteByMemberAndMissionNotIn(Member member, List<Mission> missions);
+
+    void deleteAllByMember(Member member);
 }

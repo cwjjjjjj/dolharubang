@@ -50,4 +50,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
         @Param("status") FriendStatusType status
     );
 
+    void deleteAllByReceiver(Member member);
+
+    void deleteAllByRequester(Member member);
 }
