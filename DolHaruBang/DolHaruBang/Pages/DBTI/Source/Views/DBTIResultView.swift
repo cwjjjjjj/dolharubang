@@ -157,17 +157,12 @@ struct DBTIResultView: View {
                     
                     HStack {
                         Button(action: {
-                            print("여기1")
                             guard store.finalButtonAvailable else { return }
-                            print("여기2")
                             store.send(.setFinalButton(false))
-                            print("여기3")
                             store.send(.adoptStone)
-                            print("여기4")
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 store.send(.setFinalButton(true))
                             }
-                            print("여기5")
                         }) {
                             HStack {
                                 Spacer()

@@ -78,17 +78,25 @@ struct SettingView : View {
                         
                         Divider()
                         
-                        Text("돌하루방 응원하기")
-                            .font(Font.customFont(Font.body1Regular))
-                            .foregroundColor(Color.decoSheetTextColor)
-                        
                         InquiryView()
                         
                         Divider()
                         
-                        Link("회원 탈퇴", destination: URL(string: "https://apps.kakao.com/disconnected/app/1113293?lang=ko")!)
-                            .font(Font.customFont(Font.body1Regular))
-                            .foregroundColor(Color.decoSheetTextColor)
+                        Button(action: {
+                            store.send(.withdrawAlertButtonTapped)
+                        }) {
+                            Text("회원 탈퇴")
+                                .font(Font.customFont(Font.body1Regular))
+                                .foregroundColor(.red)
+                        }
+                        .alert("정말 돌하루방을 떠나시겠습니까?", isPresented: $store.withdrawAlertOn) {
+                            Button("네", role: .destructive) {
+                                store.send(.withdraw)
+                            }
+                            Button("취소", role: .cancel) { }
+                        } message: {
+                            Text("탈퇴 시 모든 데이터가 삭제됩니다. 진행하시겠습니까?")
+                        }
                         
                         Spacer()
                         

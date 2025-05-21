@@ -36,7 +36,7 @@ struct DBTIFeature {
         var isEditingRoomName: Bool = false
         var stoneName: String = "돌 이름"
         var originalStoneName: String = ""
-        var spaceName: String = ""
+        var spaceName: String = "돌하루방"
         var originalRoomName: String = ""
         var tag: Int? = nil
         var emptyNameAlert: Bool = false
