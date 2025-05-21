@@ -237,6 +237,23 @@ public class MemberController {
         return ResponseEntity.ok(memberService.isStoneEmpty(member));
     }
 
+    @Operation(summary = "회원 탈퇴하기", description = "멤버의 모든 데이터를 완전히 삭제한다.")
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
+        Long memberId = getMemberId(principal);
+        return ResponseEntity.ok(memberService.deleteMember(memberId));
+    }
+
     private static Long getMemberId(PrincipalDetails principal) {
         return principal.getMember().getMemberId();
     }
