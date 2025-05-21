@@ -15,6 +15,7 @@ struct MyPageView : View {
     
     var body : some View {
         GeometryReader { geometry in
+            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             ZStack {
                 // 배경이미지 설정
                 // 추후 통신을 통해 받아오면 됨
@@ -232,6 +233,7 @@ struct MyPageView : View {
                         
                     }// 하얀 배경 VStack
                     .frame(width: geometry.size.width ,height : geometry.size.height * 0.78)
+                    .scaleEffect(scale)
                     .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                     .cornerRadius(15) // 뭉툭한 테두리
                     

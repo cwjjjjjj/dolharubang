@@ -89,6 +89,25 @@ public struct Shimmer: ViewModifier {
     }
 }
 
+func calculateScale(width: CGFloat, height: CGFloat) -> CGFloat {
+    let ipadWidth: CGFloat = 375
+    let iphoneWidth: CGFloat = 390
+    let ipadHeight: CGFloat = 647
+    let iphoneHeight: CGFloat = 763
+    let scaleIpad: CGFloat = 0.75
+    let scaleIphone: CGFloat = 1.0
+
+    // 가로, 세로 각각에 대해 보간값 계산
+    let tWidth = min(max((width - ipadWidth) / (iphoneWidth - ipadWidth), 0), 1)
+    let tHeight = min(max((height - ipadHeight) / (iphoneHeight - ipadHeight), 0), 1)
+
+    // 두 보간값의 평균(혹은 min/max 등 원하는 방식)
+    let t = min(tWidth, tHeight)
+
+    // 최종 스케일
+    return scaleIpad + (scaleIphone - scaleIpad) * t
+}
+
 extension View {
     // Shimmer 효과를 뷰에 적용하는 메서드
     @ViewBuilder func shimmering(

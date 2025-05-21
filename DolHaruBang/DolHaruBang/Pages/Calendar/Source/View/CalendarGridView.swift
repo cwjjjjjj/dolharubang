@@ -17,6 +17,7 @@ struct CalendarGridView: View {
     // 일정 팝업 표시 여부
     @Binding var showPopup: Bool
     private let calendar = Calendar.current
+    var effectSize : CGFloat
 
     var body: some View {
         VStack(spacing: 0) {
@@ -92,7 +93,8 @@ struct CalendarGridView: View {
                 }
                 
             }
-        } // end of VStack
+        }
+        .scaleEffect(effectSize)// end of VStack
         .padding(.vertical, 0)
     }
 }
