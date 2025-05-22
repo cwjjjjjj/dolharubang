@@ -241,7 +241,7 @@ struct SimpleCustomTextField: UIViewRepresentable {
 
 struct ResizableTextView: View {
     @Binding var text: String
-    let font: UIFont = UIFont(name: Font.body3Regular.customFont.rawValue, size: Font.body3Regular.size) ?? UIFont.systemFont(ofSize: 12)
+    let font: UIFont = Font.uiFont(for: Font.body3Regular) ?? UIFont.systemFont(ofSize: 42)
     var maxTextWidth: CGFloat
     @State private var textHeight: CGFloat = 48
     
@@ -259,7 +259,7 @@ struct ResizableTextView: View {
 
     private func calculateHeight() {
         let lineCount = autoLineCount(text: text, font: font, maxTextWidth: maxTextWidth - 40)
-        let minH: CGFloat = font.lineHeight + 2
+        let minH: CGFloat = font.lineHeight + (UIDevice.isPad ? 20 : 2)
         let maxH: CGFloat = 120.0
         textHeight = min(max(minH, lineCount * (font.lineHeight + 2)), maxH)
     }
