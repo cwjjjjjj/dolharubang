@@ -1,5 +1,6 @@
 package com.dolharubang.repository;
 
+import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Notification;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -22,5 +23,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Page<Notification> findByReceiverIdAndIsReadFalseWithRequester(
         @Param("receiverId") Long receiverId, Pageable pageable);
 
+    void deleteAllByReceiverId(Long receiverId);
 
+    void deleteAllByRequester(Member member);
 }

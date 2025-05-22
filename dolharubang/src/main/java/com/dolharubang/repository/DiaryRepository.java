@@ -13,4 +13,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     List<Diary> findAllByMember(Member member);
 
     List<Diary> findAllByMemberAndCreatedAtBetween(Member member, LocalDateTime start, LocalDateTime end);
+
+    void deleteAllByMember(Member member);
 }

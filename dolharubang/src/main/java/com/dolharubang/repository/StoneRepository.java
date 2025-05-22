@@ -11,4 +11,6 @@ public interface StoneRepository extends JpaRepository<Stone, Long> {
 
     @Query("SELECT s.signText FROM Stone s WHERE s.member = :member")
     String findSignTextByMember(Member member);
+
+    void deleteAllByMember(Member member);
 }
