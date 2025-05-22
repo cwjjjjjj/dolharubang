@@ -45,16 +45,17 @@ struct TrophyListView : View {
                                     Text("\(trophy.missionName)")
                                         .font(Font.customFont(Font.body1Bold))
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
-                                    HStack(alignment: .center){
-                                        Text("\(trophy.missionDescription)".splitCharacter())
-                                            .frame(width: geometry.size.width * 0.35, height : 48, alignment: .leading)
-                                            .font(Font.customFont(Font.body4Regular))
-                                            .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
-                                            .lineSpacing(4)
-                                            .lineLimit(2)
-                                            .multilineTextAlignment(.center)
-                                    }
-                                    .padding(.horizontal,10)
+                                    
+                                        HStack(alignment: .center){
+                                            Text("\(trophy.missionDescription)".splitCharacter())
+                                                .frame(width: geometry.size.width * 0.35, height : 48, alignment: .leading)
+                                                .font(Font.customFont(Font.body4Regular))
+                                                .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                                .lineSpacing(4)
+                                                .lineLimit(2)
+                                                .multilineTextAlignment(.center)
+                                        }
+                                        .padding(.horizontal,10)
                                     
                                 }.padding(.bottom, 15)
                                     
@@ -100,7 +101,7 @@ struct TrophyListView : View {
                 .padding(.top,10)
             }
         }
-        .frame(width: geometry.size.width ,height : geometry.size.height * 0.83)
+        .frame(width: geometry.size.width ,height : UIDevice.isPad ? geometry.size.height * 0.68 : geometry.size.height * 0.83)
         .background(Color(red: 0.98, green: 0.98, blue: 0.97))
         .cornerRadius(15) // 뭉툭한 테두리
         .onAppear {

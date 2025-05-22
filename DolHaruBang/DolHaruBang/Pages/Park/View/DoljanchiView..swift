@@ -53,8 +53,9 @@ struct DoljanchiView: View {
                     Text("돌 자랑하기")
                         .font(.customFont(Font.button4))
                         .foregroundColor(.coreWhite)
+                    
+                    .padding()
                 }
-                .frame(width: 82, height: 32)
                 .background(store.canRegist ? .coreGreen : .coreDisabled)
 //                .background(.coreGreen) // test용
                 .cornerRadius(16)

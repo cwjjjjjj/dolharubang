@@ -18,7 +18,7 @@ struct SettingView : View {
     
     var body : some View {
         GeometryReader { geometry in
-            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
+            let scale = calculateScale()
             ZStack {
                 
                 // 배경 이미지
@@ -108,13 +108,13 @@ struct SettingView : View {
                         
                     }
                     .padding(30)
-                    .frame(width: geometry.size.width ,height : geometry.size.height * 0.78)
+                    .frame(width: geometry.size.width ,height : UIDevice.isPad ? geometry.size.height * 0.65 :  geometry.size.height * 0.78)
                     .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                     .cornerRadius(15) // 뭉툭한 테두리
                     
                     Spacer()
                     
-                }.scaleEffect(scale)
+                }
                 
             } // ZStack
             .edgesIgnoringSafeArea(.all)

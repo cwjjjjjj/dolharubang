@@ -13,12 +13,10 @@ import HapticsManager
 
     
 struct HomeView : View {
-    @Environment(\.horizontalSizeClass) var device
     @State var store: StoreOf<HomeFeature>
     
     var body : some View {
         GeometryReader { geometry in
-            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             ZStack {
                 Image(Background(rawValue: store.decoStore.selectedBackground.rawValue)!.fileName)
                     .resizable()
@@ -26,6 +24,11 @@ struct HomeView : View {
                     .edgesIgnoringSafeArea(.all)
                 // 메인 컴포넌트들
                 VStack {
+                    
+                    if UIDevice.isPad {
+                        Spacer().frame(height: geometry.size.height * 0.25)
+                    }
+                    
                     // MARK: 홈 상단
                     HomeHeader(store: store, geometry: geometry)
                     // MARK: 3D 돌 뷰
@@ -50,24 +53,23 @@ struct HomeView : View {
                     // MARK: 중단부분
                     ZStack{
                         dolView
+                        
                         DolContentView(store: store,geometry: geometry)
                     }
                     
                     
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        Text("아이패드").foregroundStyle(Color.red)
-                    }
                     // MARK: 하단 컴포넌트
                     HomeBottom(store: store, geometry: geometry, rollDol:  { dolView.rollDol() }, frontRollDol: { dolView.frontRollDol() })
                     
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        Text("아이패드").foregroundStyle(Color.red)
-                        Spacer().frame(height: geometry.size.height * 0.053)
-                    }
                     
                     Spacer().frame(height: geometry.size.height * 0.01)
                     
-                }.scaleEffect(scale)
+                    
+                    if UIDevice.isPad {
+                        Spacer().frame(height: geometry.size.height * 0.3)
+                    }
+                    
+                }
                 
                 // MARK: 모래알 튜토리얼
                 SandView(store: store)
@@ -186,7 +188,7 @@ struct HomeView : View {
                     state: \.decoStore,
                     action: HomeFeature.Action.decoStore
                 ))
-                .presentationDetents([.fraction(0.45)])
+                .presentationDetents(UIDevice.isPad ? [.large] : [.fraction(0.45)])
                 .presentationCompactAdaptation(.none)
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             }// sheet

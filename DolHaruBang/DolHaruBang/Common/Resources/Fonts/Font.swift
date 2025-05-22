@@ -33,6 +33,10 @@ extension Font {
     struct FontStyle {
         let customFont: CustomFont
         let size: CGFloat
+        
+        var adjustedSize: CGFloat {
+                    return UIDevice.isPad ? size + 8 : size
+                }
     }
     
     static var h1: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 64) }
@@ -80,10 +84,10 @@ extension Font {
     static var signtext: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 9) }
     
     static func uiFont(for style: FontStyle) -> UIFont? {
-        return UIFont(name: style.customFont.rawValue, size: style.size)
+        return UIFont(name: style.customFont.rawValue, size: style.adjustedSize)
     }
     
     static func customFont(_ style: FontStyle) -> Font {
-        return Font.custom(style.customFont.rawValue, size: style.size)
+        return Font.custom(style.customFont.rawValue, size: style.adjustedSize)
     }
 }
