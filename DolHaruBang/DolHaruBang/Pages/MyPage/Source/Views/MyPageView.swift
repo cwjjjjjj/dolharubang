@@ -15,7 +15,7 @@ struct MyPageView : View {
     
     var body : some View {
         GeometryReader { geometry in
-            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
+            let scale = calculateScale()
             ZStack {
                 // 배경이미지 설정
                 // 추후 통신을 통해 받아오면 됨
@@ -27,7 +27,7 @@ struct MyPageView : View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing:0){
-                    
+                        
                     HStack{
                         Text("마이페이지")
                             .font(Font.customFont(Font.h6))
@@ -153,10 +153,10 @@ struct MyPageView : View {
                                     .padding(6)
                                     .background(Color(red: 0.79, green: 0.32, blue: 0.17))
                                     .cornerRadius(20)
-                                    Text(formattedBirthday(userinfo.birthday))
-                                        .font(Font.customFont(Font.body3Bold))
-                                        .lineSpacing(25.20)
-                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+//                                    Text(formattedBirthday(userinfo.birthday))
+//                                        .font(Font.customFont(Font.body3Bold))
+//                                        .lineSpacing(25.20)
+//                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
                                 .frame(width: 152, height: 21)
                                 
@@ -232,8 +232,8 @@ struct MyPageView : View {
                         
                         
                     }// 하얀 배경 VStack
-                    .frame(width: geometry.size.width ,height : geometry.size.height * 0.78)
-                    .scaleEffect(scale)
+                    .frame(width: geometry.size.width ,height : UIDevice.isPad ? geometry.size.height * 0.65 :  geometry.size.height * 0.78)
+//                    .scaleEffect(scale)
                     .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                     .cornerRadius(15) // 뭉툭한 테두리
                     
@@ -268,14 +268,11 @@ struct MyPageView : View {
     private func buttonView() -> some View {
         let buttonTitle = store.selectedProfileEdit ? "저장" : "프로필 수정"
         let buttonAction: () -> Void = store.selectedProfileEdit ? {
-            print("버튼 클릭1")
             store.send(.completeEditProfile)
             if let photo = store.selectedImage, let photoData = photo.jpegData(compressionQuality: 1.0) {
-                print("버튼 클릭2")
                 store.send(.changeUserPhoto(photoData.base64EncodedString()))
             }
         } : {
-            print("버튼 클릭3")
             store.send(.clickEditProfile)
         }
         
@@ -284,9 +281,8 @@ struct MyPageView : View {
                 Text(buttonTitle)
                     .font(Font.customFont(Font.body3Bold))
                     .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
-                    .padding(.horizontal, 10)
+                    .padding(10)
             }
-            .frame( height: 29)
             .background(Color(red: 0.65, green: 0.80, blue: 0.23))
             .cornerRadius(14)
             .padding(15)

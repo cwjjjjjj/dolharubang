@@ -8,7 +8,6 @@ struct CalendarView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            let scale = calculateScale(width: geometry.size.width, height: geometry.size.height)
             let totalHeight = geometry.size.height // 852
             let totalWidth = geometry.size.width // 375
             let coverHeight = 72.0
@@ -173,9 +172,9 @@ struct CalendarView: View {
                         daysInMonth: daysInMonth(calendar: calendar, store: store),
                         schedules: $store.schedules,
                         selectedDate: $store.selectedDate,
-                        showPopup: $store.showPopup, effectSize: scale
+                        showPopup: $store.showPopup
                     )
-                    .frame(height: calendarHeight) // 남은 공간을 요일 및 날짜 부분으로 설정
+                    .frame(height: UIDevice.isPad ? calendarHeight * 0.9 : calendarHeight) // 남은 공간을 요일 및 날짜 부분으로 설정
                     .background(Color.coreWhite.gradient.shadow(.drop(color: Color(hex: "CECECE").opacity(0.5), radius: 10, x: 0, y: 4)))
                     .cornerRadius(15, corners: [.bottomLeft, .bottomRight])
                     .onAppear {
@@ -185,7 +184,7 @@ struct CalendarView: View {
                     }
 
                     
-                    Spacer().frame(minHeight: totalHeight * 64 / 804)
+                    Spacer().frame(minHeight: UIDevice.isPad ? totalHeight * 100 / 804 : totalHeight * 64 / 804)
                 }
                 .background(Color.clear)
                 

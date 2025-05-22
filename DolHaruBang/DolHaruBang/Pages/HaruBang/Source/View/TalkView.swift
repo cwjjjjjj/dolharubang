@@ -231,7 +231,7 @@ struct DateDisplayView: View {
             Text(formattedDate(store.floatingDate, true))
                 .font(.customFont(Font.body3Bold))
                 .foregroundColor(.coreDisabled)
-                .frame(width: 146, height: 29)
+                .padding()
                 .background(RoundedRectangle(cornerRadius: 25).fill(Color.coreWhite))
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
