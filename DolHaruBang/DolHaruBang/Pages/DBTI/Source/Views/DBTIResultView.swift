@@ -69,8 +69,8 @@ struct DBTIResultView: View {
                         }
                         Spacer().frame(height: geometry.size.height * 0.02)
                         VStack(alignment: .leading, spacing: 0) {
-                            Spacer().frame(height: 8)
-                            LazyHStack(spacing: 2) {
+                            Spacer()
+                            HStack(spacing: 2) {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.mainGreen)
                                     .padding(.horizontal, 10)
@@ -91,7 +91,7 @@ struct DBTIResultView: View {
                                 Spacer()
                             }
                             .padding(.horizontal, 16)
-                            Spacer().frame(height: 8)
+                            Spacer()
                             HStack(spacing: 2) {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.mainGreen)
@@ -103,9 +103,9 @@ struct DBTIResultView: View {
                                 Text("\(store.score.character.baseAbilityTypeKorean)").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
                             }
                             .padding(.horizontal, 16)
-                            Spacer().frame(height: 18)
+                            Spacer()
                         }
-                        .frame(width: 180, height: 80)
+                        .frame(width: UIDevice.isPad ? 360 : 180, height: UIDevice.isPad ? 160 : 80)
                         .background(Color.ffffff)
                         .cornerRadius(10)
                         .overlay(

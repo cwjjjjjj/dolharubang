@@ -41,7 +41,7 @@ struct ProfileView: View {
                         Image(uiImage: store.captureDol)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
+                            .frame(width:  UIDevice.isPad ? 160 : 80, height:  UIDevice.isPad ? 160 : 80)
                             .padding(14)
                             .background(Color.init(hex: "F2EEE7"))
                             .clipShape(Circle())
@@ -62,7 +62,7 @@ struct ProfileView: View {
                                 buttonView()
                                 Spacer()
                             }
-                            .frame(width: 156)
+                            .frame(width: UIDevice.isPad ? 300 : 156)
                             .padding(.vertical, 8)
                             
                             VStack(alignment: .leading, spacing: 12) {
@@ -77,7 +77,7 @@ struct ProfileView: View {
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
                                     Spacer()
                                 }
-                                .frame(width: 156)
+                                .frame(width: UIDevice.isPad ? 300 : 156)
                                 HStack(spacing: 6) {
                                     Text("· 초기능력")
                                         .font(Font.customFont(Font.body4Bold))
@@ -89,11 +89,10 @@ struct ProfileView: View {
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
                                     Spacer()
                                 }
-                                .frame(width: 156)
+                                .frame(width: UIDevice.isPad ? 300 :  156)
                                 HStack(spacing: 6) {
                                     Text("· 주운 날")
                                         .font(Font.customFont(Font.body4Bold))
-                                        .lineSpacing(19.80)
                                         .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                                     Text(formattedDate(from: profile.dolBirth))
                                         .font(Font.customFont(Font.body4Bold))
@@ -101,7 +100,7 @@ struct ProfileView: View {
                                         .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
                                     Spacer()
                                 }
-                                .frame(width: 156)
+                                .frame(width: UIDevice.isPad ? 300 : 156)
                             }
                         }
                     }
@@ -125,12 +124,12 @@ struct ProfileView: View {
                                 .lineSpacing(21.60)
                                 .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                         }
-                        .frame(width: 272)
+                        .frame(width: UIDevice.isPad ? 400 :  272)
                         
                         // 게이지바
                         ProgressView(value: Double(profile.friendShip % 100), total: 100)
                             .progressViewStyle(LinearProgressViewStyle())
-                            .frame(width: 272)
+                            .frame(width: UIDevice.isPad ? 400 : 272)
                             .accentColor(Color(hex: "A5CD3B"))
                     }
                     .padding(.bottom, 12)
@@ -144,11 +143,10 @@ struct ProfileView: View {
                         HStack {
                             Text("활성 능력")
                                 .font(Font.customFont(Font.body3Bold))
-                                .lineSpacing(21.60)
                                 .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                             Spacer()
                         }
-                        .frame(width: 272)
+                        .frame(width: UIDevice.isPad ? 400 : 272)
                         HStack {
                             // activeAbility 반복문
                             ForEach(tmpProfile, id: \.self) { ability in
@@ -169,23 +167,22 @@ struct ProfileView: View {
                             }
                             Spacer()
                         }
-                        .frame(width: 272)
+                        .frame(width: UIDevice.isPad ? 400 : 272)
                     }
                     .padding(.vertical, 6)
                     
                     Divider()
-                        .frame(width: 272).background(Color(hex: "E5DFD7"))
+                        .frame(width: UIDevice.isPad ? 400 : 272).background(Color(hex: "E5DFD7"))
                     
                     // 잠재능력탭
                     VStack(alignment: .leading,spacing: 8) {
                         HStack {
                             Text("잠재 능력")
                                 .font(Font.customFont(Font.body3Bold))
-                                .lineSpacing(21.60)
                                 .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                             Spacer()
                         }
-                        .frame(width: 272)
+                        .frame(width: UIDevice.isPad ? 400 :  272)
                         
                         HStack {
                             ForEach(tmpProfile, id: \.self) { ability in
@@ -206,7 +203,7 @@ struct ProfileView: View {
                             }
                             Spacer()
                         }
-                        .frame(width: 272)
+                        .frame(width:UIDevice.isPad ? 400 :  272)
                     }
                     .padding(.vertical, 6)
                 }

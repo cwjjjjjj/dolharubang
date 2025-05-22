@@ -33,7 +33,7 @@ struct MailView: View {
                 Image(getSelectImageName(for: mail.type))
                     .resizable()
                     .scaledToFit()
-                    .frame(width: geometry.size.width * 0.7)
+                    .frame(width: UIDevice.isPad ? geometry.size.width * 0.4 : geometry.size.width * 0.7)
                 HStack{
                     (
                         Text(mail.nickname ?? "").foregroundColor(Color.init(hex: "618501"))
