@@ -60,19 +60,23 @@ struct DBTIQuestionView: View {
                                 store.send(.selectOption(index))
                                 store.send(.nextQuestion)
                             }) {
-                                HStack {
-                                    Spacer()
-                                    Text(questions[store.withState { $0.questionIndex }].options[index].text)
-                                        .font(.customFont(Font.button1))
-                                        .foregroundColor(.mainWhite)
-                                    Spacer()
+                                VStack{
+                                    
+                                        Text("\(questions[store.withState { $0.questionIndex }].options[index].text)".splitCharacter())
+                                        .frame(width: UIDevice.isPad ? 380: 320)
+                                            .font(.customFont(Font.button1))
+                                            .foregroundColor(.mainWhite)
+                                            .lineLimit(5)
+                                            .multilineTextAlignment(.center)
+                                            .padding(10)
                                 }
-                                .frame(width: 320, height: 48)
+                                .frame(height : UIDevice.isPad ? 100 : 48)
                                 .background(Color.mainGreen)
                                 .cornerRadius(24)
                             }
                         }
                     }
+                    
                     .opacity(store.showOptions ? 1 : 0)
                     
                     Spacer().frame(height: geometry.size.height * 0.2892)

@@ -347,7 +347,7 @@ struct DolContentView : View {
             
         }
         .frame(width: 32,height: 32)
-        .offset(x: geometry.size.width * 0.35 ,y: geometry.size.height * -0.12)
+        .offset(x: UIDevice.isPad ? geometry.size.width * 0.2 : geometry.size.width * 0.35 ,y: UIDevice.isPad ? geometry.size.height * -0.1 : geometry.size.height * -0.12)
         
         if let basicInfo = store.profileStore.profile {
             Text("\(basicInfo.dolName)")

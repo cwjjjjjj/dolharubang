@@ -199,7 +199,7 @@ let questions: [Question] = [
         text: "함께 자고 일어난 친구가\n기니피그로 변해버렸다.\n당신의 반응은?",
         about: .reality,
         options: [
-            (text: "밥과 간식을 갖다주고\n심심하지 않게 TV도 켜준다.", score: 1),
+            (text: "밥과 간식을 갖다주고 심심하지 않게 \n TV도 켜준다.", score: 1),
             (text: "안타깝지만 신고하고 연구소에 알린다.", score: nil)
         ]
     ),

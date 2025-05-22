@@ -86,7 +86,7 @@ struct InputUserInfoView: View {
                             textColor: .coreWhite,
                             action: { store.send(.checkUsername(store.username)) }
                         )
-                        .frame(width: 100, height: 48)
+                        .frame(width:110,height:52) // 4씩늘려둠
                         .background(store.username.isEmpty ? Color.disabled : Color.mainGreen)
                         .cornerRadius(24)
                         .disabled(store.username.isEmpty)
