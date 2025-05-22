@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -238,7 +239,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 탈퇴하기", description = "멤버의 모든 데이터를 완전히 삭제한다.")
-    @PostMapping("/withdraw")
+    @DeleteMapping("/withdraw")
     public ResponseEntity<?> deleteMember(@AuthenticationPrincipal PrincipalDetails principal) {
         if (principal == null) {
             return ResponseEntity
