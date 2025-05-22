@@ -206,7 +206,9 @@ struct CalendarView: View {
                         .background(Color.white)
                         .cornerRadius(25)
                         .shadow(radius: 10)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                         .zIndex(2)
+                    
                 }
                 
             }

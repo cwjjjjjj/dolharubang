@@ -107,7 +107,10 @@ struct SchedulePopupView: View {
             
             Spacer()
         }
-        .frame(width: 320, height: 320)
+        .frame(
+            width: UIDevice.isPad ? 640 : 320,
+            height: UIDevice.isPad ? 640 : 320
+        )
         .background(Color.white)
         .cornerRadius(25)
         .shadow(radius: 10)
