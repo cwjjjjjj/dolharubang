@@ -1,10 +1,3 @@
-//
-//  CustomMonthButton.swift
-//  DolHaruBang
-//
-//  Created by 안상준 on 7/30/24.
-//
-
 import SwiftUI
 import UIKit
 
@@ -21,7 +14,7 @@ struct CustomMonthButton: UIViewRepresentable {
         }
     }
 
-    @Binding var selectedMonth: Int?
+    @Binding var selectedMonth: String
     @Binding var isPresented: Bool
     var font: Font
     var textColor: UIColor?
@@ -33,7 +26,7 @@ struct CustomMonthButton: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle(selectedMonth != nil ? "\(selectedMonth!)" : "월", for: .normal)
+        button.setTitle(selectedMonth, for: .normal)
         button.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         button.setTitleColor(textColor ?? UIColor(Color.black), for: .normal)
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonTapped), for: .touchUpInside)
@@ -43,16 +36,16 @@ struct CustomMonthButton: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIButton, context: Context) {
-        uiView.setTitle(selectedMonth != nil ? "\(selectedMonth!)" : "월", for: .normal)
+        uiView.setTitle(selectedMonth, for: .normal)
         uiView.titleLabel?.font = Font.uiFont(for: Font.button1) ?? UIFont.systemFont(ofSize: 16)
         uiView.setTitleColor(textColor ?? UIColor(Color.black), for: .normal)
     }
 }
 
 struct MonthPicker: View {
-    @Binding var selectedMonth: Int
+    @Binding var selectedMonth: String
     @Binding var isPresented: Bool
-    var months: [Int]
+    var months: [String]
     var onSelect: () -> Void
 
     var body: some View {
@@ -60,10 +53,10 @@ struct MonthPicker: View {
             Text("태어난 월을 골라주세요!")
                 .font(.customFont(Font.h6))
                 .padding()
-            
+
             Picker("Select Month", selection: $selectedMonth) {
                 ForEach(months, id: \.self) { month in
-                    Text("\(month)").tag(month)
+                    Text("\(month)").tag(month as String)
                 }
             }
             .pickerStyle(WheelPickerStyle())
@@ -74,9 +67,12 @@ struct MonthPicker: View {
             }
             .font(.customFont(Font.h7))
             .tint(.coreGreen)
-            .padding()
         }
     }
 }
+
+
+
+
 
 

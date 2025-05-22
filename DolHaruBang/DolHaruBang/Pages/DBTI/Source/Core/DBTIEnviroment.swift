@@ -3,6 +3,22 @@ import UIKit
 import ComposableArchitecture
 import Alamofire
 
+// 탄생석 종류
+let birthStones: [String: String] = [
+    "1": "가넷",
+    "2": "자수정",
+    "3": "아쿠아마린",
+    "4": "다이아몬드",
+    "5": "에메랄드",
+    "6": "진주",
+    "7": "루비",
+    "8": "페리도트",
+    "9": "사파이어",
+    "10": "오팔",
+    "11": "토파즈",
+    "12": "터키석"
+]
+
 // 캐릭터 종류
 enum DBTIModel: String, Codable, CaseIterable {
     var description: String {
@@ -254,13 +270,13 @@ struct tmpRequestBody: Codable, Equatable, Sendable {
 
 struct MemberInfoRequest: Codable, Equatable, Sendable {
     let nickname: String
-    let birthday: String
+    let birthStone: String?
 }
 
 @DependencyClient
 struct DBTIClient {
     var checkUsername: @Sendable (_ username: String) async throws -> Bool
-    var postMemberInfo: @Sendable (_ nickname: String, _ birthday: String) async throws -> Void
+    var postMemberInfo: @Sendable (_ nickname: String, _ birthStone: String?) async throws -> Void
     var adoptStone: @Sendable (_ speciesName: String, _ stoneName: String, _ spaceName: String) async throws -> Void
 }
 
@@ -271,9 +287,9 @@ extension DBTIClient: DependencyKey {
             return try await fetch(url: url, model: Bool.self, method: .get)
         }
         ,
-        postMemberInfo: { nickname, birthday in
+        postMemberInfo: { nickname, birthStone in
             let url = APIConstants.Endpoints.memberInfo
-            let requestBody = MemberInfoRequest(nickname: nickname, birthday: birthday)
+            let requestBody = MemberInfoRequest(nickname: nickname, birthStone: birthStone)
             let bodyData = try JSONEncoder().encode(requestBody)
             
             try await fetch(
