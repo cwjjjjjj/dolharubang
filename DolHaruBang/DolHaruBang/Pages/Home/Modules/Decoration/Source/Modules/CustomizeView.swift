@@ -88,7 +88,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                         Image("item")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 108, height: 108)
+                                            .frame(width: UIDevice.isPad ? 216:  108, height: UIDevice.isPad ? 216:  108)
                                             .clipped()
                                             .clipShape(RoundedRectangle(cornerRadius: 15))
                                             .overlay(
@@ -110,7 +110,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                                     .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
                                                     .padding(4)
                                                 
-                                            }.frame(width: 40, height: 16)
+                                            }.frame(width: UIDevice.isPad ? 76: 40, height: UIDevice.isPad ? 32 :  16)
                                                 .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                                                 .cornerRadius(10)
                                                 .padding(6)
@@ -123,7 +123,7 @@ struct CustomizeView<T: Customizable>: View where T.AllCases == [T] {
                                         .foregroundColor(Color.decoSheetTextColor)
                                         .padding(.bottom, 5)
                                 }
-                                .frame(width: 108, height: 140)
+                                .frame(width: UIDevice.isPad ? 216:  108, height: UIDevice.isPad ? 280: 140)
                             }
                             .alert("구매 확인", isPresented: $showPurchaseAlert) {
                                 Button("취소", role: .cancel) {
