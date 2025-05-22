@@ -26,7 +26,6 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -56,7 +55,8 @@ dependencies {
     implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
     implementation("com.nimbusds:nimbus-jose-jwt:9.23")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation ("org.bouncycastle:bcpkix-jdk18on:1.72")
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.72")
+    implementation("net.coobird:thumbnailator:0.4.20")
 
     configurations.all {
         exclude(group = "commons-logging")
