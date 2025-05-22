@@ -27,7 +27,7 @@ struct MyPageView : View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing:0){
-                        
+                    
                     HStack{
                         Text("마이페이지")
                             .font(Font.customFont(Font.h6))
@@ -57,7 +57,7 @@ struct MyPageView : View {
                                     Image(uiImage: store.selectedImage!)
                                         .resizable()
                                         .scaledToFit()
-//                                        .aspectRatio(contentMode: .fill)
+                                    //                                        .aspectRatio(contentMode: .fill)
                                         .frame(width: 108, height: 108)
                                         .clipShape(Circle())
                                         .allowsHitTesting(false)
@@ -77,7 +77,7 @@ struct MyPageView : View {
                                     } else {
                                         Image("normalprofile")
                                             .resizable()
-//                                            .aspectRatio(contentMode: .fill)
+                                        //                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 108, height: 108)
                                             .clipShape(Circle())
                                             .allowsHitTesting(false)
@@ -90,73 +90,82 @@ struct MyPageView : View {
                                 }
                             }
                             
-                           
-                            VStack(spacing : 12){
+                            
+                            VStack(spacing : 16){
                                 
                                 if store.selectedProfileEdit {
                                     VStack {
-                                       HStack(spacing : 6){
-                                           Image("human")
-                                               .resizable()
-                                               .aspectRatio(contentMode: .fit)
-                                               .frame(width: 16, height: 16)
-                                           HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                                               TextField("", text: $store.userName.sending(\.userNameChanged))
-                                                   .font(.customFont(Font.button2))
-                                                   .lineSpacing(28.80)
-                                                   .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                                                   .multilineTextAlignment(.center) // 텍스트 중앙 정렬
-                                                   .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
-                                                  
-                                       }
-                                       .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
-                                       .frame(width: 184, height: 32)
-                                       .background(Color(red: 0.95, green: 0.93, blue: 0.91))
-                                       .cornerRadius(16)
-                                       }
-                                           
-                                       HStack(spacing:6){
-                                           Image("home")
-                                               .resizable()
-                                               .aspectRatio(contentMode: .fit)
-                                               .frame(width: 16, height: 16)
-                                           HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                                               TextField("", text: $store.roomName.sending(\.roomNameChanged))
-                                                   .font(.customFont(Font.button2))
-                                                   .lineSpacing(28.80)
-                                                   .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                                                   .multilineTextAlignment(.center) // 텍스트 중앙 정렬
-                                                   .textFieldStyle(PlainTextFieldStyle())
+                                        HStack(spacing : 6){
+                                            Image("human")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 16, height: 16)
+                                            HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                                                TextField("", text: $store.userName.sending(\.userNameChanged))
+                                                    .font(.customFont(Font.button2))
+                                                    .lineSpacing(28.80)
+                                                    .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                                                    .multilineTextAlignment(.center) // 텍스트 중앙 정렬
+                                                    .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
                                                 
-                                           }
-                                           .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
-                                           .frame(width: 184, height: 32)
-                                           .background(Color(red: 0.95, green: 0.93, blue: 0.91))
-                                           .cornerRadius(16)
-                                       }
-                                      
-                                   }
-                                        .frame(width: 210, height: 65)
-                                            } else {
-                                                falseContent(username: store.userName, roomname: store.roomName)
-                                                    .frame(width: 210, height: 65)
                                             }
+                                            .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+                                            .frame(width: 184, height: 32)
+                                            .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                                            .cornerRadius(16)
+                                        }
+                                        
+                                        HStack(spacing:6){
+                                            Image("home")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 16, height: 16)
+                                            HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                                                TextField("", text: $store.roomName.sending(\.roomNameChanged))
+                                                    .font(.customFont(Font.button2))
+                                                    .lineSpacing(28.80)
+                                                    .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                                                    .multilineTextAlignment(.center) // 텍스트 중앙 정렬
+                                                    .textFieldStyle(PlainTextFieldStyle())
+                                                
+                                            }
+                                            .padding(EdgeInsets(top: 11, leading: 0, bottom: 11, trailing: 0))
+                                            .frame(width: 184, height: 32)
+                                            .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                                            .cornerRadius(16)
+                                        }
+                                        
+                                    }
+                                    .frame(width: 210, height: 65)
+                                } else {
+                                    falseContent(username: store.userName, roomname: store.roomName)
+                                        .frame(width: 210, height: 65)
+                                }
                                 
                                 // 탄생석, 사용자 생년월일
                                 HStack(spacing: 8) {
+                                    
+                                    
+                                    Image("birthStone")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30)
                                     HStack(spacing: 10) {
+                                        
+                                        
                                         Text("\(userinfo.birthStone)")
                                             .font(Font.customFont(Font.body3Bold))
                                             .lineSpacing(21.60)
                                             .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
+                                        
+                                            .padding(6)
                                     }
-                                    .padding(6)
                                     .background(Color(red: 0.79, green: 0.32, blue: 0.17))
                                     .cornerRadius(20)
-//                                    Text(formattedBirthday(userinfo.birthday))
-//                                        .font(Font.customFont(Font.body3Bold))
-//                                        .lineSpacing(25.20)
-//                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+                                    //                                    Text(formattedBirthday(userinfo.birthday))
+                                    //                                        .font(Font.customFont(Font.body3Bold))
+                                    //                                        .lineSpacing(25.20)
+                                    //                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                 }
                                 .frame(width: 152, height: 21)
                                 
@@ -233,7 +242,7 @@ struct MyPageView : View {
                         
                     }// 하얀 배경 VStack
                     .frame(width: geometry.size.width ,height : UIDevice.isPad ? geometry.size.height * 0.65 :  geometry.size.height * 0.78)
-//                    .scaleEffect(scale)
+                    //                    .scaleEffect(scale)
                     .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                     .cornerRadius(15) // 뭉툭한 테두리
                     
@@ -256,7 +265,7 @@ struct MyPageView : View {
                 }
             }
         }
-      
+        
         
         
         // 프로필 버튼 수정
@@ -294,87 +303,87 @@ struct MyPageView : View {
     @ViewBuilder
     // 사진 추가 버튼
     private func plusButton() -> some View {
-            Button(action: {
-                store.send(.clickPlusButton)
-            }) {
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "A5CD3B"))
-                        .frame(width: 32, height: 32)
-                    
-                    Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                        .foregroundColor(.white)
-                }
+        Button(action: {
+            store.send(.clickPlusButton)
+        }) {
+            ZStack {
+                Circle()
+                    .fill(Color(hex: "A5CD3B"))
+                    .frame(width: 32, height: 32)
+                
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(.white)
             }
-        }// 사진추가버튼
+        }
+    }// 사진추가버튼
     
     
     // 프로필 수정 페이지
     @ViewBuilder
     private func trueContent() -> some View {
-           VStack {
-              HStack(spacing : 6){
-                  Image("human")
-                      .resizable()
-                      .aspectRatio(contentMode: .fit)
-                      .frame(width: 16, height: 16)
-                  HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                      TextField("방 이름을 입력하세요", text: $store.userName.sending(\.userNameChanged))
-//                          .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
-                          .lineSpacing(28.80)
-                          .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                          .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
-              }
-              .padding(.vertical, 11)
-              .frame(width: 184, height: 32)
-              .background(Color(red: 0.95, green: 0.93, blue: 0.91))
-              .cornerRadius(16)
-              }
-                  
-              HStack(spacing:6){
-                  Image("home")
-                      .resizable()
-                      .scaledToFit()
-                      .frame(width: 8, height: 8)
-                  HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-                      Text("돌돌이")
-                          .font(Font.customFont(Font.body2Bold))
-                          .lineSpacing(28.80)
-                          .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-                  }
-                  .padding(.vertical, 11)
-                  .frame(width: 184, height: 32)
-                  .background(Color(red: 0.95, green: 0.93, blue: 0.91))
-                  .cornerRadius(16)
-              }
-             
-          }
-      }
-
-      @ViewBuilder
-      private func falseContent(username : String, roomname : String) -> some View {
-          VStack {
-              // 사용자명
-              Text(username)
-                  .font(Font.customFont(Font.subtitle2))
-                  .lineSpacing(35.20)
-                  .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
-
-              // 돌 집 이름
-              HStack(spacing: 8) {
-                  Image("home")
-                      .resizable()
-                      .scaledToFit()
-                      .frame(width: 16, height: 17)
-
-                  Text(roomname)
-                      .font(Font.customFont(Font.subtitle3))
-                      .lineSpacing(28.80)
-                      .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
-              }
-          }
-      }
+        VStack {
+            HStack(spacing : 6){
+                Image("human")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 16, height: 16)
+                HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                    TextField("방 이름을 입력하세요", text: $store.userName.sending(\.userNameChanged))
+                    //                          .font(Font.custom("NanumSquareRound", size: 14).weight(.bold))
+                        .lineSpacing(28.80)
+                        .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                        .textFieldStyle(PlainTextFieldStyle()) // 텍스트 필드 스타일 설정 (필요에 따라 다른 스타일 적용 가능)
+                }
+                .padding(.vertical, 11)
+                .frame(width: 184, height: 32)
+                .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                .cornerRadius(16)
+            }
+            
+            HStack(spacing:6){
+                Image("home")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 8, height: 8)
+                HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                    Text("돌돌이")
+                        .font(Font.customFont(Font.body2Bold))
+                        .lineSpacing(28.80)
+                        .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+                }
+                .padding(.vertical, 11)
+                .frame(width: 184, height: 32)
+                .background(Color(red: 0.95, green: 0.93, blue: 0.91))
+                .cornerRadius(16)
+            }
+            
+        }
+    }
+    
+    @ViewBuilder
+    private func falseContent(username : String, roomname : String) -> some View {
+        VStack {
+            // 사용자명
+            Text(username)
+                .font(Font.customFont(Font.subtitle2))
+                .lineSpacing(35.20)
+                .foregroundColor(Color(red: 0.38, green: 0.52, blue: 0))
+            
+            // 돌 집 이름
+            HStack(spacing: 8) {
+                Image("home")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16, height: 17)
+                
+                Text(roomname)
+                    .font(Font.customFont(Font.subtitle3))
+                    .lineSpacing(28.80)
+                    .foregroundColor(Color(red: 0.22, green: 0.16, blue: 0.10))
+            }
+        }
+    }
 }
 
