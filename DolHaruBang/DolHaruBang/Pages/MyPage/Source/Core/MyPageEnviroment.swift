@@ -11,11 +11,12 @@ import ComposableArchitecture
 import Alamofire
 
 struct UserInfo: Decodable, Equatable, Sendable {
+    
+    var emailAddress: String
     var userName: String
     var roomName: String
-    var birthStone: String
-    var birthday: String
-    var emailAddress: String
+    var birthStone: String?
+    var birthday: String?
     var closeness : Int
     var profilePicture : String?
 }
@@ -147,11 +148,11 @@ private let jsonDecoder: JSONDecoder = {
 
 extension UserInfo {
     static let mockUserInf = Self(
+         emailAddress: "",
          userName: "",
          roomName: "",
          birthStone: "돌맹",
          birthday: "2000년 09월 10일",
-         emailAddress: "",
          closeness: 0,
          profilePicture: ""
     )
