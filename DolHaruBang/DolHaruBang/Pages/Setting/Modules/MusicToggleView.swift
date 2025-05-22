@@ -12,7 +12,7 @@ struct MusicToggleView: View {
     @AppStorage("isBGMMusicOn") var isBGMMusicOn: Bool = true
 
         var body: some View {
-            Toggle("배경 음악", isOn: $isBGMMusicOn)
+            Toggle("", isOn: $isBGMMusicOn)
                 .toggleStyle(SwitchToggleStyle(tint: Color(hex: "A5CD3B")))
                 .onChange(of: isBGMMusicOn) {
                     DispatchQueue.main.async {
