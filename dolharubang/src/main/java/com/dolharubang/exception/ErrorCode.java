@@ -97,10 +97,11 @@ public enum ErrorCode {
 
     // S3 파일 업로드 오류
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다."),
+    NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "이미지 파일이 아닙니다."),
 
     // 파일 용량 초과 오류
     FILE_SIZE_EXCEEDED(HttpStatus.PAYLOAD_TOO_LARGE, "파일 용량이 제한을 초과했습니다.");
-    
+
     private final HttpStatus httpStatus;
     private final String detail;
 
