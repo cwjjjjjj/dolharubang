@@ -73,9 +73,21 @@ struct ParkView: View {
                                 store.send(.tapFriendList)
                             }
                         }
-                        .frame(height: 40)
+                        .frame(height: UIDevice.isPad ? 64 : 40)
                         .cornerRadius(15, corners: [.topLeft, .topRight])
-                        .background(Color.coreGreen)
+                        .background(
+                            GeometryReader { geo in
+                                HStack(spacing: 0) {
+                                    // 왼쪽 배경
+                                    (store.selectedTap == 0 ? Color.coreWhite : Color.coreGreen)
+                                        .frame(width: geo.size.width / 2)
+                                    // 오른쪽 배경
+                                    (store.selectedTap == 1 ? Color.coreWhite : Color.coreGreen)
+                                        .frame(width: geo.size.width / 2)
+                                }
+                                .cornerRadius(15, corners: [.topLeft, .topRight])
+                            }
+                        )
                         .cornerRadius(15, corners: [.topLeft, .topRight])
                         
                         if (store.selectedTap == 0) {
@@ -116,6 +128,7 @@ struct ParkView: View {
 
                     FriendRequestsView(store: store)
                         .zIndex(2)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                 }
                 
                 if store.state.doljanchiFeatureState.showJarangPopup {

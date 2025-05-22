@@ -87,6 +87,7 @@ struct MailView: View {
                 Spacer().frame(height: 20)
                 
                 Divider().background(Color(hex: "E5DFD7"))
+                
                 ScrollView(.vertical){
                     if let mails = store.state.mails {
                             ForEach(Array(mails.enumerated()), id:\.element.id){ index,mail in
@@ -120,7 +121,11 @@ struct MailView: View {
                                                     .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                                             )
                                             .font(Font.customFont(Font.body2Bold))
-                                            .frame(width: 222, height : 48, alignment: .leading)
+                                            .frame(
+                                                width: UIDevice.isPad ? 444 : 222,
+                                                height: UIDevice.isPad ? 96 : 48,
+                                                alignment: .leading
+                                            )
                                             .lineSpacing(5)
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
@@ -128,7 +133,11 @@ struct MailView: View {
                                             
                                         }}
                                     
-                                }.frame(width: 272, height: 48).padding(.bottom,10)
+                                }
+                                .frame(
+                                    width: UIDevice.isPad ? 544 : 272,
+                                    height: UIDevice.isPad ? 96 : 48
+                                ).padding(.bottom,10)
                             }
                     }
                 }.padding(10)

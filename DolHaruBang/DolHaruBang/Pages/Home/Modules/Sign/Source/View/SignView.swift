@@ -38,6 +38,7 @@ struct SignView: View {
                                 .frame(height: 28)
                                 .background(Color.commit).cornerRadius(20)
                     }
+                    .padding(.trailing, UIDevice.isPad ? 16 : 0)
                 
                 
                 Button(action: {
@@ -78,7 +79,7 @@ struct SignView: View {
             
             Spacer()
         }
-        .frame(width: 320, height: 170)
+        .frame(width: UIDevice.isPad ? 640 : 320, height: UIDevice.isPad ? 340 : 170)
         .background(Color.white)
         .cornerRadius(25)
         .shadow(radius: 10)

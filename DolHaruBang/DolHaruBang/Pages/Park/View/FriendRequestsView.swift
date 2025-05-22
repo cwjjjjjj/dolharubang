@@ -45,8 +45,10 @@ struct FriendRequestsView: View {
                         HStack(alignment: .center, spacing: 12) {
                             ProfileImageView(
                                 imageURL: req.isSender ? req.receiverProfileImageURL : req.requesterProfileImageURL,
-                                size: 48
+                                size: UIDevice.isPad ? 80 : 48
                             )
+                            .padding(.trailing, UIDevice.isPad ? 12 : 4)
+                            
                             
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(formattedDateF(req.modifiedAt))
@@ -101,6 +103,7 @@ struct FriendRequestsView: View {
                                     
                                     // 수락/거절 버튼은 내가 받은 요청일 경우에만 표시
                                     HStack {
+                                        Spacer()
                                         Button(action: {
                                             // 수락 요청
                                             store.send(.friendListFeatureAction(.acceptFriend(req.id)))
@@ -131,10 +134,11 @@ struct FriendRequestsView: View {
                                             }
                                         }
                                     }
+                                    .padding(.trailing, UIDevice.isPad ? 24 : 0)
                                 }
                             }
                         }
-                        .frame(height: 88)
+                        .frame(height: UIDevice.isPad ? 128 : 88)
                     }
                     
                     Spacer()
@@ -143,7 +147,10 @@ struct FriendRequestsView: View {
             }
 
         }
-        .frame(width: 320, height: 420)
+        .frame(
+            width: UIDevice.isPad ? 640 : 320,
+            height: UIDevice.isPad ? 680 : 340
+        )
         .background(Color.coreWhite)
         .cornerRadius(25)
         .shadow(radius: 10)
