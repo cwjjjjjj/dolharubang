@@ -5,9 +5,15 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Set;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,24 +28,71 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    // 허용 확장자 목록
+    private static final Set<String> ALLOWED_EXTENSIONS = Set.of("jpg", "jpeg", "png", "gif", "bmp",
+        "svg");
+
+    public void validateImageFile(MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.lastIndexOf(".") == -1) {
+            throw new CustomException(ErrorCode.NOT_IMAGE_FILE, "이미지 파일이 아닙니다.");
+        }
+        String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1)
+            .toLowerCase();
+        if (!ALLOWED_EXTENSIONS.contains(ext)) {
+            throw new CustomException(ErrorCode.NOT_IMAGE_FILE, "이미지 파일이 아닙니다.");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new CustomException(ErrorCode.NOT_IMAGE_FILE, "이미지 파일이 아닙니다.");
+        }
+    }
+
     public String saveImage(MultipartFile file, String dirName, Long id) {
         if (file == null || file.isEmpty()) {
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, "파일이 비어있습니다.");
         }
 
+        validateImageFile(file);
+
         try {
             String originalFilename = file.getOriginalFilename();
-            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."))
+                .toLowerCase();
             String fileName = dirName + id + ext;
 
+            // 이미지 압축 처리 (JPEG 예시, 품질 0.7)
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            BufferedImage image = ImageIO.read(file.getInputStream());
+
+            if (".jpg".equals(ext) || ".jpeg".equals(ext)) {
+                // JPEG 압축
+                Thumbnails.of(image)
+                    .scale(1.0)
+                    .outputQuality(0.7) // 70% 품질
+                    .outputFormat("jpg")
+                    .toOutputStream(os);
+            } else if (".png".equals(ext)) {
+                // PNG는 무손실이지만, 크기 줄이기 위해 리사이즈
+                Thumbnails.of(image)
+                    .scale(1.0)
+                    .outputFormat("png")
+                    .toOutputStream(os);
+            } else {
+                // 기타 포맷은 원본 업로드
+                file.getInputStream().transferTo(os);
+            }
+
+            byte[] compressedBytes = os.toByteArray();
+            ByteArrayInputStream compressedInputStream = new ByteArrayInputStream(compressedBytes);
+
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
+            metadata.setContentLength(compressedBytes.length);
             metadata.setContentType(file.getContentType());
 
-            // S3에 파일 업로드
-            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
+            amazonS3Client.putObject(bucket, fileName, compressedInputStream, metadata);
 
-            // 업로드된 파일 URL 반환
             return amazonS3Client.getUrl(bucket, fileName).toString();
         } catch (AmazonS3Exception e) {
             log.error("S3 업로드 실패: {}", e.getMessage(), e);
