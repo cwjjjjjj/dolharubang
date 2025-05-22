@@ -128,7 +128,7 @@ struct SpeechBubbleView: View {
                 Image(uiImage: emojiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 48, height: 48)
+                    .frame(width: UIDevice.isPad ? 70 : 48, height: UIDevice.isPad ? 70 : 48)
                     .padding(8)
             } else if content.hasPrefix("http"), let url = URL(string: content) {
                 AsyncImage(url: url) { phase in
@@ -194,7 +194,7 @@ struct SpeechBubbleView: View {
 
                 Button(action: { onDelete?() }) {
                     Text("삭제")
-                        .font(.customFont(Font.body4Regular))
+                        .font(UIDevice.isPad ? .customFont(Font.body6Regular): .customFont(Font.body4Regular))
                         .foregroundColor(.coreLightGray)
                 }
             }

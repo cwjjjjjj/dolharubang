@@ -69,6 +69,8 @@ extension Font {
     static var body4Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 11) }
     static var body5Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 10) }
     
+    static var body6Regular: FontStyle { FontStyle(customFont: .nanumSquareRoundRegular, size: 8) }
+    
     static var button1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 16) }
     static var button2: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 14) }
     static var button3: FontStyle { FontStyle(customFont: .nanumSquareRoundExtraBold, size: 14) }
