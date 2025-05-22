@@ -92,25 +92,15 @@ struct DBTIResultView: View {
                             }
                             .padding(.horizontal, 16)
                             Spacer().frame(height: 8)
-                            LazyHStack(spacing: 2) {
+                            HStack(spacing: 2) {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.mainGreen)
                                     .padding(.horizontal, 10)
                                     .offset(y: 6)
-                                CustomText(text: "초기능력",
-                                           font: Font.uiFont(for: Font.body1Bold)!,
-                                           textColor: .coreBlack,
-                                           letterSpacingPercentage: -2.5,
-                                           lineSpacingPercentage: 160,
-                                           textAlign: .left)
-                                Spacer()
-                                CustomText(text: store.score.character.baseAbilityTypeKorean,
-                                           font: Font.uiFont(for: Font.body1Bold)!,
-                                           textColor: .coreDarkGreen,
-                                           letterSpacingPercentage: -2.5,
-                                           lineSpacingPercentage: 160,
-                                           textAlign: .left)
-                                Spacer()
+                                
+                                Text("초기능력").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
+                                
+                                Text("\(store.score.character.baseAbilityTypeKorean)").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
                             }
                             .padding(.horizontal, 16)
                             Spacer().frame(height: 18)

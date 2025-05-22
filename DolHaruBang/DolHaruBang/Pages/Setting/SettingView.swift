@@ -58,7 +58,7 @@ struct SettingView : View {
                                 .foregroundColor(Color.decoSheetTextColor)
                             Spacer()
                             
-                            Toggle("햅틱 진동", isOn: $isHapticsEnabled)
+                            Toggle("", isOn: $isHapticsEnabled)
                                 .onChange(of: isHapticsEnabled) {
                                         // 여기서만 진동 관련 처리
                                         UserDefaults.haptics.set(isHapticsEnabled, for: HapticUserDefaultsKey.hapticEffectsEnabled)

@@ -54,10 +54,6 @@ struct SettingFeature {
                     return .none
                 case let .withdrawResponse(.failure(error)):
                     print("회원 탈퇴 실패")
-                    print("회원 탈퇴 실패")
-                    print("회원 탈퇴 실패")
-                    print("회원 탈퇴 실패")
-                    print("회원 탈퇴 실패")
                     return .none
             }
         }

@@ -67,7 +67,7 @@ struct DBTIQuestionView: View {
                                         .foregroundColor(.mainWhite)
                                     Spacer()
                                 }
-                                .frame(width: 320, height: 48)
+                                .frame(width: 320)
                                 .background(Color.mainGreen)
                                 .cornerRadius(24)
                             }
