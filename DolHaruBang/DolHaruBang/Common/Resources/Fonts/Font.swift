@@ -48,6 +48,8 @@ extension Font {
     static var h7: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 22) }
     static var h8: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 20) }
     static var h9: FontStyle { FontStyle(customFont: .cafe24SsurroundBold, size: 18) }
+    static var subtitle11: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 30) }
+    
     static var subtitle1: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 24) }
     static var subtitle2: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 22) }
     static var subtitle3: FontStyle { FontStyle(customFont: .nanumSquareRoundBold, size: 18) }

@@ -73,13 +73,13 @@ struct HomeView : View {
                 
                 // MARK: 모래알 튜토리얼
                 SandView(store: store)
-                    .frame(width: 200, height: 199)
+                    .frame(width:UIDevice.isPad ? 400 :  200, height: UIDevice.isPad ? 300 : 199)
                     .background(Color(red: 0.98, green: 0.98, blue: 0.97))
                     .cornerRadius(20)
                     .shadow(
                         color: Color(red: 0.71, green: 0.72, blue: 0.75, opacity: 1), radius: 5, y: 1
                     )
-                    .position(x: 110, y: 210)
+                    .position(x: UIDevice.isPad ? 220 : 110, y: UIDevice.isPad ? 610 : 210)
                     .opacity(store.sandButton ? 1 : 0)
                 
                 // MARK: 공유버튼
@@ -245,13 +245,13 @@ struct HomeHeader : View {
                         Image("Sand")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 12, height: 12)
+                            .frame(width: UIDevice.isPad ? 20 :12, height:UIDevice.isPad ? 20 : 12)
                         Text("\(store.sand)")
                             .font(Font.customFont(Font.caption1))
                             .foregroundColor(.white)
                     }
                     .background(Color.clear)
-                    .frame(width: geometry.size.width * 0.15, height: 30)
+                    .frame(width: UIDevice.isPad ?  geometry.size.width * 0.1 : geometry.size.width * 0.15, height:UIDevice.isPad ? 50: 30)
                     .cornerRadius(30)
                     .overlay(
                         RoundedRectangle(cornerRadius: 30)
@@ -280,7 +280,7 @@ struct HomeHeader : View {
                         Image("Share")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 24, height: 24)
+                            .frame(width: UIDevice.isPad ? 48 :24, height: UIDevice.isPad ? 48 :24)
                     }
                     .padding(.bottom , 15)
                     .background(Color.clear)
@@ -328,12 +328,12 @@ struct DolContentView : View {
     var body : some View {
         
         Text("\(store.DolResponse)")
-                .font(.largeTitle)
+            .font(UIDevice.isPad ? Font.customFont(Font.subtitle11) : .largeTitle)
                 .foregroundColor(.gray)
                 .opacity(store.DotsVisible ? 1 : 0) // opacity로 표시/숨김
                 .animation(.easeInOut(duration: 0.3), value: store.DotsVisible)
                 .fixedSize() // 텍스트 크기 고정
-                .offset(x: geometry.size.width * 0.18 ,y: geometry.size.height * -0.13)
+                .offset(x: UIDevice.isPad ? geometry.size.width * 0.1 : geometry.size.width * 0.18 ,y: UIDevice.isPad ? geometry.size.width * -0.11 : geometry.size.height * -0.13)
         
         
         // MARK: 새로온 편지

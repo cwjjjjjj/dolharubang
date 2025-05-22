@@ -92,26 +92,26 @@ struct ParkView: View {
                         
                         if (store.selectedTap == 0) {
                             DoljanchiView(store: store.scope(state: \.doljanchiFeatureState, action: \.doljanchiFeatureAction))
-                                 .tag(0)
-                                 .onAppear {
-                                     store.send(.fetchDolInfo)
-                                 }
-                                 .onChange(of: store.dolInfo) {
-                                     if let stoneId = store.dolInfo?.stoneId {
-                                         store.send(.doljanchiFeatureAction(.checkCanRegistJarang(stoneId)))
-                                     }
-                                 }
-                         }
+                                .tag(0)
+                                .onAppear {
+                                    store.send(.fetchDolInfo)
+                                }
+                                .onChange(of: store.dolInfo) {
+                                    if let stoneId = store.dolInfo?.stoneId {
+                                        store.send(.doljanchiFeatureAction(.checkCanRegistJarang(stoneId)))
+                                    }
+                                }
+                        }
                         else {
                             FriendListView(store: store.scope(state: \.friendListFeatureState, action: \.friendListFeatureAction))
-                                 .tag(1)
+                                .tag(1)
                         }
                         
-                     }
+                    }
                     .frame(height: UIDevice.isPad ? totalHeight * 600 / 852  : totalHeight * 680 / 852)
                     
                     Spacer().frame(minHeight: UIDevice.isPad ? totalHeight * 100 / 804  : totalHeight * 64 / 804)
-
+                    
                 }
                 
                 // 친구 신청 내역 보여주는 팝업
@@ -125,7 +125,7 @@ struct ParkView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .zIndex(1)
-
+                    
                     FriendRequestsView(store: store)
                         .zIndex(2)
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
@@ -143,15 +143,13 @@ struct ParkView: View {
                     VStack(alignment: .center) {
                         Spacer().frame(height: 24)
                         
+                        // ~~이
                         HStack {
                             Text("\(store.dolInfo?.dolName ?? "돌") 자랑하기")
                                 .font(Font.customFont(Font.subtitle3))
                                 .foregroundColor(.decoSheetGreen)
                                 .padding(.leading, 24)
-
-                            
                             Spacer()
-                            
                             Button(action: {
                                 store.send(.doljanchiFeatureAction(.toggleJarangPopup))
                             }) {
@@ -166,7 +164,7 @@ struct ParkView: View {
                         Spacer().frame(height: 20)
                         
                         Divider()
-                
+                        
                         Image(uiImage: captureDol)
                             .resizable()
                             .scaledToFit()
@@ -176,22 +174,6 @@ struct ParkView: View {
                         
                         HStack {
                             Spacer()
-//                            HStack(spacing: 8) {
-//                                Image(systemName: store.isPublic ? "globe" : "lock.fill")
-//                                    .foregroundColor(store.isPublic ? .coreGreen : .gray)
-//                                    .frame(width: 16, height: 16)
-//                                Toggle(isOn: $store.isPublic) {
-//                                    Text(store.isPublic ? "공개" : "비공개")
-//                                        .font(.system(size: 14, weight: .medium))
-//                                        .foregroundColor(store.isPublic ? .coreGreen : .gray)
-//                                }
-//                                .labelsHidden()
-//                                .toggleStyle(SwitchToggleStyle(tint: .coreGreen))
-//                            }
-//                            .padding(.bottom, 16)
-//                            
-//                            Spacer()
-                            
                             // 최종 자랑 버튼
                             Button(action: {
                                 guard let imageBase64 = captureDol.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
@@ -208,25 +190,15 @@ struct ParkView: View {
                                     Text("자랑하기")
                                         .font(.customFont(Font.button4))
                                         .foregroundColor(.coreWhite)
+                                        .padding(UIDevice.isPad ? 8 : 4)
                                 }
-                                .frame(width: 82, height: 32)
                                 .background(.coreGreen)
                                 .cornerRadius(16)
                             }
                             .padding(.bottom, 16)
-
-                            
                             Spacer()
                         }
                     }
-//                    .onAppear {
-//                        store.send(.fetchDolInfo)
-//                    }
-//                    .onChange(of: store.dolInfo) {
-//                        if let stoneId = store.dolInfo?.stoneId {
-//                            store.send(.doljanchiFeatureAction(.checkCanRegistJarang(stoneId)))
-//                        }
-//                    }
                     .alert("이미지 변환 실패", isPresented: $store.showImageErrorAlert) {
                         Button("확인", role: .cancel) { }
                     } message: {
@@ -237,15 +209,12 @@ struct ParkView: View {
                     } message: {
                         Text("돌 이름을 불러오지 못했습니다. 다시 시도해 주세요.")
                     }
-
                     .frame(width: 320, height: 400)
                     .background(Color.white)
                     .cornerRadius(25)
+                    .offset(y: UIDevice.isPad ? -300 : 0)
                     .shadow(radius: 10)
-                        .background(Color.white)
-                        .cornerRadius(25)
-                        .shadow(radius: 10)
-                        .zIndex(2)
+                    .zIndex(2)
                 }
             }
             .edgesIgnoringSafeArea(.all)
@@ -271,8 +240,8 @@ struct TabBarButton: View {
                     shadowColor: isSelected ? Color(hex: "A5CD3B") : Color(hex: "618501"),
                     blendMode: true,
                     opacity: isSelected ? 0.5 : 0.6)
-                    .font(Font.customFont(Font.h9))
-                    .foregroundColor(isSelected ? .coreGreen : .coreWhite)
+                .font(Font.customFont(Font.h9))
+                .foregroundColor(isSelected ? .coreGreen : .coreWhite)
             }
             Spacer()
         }

@@ -42,13 +42,14 @@ struct MailView: View {
                             .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
                     )
                     .font(Font.customFont(Font.body2Bold))
-                    .frame(width: 222, height : 48, alignment: .leading)
+                    .frame(width: UIDevice.isPad ? 444 :222, alignment: .leading)
                     .lineSpacing(5)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .padding(.vertical, 8) // 세로 여백 추가
-                    
                 }
+                .frame(height : UIDevice.isPad ? 100 : 48)
+                
                 Spacer()
             }
             .background(Color.white)
