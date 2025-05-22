@@ -87,6 +87,7 @@ func fetch<T: Decodable>(
     
     if !skipAuth, let accessToken = TokenManager.shared.getAccessToken() {
         finalHeaders.add(.authorization(bearerToken: accessToken))
+//        print("나야 엑세스 ", accessToken)
     }
     
     if finalHeaders["Content-Type"] == nil {

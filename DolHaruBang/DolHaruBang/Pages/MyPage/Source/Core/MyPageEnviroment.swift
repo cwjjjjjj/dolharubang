@@ -15,7 +15,7 @@ struct UserInfo: Decodable, Equatable, Sendable {
     var emailAddress: String
     var userName: String
     var roomName: String
-    var birthStone: String
+    var birthStone: String?
     var birthday: String?
     var closeness : Int
     var profilePicture : String?
