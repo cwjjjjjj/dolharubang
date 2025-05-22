@@ -13,4 +13,6 @@ public interface MemberItemRepository extends JpaRepository<MemberItem, Long> {
     Optional<MemberItem> findByMemberAndItemId(Member member, Long itemId);
 
     List<MemberItem> findAllByMember(Member member);
+
+    void deleteAllByMember(Member member);
 }

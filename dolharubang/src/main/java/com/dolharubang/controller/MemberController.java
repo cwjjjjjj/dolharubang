@@ -113,7 +113,7 @@ public class MemberController {
     }
 
     @Operation(summary = "프로필 사진 수정하기", description = "base64 string으로 프로필 사진을 수정한다.")
-    @PostMapping("/profile-picture")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/profile-picture")
     public ResponseEntity<?> updateProfilePicture(
         @AuthenticationPrincipal PrincipalDetails principal,
         @RequestPart("image") MultipartFile imageFile) {
@@ -235,6 +235,23 @@ public class MemberController {
 
         Member member = principal.getMember();
         return ResponseEntity.ok(memberService.isStoneEmpty(member));
+    }
+
+    @Operation(summary = "회원 탈퇴하기", description = "멤버의 모든 데이터를 완전히 삭제한다.")
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal PrincipalDetails principal) {
+        if (principal == null) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of(
+                    "code", "UNAUTHORIZED",
+                    "message", "인증에 실패햐였습니다"
+                ));
+        }
+
+        Long memberId = getMemberId(principal);
+        return ResponseEntity.ok(memberService.deleteMember(memberId));
     }
 
     private static Long getMemberId(PrincipalDetails principal) {

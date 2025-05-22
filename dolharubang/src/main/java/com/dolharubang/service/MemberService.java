@@ -9,8 +9,15 @@ import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.ContestRepository;
+import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.FriendRepository;
+import com.dolharubang.repository.MemberItemRepository;
+import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.repository.NotificationRepository;
+import com.dolharubang.repository.RefreshTokenRepository;
+import com.dolharubang.repository.ScheduleRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.s3.S3UploadService;
 import com.dolharubang.type.FriendStatusType;
@@ -31,14 +38,32 @@ public class MemberService {
     private final S3UploadService s3UploadService;
     private final StoneRepository stoneRepository;
     private final FriendRepository friendRepository;
+    private final ContestRepository contestRepository;
+    private final DiaryRepository diaryRepository;
+    private final MemberItemRepository memberItemRepository;
+    private final MemberMissionRepository memberMissionRepository;
+    private final NotificationRepository notificationRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final ScheduleRepository scheduleRepository;
 
     public MemberService(MemberRepository memberRepository,
-        S3UploadService s3UploadService, StoneRepository stoneRepository,
-        FriendRepository friendRepository) {
+        S3UploadService s3UploadService,
+        StoneRepository stoneRepository,
+        FriendRepository friendRepository, ContestRepository contestRepository,
+        DiaryRepository diaryRepository, MemberItemRepository memberItemRepository,
+        MemberMissionRepository memberMissionRepository, NotificationRepository notificationRepository,
+        RefreshTokenRepository refreshTokenRepository, ScheduleRepository scheduleRepository) {
         this.memberRepository = memberRepository;
         this.s3UploadService = s3UploadService;
         this.stoneRepository = stoneRepository;
         this.friendRepository = friendRepository;
+        this.contestRepository = contestRepository;
+        this.diaryRepository = diaryRepository;
+        this.memberItemRepository = memberItemRepository;
+        this.memberMissionRepository = memberMissionRepository;
+        this.notificationRepository = notificationRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     @Transactional
@@ -191,6 +216,29 @@ public class MemberService {
     @Transactional(readOnly = true)
     public boolean isStoneEmpty(Member member) {
         return stoneRepository.findByMember(member).isEmpty();
+    }
+
+    @Transactional
+    public boolean deleteMember(Long memberId) {
+        Member member = findMember(memberId);
+        deleteMemberObjects(member);
+        memberRepository.delete(member);
+        return memberRepository.findById(memberId).isEmpty();
+    }
+
+    @Transactional
+    public void deleteMemberObjects(Member member) {
+        scheduleRepository.deleteAllByMember(member);
+        refreshTokenRepository.deleteAllByMember(member);
+        notificationRepository.deleteAllByReceiverId(member.getMemberId());
+        notificationRepository.deleteAllByRequester(member);
+        memberMissionRepository.deleteAllByMember(member);
+        memberItemRepository.deleteAllByMember(member);
+        diaryRepository.deleteAllByMember(member);
+        contestRepository.deleteAllByMember(member);
+        stoneRepository.deleteAllByMember(member);
+        friendRepository.deleteAllByReceiver(member);
+        friendRepository.deleteAllByRequester(member);
     }
 
     private boolean checkNicknameFormat(String newNickname) {

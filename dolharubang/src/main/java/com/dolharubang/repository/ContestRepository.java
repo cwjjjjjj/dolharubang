@@ -60,4 +60,6 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
         @Param("stone") Stone stone,
         @Param("startOfDay") LocalDateTime startOfDay
     );
+
+    void deleteAllByMember(Member member);
 }
