@@ -108,7 +108,8 @@ public class DiaryService {
                 diary.update(member, null, diary.getEmoji(), diary.getImageUrl(), diary.getReply());
                 break;
             case EMOJI:
-                diary.update(member, diary.getContents(), null, diary.getImageUrl(), diary.getReply());
+                diary.update(member, diary.getContents(), null, diary.getImageUrl(),
+                    diary.getReply());
                 break;
             case IMAGE:
                 diary.update(member, diary.getContents(), diary.getEmoji(), null, diary.getReply());
@@ -117,7 +118,9 @@ public class DiaryService {
                 throw new CustomException(ErrorCode.INVALID_DELETE_TARGET);
         }
 
-        if (diary.getContents() == null & diary.getEmoji() == null & diary.getImageUrl() == null) {
+        if ((diary.getContents() == null || diary.getContents().isBlank()) &
+            (diary.getEmoji() == null || diary.getEmoji().isBlank()) &
+            (diary.getImageUrl() == null || diary.getImageUrl().isBlank())) {
             deleteDiary(diary.getDiaryId());
         }
 
