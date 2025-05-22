@@ -150,7 +150,7 @@ struct HomeFeature {
             case .clickMessage:
                 state.message = ""
                 return .run { send in
-                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
                     await send(.showDot)
                 }
                 
