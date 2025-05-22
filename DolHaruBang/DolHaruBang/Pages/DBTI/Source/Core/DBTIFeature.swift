@@ -16,12 +16,8 @@ struct DBTIFeature {
         var isNameConfirmed: Bool = false // 닉네임 확인 창
         
         // InputUserInfoView의 생년월일 관련
-        var selectedYear: Int? = 2025
-        var showYearPicker: Bool = false
-        var selectedMonth: Int? = 1
+        var selectedMonth: String = "선택 안함"
         var showMonthPicker: Bool = false
-        var selectedDay: Int? = 1
-        var showDayPicker: Bool = false
         
         // QuestionView 관련
         var score: DBTIScore = DBTIScore()
@@ -62,15 +58,11 @@ struct DBTIFeature {
         case setAlertMessage(String)
         case setShowConfirmation(Bool)
         case setIsNameConfirmed(Bool)
-        case setSelectedYear(Int?)
-        case setShowYearPicker(Bool)
-        case setSelectedMonth(Int?)
+        case setSelectedMonth(String)
         case setShowMonthPicker(Bool)
-        case setSelectedDay(Int?)
-        case setShowDayPicker(Bool)
         case checkUsername(String)
         case checkUsernameResult(Result<Bool, Error>)
-        case submitMemberInfo(String, String)
+        case submitMemberInfo(String, String?)
         case submitMemberInfoResult(Result<Void, Error>)
         
         // QuestionView 관련
@@ -252,23 +244,11 @@ struct DBTIFeature {
                 case .setIsNameConfirmed(let confirmed):
                     state.isNameConfirmed = confirmed
                     return .none
-                case .setSelectedYear(let year):
-                    state.selectedYear = year
-                    return .none
-                case .setShowYearPicker(let show):
-                    state.showYearPicker = show
-                    return .none
                 case .setSelectedMonth(let month):
                     state.selectedMonth = month
                     return .none
                 case .setShowMonthPicker(let show):
                     state.showMonthPicker = show
-                    return .none
-                case .setSelectedDay(let day):
-                    state.selectedDay = day
-                    return .none
-                case .setShowDayPicker(let show):
-                    state.showDayPicker = show
                     return .none
                 case let .checkUsername(username):
                     if username.isEmpty || username.count > 12 {
@@ -310,10 +290,10 @@ struct DBTIFeature {
                     state.showAlert = true
                     return .none
                     
-                case let .submitMemberInfo(nickname, birthday):
+                case let .submitMemberInfo(nickname, birthStone):
                     return .run { send in
                         do {
-                            try await dbtiClient.postMemberInfo(nickname: nickname, birthday: birthday)
+                            try await dbtiClient.postMemberInfo(nickname: nickname, birthStone: birthStone)
                             await send(.submitMemberInfoResult(.success(())))
                         }
                         catch {
