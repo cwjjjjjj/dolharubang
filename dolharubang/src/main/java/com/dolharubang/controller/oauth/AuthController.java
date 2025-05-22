@@ -168,6 +168,7 @@ public class AuthController {
 
             memberRepository.save(member);
             memberItemService.initializeItems(member);
+            missionService.assignAllMissionsToNewMember(member);
             notificationService.sendWelcomeNotification(member);
         }
 
