@@ -142,32 +142,30 @@ struct MyPageView : View {
                                         .frame(width: 210, height: 65)
                                 }
                                 
-                                // 탄생석, 사용자 생년월일
-                                HStack(spacing: 8) {
-                                    
-                                    
-                                    Image("birthStone")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30)
-                                    HStack(spacing: 10) {
-                                        
-                                        
-                                        Text("\(userinfo.birthStone)")
-                                            .font(Font.customFont(Font.body3Bold))
-                                            .lineSpacing(21.60)
-                                            .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
-                                        
-                                            .padding(6)
-                                    }
-                                    .background(Color(red: 0.79, green: 0.32, blue: 0.17))
-                                    .cornerRadius(20)
-                                    //                                    Text(formattedBirthday(userinfo.birthday))
-                                    //                                        .font(Font.customFont(Font.body3Bold))
-                                    //                                        .lineSpacing(25.20)
-                                    //                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
-                                }
-                                .frame(width: 152, height: 21)
+                                // 탄생석
+//                                HStack(spacing: 8) {
+//                                    Image("birthStone")
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//                                        .frame(width: 30, height: 30)
+//                                    HStack(spacing: 10) {
+//                                        
+//                                        
+//                                        Text("\(userinfo.birthStone)")
+//                                            .font(Font.customFont(Font.body3Bold))
+//                                            .lineSpacing(21.60)
+//                                            .foregroundColor(Color(red: 0.98, green: 0.98, blue: 0.97))
+//                                        
+//                                            .padding(6)
+//                                    }
+//                                    .background(Color(red: 0.79, green: 0.32, blue: 0.17))
+//                                    .cornerRadius(20)
+//                                    //                                    Text(formattedBirthday(userinfo.birthday))
+//                                    //                                        .font(Font.customFont(Font.body3Bold))
+//                                    //                                        .lineSpacing(25.20)
+//                                    //                                        .foregroundColor(Color(red: 0.51, green: 0.49, blue: 0.45))
+//                                }
+//                                .frame(width: 152, height: 21)
                                 
                                 // 사용자 이메일 주소
                                 Text("\(userinfo.emailAddress)")
