@@ -63,14 +63,15 @@ struct DBTIQuestionView: View {
                                 VStack{
                                     
                                         Text("\(questions[store.withState { $0.questionIndex }].options[index].text)".splitCharacter())
-                                        .frame(width: UIDevice.isPad ? 380: 320)
+                                        .frame(width: UIDevice.isPad ? 380: 320, height:UIDevice.isPad ? 100 : 48)
                                             .font(.customFont(Font.button1))
                                             .foregroundColor(.mainWhite)
                                             .lineLimit(5)
+                                            .lineSpacing(4)
                                             .multilineTextAlignment(.center)
-                                            .padding(10)
+                                            .padding(.vertical,1)
                                 }
-                                .frame(height : UIDevice.isPad ? 100 : 48)
+//                                .frame(minHeight : UIDevice.isPad ? 100 : 48)
                                 .background(Color.mainGreen)
                                 .cornerRadius(24)
                             }
