@@ -71,16 +71,16 @@ struct HomeView : View {
                     
                 }
                 
-                // MARK: 모래알 튜토리얼
-                SandView(store: store)
-                    .frame(width:UIDevice.isPad ? 400 :  200, height: UIDevice.isPad ? 300 : 199)
-                    .background(Color(red: 0.98, green: 0.98, blue: 0.97))
-                    .cornerRadius(20)
-                    .shadow(
-                        color: Color(red: 0.71, green: 0.72, blue: 0.75, opacity: 1), radius: 5, y: 1
-                    )
-                    .position(x: UIDevice.isPad ? 220 : 110, y: UIDevice.isPad ? 610 : 210)
-                    .opacity(store.sandButton ? 1 : 0)
+                // MARK: 데일리 모래알 , 일단 삭제, 백 미구현
+//                SandView(store: store)
+//                    .frame(width:UIDevice.isPad ? 400 :  200, height: UIDevice.isPad ? 300 : 199)
+//                    .background(Color(red: 0.98, green: 0.98, blue: 0.97))
+//                    .cornerRadius(20)
+//                    .shadow(
+//                        color: Color(red: 0.71, green: 0.72, blue: 0.75, opacity: 1), radius: 5, y: 1
+//                    )
+//                    .position(x: UIDevice.isPad ? 220 : 110, y: UIDevice.isPad ? 610 : 210)
+//                    .opacity(store.sandButton ? 1 : 0)
                 
                 // MARK: 공유버튼
                 ZStack {
