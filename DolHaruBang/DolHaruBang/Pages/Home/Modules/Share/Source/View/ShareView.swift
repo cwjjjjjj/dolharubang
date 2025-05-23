@@ -124,8 +124,8 @@ struct ShareView: View {
                 imageUrl: url, // 반드시 업로드된 URL
                 description: "내 돌을 카카오톡으로 공유해요!",
                 link: Link(
-                    webUrl: URL(string: "https://naver.com")!,
-                    mobileWebUrl: URL(string: "https://naver.com")!
+                    webUrl: URL(string: "https://apps.apple.com/kr/app/%EB%8F%8C%ED%95%98%EB%A3%A8%EB%B0%A9/id6743449450")!,
+                    mobileWebUrl: URL(string: "https://apps.apple.com/kr/app/%EB%8F%8C%ED%95%98%EB%A3%A8%EB%B0%A9/id6743449450")!
                 )
             )
             let template = FeedTemplate(content: content)

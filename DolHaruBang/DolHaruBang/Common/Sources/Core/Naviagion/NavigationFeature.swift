@@ -119,51 +119,50 @@ struct NavigationFeature {
                     return .none
                     
                 case .harubang(_):
-                    clearPathToHomeIfNeeded()
                     guard !(state.path.last?.isHarubang ?? false) else {
-                        state.enableClick = true
-                        return .none
+                        return createAsyncEnableClickEffect()
                     }
+                    
+                    clearPathToHomeIfNeeded()
                     state.enableClick = false
                     state.path.append(.harubang(HaruBangFeature.State()))
                     return createAsyncEnableClickEffect()
                     
                 case .calendar(_):
-                    clearPathToHomeIfNeeded()
                     guard !(state.path.last?.isCalendar ?? false) else {
-                        state.enableClick = true
-                        return .none
+                        return createAsyncEnableClickEffect()
                     }
+                    
+                    clearPathToHomeIfNeeded()
                     state.enableClick = false
                     state.path.append(.calendar(CalendarFeature.State()))
                     return createAsyncEnableClickEffect()
                     
                 case .park(_):
-                    clearPathToHomeIfNeeded()
+                    
                     guard !(state.path.last?.isPark ?? false) else {
-                        state.enableClick = true
-                        return .none
+                        return createAsyncEnableClickEffect()
                     }
+                    
+                    clearPathToHomeIfNeeded()
                     state.enableClick = false
                     state.path.append(.park(ParkFeature.State()))
                     return createAsyncEnableClickEffect()
                     
                 case .mypage(_):
-                    clearPathToHomeIfNeeded()
-                    guard !(state.path.last?.isCalendar ?? false) else {
-                        state.enableClick = true
-                        return .none
+                    guard !(state.path.last?.isMypage ?? false) else {
+                        return createAsyncEnableClickEffect()
                     }
+                    clearPathToHomeIfNeeded()
                     state.enableClick = false
                     state.path.append(.mypage(MyPageFeature.State()))
                     return createAsyncEnableClickEffect()
                     
                 case .home(_):
-                    clearPathToHomeIfNeeded()
                     guard !(state.path.last?.isHome ?? false) else {
-                        state.enableClick = true
-                        return .none
+                        return createAsyncEnableClickEffect()
                     }
+                    clearPathToHomeIfNeeded()
                     state.enableClick = false
                     return createAsyncEnableClickEffect()
                     

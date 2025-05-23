@@ -55,10 +55,8 @@ struct DolHaruBangApp: App {
 
                 .environmentObject(userManager)
                 .onOpenURL { url in
-                    print("URL 수신됨: \(url)")
                     if AuthApi.isKakaoTalkLoginUrl(url) {
                         let handled = AuthController.handleOpenUrl(url: url)
-                        print("카카오 URL 처리 결과: \(handled)")
                     }
                 }
         }

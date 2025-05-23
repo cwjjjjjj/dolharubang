@@ -60,7 +60,6 @@ extension String {
 
     func formatRelativeTime(from backendDateString: String) -> String {
         // DateFormatter 세팅
-            print("전 스트링이에여 ",backendDateString)
           let dateFormatter = DateFormatter()
           dateFormatter.locale = Locale(identifier: "en_US_POSIX")
 //          dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) 이걸뺴니까되네
@@ -84,8 +83,6 @@ extension String {
           }
           // 그래도 실패하면 원본 반환
           guard let backendDate = date else { return backendDateString }
-        
-          print("통과 ", backendDate)
           
           let now = Date()
           let diff = now.timeIntervalSince(backendDate)
