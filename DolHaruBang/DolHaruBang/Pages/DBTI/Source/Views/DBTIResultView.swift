@@ -68,44 +68,43 @@ struct DBTIResultView: View {
                             .offset(y: 8)
                         }
                         Spacer().frame(height: geometry.size.height * 0.02)
-                        VStack(alignment: .leading, spacing: 0) {
-                            Spacer()
-                            HStack(spacing: 2) {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.mainGreen)
-                                    .padding(.horizontal, 10)
-                                    .offset(y: 6)
-                                CustomText(text: "성격",
-                                           font: Font.uiFont(for: Font.body1Bold)!,
-                                           textColor: .coreBlack,
-                                           letterSpacingPercentage: -2.5,
-                                           lineSpacingPercentage: 160,
-                                           textAlign: .left)
-                                Spacer()
-                                CustomText(text: store.score.character.personality,
-                                           font: Font.uiFont(for: Font.body1Bold)!,
-                                           textColor: .coreDarkGreen,
-                                           letterSpacingPercentage: -2.5,
-                                           lineSpacingPercentage: 160,
-                                           textAlign: .left)
-                                Spacer()
-                            }
-                            .padding(.horizontal, 16)
-                            Spacer()
-                            HStack(spacing: 2) {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.mainGreen)
-                                    .padding(.horizontal, 10)
-                                    .offset(y: 6)
-                                
-                                Text("초기능력").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
-                                
-                                Text("\(store.score.character.baseAbilityTypeKorean)").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
-                            }
-                            .padding(.horizontal, 16)
-                            Spacer()
+                        HStack(spacing: 8) {
+                            
+                            //성격, 초기능력
+                            VStack(spacing:10){
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.mainGreen)
+                                        
+                                        Text("성격").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
+                                        Spacer()
+                                    }
+                                    .frame(width:geometry.size.width * 0.27)
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.mainGreen)
+                                        
+                                        Text("초기능력").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
+                                        Spacer()
+                                    }
+                                    .frame(width:geometry.size.width * 0.27)
+                                }
+                                .padding(.leading, 20)
+                            //성격내용, 초기능력 내용
+                            VStack(spacing:10){
+                                HStack{
+                                    Text("\(store.score.character.personality)").font(Font.customFont(Font.body1Bold)).foregroundStyle(Color.mainGreen)
+                                    Spacer()
+                                }
+                                HStack{
+                                    Text("\(store.score.character.baseAbilityTypeKorean)").font(Font.customFont(Font.body1Bold)).foregroundStyle(.coreBlack)
+                                    Spacer()
+                                    
+                                }
+                            }.frame(width:geometry.size.width * 0.23)
+                                .padding(.trailing, 20)
                         }
-                        .frame(width: UIDevice.isPad ? 360 : 180, height: UIDevice.isPad ? 160 : 80)
+                        .frame(width: geometry.size.width * 0.7, height: UIDevice.isPad ? 160 : 120)
                         .background(Color.ffffff)
                         .cornerRadius(10)
                         .overlay(
@@ -298,3 +297,5 @@ struct DBTIResultView: View {
         )
     }
 }
+
+

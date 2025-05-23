@@ -188,18 +188,18 @@ struct DBTIScore : Equatable {
 // 질문과 선택지 모음
 let questions: [Question] = [
     Question(
-        text: "사계절의상실\n\n어떻게 읽히시나요?",
+        text: "사계절의상실\n어떻게 읽히시나요?",
         about: .reality,
         options: [
-            (text: "사계절의 상실 🌱☀️🍂❄️", score: nil),
-            (text: "사계절 의상실 👗👔👚", score: nil)
+            (text: "사계절의 상실 😢", score: nil),
+            (text: "사계절 의상실 👚", score: nil)
         ]
     ),
     Question(
         text: "함께 자고 일어난 친구가\n기니피그로 변해버렸다.\n당신의 반응은?",
         about: .reality,
         options: [
-            (text: "밥과 간식을 갖다주고 심심하지 않게 \n TV도 켜준다.", score: 1),
+            (text: "밥과 간식을 갖다주고 \n심심하지 않게 TV도 켜준다.", score: 1),
             (text: "안타깝지만 신고하고 연구소에 알린다.", score: nil)
         ]
     ),
@@ -208,7 +208,7 @@ let questions: [Question] = [
         text: "어느 날 길에서 낡은 시계를 주웠다.\n그런데 자세히 살펴보니,\n날짜와 시간을 마음대로 조종할 수 있을 것 같다.\n어떻게 할까?",
         about: .reality,
         options: [
-            (text: "소설에서만 보던 게 실제로 있다니!\n일단 2시간 전으로 돌아가볼까?", score: 1),
+            (text: "소설에서만 보던 게 실제로 있다니! \n일단 2시간 전으로 돌아가볼까?", score: 1),
             (text: "장난감이겠지. 주인이나 찾아주자.", score: nil)
         ]
     ),
