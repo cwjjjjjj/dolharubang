@@ -88,28 +88,19 @@ public class MemberService {
 
     @Transactional
     public MemberProfileResDto updateMemberProfilePicture(Long memberId, MultipartFile imageFile) {
-        log.info("회원 프로필 사진 업데이트 서비스 시작 - 회원 ID: {}", memberId);
 
         Member member = findMember(memberId);
-        log.info("회원 정보 조회 성공 - 이름: {}", member.getNickname());
-
         try {
             // 이미지 S3에 업로드 (ID 활용해서 경로 생성)
-            log.info("S3 업로드 시작 - 파일명: {}", imageFile.getOriginalFilename());
             String imageUrl = s3UploadService.saveImage(
                 imageFile,
                 "dolharubang/memberProfile/",
                 member.getMemberId()
             );
-            log.info("S3 업로드 완료 - 이미지 URL: {}", imageUrl);
 
-            // 이미지 URL 갱신
             member.updateProfilePicture(imageUrl);
-            log.info("회원 프로필 이미지 URL 업데이트 완료");
-
             return MemberProfileResDto.fromEntity(member);
         } catch (Exception e) {
-            log.error("이미지 업로드 중 오류 발생", e);
             throw e;
         }
     }
