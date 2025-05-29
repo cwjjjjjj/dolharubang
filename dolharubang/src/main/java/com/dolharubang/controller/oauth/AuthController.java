@@ -162,7 +162,7 @@ public class AuthController {
                 .providerId(providerId)
                 .memberEmail(email)
                 .nickname(nickname)
-                .sands(100)
+                .sands(400)
                 .closeness(0)
                 .build();
 
