@@ -61,7 +61,7 @@ public class MemberItemService {
         Map<ItemType, Long> defaultItemsByType = new HashMap<>();
 
         for (Item item : items) {
-            if (item.getItemName().equals("없음") || item.getItemName().equals("7월의 푸른 잔디")) {
+            if (item.getItemName().equals("없음") || item.getItemName().equals("4월의 분홍빛 노을")) {
                 defaultItemsByType.put(item.getItemType(), item.getItemId());
             }
         }
