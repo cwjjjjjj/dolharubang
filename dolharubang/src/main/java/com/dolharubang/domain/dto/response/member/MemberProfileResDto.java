@@ -27,7 +27,7 @@ public class MemberProfileResDto {
             .memberEmail(member.getMemberEmail())
             .nickname(member.getNickname())
             .birthday(member.getBirthday())
-            .birthStone("가넷")
+            .birthStone(member.getBirthday())
             .spaceName(member.getSpaceName())
             .closeness(member.getCloseness())
             .profilePicture(member.getProfilePicture())
