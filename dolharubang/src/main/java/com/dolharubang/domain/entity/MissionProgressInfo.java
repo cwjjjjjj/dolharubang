@@ -65,5 +65,9 @@ public class MissionProgressInfo {
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
-    
+
+    public void setCurrentValue(int currentValue) {
+        this.currentValue = currentValue;
+    }
+
 }
