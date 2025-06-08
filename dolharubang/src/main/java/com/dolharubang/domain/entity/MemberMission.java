@@ -130,4 +130,16 @@ public class MemberMission extends BaseEntity {
     public boolean canReceiveReward() {
         return status == MissionStatusType.COMPLETED && !isRewarded;
     }
+
+    public void setProgress(Double progress) {
+        this.progress = progress;
+    }
+
+    public void setStatus(MissionStatusType status) {
+        this.status = status;
+    }
+
+    public void setAchievementDate(LocalDateTime achievementDate) {
+        this.achievementDate = achievementDate;
+    }
 }
