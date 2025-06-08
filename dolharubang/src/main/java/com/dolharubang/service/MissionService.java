@@ -72,7 +72,7 @@ public class MissionService {
                 .conditionType(requestDto.getConditionType())
                 .requiredValue(requestDto.getRequiredValue())
                 .periodDays(requestDto.getPeriodDays())
-                .details(requestDto.getConditionDetails())
+                .details(requestDto.getDetails())
                 .build(),
             MissionReward.builder()
                 .type(requestDto.getRewardType())
