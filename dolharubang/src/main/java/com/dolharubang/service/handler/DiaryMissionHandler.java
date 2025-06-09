@@ -34,8 +34,8 @@ public class DiaryMissionHandler {
         Member member = memberRepository.findById(event.memberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MemberMission> missions = memberMissionRepository.findByMemberAndMission_Condition_Category(
-            member, MissionCategory.DIARY
+        List<MemberMission> missions = memberMissionRepository.findByMemberAndMission_Condition_CategoryAndStatusNot(
+            member, MissionCategory.DIARY, MissionStatusType.COMPLETED
         );
 
         missions.forEach(mission -> {
@@ -62,7 +62,7 @@ public class DiaryMissionHandler {
         progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
         mission.setProgress(diaryCount >= 1 ? 1.0 : 0.0);
     }
-    
+
     private void handleContinuous(MemberMission mission, MissionProgressInfo progressInfo,
         LocalDate eventDate) {
         LocalDate lastDate = progressInfo.getLastUpdateDate() != null

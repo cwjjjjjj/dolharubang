@@ -34,9 +34,10 @@ public class AttendanceMissionHandler {
         Member member = memberRepository.findById(event.memberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MemberMission> missions = memberMissionRepository.findByMemberAndMission_Condition_Category(
+        List<MemberMission> missions = memberMissionRepository.findByMemberAndMission_Condition_CategoryAndStatusNot(
             member,
-            MissionCategory.ATTENDANCE
+            MissionCategory.ATTENDANCE,
+            MissionStatusType.COMPLETED
         );
 
         missions.forEach(mission -> {
