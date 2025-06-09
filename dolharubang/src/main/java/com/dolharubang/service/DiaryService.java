@@ -4,6 +4,7 @@ import com.dolharubang.domain.dto.request.DiaryReqDto;
 import com.dolharubang.domain.dto.response.DiaryResDto;
 import com.dolharubang.domain.entity.Diary;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.event.DiaryEvent;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.DiaryRepository;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,12 +28,14 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final MemberRepository memberRepository;
     private final S3UploadService s3UploadService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public DiaryService(DiaryRepository diaryRepository, MemberRepository memberRepository,
-        S3UploadService s3UploadService) {
+        S3UploadService s3UploadService, ApplicationEventPublisher eventPublisher) {
         this.diaryRepository = diaryRepository;
         this.memberRepository = memberRepository;
         this.s3UploadService = s3UploadService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -64,6 +68,8 @@ public class DiaryService {
             // 이미지 URL 갱신
             savedDiary.updateImageUrl(imageUrl);
         }
+
+        eventPublisher.publishEvent(new DiaryEvent(member.getMemberId(), LocalDate.now()));
 
         return DiaryResDto.fromEntity(savedDiary);
     }
