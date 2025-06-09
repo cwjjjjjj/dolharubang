@@ -32,7 +32,7 @@ public class MissionReqDto {
     private ConditionType conditionType;
     private int requiredValue;
     private Integer periodDays;
-    private Map<String, Object> conditionDetails;
+    private Map<String, Object> details;
 
     // MissionReward 관련
     private RewardType rewardType;
@@ -50,7 +50,7 @@ public class MissionReqDto {
                 .conditionType(this.conditionType)
                 .requiredValue(this.requiredValue)
                 .periodDays(this.periodDays)
-                .details(this.conditionDetails != null ? this.conditionDetails : new HashMap<>())
+                .details(this.details != null ? this.details : new HashMap<>())
                 .build())
             .reward(MissionReward.builder()
                 .type(this.rewardType)

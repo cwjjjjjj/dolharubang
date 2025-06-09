@@ -53,4 +53,21 @@ public class MissionProgressInfo {
         }
         lastUpdateDate = date.atStartOfDay();
     }
+
+    public void setStreakCount(int streakCount) {
+        this.streakCount = streakCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public void setCurrentValue(int currentValue) {
+        this.currentValue = currentValue;
+    }
+
 }
