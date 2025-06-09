@@ -57,7 +57,7 @@ public class AttendanceMissionHandler {
 
     private void handleFirst(MemberMission mission, MissionProgressInfo progressInfo,
         LocalDate eventDate) {
-        int totalCount = attendanceRepository.countByMember(mission.getMember());
+        int totalCount = (int) attendanceRepository.countByMember(mission.getMember());
         progressInfo.setCurrentValue(totalCount);
         progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
         mission.setProgress(totalCount >= 1 ? 1.0 : 0.0);
@@ -93,7 +93,7 @@ public class AttendanceMissionHandler {
     private void handleCumulative(MemberMission mission, MissionProgressInfo progressInfo,
         LocalDate eventDate) {
         // 누적 출석 횟수 증가
-        int totalCount = attendanceRepository.countByMember(mission.getMember());
+        int totalCount = (int) attendanceRepository.countByMember(mission.getMember());
         progressInfo.setTotalCount(totalCount);
 
         progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
