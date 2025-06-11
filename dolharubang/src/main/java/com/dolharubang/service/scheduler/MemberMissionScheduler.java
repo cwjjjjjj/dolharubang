@@ -1,4 +1,4 @@
-package com.dolharubang.service;
+package com.dolharubang.service.scheduler;
 
 import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.repository.MemberMissionRepository;
@@ -21,7 +21,7 @@ public class MemberMissionScheduler {
         this.memberMissionRepository = memberMissionRepository;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+    @Scheduled(cron = "0 0 4 * * ?") // 매일 4시에 실행
 //    @Scheduled(cron = "0 * * * * ?")  // 매 분 0초에 실행
     @Transactional
     public void resetDailyMissions() {
