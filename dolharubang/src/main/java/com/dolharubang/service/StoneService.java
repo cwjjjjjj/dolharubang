@@ -13,6 +13,7 @@ import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.SpeciesRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.type.AbilityType;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,6 +60,7 @@ public class StoneService {
             .closeness(0L)
             .abilityAble(abilityMap)
             .signText("")
+            .adoptionDate(LocalDate.now())
             .build();
 
         member.updateSpaceName(stoneReqDto.getSpaceName());
