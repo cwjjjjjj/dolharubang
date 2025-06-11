@@ -3,14 +3,18 @@ package com.dolharubang.service;
 import com.dolharubang.domain.dto.response.FriendResDto;
 import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.event.FriendEvent;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.FriendRepository;
 import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.type.FriendActionType;
 import com.dolharubang.type.FriendStatusType;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,7 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
     private final NotificationService notificationService;
+    private final ApplicationEventPublisher eventPublisher;
 
     // 친구 목록 조회 (ACCEPTED 상태)
     public List<FriendResDto> getAcceptedFriendList(Member member) {
@@ -70,6 +75,12 @@ public class FriendService {
                 friendRepository.save(friendRequest);
                 notificationService.sendFriendAcceptedNotification(friendRequest.getRequester(),
                     receiver);
+
+                // 친구 추가 이벤트 발행
+                eventPublisher.publishEvent(
+                    new FriendEvent(receiver.getMemberId(), FriendActionType.ADD, LocalDate.now())
+                );
+
                 return FriendResDto.fromEntity(friendRequest, requester);  // 친구 관계 수락 후 반환
             }
 
@@ -79,6 +90,19 @@ public class FriendService {
                 || friendRequest.getStatus() == FriendStatusType.CANCELED) {
                 friendRequest.restore(requester, receiver);  // 상태를 PENDING으로 변경
                 friendRepository.save(friendRequest);
+
+                // 친구 요청 보낸 사람에게 SEND_REQUEST 이벤트 발행
+                eventPublisher.publishEvent(
+                    new FriendEvent(requester.getMemberId(), FriendActionType.SEND_REQUEST,
+                        LocalDate.now())
+                );
+
+                // 친구 요청 받은 사람에게 RECEIVE_REQUEST 이벤트 발행
+                eventPublisher.publishEvent(
+                    new FriendEvent(receiver.getMemberId(), FriendActionType.RECEIVE_REQUEST,
+                        LocalDate.now())
+                );
+
                 return FriendResDto.fromEntity(friendRequest, requester);
             }
         }
@@ -93,6 +117,17 @@ public class FriendService {
         Friend savedRequest = friendRepository.save(newFriendRequest);
 
         notificationService.sendFriendRequestNotification(receiver, requester);
+
+        // 친구 요청 보낸 사람에게 SEND_REQUEST 이벤트 발행
+        eventPublisher.publishEvent(
+            new FriendEvent(requester.getMemberId(), FriendActionType.SEND_REQUEST, LocalDate.now())
+        );
+
+        // 친구 요청 받은 사람에게 RECEIVE_REQUEST 이벤트 발행
+        eventPublisher.publishEvent(
+            new FriendEvent(receiver.getMemberId(), FriendActionType.RECEIVE_REQUEST,
+                LocalDate.now())
+        );
 
         return FriendResDto.fromEntity(savedRequest, requester);
     }
@@ -126,6 +161,11 @@ public class FriendService {
         friendRequest.accept();
         friendRepository.save(friendRequest);
 
+        // 친구 추가 이벤트 발행
+        eventPublisher.publishEvent(
+            new FriendEvent(receiver.getMemberId(), FriendActionType.ADD, LocalDate.now())
+        );
+
         // FriendResDto 생성 시 receiver가 요청을 수락했으므로 receiver를 넘겨주어야 한다.
         return FriendResDto.fromEntity(friendRequest, receiver);  // receiver가 수락한 경우
     }
@@ -158,6 +198,11 @@ public class FriendService {
         friendRequest.decline();
         friendRepository.save(friendRequest);
 
+        // 친구 거절 이벤트 발생시킴
+        eventPublisher.publishEvent(
+            new FriendEvent(receiver.getMemberId(), FriendActionType.REJECT, LocalDate.now())
+        );
+
         return FriendResDto.fromEntity(friendRequest, receiver);
     }
 
@@ -176,6 +221,11 @@ public class FriendService {
         // 관계를 삭제 (소프트 딜리트 처리)
         friendRequest.delete();
         friendRepository.save(friendRequest);
+
+        // 친구 삭제 이벤트 발행
+        eventPublisher.publishEvent(
+            new FriendEvent(member.getMemberId(), FriendActionType.REMOVE, LocalDate.now())
+        );
 
         return FriendResDto.fromEntity(friendRequest, member);
     }
