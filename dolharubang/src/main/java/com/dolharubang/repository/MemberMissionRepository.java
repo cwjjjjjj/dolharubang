@@ -4,6 +4,7 @@ import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.Mission;
 import com.dolharubang.type.MissionCategory;
+import com.dolharubang.type.MissionStatusType;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
 
     void deleteAllByMember(Member member);
 
-    List<MemberMission> findByMemberAndMission_Condition_Category(Member member,
-        MissionCategory category);
+    List<MemberMission> findByMemberAndMission_Condition_CategoryAndStatusNot(Member member,
+        MissionCategory category, MissionStatusType status);
 }

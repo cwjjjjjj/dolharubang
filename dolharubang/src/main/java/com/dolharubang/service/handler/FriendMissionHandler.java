@@ -4,10 +4,9 @@ import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.MemberMission;
 import com.dolharubang.domain.entity.MissionCondition;
 import com.dolharubang.domain.entity.MissionProgressInfo;
-import com.dolharubang.domain.event.DiaryEvent;
+import com.dolharubang.domain.event.FriendEvent;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
-import com.dolharubang.repository.DiaryRepository;
 import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.type.MissionCategory;
@@ -22,49 +21,57 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DiaryMissionHandler {
+public class FriendMissionHandler {
 
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
-    private final DiaryRepository diaryRepository;
 
     @EventListener
     @Transactional
-    public void handleDiary(DiaryEvent event) {
+    public void handleFriend(FriendEvent event) {
         Member member = memberRepository.findById(event.memberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         List<MemberMission> missions = memberMissionRepository.findByMemberAndMission_Condition_CategoryAndStatusNot(
-            member, MissionCategory.DIARY, MissionStatusType.COMPLETED
+            member, MissionCategory.FRIEND, MissionStatusType.COMPLETED
         );
 
         missions.forEach(mission -> {
             MissionCondition condition = mission.getMission().getCondition();
             MissionProgressInfo progressInfo = mission.getProgressInfo();
-            LocalDate eventDate = event.date();
+            String requiredAction = (String) condition.getDetails().get("actionType");
 
-            switch (condition.getConditionType()) {
-                case FIRST -> handleFirst(mission, progressInfo, eventDate);
-                case CONTINUOUS -> handleContinuous(mission, progressInfo, eventDate);
-                case CUMULATIVE -> handleCumulative(mission, progressInfo, eventDate);
+            // 미션의 actionType과 이벤트의 actionType이 일치할 때만 진행
+            if (event.actionType().name().equalsIgnoreCase(requiredAction)) {
+                switch (condition.getConditionType()) {
+                    case FIRST -> handleFirst(progressInfo, mission);
+                    case CUMULATIVE ->
+                        handleCumulative(progressInfo, mission, condition.getRequiredValue());
+                    case CONTINUOUS -> handleContinuous(progressInfo, mission, event.date(),
+                        condition.getRequiredValue());
+                }
+                updateMissionStatus(mission);
+                memberMissionRepository.save(mission);
             }
-
-            updateMissionStatus(mission);
-            memberMissionRepository.save(mission);
         });
     }
 
-    private void handleFirst(MemberMission mission, MissionProgressInfo progressInfo,
-        LocalDate eventDate) {
-        long diaryCount = diaryRepository.countByMember(mission.getMember());
-        progressInfo.setCurrentValue((int) diaryCount);
-
-        progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
-        mission.setProgress(diaryCount >= 1 ? 1.0 : 0.0);
+    private void handleFirst(MissionProgressInfo progressInfo, MemberMission mission) {
+        if (progressInfo.getCurrentValue() < 1) {
+            progressInfo.setCurrentValue(1);
+            mission.setProgress(1.0);
+        }
     }
 
-    private void handleContinuous(MemberMission mission, MissionProgressInfo progressInfo,
-        LocalDate eventDate) {
+    private void handleCumulative(MissionProgressInfo progressInfo, MemberMission mission,
+        int requiredValue) {
+        int count = progressInfo.getTotalCount();
+        progressInfo.setTotalCount(count + 1);
+        mission.setProgress(Math.min(1.0, (double) progressInfo.getTotalCount() / requiredValue));
+    }
+
+    private void handleContinuous(MissionProgressInfo progressInfo, MemberMission mission,
+        LocalDate eventDate, int requiredValue) {
         LocalDate lastDate = progressInfo.getLastUpdateDate() != null
             ? progressInfo.getLastUpdateDate().toLocalDate()
             : null;
@@ -78,32 +85,11 @@ public class DiaryMissionHandler {
         }
 
         progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
-        mission.setProgress(
-            Math.min(1.0,
-                (double) progressInfo.getStreakCount() /
-                    mission.getMission().getCondition().getRequiredValue()
-            )
-        );
-    }
-
-    private void handleCumulative(MemberMission mission, MissionProgressInfo progressInfo,
-        LocalDate eventDate) {
-        long diaryCount = diaryRepository.countByMember(mission.getMember());
-        progressInfo.setTotalCount((int) diaryCount);
-
-        progressInfo.setLastUpdateDate(eventDate.atStartOfDay());
-        mission.setProgress(
-            Math.min(1.0,
-                (double) diaryCount /
-                    mission.getMission().getCondition().getRequiredValue()
-            )
-        );
+        mission.setProgress(Math.min(1.0, (double) progressInfo.getStreakCount() / requiredValue));
     }
 
     private void updateMissionStatus(MemberMission mission) {
-        if (mission.getProgress() >= 1.0 &&
-            mission.getStatus() != MissionStatusType.COMPLETED
-        ) {
+        if (mission.getProgress() >= 1.0 && mission.getStatus() != MissionStatusType.COMPLETED) {
             mission.setStatus(MissionStatusType.COMPLETED);
             mission.setAchievementDate(LocalDateTime.now());
         } else if (mission.getProgress() > 0) {
@@ -111,4 +97,3 @@ public class DiaryMissionHandler {
         }
     }
 }
-
