@@ -62,7 +62,6 @@ extension String {
         // DateFormatter 세팅
           let dateFormatter = DateFormatter()
           dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-//          dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) 이걸뺴니까되네
           dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
           
           // 파싱 시도, 마이크로초 6자리
@@ -70,17 +69,16 @@ extension String {
           
           // 파싱 실패 시(마이크로초 3자리 등), 포맷 변경해서 재시도
           if date == nil {
-              print("실패1")
               dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
               date = dateFormatter.date(from: backendDateString)
           }
+        
           // 파싱 실패 시(마이크로초 없는 경우), 포맷 변경해서 재시도
           if date == nil {
-              
-              print("실패2")
               dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
               date = dateFormatter.date(from: backendDateString)
           }
+        
           // 그래도 실패하면 원본 반환
           guard let backendDate = date else { return backendDateString }
           
@@ -103,7 +101,7 @@ extension String {
               return "\(days)일전"
           } else {
               let outputFormatter = DateFormatter()
-              outputFormatter.dateFormat = "yyyy-MM-dd"
+              outputFormatter.dateFormat = "yy.MM.dd"
               return outputFormatter.string(from: backendDate)
           }
       }
