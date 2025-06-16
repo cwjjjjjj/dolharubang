@@ -1,11 +1,3 @@
-//
-//  MailEnviroment.swift
-//  DolHaruBang
-//
-//  Created by 양희태 on 9/26/24.
-//
-
-
 import Foundation
 import ComposableArchitecture
 import Alamofire
@@ -34,7 +26,7 @@ struct unReadMailCount : Codable {
 
 @DependencyClient
 struct MailClient {
-    var fetchMail: @Sendable () async throws -> [MailInfo]
+    var fetchMail: @Sendable (_ page: Int, _ size: Int) async throws -> [MailInfo]
     var readMail: @Sendable (String) async throws -> MailInfo
     var unread : @Sendable () async throws -> unReadMailCount
 }
@@ -54,13 +46,15 @@ extension DependencyValues {
 
 extension MailClient: DependencyKey {
     static let liveValue = MailClient(
-        fetchMail: {
-            
+        fetchMail: { page, size in
             let url = APIConstants.Endpoints.mail
             let queryParameters : [String: String] = [
-                "page": "0",
-                "size": "20"
+                "page": String(page),
+                "size": String(size)
             ]
+            
+            // 테스트용 딜레이 추가 (1.5초)
+            try await Task.sleep(for: .seconds(1))
             
             return try await fetch(url: url, model: [MailInfo].self, method: .get, queryParameters: queryParameters)
         },
