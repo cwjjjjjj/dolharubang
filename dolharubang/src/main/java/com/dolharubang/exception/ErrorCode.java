@@ -21,6 +21,11 @@ public enum ErrorCode {
     TOO_MANY_DIARIES(HttpStatus.TOO_MANY_REQUESTS, "오늘의 일기 개수를 초과했습니다."),
     INVALID_DELETE_TARGET(HttpStatus.BAD_REQUEST, "삭제할 수 없는 요청입니다"),
 
+    //클로버
+    CLOVER_NOT_FOUND(HttpStatus.NOT_FOUND, "클로버를 찾을 수 없습니다."),
+    TOO_MANY_CLOVERS(HttpStatus.TOO_MANY_REQUESTS, "오늘의 클로버 개수를 초과했습니다."),
+    ALREADY_SENT_CLOVER_TO_RECEIVER(HttpStatus.BAD_REQUEST, "오늘 해당 멤버에게 이미 클로버를 보냈습니다."),
+
     //돌 관련 오류
     STONE_NOT_FOUND(HttpStatus.NOT_FOUND, "돌을 찾을 수 없습니다."),
     SIGN_TEXT_NOT_FOUND(HttpStatus.NOT_FOUND, "팻말 내용을 찾을 수 없습니다."),
