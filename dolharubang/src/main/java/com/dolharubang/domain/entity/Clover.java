@@ -18,11 +18,11 @@ public class Clover extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sending_member_id", nullable = false)
-    private Member sendingMemberId;
+    private Member sendingMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiving_member_id", nullable = false)
-    private Member receivingMemberId;
+    private Member receivingMember;
 
     //TODO 답장 여부 추후 구현
 //    private boolean isReplied;
