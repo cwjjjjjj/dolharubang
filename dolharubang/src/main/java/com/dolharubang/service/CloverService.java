@@ -8,14 +8,13 @@ import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.CloverRepository;
 import com.dolharubang.repository.MemberRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -44,7 +43,7 @@ public class CloverService {
         int maxCloverPerDay = 7;
 
         //오늘 보낸 클로버 리스트
-        List<Clover> todayClover = cloverRepository.findByMemberAndCreatedAtBetween(sendingMember, startOfDay, endOfDay);
+        List<Clover> todayClover = cloverRepository.findBySendingMemberAndCreatedAtBetween(sendingMember, startOfDay, endOfDay);
         if(todayClover.size() >= maxCloverPerDay) {
             throw new CustomException(ErrorCode.TOO_MANY_CLOVERS);
         }

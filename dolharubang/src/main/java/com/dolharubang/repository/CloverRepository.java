@@ -16,5 +16,7 @@ public interface CloverRepository extends JpaRepository<Clover, Long> {
     List<Clover> findByReceivingMember(Member receivingMember);
 
     //같은 회원에게 하루 하나 전송 + 하루에 총 7개 전송 제한을 위한 리스트
-    List<Clover> findByMemberAndCreatedAtBetween(Member member, LocalDateTime start, LocalDateTime end);
+    List<Clover> findBySendingMemberAndCreatedAtBetween(Member sendingMember, LocalDateTime start, LocalDateTime end);
+
+    boolean existsBySendingMemberAndReceivingMemberAndCreatedAtBetween(Member sendingMember, Member receivingMember, LocalDateTime start, LocalDateTime end);
 }
