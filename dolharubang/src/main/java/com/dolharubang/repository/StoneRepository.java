@@ -16,5 +16,5 @@ public interface StoneRepository extends JpaRepository<Stone, Long> {
 
     void deleteAllByMember(Member member);
 
-    List<Stone> findAllByAdoptionDateIsNotNullAndIsDeletedIsNull();
+    List<Stone> findAllByAdoptionDateIsNotNullAndDeletedAtIsNull();
 }
