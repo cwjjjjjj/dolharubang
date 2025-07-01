@@ -44,7 +44,7 @@ public class MemberMissionResDto {
             .isRewarded(memberMission.isRewarded())
             .rewardedAt(memberMission.getRewardedAt())
             // 미션 정보
-            .missionName(mission.getName())
+            .missionName(memberMission.getDisplayName())
             .missionDescription(mission.getDescription())
             // 보상 정보
             .rewardQuantity(mission.getReward().getQuantity())
