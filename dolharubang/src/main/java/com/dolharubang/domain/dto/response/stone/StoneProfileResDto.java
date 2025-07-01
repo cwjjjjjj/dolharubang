@@ -5,6 +5,7 @@ import com.dolharubang.domain.entity.Species;
 import com.dolharubang.domain.entity.Stone;
 import com.dolharubang.type.AbilityType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,14 @@ public class StoneProfileResDto {
     private List<AbilityType> potentialAbilities;
     @JsonProperty("roomName")
     private String spaceName;
+    private LocalDate adoptionDate;
 
     public static StoneProfileResDto fromEntity(Stone stone, Species species, Member member) {
         List<AbilityType> activeAbilities = new ArrayList<>();
         List<AbilityType> potentialAbilities = new ArrayList<>();
 
         stone.getAbilityAble().forEach((ability, value) -> {
-            if(ability != species.getBaseAbility()) {
+            if (ability != species.getBaseAbility()) {
                 if (value) {
                     activeAbilities.add(species.getBaseAbility());
                     activeAbilities.add(ability);
@@ -58,6 +60,7 @@ public class StoneProfileResDto {
             .activeAbilities(activeAbilities)
             .potentialAbilities(potentialAbilities)
             .spaceName(member.getSpaceName())
+            .adoptionDate(stone.getAdoptionDate())
             .build();
     }
 }
