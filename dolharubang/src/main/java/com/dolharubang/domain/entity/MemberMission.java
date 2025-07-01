@@ -41,6 +41,13 @@ public class MemberMission extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Mission mission;
 
+    private String customName;
+
+    @ManyToOne
+    @JoinColumn(name = "stone_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Stone stone; // 입양/기념일 미션만 값이 있음, 나머지는 null
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MissionStatusType status;
@@ -57,9 +64,11 @@ public class MemberMission extends BaseEntity {
     private LocalDateTime rewardedAt;
 
     @Builder
-    public MemberMission(Member member, Mission mission) {
+    public MemberMission(Member member, Mission mission, Stone stone, String customName) {
         this.member = member;
         this.mission = mission;
+        this.customName = customName;
+        this.stone = stone;
         this.status = MissionStatusType.NOT_STARTED;
         this.progress = 0.0;
         this.isRewarded = false;
@@ -141,5 +150,12 @@ public class MemberMission extends BaseEntity {
 
     public void setAchievementDate(LocalDateTime achievementDate) {
         this.achievementDate = achievementDate;
+    }
+
+    // customName이 있으면 customName, 없으면 mission.name 반환
+    public String getDisplayName() {
+        return this.customName != null
+            ? this.customName
+            : this.getMission().getName();
     }
 }
