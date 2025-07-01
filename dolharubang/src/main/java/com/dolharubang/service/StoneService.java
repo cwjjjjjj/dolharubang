@@ -5,16 +5,21 @@ import com.dolharubang.domain.dto.request.StoneTextUpdateReqDto;
 import com.dolharubang.domain.dto.response.stone.StoneHomeResDto;
 import com.dolharubang.domain.dto.response.stone.StoneProfileResDto;
 import com.dolharubang.domain.entity.Member;
+import com.dolharubang.domain.entity.MemberMission;
+import com.dolharubang.domain.entity.Mission;
 import com.dolharubang.domain.entity.Species;
 import com.dolharubang.domain.entity.Stone;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.MemberMissionRepository;
 import com.dolharubang.repository.MemberRepository;
+import com.dolharubang.repository.MissionRepository;
 import com.dolharubang.repository.SpeciesRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.type.AbilityType;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +34,18 @@ public class StoneService {
     private final MemberRepository memberRepository;
     private final SpeciesRepository speciesRepository;
     private final MemberItemService memberItemService;
+    private final MissionRepository missionRepository;
+    private final MemberMissionRepository memberMissionRepository;
 
     public StoneService(StoneRepository stoneRepository, MemberRepository memberRepository,
-        SpeciesRepository speciesRepository, MemberItemService memberItemService) {
+        SpeciesRepository speciesRepository, MemberItemService memberItemService,
+        MissionRepository missionRepository, MemberMissionRepository memberMissionRepository) {
         this.stoneRepository = stoneRepository;
         this.memberRepository = memberRepository;
         this.speciesRepository = speciesRepository;
         this.memberItemService = memberItemService;
+        this.missionRepository = missionRepository;
+        this.memberMissionRepository = memberMissionRepository;
     }
 
     @Transactional
@@ -69,6 +79,10 @@ public class StoneService {
         memberRepository.save(member);
 
         Stone adoptedStone = stoneRepository.save(stone);
+
+        // 돌 입양 시 기념일 미션 부여
+        assignAnniversaryMissions(member, stone);
+
         if (adoptedStone != null) {
             return true;
         }
@@ -148,4 +162,24 @@ public class StoneService {
         return stoneRepository.findByMember(member)
             .orElseThrow(() -> new CustomException(ErrorCode.STONE_NOT_FOUND));
     }
+
+    private void assignAnniversaryMissions(Member member, Stone stone) {
+        List<Mission> unassignedMissions = missionRepository
+            .findUnassignedAnniversaryMissions(member, stone);
+
+        List<MemberMission> newMissions = unassignedMissions.stream()
+            .map(mission -> {
+                String customName = mission.getName().replace("{stoneName}", stone.getStoneName());
+                return MemberMission.builder()
+                    .member(member)
+                    .stone(stone)
+                    .mission(mission)
+                    .customName(customName)
+                    .build();
+            })
+            .collect(Collectors.toList());
+
+        memberMissionRepository.saveAll(newMissions);
+    }
+
 }
