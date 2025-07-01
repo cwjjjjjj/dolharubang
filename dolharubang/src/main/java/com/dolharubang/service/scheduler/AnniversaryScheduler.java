@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,29 +18,38 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AnniversaryScheduler {
 
+    private static final Logger logger = LoggerFactory.getLogger(AnniversaryScheduler.class);
     private final StoneRepository stoneRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    // 매일 00:00:00에 실행 (cron = "초 분 시 일 월 요일")
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void checkAnniversaryDaily() {
-        List<Stone> stones = stoneRepository.findAllByAdoptionDateIsNotNullAndIsDeletedIsNull();
+        logger.info("기념일 체크 스케줄러 시작");
 
-        stones.forEach(stone -> {
-            LocalDate adoptionDate = stone.getAdoptionDate();
-            LocalDate today = LocalDate.now();
-            long daysSinceAdoption = ChronoUnit.DAYS.between(adoptionDate, today);
+        try {
+            List<Stone> stones = stoneRepository.findAllByAdoptionDateIsNotNullAndDeletedAtIsNull();
+            logger.info("처리할 돌 수: {}", stones.size());
 
-            eventPublisher.publishEvent(
-                new AnniversaryEvent(
-                    stone.getStoneId(),
-                    stone.getMember().getMemberId(),
-                    today,
-                    daysSinceAdoption
-                )
-            );
-        });
+            stones.forEach(stone -> {
+                LocalDate adoptionDate = stone.getAdoptionDate();
+                LocalDate today = LocalDate.now();
+                long daysSinceAdoption = ChronoUnit.DAYS.between(adoptionDate, today) + 1;
+
+                eventPublisher.publishEvent(
+                    new AnniversaryEvent(
+                        stone.getStoneId(),
+                        stone.getMember().getMemberId(),
+                        today,
+                        daysSinceAdoption
+                    )
+                );
+            });
+
+            logger.info("기념일 체크 스케줄러 완료");
+        } catch (Exception e) {
+            logger.error("기념일 체크 중 오류 발생", e);
+            throw e;
+        }
     }
-
 }
