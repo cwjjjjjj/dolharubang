@@ -1,22 +1,26 @@
 package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.response.FriendResDto;
+import com.dolharubang.domain.dto.response.FriendWithCloverResDto;
 import com.dolharubang.domain.entity.Friend;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.event.FriendEvent;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.CloverRepository;
 import com.dolharubang.repository.FriendRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.type.FriendActionType;
 import com.dolharubang.type.FriendStatusType;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +31,27 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private final NotificationService notificationService;
     private final ApplicationEventPublisher eventPublisher;
+    private final CloverRepository cloverRepository;
+    final LocalDateTime todayStart = LocalDateTime.now().toLocalDate().atStartOfDay();
 
     // 친구 목록 조회 (ACCEPTED 상태)
-    public List<FriendResDto> getAcceptedFriendList(Member member) {
+    public List<FriendWithCloverResDto> getAcceptedFriendList(Member member) {
         List<Friend> friends = friendRepository.findAllFriendsByStatus(member,
             FriendStatusType.ACCEPTED);
 
         return friends.stream()
-            .map(friend -> FriendResDto.fromEntity(friend, member))
-            .collect(Collectors.toList());
+                .map(friend -> {
+                    // 내 친구 객체에서 상대 멤버 추출 (requester/receiver 구분)
+                    Member target = friend.getRequester().getMemberId().equals(member.getMemberId())
+                            ? friend.getReceiver()
+                            : friend.getRequester();
+
+                    // 오늘 이 친구에게 클로버 보냈는지 체크
+                    boolean sentToday = cloverRepository.existsBySendingMemberAndReceivingMemberAndCreatedAtAfter(
+                            member, target, todayStart);
+
+                    return FriendWithCloverResDto.fromEntity(friend, member, sentToday);
+                })            .collect(Collectors.toList());
     }
 
     // 내가 보낸/받은 친구 요청 목록 조회
