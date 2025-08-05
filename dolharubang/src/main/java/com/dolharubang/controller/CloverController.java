@@ -39,7 +39,7 @@ public class CloverController {
     @Operation(summary = "클로버 보내기", description = "특정 회원에게 클로버를 보낸다.")
     @PostMapping("/send")
     public ResponseEntity<?> sendClover(@AuthenticationPrincipal PrincipalDetails principal,
-                                        @PathVariable Long receivingMemberId) {
+                                        @RequestParam String nickname) {
 
         if (principal == null) {
             return ResponseEntity
@@ -52,7 +52,7 @@ public class CloverController {
         }
 
         Member sendingMember = principal.getMember();
-        CloverResDto response = cloverService.createClover(sendingMember, receivingMemberId);
+        CloverResDto response = cloverService.createClover(sendingMember, nickname);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

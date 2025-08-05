@@ -37,12 +37,12 @@ public class CloverService {
     }
 
     @Transactional
-    public CloverResDto createClover(Member sendingMember, Long receivingMemberId) {
+    public CloverResDto createClover(Member sendingMember, String nickname) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
         int maxCloverPerDay = 7;
 
-        Member target = memberRepository.findById(receivingMemberId)
+        Member target = memberRepository.findByNickname(nickname)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //오늘 보낸 클로버 리스트
