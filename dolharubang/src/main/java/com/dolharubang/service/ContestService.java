@@ -2,23 +2,26 @@ package com.dolharubang.service;
 
 import com.dolharubang.domain.dto.request.ContestReqDto;
 import com.dolharubang.domain.dto.response.ContestResDto;
+import com.dolharubang.domain.dto.response.ContestWithCloverResDto;
 import com.dolharubang.domain.entity.Contest;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.Stone;
 import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
+import com.dolharubang.repository.CloverRepository;
 import com.dolharubang.repository.ContestRepository;
 import com.dolharubang.repository.MemberRepository;
 import com.dolharubang.repository.StoneRepository;
 import com.dolharubang.s3.S3UploadService;
 import com.dolharubang.type.ContestFeedSortType;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ContestService {
@@ -27,13 +30,15 @@ public class ContestService {
     private final MemberRepository memberRepository;
     private final StoneRepository stoneRepository;
     private final S3UploadService s3UploadService;
+    private final CloverRepository cloverRepository;
 
     public ContestService(ContestRepository contestRepository, MemberRepository memberRepository,
-        StoneRepository stoneRepository, S3UploadService s3UploadService) {
+        StoneRepository stoneRepository, S3UploadService s3UploadService, CloverRepository cloverRepository) {
         this.contestRepository = contestRepository;
         this.memberRepository = memberRepository;
         this.stoneRepository = stoneRepository;
         this.s3UploadService = s3UploadService;
+        this.cloverRepository = cloverRepository;
     }
 
     @Transactional
@@ -146,11 +151,15 @@ public class ContestService {
     }
 
     @Transactional(readOnly = true)
-    public List<ContestResDto> getFeedContests(Long memberId, Long lastContestId,
-        ContestFeedSortType contestFeedSortType, int size) {
+    public List<ContestWithCloverResDto> getFeedContests(Long memberId, Long lastContestId,
+                                                                ContestFeedSortType contestFeedSortType, int size) {
+
+        Member currentMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        LocalDateTime todayStart = LocalDateTime.now().toLocalDate().atStartOfDay();
+
         List<Contest> contests = switch (contestFeedSortType) {
-            case RECOMMENDED ->
-                contestRepository.findFeedContestsWithWeight(memberId, lastContestId, size);
+            case RECOMMENDED -> contestRepository.findFeedContestsWithWeight(memberId, lastContestId, size);
             case LATEST -> contestRepository.findLatestContests(lastContestId, size);
         };
 
@@ -159,8 +168,11 @@ public class ContestService {
         }
 
         return contests.stream()
-            .map(ContestResDto::fromEntity)
-            .collect(Collectors.toList());
+                .map(contest -> {
+                    boolean sentToday = cloverRepository.existsBySendingMemberAndReceivingMemberAndCreatedAtAfter(
+                            currentMember, contest.getMember(), todayStart);
+                    return ContestWithCloverResDto.fromEntity(contest, sentToday);
+                })
+                .collect(Collectors.toList());
     }
-
 }
