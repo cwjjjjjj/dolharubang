@@ -1,6 +1,5 @@
 package com.dolharubang.service;
 
-import com.dolharubang.domain.dto.request.CloverReqDto;
 import com.dolharubang.domain.dto.response.CloverResDto;
 import com.dolharubang.domain.entity.Clover;
 import com.dolharubang.domain.entity.Member;
@@ -8,13 +7,14 @@ import com.dolharubang.exception.CustomException;
 import com.dolharubang.exception.ErrorCode;
 import com.dolharubang.repository.CloverRepository;
 import com.dolharubang.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -37,10 +37,13 @@ public class CloverService {
     }
 
     @Transactional
-    public CloverResDto createClover(Member sendingMember, CloverReqDto reqDto) {
+    public CloverResDto createClover(Member sendingMember, Long receivingMemberId) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
         int maxCloverPerDay = 7;
+
+        Member target = memberRepository.findById(receivingMemberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //오늘 보낸 클로버 리스트
         List<Clover> todayClover = cloverRepository.findBySendingMemberAndCreatedAtBetween(sendingMember, startOfDay, endOfDay);
@@ -50,7 +53,7 @@ public class CloverService {
 
         //해당 멤버에게 이미 보냈는지 확인
         boolean alreadySentToReceiver = todayClover.stream()
-                .anyMatch(clover -> clover.getReceivingMember().equals(reqDto.getReceivingMember()));
+                .anyMatch(clover -> clover.getReceivingMember().equals(target));
 
         if(alreadySentToReceiver) {
             throw new CustomException(ErrorCode.ALREADY_SENT_CLOVER_TO_RECEIVER);
@@ -59,7 +62,7 @@ public class CloverService {
         //7개 이하 + 해당 멤버에게 오늘 보내지 않았다면
         Clover clover = Clover.builder()
                 .sendingMember(sendingMember)
-                .receivingMember(reqDto.getReceivingMember())
+                .receivingMember(target)
                 .build();
 
         Clover saveClover = cloverRepository.save(clover);

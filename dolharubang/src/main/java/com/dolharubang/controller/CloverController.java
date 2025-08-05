@@ -1,25 +1,20 @@
 package com.dolharubang.controller;
 
-import com.dolharubang.domain.dto.request.CloverReqDto;
 import com.dolharubang.domain.dto.response.CloverResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.CloverService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Tag(name = "Clovers", description = "APIs for managing clovers")
@@ -44,7 +39,7 @@ public class CloverController {
     @Operation(summary = "클로버 보내기", description = "특정 회원에게 클로버를 보낸다.")
     @PostMapping("/send")
     public ResponseEntity<?> sendClover(@AuthenticationPrincipal PrincipalDetails principal,
-                                        @RequestBody CloverReqDto reqDto) {
+                                        @PathVariable Long receivingMemberId) {
 
         if (principal == null) {
             return ResponseEntity
@@ -57,7 +52,7 @@ public class CloverController {
         }
 
         Member sendingMember = principal.getMember();
-        CloverResDto response = cloverService.createClover(sendingMember, reqDto);
+        CloverResDto response = cloverService.createClover(sendingMember, receivingMemberId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
