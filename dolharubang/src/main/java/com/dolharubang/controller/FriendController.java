@@ -1,24 +1,21 @@
 package com.dolharubang.controller;
 
 import com.dolharubang.domain.dto.response.FriendResDto;
+import com.dolharubang.domain.dto.response.FriendWithCloverResDto;
 import com.dolharubang.domain.entity.Member;
 import com.dolharubang.domain.entity.oauth.PrincipalDetails;
 import com.dolharubang.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Friends", description = "APIs for managing friends")
 @RestController
@@ -43,7 +40,7 @@ public class FriendController {
         }
 
         Member member = principal.getMember();
-        List<FriendResDto> friendList = friendService.getAcceptedFriendList(member);
+        List<FriendWithCloverResDto> friendList = friendService.getAcceptedFriendList(member);
         return ResponseEntity.ok(friendList);
     }
 
